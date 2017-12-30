@@ -14,12 +14,12 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="flexdock" target="1.6" />
-      <module name="flexdock-core" target="1.6" />
-      <module name="flexdock-demo" target="1.6" />
-      <module name="flexdock-drag" target="1.6" />
-      <module name="flexdock-perspective" target="1.6" />
-      <module name="flexdock-view" target="1.6" />
+      <module name="flexdock" target="1.8" />
+      <module name="flexdock-core" target="1.8" />
+      <module name="flexdock-demo" target="1.8" />
+      <module name="flexdock-drag" target="1.8" />
+      <module name="flexdock-perspective" target="1.8" />
+      <module name="flexdock-view" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

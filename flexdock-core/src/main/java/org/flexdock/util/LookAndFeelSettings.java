@@ -40,8 +40,8 @@ import com.l2fprod.gui.plaf.skin.SkinLookAndFeel;
  */
 public class LookAndFeelSettings {
     public static final String TAB_PANE_BORDER_INSETS = "TabbedPane.contentBorderInsets";
-    public static final String DOM_RESOURCE = "org/flexdock/util/laf-defaults.xml";
-    public static final String TAB_EDGE_INSET_KEY = "tabEdgeInset";
+    private static final String DOM_RESOURCE = "org/flexdock/util/laf-defaults.xml";
+    private static final String TAB_EDGE_INSET_KEY = "tabEdgeInset";
 
     private static final String PROPERTY_KEY = "property";
     private static final String KEY = "key";
@@ -49,11 +49,11 @@ public class LookAndFeelSettings {
 
 
     private static final LookAndFeelSettings SINGLETON = new LookAndFeelSettings();
-    private Hashtable propertyMappings;
+    private Hashtable<String, Properties> propertyMappings;
     private boolean skinLFSupport;
 
     private LookAndFeelSettings() {
-        propertyMappings = new Hashtable();
+        propertyMappings = new Hashtable<>();
         Document document = ResourceManager.getDocument(DOM_RESOURCE);
         NodeList nodes = document.getDocumentElement().getChildNodes();
         for(int i=0; i<nodes.getLength(); i++) {

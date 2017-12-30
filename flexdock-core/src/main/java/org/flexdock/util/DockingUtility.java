@@ -117,8 +117,8 @@ public class DockingUtility implements DockingConstants {
      *      java.awt.Component)
      */
     public static boolean isSubport(DockingPort dockingPort) {
-        return dockingPort == null ? false : SwingUtilities.getAncestorOfClass(
-                   DockingPort.class, (Component) dockingPort) != null;
+        return dockingPort != null && SwingUtilities.getAncestorOfClass(
+                DockingPort.class, (Component) dockingPort) != null;
     }
 
     /**
@@ -423,7 +423,7 @@ public class DockingUtility implements DockingConstants {
         }
 
         DockingState info = getDockingState(dockable);
-        return info == null ? false : info.isMinimized();
+        return info != null && info.isMinimized();
     }
 
     /**
@@ -458,41 +458,7 @@ public class DockingUtility implements DockingConstants {
     private static DockingState getDockingState(Dockable dockable) {
         return DockingManager.getLayoutManager().getDockingState(dockable);
     }
-
-    /**
-     * Docks the specified {@code Dockable} relative to another already-docked
-     * {@code Dockable} in the specified region. The "parent" {@code Dockable}
-     * must currently be docked. If not, this method will return {@code false}.
-     * Otherwise, its parent {@code DockingPort} will be resolved and the new
-     * {@code Dockable} will be docked into the {@code DockingPort} relative to
-     * the "parent" {@code Dockable}. This method defers processing to
-     * {@code dockRelative(Dockable dockable, Dockable parent, String relativeRegion, float ratio)}
-     * passing {@code UNSPECIFIED_SIBLING_PREF} for the {@code ratio} parameter.
-     * <p>
-     * This method returns {@code false} if any of the input parameters are
-     * {@code null} or if the specified {@code region} is invalid according to
-     * {@code DockingManager.isValidDockingRegion(String region)}. If the
-     * specified region is other than CENTER, then a split layout should result.
-     *
-     * @param dockable
-     *            the {@code Dockable} to be docked
-     * @param parent
-     *            the {@code Dockable} used as a reference point for docking
-     * @param relativeRegion
-     *            the docking region into which {@code dockable} will be docked
-     * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
-     * @see #dockRelative(Dockable, Dockable, String, float)
-     * @see DockingManager#isValidDockingRegion(String)
-     * @see Dockable#getDockingPort()
-     * @see DockingManager#dock(Dockable, DockingPort, String)
-     */
-    public static boolean dockRelative(Dockable dockable, Dockable parent,
-                                       String relativeRegion) {
-        return dockRelative(parent, dockable, relativeRegion,
-                            UNSPECIFIED_SIBLING_PREF);
-    }
-
+    
     /**
      * Docks the specified {@code Dockable} relative to another already-docked
      * {@code Dockable} in the specified region with the specified split
@@ -530,16 +496,13 @@ public class DockingUtility implements DockingConstants {
                 || !DockingManager.isValidDockingRegion(relativeRegion)) {
             return false;
         }
-
+    
         // set the sibling preference
         setSiblingPreference(parent, relativeRegion, ratio);
-
+    
         DockingPort port = parent.getDockingPort();
-        if (port != null) {
-            return DockingManager.dock(dockable, port, relativeRegion);
-        }
-
-        return false;
+        return port != null && DockingManager.dock(dockable, port, relativeRegion);
+    
     }
 
     private static void setSiblingPreference(Dockable src, String region,
@@ -575,7 +538,7 @@ public class DockingUtility implements DockingConstants {
      */
     public static boolean isFloating(Dockable dockable) {
         DockingState info = getDockingState(dockable);
-        return info == null ? false : info.isFloating();
+        return info != null && info.isFloating();
     }
 
     /**
@@ -592,8 +555,8 @@ public class DockingUtility implements DockingConstants {
      * @see #isFloating(Dockable)
      */
     public static boolean isEmbedded(Dockable dockable) {
-        return dockable == null ? false : DockingManager.isDocked(dockable)
-               && !isFloating(dockable);
+        return dockable != null && (DockingManager.isDocked(dockable)
+                && !isFloating(dockable));
     }
 
     /**
@@ -815,6 +778,6 @@ public class DockingUtility implements DockingConstants {
         if (dockable == null) {
             return false;
         }
-        return dockable.getDockingProperties().isActive().booleanValue();
+        return dockable.getDockingProperties().isActive();
     }
 }
