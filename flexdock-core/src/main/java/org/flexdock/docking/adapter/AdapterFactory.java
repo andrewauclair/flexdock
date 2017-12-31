@@ -36,7 +36,7 @@ import org.w3c.dom.Document;
 public class AdapterFactory {
 
     /**
-     * A property key for determining whichi docking adapter to use.
+     * A property key for determining which docking adapter to use.
      */
     public static final String ADAPTER_RESOURCE_KEY = "flexdock.adapters";
 
@@ -48,7 +48,7 @@ public class AdapterFactory {
      */
     public static final String DEFAULT_ADAPTER_RESOURCE = "flexdock-adapters.xml";
 
-    private static final Hashtable MAPPINGS_BY_CLASS = new Hashtable();
+    private static final Hashtable<String, AdapterMapping> MAPPINGS_BY_CLASS = new Hashtable<>();
 
     /**
      * Loads the mappings for this factory.
@@ -85,7 +85,7 @@ public class AdapterFactory {
 
     private static AdapterMapping getMapping(Object obj) {
         String className = obj.getClass().getName();
-        return (AdapterMapping) MAPPINGS_BY_CLASS.get(className);
+        return MAPPINGS_BY_CLASS.get(className);
     }
 
     private static void loadMappings() {
@@ -105,8 +105,8 @@ public class AdapterFactory {
 
         MappingReader reader = new MappingReader();
         AdapterMapping[] mappings = reader.readMappings(document);
-        for (int i = 0; i < mappings.length; i++) {
-            MAPPINGS_BY_CLASS.put(mappings[i].getClassName(), mappings[i]);
+        for (AdapterMapping mapping : mappings) {
+            MAPPINGS_BY_CLASS.put(mapping.getClassName(), mapping);
         }
     }
 }

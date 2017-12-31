@@ -33,7 +33,7 @@ import org.w3c.dom.NodeList;
  * @author Christopher Butler
  * @deprecated This class will become package-private.
  */
-public class MappingReader {
+class MappingReader {
 
     public static final String ADAPTER_KEY = "adapter";
 

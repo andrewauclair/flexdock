@@ -33,7 +33,7 @@ public class DockingEventHandler extends EventHandler {
     private static final String DOCKING_LISTENERS_KEY = "EventManager.DOCKING_LISTENERS_KEY";
 
     public static DockingListener[] getDockingListeners(Dockable dockable) {
-        Vector list = getDockingListenersList(dockable);
+        Vector<DockingListener> list = getDockingListenersList(dockable);
         return list==null? null: (DockingListener[])list.toArray(new DockingListener[0]);
     }
 
@@ -49,14 +49,14 @@ public class DockingEventHandler extends EventHandler {
         }
     }
 
-    private static Vector getDockingListenersList(Dockable dockable) {
+    private static Vector<DockingListener> getDockingListenersList(Dockable dockable) {
         if(dockable==null) {
             return null;
         }
 
-        Vector list = (Vector)dockable.getClientProperty(DOCKING_LISTENERS_KEY);
+        Vector<DockingListener> list = (Vector<DockingListener>)dockable.getClientProperty(DOCKING_LISTENERS_KEY);
         if(list==null) {
-            list = new Vector();
+            list = new Vector<>();
             dockable.putClientProperty(DOCKING_LISTENERS_KEY, list);
         }
         return list;

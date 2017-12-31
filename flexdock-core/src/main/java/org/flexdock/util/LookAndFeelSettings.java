@@ -83,12 +83,12 @@ public class LookAndFeelSettings {
     }
 
     private String getProperty(String propType, String key) {
-        Properties p = key==null? null: (Properties)propertyMappings.get(propType);
+        Properties p = key==null? null: propertyMappings.get(propType);
         return p==null? null: p.getProperty(key);
     }
 
     private void setProperty(String propType, String key, String value) {
-        Properties p = key==null? null: (Properties)propertyMappings.get(propType);
+        Properties p = key==null? null: propertyMappings.get(propType);
         if(p!=null) {
             if(value==null) {
                 p.remove(key);
@@ -107,8 +107,8 @@ public class LookAndFeelSettings {
         String edgeStr = SINGLETON.getProperty(TAB_EDGE_INSET_KEY, plafKey);
         Integer edge = getInteger(edgeStr);
 
-        if(edge!=null && edge.intValue()>0) {
-            return edge.intValue();
+        if(edge!=null && edge >0) {
+            return edge;
         }
 
         Insets tabInsets = UIManager.getInsets(TAB_PANE_BORDER_INSETS);

@@ -159,8 +159,8 @@ public class Perspective implements Cloneable, Serializable {
 
     public void unload() {
         Dockable[] dockables = getLayout().getDockables();
-        for(int i=0; i<dockables.length; i++) {
-            DockingManager.close(dockables[i]);
+        for (Dockable dockable : dockables) {
+            DockingManager.close(dockable);
         }
     }
 
