@@ -272,12 +272,7 @@ public class SwingUtility {
         }
 
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                c.requestFocus();
-            }
-        });
+        EventQueue.invokeLater(c::requestFocus);
     }
 
 

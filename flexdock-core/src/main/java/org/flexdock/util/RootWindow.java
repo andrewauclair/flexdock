@@ -51,14 +51,9 @@ import javax.swing.SwingUtilities;
  * @author Chris Butler
  */
 public class RootWindow {
-    public static final Integer DEFAULT_MAXED_LAYER = new Integer(
-        JLayeredPane.PALETTE_LAYER.intValue() - 10);
-
-    private static final Map MAP_BY_ROOT_CONTAINER = new WeakHashMap();
+    private static final Map<Component, RootWindow> MAP_BY_ROOT_CONTAINER = new WeakHashMap<>();
 
     private LayoutManager maxedLayout;
-
-    private Integer maximizationLayer;
 
     private WeakReference root;
 
@@ -96,7 +91,7 @@ public class RootWindow {
             return null;
         }
 
-        RootWindow container = (RootWindow) MAP_BY_ROOT_CONTAINER.get(root);
+        RootWindow container = MAP_BY_ROOT_CONTAINER.get(root);
         if (container == null) {
             container = new RootWindow(root);
             MAP_BY_ROOT_CONTAINER.put(root, container);
@@ -124,14 +119,14 @@ public class RootWindow {
 
     public static RootWindow[] getVisibleWindows() {
         Frame[] frames = Frame.getFrames();
-        HashSet cache = new HashSet(frames.length);
-        for (int i = 0; i < frames.length; i++) {
-            populateWindowList(new RootWindow(frames[i]), cache, true);
+        HashSet<RootWindow> cache = new HashSet<>(frames.length);
+        for (Frame frame : frames) {
+            populateWindowList(new RootWindow(frame), cache, true);
         }
-        return (RootWindow[]) cache.toArray(new RootWindow[0]);
+        return cache.toArray(new RootWindow[0]);
     }
 
-    private static void populateWindowList(RootWindow win, HashSet winCache,
+    private static void populateWindowList(RootWindow win, HashSet<RootWindow> winCache,
                                            boolean visOnly) {
         if (win == null || winCache.contains(win)) {
             return;
@@ -143,8 +138,8 @@ public class RootWindow {
 
         winCache.add(win);
         Window[] children = win.getOwnedWindows();
-        for (int i = 0; i < children.length; i++) {
-            populateWindowList(new RootWindow(children[i]), winCache, visOnly);
+        for (Window aChildren : children) {
+            populateWindowList(new RootWindow(aChildren), winCache, visOnly);
         }
     }
 
@@ -153,7 +148,6 @@ public class RootWindow {
      * component.
      */
     protected RootWindow(Component root) {
-        setMaximizationLayer(DEFAULT_MAXED_LAYER);
         setRootContainer(root);
         clientProperties = new HashMap();
     }
@@ -213,16 +207,6 @@ public class RootWindow {
      */
     public Point getLocationOnScreen() {
         return getRootContainer().getLocationOnScreen();
-    }
-
-    /**
-     * Returns the layer associated with {@code Component} maximization.
-     *
-     * @return an {@code Integer} indicating the maximization layer property
-     * @deprecated dead code last used in 0.2.0
-     */
-    public Integer getMaximizationLayer() {
-        return maximizationLayer;
     }
 
     /**
@@ -314,7 +298,7 @@ public class RootWindow {
      *
      * @return all the windows currently owned by this root window.
      */
-    public Window[] getOwnedWindows() {
+    private Window[] getOwnedWindows() {
         if (getRootContainer() instanceof JFrame) {
             return ((Window) getRootContainer()).getOwnedWindows();
         } else if (getRootContainer() instanceof JWindow) {
@@ -324,22 +308,6 @@ public class RootWindow {
         } else {
             return new Window[0];
         }
-    }
-
-    /**
-     * Sets the layer associated with {@code Component} maximization within the
-     * {@code RootSwingContainer}. If {@code layer} is {@code null},
-     * DEFAULT_MAXED_LAYER is used instead.
-     *
-     * @param layer
-     *            an {@code Integer} indicating the maximization layer property
-     * @deprecated dead code last used in 0.2.0
-     */
-    public void setMaximizationLayer(Integer layer) {
-        if (layer == null) {
-            layer = DEFAULT_MAXED_LAYER;
-        }
-        maximizationLayer = layer;
     }
 
     /**
