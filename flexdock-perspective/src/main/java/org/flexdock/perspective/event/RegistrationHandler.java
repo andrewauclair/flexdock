@@ -24,6 +24,7 @@ import java.util.EventListener;
 import org.flexdock.docking.Dockable;
 import org.flexdock.event.Event;
 import org.flexdock.event.EventHandler;
+import org.flexdock.event.RegistrationEvent;
 import org.flexdock.perspective.Perspective;
 
 /**

@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
+import com.sun.istack.internal.NotNull;
 import org.flexdock.perspective.Perspective;
 import org.flexdock.perspective.PerspectiveManager;
 
@@ -33,7 +34,7 @@ import org.flexdock.perspective.PerspectiveManager;
 public class OpenPerspectiveAction extends AbstractAction {
     private String perspective;
 
-    public OpenPerspectiveAction(String perspectiveId) {
+    public OpenPerspectiveAction(@NotNull String perspectiveId) {
         if (perspectiveId == null) {
             throw new IllegalArgumentException("perspectiveId cannot be null");
         }

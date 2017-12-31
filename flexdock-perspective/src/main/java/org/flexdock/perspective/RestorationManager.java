@@ -21,14 +21,13 @@ package org.flexdock.perspective;
 
 import java.awt.Component;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.state.DockingState;
 import org.flexdock.event.EventManager;
-import org.flexdock.perspective.event.RegistrationEvent;
+import org.flexdock.event.RegistrationEvent;
 import org.flexdock.perspective.restore.handlers.AlreadyRestoredHandler;
 import org.flexdock.perspective.restore.handlers.DockPathHandler;
 import org.flexdock.perspective.restore.handlers.FloatingHandler;

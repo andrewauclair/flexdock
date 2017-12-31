@@ -37,10 +37,10 @@ import org.flexdock.util.DockingUtility;
  */
 public class LayoutSequence implements Cloneable, Serializable, DockingConstants {
 
-    private List sequence;  // contains DockingState objects
+    private List<DockingState> sequence;  // contains DockingState objects
 
     public LayoutSequence() {
-        this(new ArrayList());
+        this(new ArrayList<>());
     }
 
     public LayoutSequence(DockingState[] dockingStates) {
@@ -49,7 +49,7 @@ public class LayoutSequence implements Cloneable, Serializable, DockingConstants
              : Arrays.asList(dockingStates));
     }
 
-    private LayoutSequence(List list) {
+    private LayoutSequence(List<DockingState> list) {
         sequence = list;
     }
 
@@ -111,7 +111,7 @@ public class LayoutSequence implements Cloneable, Serializable, DockingConstants
         int len = sequence.size();
         Dockable[] dockables = new Dockable[len];
         for(int i=0; i<len; i++) {
-            DockingState info = (DockingState)sequence.get(i);
+            DockingState info = sequence.get(i);
             Dockable dockable = info.getDockable();
             dockables[i] = dockable;
             String region = info.getRegion();
@@ -133,11 +133,10 @@ public class LayoutSequence implements Cloneable, Serializable, DockingConstants
         return getSequenceClone();
     }
 
-    private ArrayList getSequenceClone() {
-        ArrayList list = new ArrayList(sequence.size());
-        for(Iterator it=sequence.iterator(); it.hasNext();) {
-            DockingState info = (DockingState)it.next();
-            list.add(info.clone());
+    private ArrayList<DockingState> getSequenceClone() {
+        ArrayList<DockingState> list = new ArrayList<>(sequence.size());
+        for (DockingState info : sequence) {
+            list.add((DockingState)info.clone());
         }
         return list;
     }
@@ -146,5 +145,4 @@ public class LayoutSequence implements Cloneable, Serializable, DockingConstants
     public Object clone() {
         return new LayoutSequence(getSequenceClone());
     }
-
 }

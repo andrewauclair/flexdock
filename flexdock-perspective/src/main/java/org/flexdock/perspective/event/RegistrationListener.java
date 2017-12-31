@@ -19,13 +19,17 @@
  */
 package org.flexdock.perspective.event;
 
+import org.flexdock.event.RegistrationEvent;
+
 /**
  * @author Christopher Butler
  */
 public interface RegistrationListener extends org.flexdock.event.RegistrationListener {
-    public void perspectiveAdded(RegistrationEvent evt);
-    public void dockableAdded(RegistrationEvent evt);
-
-    public void perspectiveRemoved(RegistrationEvent evt);
-    public void dockableRemoved(RegistrationEvent evt);
+	void perspectiveAdded(RegistrationEvent evt);
+	
+	void dockableAdded(RegistrationEvent evt);
+	
+	void perspectiveRemoved(RegistrationEvent evt);
+	
+	void dockableRemoved(RegistrationEvent evt);
 }
