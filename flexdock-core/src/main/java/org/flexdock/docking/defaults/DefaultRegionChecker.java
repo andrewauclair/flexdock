@@ -146,7 +146,7 @@ public class DefaultRegionChecker implements RegionChecker, DockingConstants {
             Rectangle east = getEastRegion(comp);
             if (east.contains(point)) {
                 Polygon eastPoly = new Polygon();
-                eastPoly.addPoint(east.y, south.y);
+                eastPoly.addPoint(east.x, south.y);
                 eastPoly.addPoint(rightX, south.y);
                 eastPoly.addPoint(rightX, bottomY);
                 return eastPoly.contains(point) ? EAST_REGION : SOUTH_REGION;
@@ -316,8 +316,8 @@ public class DefaultRegionChecker implements RegionChecker, DockingConstants {
         return null;
     }
 
-    protected Rectangle calculateRegionalBounds(Component c, String region,
-            float size) {
+    private Rectangle calculateRegionalBounds(Component c, String region,
+                                              float size) {
         if (c == null || region == null) {
             return null;
         }
@@ -406,16 +406,16 @@ public class DefaultRegionChecker implements RegionChecker, DockingConstants {
         return getSiblingPreference(d, region);
     }
 
-    protected static float getDockingInset(Float value, float defaultVal,
-                                           float max, float min) {
-        float f = value == null ? -1 : value.floatValue();
+    private static float getDockingInset(Float value, float defaultVal,
+                                         float max, float min) {
+        float f = value == null ? -1 : value;
         if (f == -1) {
             f = defaultVal;
         }
         return checkBounds(f, max, min);
     }
 
-    protected static float checkBounds(float val, float max, float min) {
+    private static float checkBounds(float val, float max, float min) {
         val = Math.min(val, max);
         return Math.max(val, min);
     }
@@ -433,7 +433,7 @@ public class DefaultRegionChecker implements RegionChecker, DockingConstants {
      *         {@code RegionChecker.MIN_REGION_SIZE} and
      *         {@code RegionChecker.MAX_REGION_SIZE}, inclusive.
      */
-    public static float validateRegionSize(float size) {
+    private static float validateRegionSize(float size) {
         return checkBounds(size, MAX_REGION_SIZE, MIN_REGION_SIZE);
     }
 
@@ -478,7 +478,7 @@ public class DefaultRegionChecker implements RegionChecker, DockingConstants {
      * @see RegionChecker#DEFAULT_REGION_SIZE
      * @see #validateRegionSize(float)
      */
-    public static float getRegionPreference(Dockable d, String region) {
+    private static float getRegionPreference(Dockable d, String region) {
         Float inset = d == null ? null : d.getDockingProperties()
                       .getRegionInset(region);
         return getDockingInset(inset, DEFAULT_REGION_SIZE, MAX_REGION_SIZE,
@@ -510,7 +510,7 @@ public class DefaultRegionChecker implements RegionChecker, DockingConstants {
      * @see RegionChecker#DEFAULT_SIBLING_SIZE
      * @see #validateSiblingSize(float)
      */
-    public static float getSiblingPreference(Dockable d, String region) {
+    private static float getSiblingPreference(Dockable d, String region) {
         Float size = d == null ? null : d.getDockingProperties()
                      .getSiblingSize(region);
         return getDockingInset(size, DockingManager.getDefaultSiblingSize(),

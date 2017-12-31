@@ -32,6 +32,8 @@ import org.w3c.dom.Document;
  *
  * @author Christopher Butler
  * @author Karl Schaefer
+ *
+ * @deprecated All adapter classes will be removed
  */
 public class AdapterFactory {
 

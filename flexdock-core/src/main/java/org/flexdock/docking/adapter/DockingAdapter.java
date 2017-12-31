@@ -30,6 +30,8 @@ import javax.swing.Icon;
 
 /**
  * @author Christopher Butler
+ *
+ * @deprecated All adapter classes will be removed
  */
 //TODO shouldn't this implement Dockable?
 public class DockingAdapter {
@@ -48,11 +50,11 @@ public class DockingAdapter {
         return component;
     }
 
-    public List getDragSources() {
+    public List<Component> getDragSources() {
         // first, try to get a list of drag sources
         Object obj = get(component, mapping.getDragSourceList());
         if(obj instanceof List) {
-            return (List)obj;
+            return (List<Component>)obj;
         }
 
         // if we couldn't find a list, then try to get an individual drag source

@@ -92,10 +92,9 @@ public class DefaultDockingStrategy implements DockingStrategy,
         DockingPort port = dockable.getDockingPort();
         String startRegion = findRegion(dockable.getComponent());
         String region = DockingUtility.flipRegion(startRegion);
-        Dockable sibling = findDockable(port, dockable.getComponent(), region,
+    
+        return findDockable(port, dockable.getComponent(), region,
                                         startRegion);
-
-        return sibling;
     }
 
     /**
@@ -146,10 +145,9 @@ public class DefaultDockingStrategy implements DockingStrategy,
 
         DockingPort port = dockable.getDockingPort();
         String startRegion = findRegion(dockable.getComponent());
-        Dockable sibling = findDockable(port, dockable.getComponent(), region,
+    
+        return findDockable(port, dockable.getComponent(), region,
                                         startRegion);
-
-        return sibling;
     }
 
     private static Dockable findDockable(DockingPort port, Component self,
@@ -383,7 +381,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
                                             evtType, dragContext);
         // populate DockingEvent status info
         evt.setRegion(region);
-        evt.setOverWindow(operation == null ? true : operation.isOverWindow());
+        evt.setOverWindow(operation == null || operation.isOverWindow());
 
         // notify the old docking port, new dockingport,and dockable
         Object[] evtTargets = { oldPort, newPort, dockable };
@@ -392,7 +390,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
         return results.success;
     }
 
-    protected boolean dragThresholdElapsed(DragOperation token) {
+    private boolean dragThresholdElapsed(DragOperation token) {
         if (token == null || token.isPseudoDrag() || token.getStartTime() == -1) {
             return true;
         }
@@ -404,8 +402,8 @@ public class DefaultDockingStrategy implements DockingStrategy,
         return elapsed > 200;
     }
 
-    protected boolean isDockingPossible(Dockable dockable, DockingPort port,
-                                        String region, DragOperation token) {
+    private boolean isDockingPossible(Dockable dockable, DockingPort port,
+                                      String region, DragOperation token) {
         // superclass blocks docking if the 'port' or 'region' are null. If
         // we've dragged outside
         // the bounds of the parent frame, then both of these will be null. This
@@ -446,8 +444,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
 
         // don't allow them to dock into this region if the territory there is
         // blocked.
-        if (docked.getDockingProperties().isTerritoryBlocked(region)
-                .booleanValue()) {
+        if (docked.getDockingProperties().isTerritoryBlocked(region)) {
             return false;
         }
 
@@ -468,19 +465,10 @@ public class DefaultDockingStrategy implements DockingStrategy,
         Component currentlyInRegion = grandparent.getComponent(region);
         // block docking if we're already the component docked within the
         // specified region
-        if (currentlyInRegion == dockable.getComponent()) {
-            return false;
-        }
-
-        return true;
+        return currentlyInRegion != dockable.getComponent();
     }
 
-
-
-
-
-
-    protected boolean isFloatable(Dockable dockable, DragOperation token) {
+    private boolean isFloatable(Dockable dockable, DragOperation token) {
         // can't float null objects
         if (dockable == null || dockable.getComponent() == null
                 || token == null) {
@@ -507,8 +495,8 @@ public class DefaultDockingStrategy implements DockingStrategy,
 
 
 
-    protected DockingResults dropComponent(Dockable dockable,
-                                           DockingPort target, String region, DragOperation token) {
+    private DockingResults dropComponent(Dockable dockable,
+                                         DockingPort target, String region, DragOperation token) {
         if (isFloatable(dockable, token)) {
             return floatComponent(dockable, target, token);
         }
@@ -595,7 +583,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
             return false;
         }
 
-        boolean success = false;
+        boolean success;
         DockingPort dockingPort = DockingUtility.getParentDockingPort(dragSrc);
 
         // notify that we are about to undock
@@ -636,8 +624,8 @@ public class DefaultDockingStrategy implements DockingStrategy,
     }
 
 
-    protected DockingResults floatComponent(Dockable dockable,
-                                            DockingPort target, DragOperation token) {
+    private DockingResults floatComponent(Dockable dockable,
+                                          DockingPort target, DragOperation token) {
         // otherwise, setup a new DockingFrame and retarget to the CENTER region
         DockingResults results = new DockingResults(target, false);
 
@@ -661,14 +649,14 @@ public class DefaultDockingStrategy implements DockingStrategy,
 
 
     protected static class DockingResults {
-        public DockingResults(DockingPort port, boolean status) {
+        DockingResults(DockingPort port, boolean status) {
             dropTarget = port;
             success = status;
         }
 
-        public DockingPort dropTarget;
+        DockingPort dropTarget;
 
-        public boolean success;
+        boolean success;
     }
 
 
@@ -884,7 +872,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
         return createSplitPane(base, region, -1f);
     }
 
-    protected JSplitPane createSplitPaneImpl(DockingPort base, String region) {
+    private JSplitPane createSplitPaneImpl(DockingPort base, String region) {
         return new DockingSplitPane(base, region);
     }
 
@@ -1005,7 +993,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
             return DockingManager.getDefaultSiblingSize();
         }
 
-        Float prefProp = getPreferredProportion(splitPane, elder);
+        Float prefProp = getPreferredProportion(elder);
         if (prefProp != null) {
             return prefProp.doubleValue();
         }
@@ -1027,7 +1015,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
         return DockingManager.getDefaultSiblingSize();
     }
 
-    protected String getCreationRegion(JSplitPane splitPane) {
+    private String getCreationRegion(JSplitPane splitPane) {
         if (splitPane instanceof DockingSplitPane) {
             return ((DockingSplitPane) splitPane).getRegion();
         }
@@ -1035,7 +1023,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
                 DockingConstants.REGION);
     }
 
-    protected boolean isElderTopLeft(JSplitPane splitPane) {
+    private boolean isElderTopLeft(JSplitPane splitPane) {
         if (splitPane instanceof DockingSplitPane) {
             return ((DockingSplitPane) splitPane).isElderTopLeft();
         }
@@ -1045,15 +1033,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
         return !DockingUtility.isRegionTopLeft(region);
     }
 
-    protected Float getPreferredProportion(JSplitPane splitPane,
-                                           Component controller) {
-        // 'controller' is inside a dockingPort. re-reference to the parent
-        // dockingPort.
-        Container controllerPort = controller.getParent();
-        return getPreferredProportion(controllerPort);
-    }
-
-    protected Component getElderComponent(JSplitPane splitPane) {
+    private Component getElderComponent(JSplitPane splitPane) {
         if (splitPane instanceof DockingSplitPane) {
             return ((DockingSplitPane) splitPane).getElderComponent();
         }
@@ -1068,7 +1048,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
     }
 
 
-    protected static Float getPreferredProportion(Component c) {
+    private static Float getPreferredProportion(Component c) {
         return c == null ? null : (Float) SwingUtility.getClientProperty(c,
                 PREFERRED_PROPORTION);
     }
