@@ -110,9 +110,9 @@ public class DockingManager implements DockingConstants {
 
     private static final DockingManager SINGLETON = new DockingManager();
 
-    private static final HashMap DOCKABLES_BY_ID = new HashMap();
+    private static final HashMap<String, Dockable> DOCKABLES_BY_ID = new HashMap<>();
 
-    private static final WeakHashMap DOCKABLES_BY_COMPONENT = new WeakHashMap();
+    private static final WeakHashMap<Component, Dockable> DOCKABLES_BY_COMPONENT = new WeakHashMap<>();
 
     private static final ClassMapping DOCKING_STRATEGIES = new ClassMapping(
         DefaultDockingStrategy.class, new DefaultDockingStrategy());
@@ -157,9 +157,7 @@ public class DockingManager implements DockingConstants {
                 if (isEnabled()) {
                     storeLayoutModel();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (PersistenceException e) {
+            } catch (IOException | PersistenceException e) {
                 e.printStackTrace();
             }
         }
@@ -1604,8 +1602,7 @@ public class DockingManager implements DockingConstants {
      * @see Dockable#getComponent()
      */
     public static Dockable getDockable(Component comp) {
-        return comp == null ? null : (Dockable) DOCKABLES_BY_COMPONENT
-               .get(comp);
+        return comp == null ? null : (Dockable) DOCKABLES_BY_COMPONENT.get(comp);
     }
 
     /**

@@ -69,7 +69,7 @@ public class XMLDebugger {
         try {
             TransformerFactory factory = TransformerFactory.newInstance();
             if(Utilities.JAVA_1_5) {
-                factory.setAttribute("indent-number", new Integer(4));
+                factory.setAttribute("indent-number", 4);
             }
             Transformer transformer = factory.newTransformer();
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
