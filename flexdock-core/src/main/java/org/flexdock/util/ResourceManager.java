@@ -49,7 +49,6 @@ import org.w3c.dom.Document;
 public class ResourceManager {
 
     private ResourceManager() {
-        // does nothing
     }
 
     /**
