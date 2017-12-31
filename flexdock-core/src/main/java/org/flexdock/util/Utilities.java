@@ -379,34 +379,4 @@ public class Utilities {
         return value != null && "true".equals(value);
     }
 
-    /**
-     * Puts the supplied {@code value} into the specified {@code Map} using the
-     * specified {@code key}. This is a convenience method to automate
-     * null-checks. A {@code value} parameter of {@code null} is interpreted as
-     * a removal from the specified {@code Map} rather than an {@code put}
-     * operation.
-     * <p>
-     * If either {@code map} or {@code key} are {@code null} then this method
-     * returns with no action taken. If {@code value} is {@code null},
-     * then this method calls {@code map.remove(key)}. Otherwise, this method
-     * calls {@code map.put(key, value)}.
-     *
-     * @param map   the {@code Map} whose contents is to be modified
-     * @param key   with which the specified value is to be associated.
-     * @param value value to be associated with the specified key.
-     * @see Map#put(java.lang.Object, java.lang.Object)
-     * @see Map#remove(java.lang.Object)
-     */
-    public static void put(Map<Object, Object> map, Object key, Object value) {
-        if (map == null || key == null) {
-            return;
-        }
-
-        if (value == null) {
-            map.remove(key);
-        } else {
-            map.put(key, value);
-        }
-    }
-
 }

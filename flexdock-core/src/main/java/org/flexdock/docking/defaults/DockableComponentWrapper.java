@@ -78,11 +78,11 @@ public class DockableComponentWrapper implements Dockable {
 
     private String persistentId;
 
-    private ArrayList dockingListeners;
+    private ArrayList<DockingListener> dockingListeners;
 
-    private ArrayList dragListeners;
+    private ArrayList<Component> dragListeners;
 
-    private Hashtable clientProperties;
+    private Hashtable<Object, Object> clientProperties;
 
     private HashSet frameDragSources;
 
@@ -144,7 +144,7 @@ public class DockableComponentWrapper implements Dockable {
         String tabText = adapter.getTabText();
         DockableComponentWrapper dockable = create(comp, id, tabText);
 
-        List dragSources = adapter.getDragSources();
+        List<Component> dragSources = adapter.getDragSources();
         Set frameDragSources = adapter.getFrameDragSources();
         Icon icon = adapter.getDockbarIcon();
 
@@ -176,8 +176,8 @@ public class DockableComponentWrapper implements Dockable {
         getDockingProperties().setDockableDesc(desc);
         persistentId = id;
 
-        dockingListeners = new ArrayList(0);
-        dragListeners = new ArrayList(1);
+        dockingListeners = new ArrayList<>(0);
+        dragListeners = new ArrayList<>(1);
 
         // initialize the drag sources lists
         initDragListeners();
@@ -216,9 +216,9 @@ public class DockableComponentWrapper implements Dockable {
         }
     }
 
-    private Hashtable getInternalClientProperties() {
+    private Hashtable<Object, Object> getInternalClientProperties() {
         if (clientProperties == null) {
-            clientProperties = new Hashtable(2);
+            clientProperties = new Hashtable<>(2);
         }
         return clientProperties;
     }
@@ -314,8 +314,7 @@ public class DockableComponentWrapper implements Dockable {
      */
     @Override
     public DockingListener[] getDockingListeners() {
-        return (DockingListener[]) dockingListeners
-               .toArray(new DockingListener[0]);
+        return dockingListeners.toArray(new DockingListener[0]);
     }
 
     /**
@@ -471,7 +470,7 @@ public class DockableComponentWrapper implements Dockable {
         if (c instanceof JComponent) {
             SwingUtility.putClientProperty(c, key, value);
         } else {
-            Utilities.put(getInternalClientProperties(), key, value);
+            getInternalClientProperties().put(key, value);
         }
     }
 

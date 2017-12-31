@@ -21,16 +21,6 @@
  */
 package org.flexdock.docking.defaults;
 
-import java.awt.Component;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JComponent;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
@@ -39,7 +29,12 @@ import org.flexdock.docking.event.DockingListener;
 import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.docking.props.PropertyManager;
 import org.flexdock.util.SwingUtility;
-import org.flexdock.util.Utilities;
+
+import javax.swing.*;
+import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.util.*;
+import java.util.List;
 
 /**
  * Provides a default implementation of the {@code Dockable} interface. This
@@ -52,11 +47,11 @@ import org.flexdock.util.Utilities;
 public abstract class AbstractDockable implements Dockable {
     private String persistentId;
 
-    private ArrayList dockingListeners;
+    private ArrayList<DockingListener> dockingListeners;
 
-    private ArrayList dragListeners;
+    private ArrayList<Component> dragListeners;
 
-    private Hashtable clientProperties;
+    private Hashtable<Object, Object> clientProperties;
 
     private HashSet frameDragSources;
 
@@ -65,15 +60,14 @@ public abstract class AbstractDockable implements Dockable {
      * meant to be invoked by subclasses as it initializes the
      * {@code Dockable's} persistent ID and drag sources.
      *
-     * @param id
-     *            the persistent ID of the resulting {@code Dockable}
+     * @param id the persistent ID of the resulting {@code Dockable}
      * @see Dockable#getPersistentId()
      */
     public AbstractDockable(String id) {
         persistentId = id;
-        dockingListeners = new ArrayList(2);
-        dragListeners = new ArrayList();
-        clientProperties = new Hashtable(2);
+        dockingListeners = new ArrayList<>(2);
+        dragListeners = new ArrayList<>();
+        clientProperties = new Hashtable<>(2);
 
         dragListeners.add(getComponent());
     }
@@ -83,7 +77,7 @@ public abstract class AbstractDockable implements Dockable {
      * instance.
      *
      * @return the {@code Component} used to back this {@code Dockable}
-     *         instance.
+     * instance.
      * @see Dockable#getComponent()
      */
     @Override
@@ -95,7 +89,7 @@ public abstract class AbstractDockable implements Dockable {
      * the {@code Component} returned by {@code getComponent()}.
      *
      * @return a {@code List} of {@code Components} used to initiate
-     *         drag-to-dock operation.
+     * drag-to-dock operation.
      * @see Dockable#getDragSources()
      * @see #getComponent()
      */
@@ -125,8 +119,8 @@ public abstract class AbstractDockable implements Dockable {
      * added to it.
      *
      * @return a {@code HashSet} of {@code Components} used as frame drag
-     *         sources when this {@code Dockable} is floating in a non-decorated
-     *         external dialog.
+     * sources when this {@code Dockable} is floating in a non-decorated
+     * external dialog.
      * @see Dockable#getFrameDragSources()
      */
     @Override
@@ -142,11 +136,10 @@ public abstract class AbstractDockable implements Dockable {
      * {@code Dockable} is embedded within a tabbed layout. {@code null} values
      * are discouraged, but not illegal.
      *
-     * @param tabText
-     *            the {@code String} to be used for tab labels when this
-     *            {@code Dockable} is embedded within a tabbed layout.
+     * @param tabText the {@code String} to be used for tab labels when this
+     *                {@code Dockable} is embedded within a tabbed layout.
      */
-    public void setTabText(String tabText) {
+    protected void setTabText(String tabText) {
         getDockingProperties().setDockableDesc(tabText);
     }
 
@@ -156,7 +149,7 @@ public abstract class AbstractDockable implements Dockable {
      * return a {@code null} reference.
      *
      * @return tabText the {@code String} used for tab labels when this
-     *         {@code Dockable} is embedded within a tabbed layout.
+     * {@code Dockable} is embedded within a tabbed layout.
      */
     public String getTabText() {
         return getDockingProperties().getDockableDesc();
@@ -166,8 +159,7 @@ public abstract class AbstractDockable implements Dockable {
      * No operation. Provided as a method stub to fulfull the
      * {@code DockingListener} interface contract.
      *
-     * @param evt
-     *            the {@code DockingEvent} to respond to.
+     * @param evt the {@code DockingEvent} to respond to.
      * @see DockingListener#dockingCanceled(DockingEvent)
      */
     @Override
@@ -178,8 +170,7 @@ public abstract class AbstractDockable implements Dockable {
      * No operation. Provided as a method stub to fulfull the
      * {@code DockingListener} interface contract.
      *
-     * @param evt
-     *            the {@code DockingEvent} to respond to.
+     * @param evt the {@code DockingEvent} to respond to.
      * @see DockingListener#dockingComplete(DockingEvent)
      */
     @Override
@@ -190,8 +181,7 @@ public abstract class AbstractDockable implements Dockable {
      * No operation. Provided as a method stub to fulfull the
      * {@code DockingListener} interface contract.
      *
-     * @param evt
-     *            the {@code DockingEvent} to respond to.
+     * @param evt the {@code DockingEvent} to respond to.
      * @see DockingListener#dragStarted(DockingEvent)
      */
     @Override
@@ -202,8 +192,7 @@ public abstract class AbstractDockable implements Dockable {
      * No operation. Provided as a method stub to fulfull the
      * {@code DockingListener} interface contract.
      *
-     * @param evt
-     *            the {@code DockingEvent} to respond to.
+     * @param evt the {@code DockingEvent} to respond to.
      * @see DockingListener#dropStarted(DockingEvent)
      */
     @Override
@@ -214,8 +203,7 @@ public abstract class AbstractDockable implements Dockable {
      * No operation. Provided as a method stub to fulfull the
      * {@code DockingListener} interface contract.
      *
-     * @param evt
-     *            the {@code DockingEvent} to respond to.
+     * @param evt the {@code DockingEvent} to respond to.
      * @see DockingListener#undockingComplete(DockingEvent)
      */
     @Override
@@ -227,8 +215,7 @@ public abstract class AbstractDockable implements Dockable {
      * No operation. Provided as a method stub to fulfull the
      * {@code DockingListener} interface contract.
      *
-     * @param evt
-     *            the {@code DockingEvent} to respond to.
+     * @param evt the {@code DockingEvent} to respond to.
      * @see DockingListener#undockingStarted(DockingEvent)
      */
     @Override
@@ -239,8 +226,7 @@ public abstract class AbstractDockable implements Dockable {
      * Adds a {@code DockingListener} to observe docking events for this
      * {@code Dockable}. {@code null} arguments are ignored.
      *
-     * @param listener
-     *            the {@code DockingListener} to add to this {@code Dockable}.
+     * @param listener the {@code DockingListener} to add to this {@code Dockable}.
      * @see #getDockingListeners()
      * @see #removeDockingListener(DockingListener)
      */
@@ -257,14 +243,13 @@ public abstract class AbstractDockable implements Dockable {
      * {@code Dockable}, then a zero-length array is returned.
      *
      * @return an array of all {@code DockingListeners} added to this
-     *         {@code Dockable}.
+     * {@code Dockable}.
      * @see #addDockingListener(DockingListener)
      * @see #removeDockingListener(DockingListener)
      */
     @Override
     public DockingListener[] getDockingListeners() {
-        return (DockingListener[]) dockingListeners
-               .toArray(new DockingListener[0]);
+        return dockingListeners.toArray(new DockingListener[0]);
     }
 
     /**
@@ -273,9 +258,8 @@ public abstract class AbstractDockable implements Dockable {
      * listener has not previously been added to this {@code Dockable}, then no
      * {@code Exception} is thrown and no action is taken.
      *
-     * @param listener
-     *            the {@code DockingListener} to remove from this
-     *            {@code Dockable}
+     * @param listener the {@code DockingListener} to remove from this
+     *                 {@code Dockable}
      * @see #addDockingListener(DockingListener)
      * @see #getDockingListeners()
      */
@@ -298,8 +282,7 @@ public abstract class AbstractDockable implements Dockable {
      * Otherwise, this {@code Dockable} will provide its own internal mapping of
      * client properties.
      *
-     * @param key
-     *            the key that is being queried
+     * @param key the key that is being queried
      * @return the value of this property or {@code null}
      * @see Dockable#getClientProperty(Object)
      * @see javax.swing.JComponent#getClientProperty(java.lang.Object)
@@ -329,14 +312,12 @@ public abstract class AbstractDockable implements Dockable {
      * Otherwise, this {@code Dockable} will provide its own internal mapping of
      * client properties.
      *
-     * @param key
-     *            the new client property key
-     * @param value
-     *            the new client property value; if {@code null} this method
-     *            will remove the property
+     * @param key   the new client property key
+     * @param value the new client property value; if {@code null} this method
+     *              will remove the property
      * @see Dockable#putClientProperty(Object, Object)
      * @see javax.swing.JComponent#putClientProperty(java.lang.Object,
-     *      java.lang.Object)
+     * java.lang.Object)
      */
     @Override
     public void putClientProperty(Object key, Object value) {
@@ -348,7 +329,7 @@ public abstract class AbstractDockable implements Dockable {
         if (c instanceof JComponent) {
             SwingUtility.putClientProperty(c, key, value);
         } else {
-            Utilities.put(clientProperties, key, value);
+            clientProperties.put(key, value);
         }
     }
 
@@ -361,8 +342,8 @@ public abstract class AbstractDockable implements Dockable {
      * argument of {@code this}.
      *
      * @return the {@code DockablePropertySet} associated with this
-     *         {@code Dockable}. This method will not return a {@code null}
-     *         reference.
+     * {@code Dockable}. This method will not return a {@code null}
+     * reference.
      * @see org.flexdock.docking.props.DockablePropertySet
      * @see Dockable#getDockingProperties()
      * @see org.flexdock.docking.props.PropertyManager#getDockablePropertySet(Dockable)
@@ -384,7 +365,7 @@ public abstract class AbstractDockable implements Dockable {
      * {@code getComponent()} method.
      *
      * @return the {@code DockingPort} within which this {@code Dockable} is
-     *         currently docked.
+     * currently docked.
      * @see Dockable#getDockingPort()
      * @see DockingManager#getDockingPort(Dockable)
      */
@@ -399,10 +380,9 @@ public abstract class AbstractDockable implements Dockable {
      * {@code DockingManager.dock(Dockable dockable, Dockable parent)}.
      * {@code 'this'} is passed as the {@code parent} parameter.
      *
-     * @param dockable
-     *            the {@code Dockable} to dock relative to this {@code Dockable}
+     * @param dockable the {@code Dockable} to dock relative to this {@code Dockable}
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see Dockable#dock(Dockable)
      * @see DockingManager#dock(Dockable, Dockable)
      */
@@ -418,13 +398,11 @@ public abstract class AbstractDockable implements Dockable {
      * {@code DockingManager.dock(Dockable dockable, Dockable parent, String region)}.
      * {@code 'this'} is passed as the {@code parent} parameter.
      *
-     * @param dockable
-     *            the {@code Dockable} to dock relative to this {@code Dockable}
-     * @param relativeRegion
-     *            the docking region into which to dock the specified
-     *            {@code Dockable}
+     * @param dockable       the {@code Dockable} to dock relative to this {@code Dockable}
+     * @param relativeRegion the docking region into which to dock the specified
+     *                       {@code Dockable}
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see Dockable#dock(Dockable, String)
      * @see DockingManager#dock(Dockable, Dockable, String)
      */
@@ -440,16 +418,13 @@ public abstract class AbstractDockable implements Dockable {
      * {@code DockingManager.dock(Dockable dockable, Dockable parent, String region, float proportion)}.
      * {@code 'this'} is passed as the {@code parent} parameter.
      *
-     * @param dockable
-     *            the {@code Dockable} to dock relative to this {@code Dockable}
-     * @param relativeRegion
-     *            the docking region into which to dock the specified
-     *            {@code Dockable}
-     * @param ratio
-     *            the proportion of available space in the resulting layout to
-     *            allot to the new sibling {@code Dockable}.
+     * @param dockable       the {@code Dockable} to dock relative to this {@code Dockable}
+     * @param relativeRegion the docking region into which to dock the specified
+     *                       {@code Dockable}
+     * @param ratio          the proportion of available space in the resulting layout to
+     *                       allot to the new sibling {@code Dockable}.
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see DockingManager#dock(Dockable, Dockable, String, float)
      */
     @Override
