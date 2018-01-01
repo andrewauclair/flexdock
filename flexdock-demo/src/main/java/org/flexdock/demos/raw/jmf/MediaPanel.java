@@ -19,37 +19,22 @@
  */
 package org.flexdock.demos.raw.jmf;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Label;
-import java.awt.Panel;
-import java.awt.TextArea;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.flexdock.docking.DockingStub;
+import org.flexdock.util.ResourceManager;
+
+import javax.media.*;
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
-
-import javax.media.ControllerEvent;
-import javax.media.ControllerListener;
-import javax.media.EndOfMediaEvent;
-import javax.media.Manager;
-import javax.media.MediaLocator;
-import javax.media.Player;
-import javax.media.Time;
-
-import org.flexdock.docking.DockingStub;
-import org.flexdock.util.ResourceManager;
 
 
 /**
  * @author Christopher Butler
  */
-public class MediaPanel extends Panel implements DockingStub {
+public class MediaPanel extends JPanel implements DockingStub {
     private Player player;
     private Label titlebar;
     private String dockingId;
@@ -95,7 +80,7 @@ public class MediaPanel extends Panel implements DockingStub {
             mediaPlayer.addControllerListener(new ControllerListener() {
                 @Override
                 public void controllerUpdate(ControllerEvent evt) {
-                    if(evt instanceof EndOfMediaEvent) {
+                    if (evt instanceof EndOfMediaEvent) {
                         mediaPlayer.setMediaTime(new Time(0));
                         mediaPlayer.start();
                     }
@@ -116,20 +101,20 @@ public class MediaPanel extends Panel implements DockingStub {
      * and the URL replaced with an url pointing to the temp file.
      * I'd promote this into ResourceManager, but it appears to be isolated to JMF, so it'll stay here for now.
      *
-     * @param url url with jar in i
+     * @param url      url with jar in i
      * @param mediaUri name of the original resource in t
      * @return
      * @throws IOException
      */
     private static URL replaceJarUrlWithFileUrl(URL url, String mediaUri) throws IOException {
-        if(!url.getProtocol().equals("jar")) {
+        if (!url.getProtocol().equals("jar")) {
             return url;
         }
 
         File f;
-        synchronized(jarUrlToTempFileCache) {
-            f = (File)jarUrlToTempFileCache.get(url);
-            if(f != null && f.exists() && f.isFile() && f.canRead()) {
+        synchronized (jarUrlToTempFileCache) {
+            f = (File) jarUrlToTempFileCache.get(url);
+            if (f != null && f.exists() && f.isFile() && f.canRead()) {
                 return f.toURL();
             }
 
@@ -143,7 +128,7 @@ public class MediaPanel extends Panel implements DockingStub {
             URLConnection conn = url.openConnection();
             InputStream is = conn.getInputStream();
             int read;
-            while((read=is.read(b, 0, b.length)) != -1) {
+            while ((read = is.read(b, 0, b.length)) != -1) {
                 bos.write(b, 0, read);
             }
 
@@ -156,7 +141,7 @@ public class MediaPanel extends Panel implements DockingStub {
 
     @Override
     protected void finalize() {
-        if(player!=null) {
+        if (player != null) {
             player.stop();
             player.close();
             player = null;
@@ -181,5 +166,10 @@ public class MediaPanel extends Panel implements DockingStub {
     @Override
     public String getTabText() {
         return titlebar.getText();
+    }
+
+    @Override
+    public JComponent getComponent() {
+        return this;
     }
 }

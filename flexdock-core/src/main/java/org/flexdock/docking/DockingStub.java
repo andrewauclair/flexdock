@@ -19,7 +19,8 @@
  */
 package org.flexdock.docking;
 
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -74,4 +75,6 @@ public interface DockingStub {
      */
     String getTabText();
 
+
+    JComponent getComponent();
 }

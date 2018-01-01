@@ -19,12 +19,6 @@
  */
 package org.flexdock.demos.util;
 
-import java.awt.Component;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
@@ -33,6 +27,11 @@ import org.flexdock.docking.event.DockingEventHandler;
 import org.flexdock.docking.event.DockingListener;
 import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.docking.props.PropertyManager;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Christopher Butler
@@ -52,12 +51,6 @@ public class DockableTitlepane extends Titlepane implements Dockable {
         // use the titlebar as a drag source
         dragSources.add(getTitlebar());
         frameDragSources.add(getTitlebar());
-    }
-
-    // Begin user-defined methods
-    @Override
-    public Component getComponent() {
-        return this;
     }
 
     @Override

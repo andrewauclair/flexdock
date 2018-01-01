@@ -19,14 +19,6 @@
  */
 package org.flexdock.docking.drag;
 
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.HashMap;
-
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.defaults.DefaultDockingPort;
@@ -34,6 +26,11 @@ import org.flexdock.docking.drag.effects.EffectsManager;
 import org.flexdock.docking.drag.effects.RubberBand;
 import org.flexdock.util.RootWindow;
 import org.flexdock.util.SwingUtility;
+
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.HashMap;
 
 public class DragPipeline {
 
@@ -49,7 +46,7 @@ public class DragPipeline {
     private DragOperation dragToken;
     private RubberBand rubberBand;
 
-    public DragPipeline() {
+    DragPipeline() {
         paneMonitor = new GlassPaneMonitor();
         rubberBand = EffectsManager.getRubberBand();
     }
@@ -59,11 +56,11 @@ public class DragPipeline {
     }
 
     public void open(DragOperation token) {
-        if(token==null) {
+        if (token == null) {
             throw new NullPointerException("'token' parameter cannot be null.");
         }
 
-        if(EventQueue.isDispatchThread()) {
+        if (EventQueue.isDispatchThread()) {
             openImpl(token);
             return;
         }
@@ -77,8 +74,8 @@ public class DragPipeline {
                     openImpl(dToken);
                 }
             });
-        } catch(Exception e) {
-            System.err.println("Exception: " +e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Exception: " + e.getMessage());
         }
     }
 
@@ -96,14 +93,14 @@ public class DragPipeline {
         windowBounds = new Rectangle[windows.length];
         rootWindowsByBounds = new HashMap();
 
-        for(int i=0; i<windows.length; i++) {
+        for (int i = 0; i < windows.length; i++) {
             applyGlassPane(windows[i], createGlassPane());
             windowBounds[i] = windows[i].getBounds();
             rootWindowsByBounds.put(windowBounds[i], windows[i]);
         }
 
         // kill the rubberband if floating is not allowed
-        if(!DragManager.isFloatingAllowed(operation.getDockableReference())) {
+        if (!DragManager.isFloatingAllowed(operation.getDockableReference())) {
             rubberBand = null;
         }
 
@@ -125,17 +122,16 @@ public class DragPipeline {
     }
 
 
-
     public void close() {
-        if(!open) {
+        if (!open) {
             return;
         }
 
         clearRubberBand();
-        for(int i=0; i<windows.length; i++) {
+        for (int i = 0; i < windows.length; i++) {
             Component cmp = windows[i].getGlassPane();
-            if(cmp instanceof DragGlasspane) {
-                DragGlasspane pane = (DragGlasspane)cmp;
+            if (cmp instanceof DragGlasspane) {
+                DragGlasspane pane = (DragGlasspane) cmp;
                 pane.setVisible(false);
                 cmp = pane.getCachedGlassPane();
 //                                pane.dispose();
@@ -152,28 +148,22 @@ public class DragPipeline {
     }
 
     public void processDragEvent(MouseEvent me) {
-        if(!open) {
+        if (!open) {
             return;
         }
 
-        if(EventQueue.isDispatchThread()) {
+        if (EventQueue.isDispatchThread()) {
             processDragEventImpl(me);
             return;
         }
 
-        final MouseEvent evt = me;
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                processDragEventImpl(evt);
-            }
-        });
+        EventQueue.invokeLater(() -> processDragEventImpl(me));
     }
 
     private void processDragEventImpl(MouseEvent me) {
         dragToken.updateMouse(me);
 
-        if(heavyweightDockableSupportted) {
+        if (heavyweightDockableSupportted) {
             preprocessHeavyweightDockables();
         }
 
@@ -183,22 +173,22 @@ public class DragPipeline {
         clearRubberBand();
 
         // track whether or not we're currently over a window
-        dragToken.setOverWindow(newGlassPane!=null);
+        dragToken.setOverWindow(newGlassPane != null);
 
         // if the glasspane hasn't changed, then reprocess on the current glasspane
-        if(newGlassPane==currentGlasspane) {
+        if (newGlassPane == currentGlasspane) {
             dontSwitchGlassPanes();
             return;
         }
 
         // process transitions from a glasspane to a null area
-        if(newGlassPane==null) {
+        if (newGlassPane == null) {
             transitionToNullArea();
             return;
         }
 
         // process transitions from null area to a glasspane
-        if(currentGlasspane==null) {
+        if (currentGlasspane == null) {
             transitionFromNullArea(newGlassPane);
             return;
         }
@@ -217,7 +207,7 @@ public class DragPipeline {
     private void dontSwitchGlassPanes() {
         // just redraw the rubberband if there's no current glasspane
         Rectangle screenRect = dragToken.getDragRect(true);
-        if(currentGlasspane==null) {
+        if (currentGlasspane == null) {
             drawRubberBand(screenRect);
             return;
         }
@@ -237,7 +227,6 @@ public class DragPipeline {
         currentGlasspane = null;
 
         // clear out the old glasspane and redraw the rubberband
-        Rectangle screenRect = dragToken.getDragRect(true);
         pane.setPostPainter(null);
         pane.clear();
     }
@@ -247,7 +236,6 @@ public class DragPipeline {
         currentGlasspane = newGlassPane;
 
         // process the new glasspane
-        Rectangle screenRect = dragToken.getDragRect(true);
         currentGlasspane.setPostPainter(null);
         currentGlasspane.processDragEvent(dragToken);
     }
@@ -259,37 +247,23 @@ public class DragPipeline {
 
 
     private Runnable getPostPainter(final Rectangle rect) {
-//                if(!ResourceManager.isWindowsPlatform())
-//                        return null;
-
-        return new Runnable() {
-            @Override
-            public void run() {
-                deferRubberBandDrawing(rect);
-//                                drawRubberBand(rect);
-            }
-        };
+        return () -> deferRubberBandDrawing(rect);
     }
+
     private void deferRubberBandDrawing(final Rectangle rect) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                drawRubberBand(rect);
-            }
-        });
+        EventQueue.invokeLater(() -> drawRubberBand(rect));
     }
 
     private void drawRubberBand(Rectangle rect) {
         paintRubberBand(rect);
     }
 
-
     private class GlassPaneMonitor extends MouseAdapter {
         @Override
         public void mouseEntered(MouseEvent me) {
             Object obj = me.getSource();
-            if(obj instanceof DragGlasspane) {
-                setCurrentGlassPane((DragGlasspane)obj);
+            if (obj instanceof DragGlasspane) {
+                setCurrentGlassPane((DragGlasspane) obj);
             }
         }
 
@@ -304,27 +278,27 @@ public class DragPipeline {
     }
 
     private void clearRubberBand() {
-        if(rubberBand!=null) {
+        if (rubberBand != null) {
             rubberBand.clear();
         }
     }
 
     private void paintRubberBand(Rectangle rect) {
-        if(rubberBand!=null) {
+        if (rubberBand != null) {
             rubberBand.paint(rect);
         }
     }
 
     private void setCurrentDragOperation(DragOperation operation) {
         DragOperation current = DragManager.getCurrentDragOperation();
-        if(operation==current) {
+        if (operation == current) {
             return;
         }
 
-        DockingPort srcPort = operation==null? current.getSourcePort(): operation.getSourcePort();
+        DockingPort srcPort = operation == null ? current.getSourcePort() : operation.getSourcePort();
         DragManager.setCurrentDragOperation(operation);
-        if(srcPort instanceof Component) {
-            SwingUtility.repaint((Component)srcPort);
+        if (srcPort instanceof Component) {
+            SwingUtility.repaint((Component) srcPort);
         }
 
         // TODO: We want to get rid of this code in the future.  I don't like
@@ -333,28 +307,28 @@ public class DragPipeline {
         // is interested in whether a drag is currently in progress, it should
         // register some type of listener and handle its personal business internally
         // with its own code.
-        if(srcPort instanceof DefaultDockingPort) {
-            DefaultDockingPort port = (DefaultDockingPort)srcPort;
-            port.setDragInProgress(operation!=null);
+        if (srcPort instanceof DefaultDockingPort) {
+            DefaultDockingPort port = (DefaultDockingPort) srcPort;
+            port.setDragInProgress(operation != null);
         }
     }
 
     private void preprocessHeavyweightDockables() {
         RootWindow targetWindow = getTargetWindow();
 
-        if(newGlassPane==null && targetWindow!=null) {
+        if (newGlassPane == null && targetWindow != null) {
             Component gp = targetWindow.getGlassPane();
-            if(gp instanceof DragGlasspane) {
-                setCurrentGlassPane((DragGlasspane)gp);
+            if (gp instanceof DragGlasspane) {
+                setCurrentGlassPane((DragGlasspane) gp);
             }
         }
     }
 
     private RootWindow getTargetWindow() {
         Point screenLoc = dragToken.getCurrentMouse(true);
-        for(int i=0; i<windowBounds.length; i++) {
-            if(windowBounds[i].contains(screenLoc)) {
-                return (RootWindow)rootWindowsByBounds.get(windowBounds[i]);
+        for (Rectangle windowBound : windowBounds) {
+            if (windowBound.contains(screenLoc)) {
+                return (RootWindow) rootWindowsByBounds.get(windowBound);
             }
         }
         return null;

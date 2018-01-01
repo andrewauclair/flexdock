@@ -19,18 +19,16 @@
  */
 package org.flexdock.demos.util;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import org.flexdock.docking.DockingStub;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
  */
-public class Titlepane extends JPanel {
+public class Titlepane extends JPanel implements DockingStub {
     private Titlebar titlebar;
     private JComponent contentPane;
 
@@ -73,5 +71,30 @@ public class Titlepane extends JPanel {
         pane.setBorder(new LineBorder(Color.DARK_GRAY));
         pane.setBackground(Color.WHITE);
         return pane;
+    }
+
+    @Override
+    public Component getDragSource() {
+        return titlebar;
+    }
+
+    @Override
+    public Component getFrameDragSource() {
+        return titlebar;
+    }
+
+    @Override
+    public String getPersistentId() {
+        return getTitle();
+    }
+
+    @Override
+    public String getTabText() {
+        return getTitle();
+    }
+
+    @Override
+    public JComponent getComponent() {
+        return this;
     }
 }

@@ -19,10 +19,6 @@
  */
 package org.flexdock.demos.raw.elegant;
 
-import java.awt.Container;
-
-import javax.swing.JFrame;
-
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
@@ -30,6 +26,9 @@ import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.defaults.StandardBorderManager;
 import org.flexdock.plaf.common.border.ShadowBorder;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 public class ElegantDemo extends JFrame implements DockingConstants {
@@ -45,7 +44,7 @@ public class ElegantDemo extends JFrame implements DockingConstants {
 
     private DockingPort rootDockingPort;
 
-    public ElegantDemo() {
+    private ElegantDemo() {
         super("Elegant Docking Demo");
         init();
     }
@@ -55,14 +54,14 @@ public class ElegantDemo extends JFrame implements DockingConstants {
         createViews();
 
         // create the dockingPort
-        setContentPane((Container)getRootDockingPort());
+        setContentPane((Container) getRootDockingPort());
 
         // initialize the layout
         initLayout();
     }
 
     private DockingPort getRootDockingPort() {
-        if(rootDockingPort==null) {
+        if (rootDockingPort == null) {
             DefaultDockingPort port = new DefaultDockingPort();
             port.setBorderManager(new StandardBorderManager(new ShadowBorder()));
             rootDockingPort = port;
@@ -86,11 +85,11 @@ public class ElegantDemo extends JFrame implements DockingConstants {
         DockingManager.setDefaultPersistenceKey("ElegantDemo.xml");
 
         try {
-            if(!DockingManager.restoreLayout(true)) {
+            if (!DockingManager.restoreLayout(true)) {
                 //                        if(true)
                 setupDefaultLayout();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             setupDefaultLayout();
         }

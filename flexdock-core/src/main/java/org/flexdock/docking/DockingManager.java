@@ -48,7 +48,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 import static org.flexdock.docking.DockingConstants.*;
 
@@ -60,9 +59,9 @@ import static org.flexdock.docking.DockingConstants.*;
  * methods are accessed statically from within application code and it generally
  * defers processing to a set of abstract handlers hidden from the application
  * layer.
- *
+ * <p>
  * Among {@code DockingManager's} responsibilities are as follows:
- *
+ * <p>
  * <dl>
  * <dt>Maintaining a component repository.</dt>
  * <dd> All {@code Dockables} and {@code DockingPorts} are cached within an and
@@ -85,9 +84,9 @@ import static org.flexdock.docking.DockingConstants.*;
  */
 public class DockingManager {
 
-    public static final String MINIMIZE_MANAGER = "minimize.manager";
+    private static final String MINIMIZE_MANAGER = "minimize.manager";
 
-    public static final String LAYOUT_MANAGER = "layout.manager";
+    private static final String LAYOUT_MANAGER = "layout.manager";
 
     private static final String DEV_PROPS = "org/flexdock/util/dev-props.properties";
 
@@ -100,7 +99,7 @@ public class DockingManager {
     private static final WeakHashMap<Component, Dockable> DOCKABLES_BY_COMPONENT = new WeakHashMap<>();
 
     private static final ClassMapping DOCKING_STRATEGIES = new ClassMapping(
-        DefaultDockingStrategy.class, new DefaultDockingStrategy());
+            DefaultDockingStrategy.class, new DefaultDockingStrategy());
 
     // Map(DockingPort -> MaximizedState)
     private static final Map MAXIMIZED_STATES_BY_ROOT_PORT = new HashMap();
@@ -161,7 +160,7 @@ public class DockingManager {
 
         private final DockingPort originalPort;
 
-        public MaximizedState(Dockable dockable, DockingPort originalDockingPort) {
+        MaximizedState(Dockable dockable, DockingPort originalDockingPort) {
             this.dockable = dockable;
             this.originalPort = originalDockingPort;
         }
@@ -170,7 +169,7 @@ public class DockingManager {
             return dockable;
         }
 
-        public DockingPort getOriginalPort() {
+        DockingPort getOriginalPort() {
             return originalPort;
         }
     }
@@ -206,8 +205,8 @@ public class DockingManager {
 
         // setup the default sibling size
         float siblingSize = Utilities.getFloat(System
-                                               .getProperty(RegionChecker.DEFAULT_SIBLING_SIZE_KEY),
-                                               RegionChecker.DEFAULT_SIBLING_SIZE);
+                        .getProperty(RegionChecker.DEFAULT_SIBLING_SIZE_KEY),
+                RegionChecker.DEFAULT_SIBLING_SIZE);
         setDefaultSiblingSize(siblingSize);
 
         // setup auto-persistence
@@ -223,17 +222,6 @@ public class DockingManager {
         return SINGLETON;
     }
 
-    public static void addDragSource(Dockable dockable, Component dragSrc) {
-        List sources = dockable == null ? null : dockable.getDragSources();
-        if (sources == null || dragSrc == null) {
-            return;
-        }
-
-        if (!sources.contains(dragSrc)) {
-            updateDragListeners(dockable);
-        }
-    }
-
     /**
      * Convenience method that removes the specified {@code Dockable} from the
      * layout. If the {@code Dockable}is embedded within the main application
@@ -247,8 +235,7 @@ public class DockingManager {
      * {@code Dockable} may later be restored to its original location within
      * the application.
      *
-     * @param dockable
-     *            the {@code Dockable} to be closed.
+     * @param dockable the {@code Dockable} to be closed.
      */
     public static void close(Dockable dockable) {
         if (dockable == null) {
@@ -278,17 +265,19 @@ public class DockingManager {
      * the docking operation cannot be completed. This method defers processing
      * to {@code dock(Component dockable , DockingPort port, String region)}.
      *
-     * @param dockable
-     *            the {@code Component} to be docked.
-     * @param port
-     *            the {@code DockingPort} into which the specified
-     *            {@code Component} will be docked.
+     * @param dockable the {@code Component} to be docked.
+     * @param port     the {@code DockingPort} into which the specified
+     *                 {@code Component} will be docked.
      * @return {@code true} if the docking operation was successful,
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see #dock(Component, DockingPort, String)
      */
-    public static boolean dock(Component dockable, DockingPort port) {
+    private static boolean dock(Component dockable, DockingPort port) {
         return dock(dockable, port, CENTER_REGION);
+    }
+
+    public static boolean dock(DockingStub dockable, DockingPort port) {
+        return dock((Component) dockable, port, CENTER_REGION);
     }
 
     /**
@@ -303,21 +292,17 @@ public class DockingManager {
      * the docking operation cannot be completed. This method defers processing
      * to {@code dock(Dockable dockable, DockingPort port, String region)}.
      *
-     * @param dockable
-     *            the {@code Component} to be docked.
-     * @param port
-     *            the {@code DockingPort} into which the specified
-     *            {@code Component} will be docked.
-     * @param region
-     *            the region into which to dock the specified {@code Component}
+     * @param dockable the {@code Component} to be docked.
+     * @param port     the {@code DockingPort} into which the specified
+     *                 {@code Component} will be docked.
+     * @param region   the region into which to dock the specified {@code Component}
      * @return {@code true} if the docking operation was successful,
-     *         {@code false} if the docking operation cannot be completed.
+     * {@code false} if the docking operation cannot be completed.
      * @see #dock(Dockable, DockingPort, String)
      */
     public static boolean dock(Component dockable, DockingPort port,
                                String region) {
-        Dockable d = resolveDockable(dockable);
-        return dock(d, port, region);
+        return dock(resolveDockable(dockable), port, region);
     }
 
     /**
@@ -327,7 +312,7 @@ public class DockingManager {
      * Otherwise, this method returns {@code true} if the docking operation was
      * successful and {@code false} if the docking operation cannot be
      * completed.
-     *
+     * <p>
      * This method determines the {@code DockingStrategy} to be used for the
      * specified {@code DockingPort} and defers processing to the
      * {@code DockingStrategy}. This method's return value will be based upon
@@ -341,15 +326,12 @@ public class DockingManager {
      * a {@code DockingPort} implementation class and a customized
      * {@code DockingStrategy}.
      *
-     * @param dockable
-     *            the {@code Dockable} to be docked.
-     * @param port
-     *            the {@code DockingPort} into which the specified
-     *            {@code Component} will be docked.
-     * @param region
-     *            the region into which to dock the specified {@code Dockable}
+     * @param dockable the {@code Dockable} to be docked.
+     * @param port     the {@code DockingPort} into which the specified
+     *                 {@code Component} will be docked.
+     * @param region   the region into which to dock the specified {@code Dockable}
      * @return {@code true} if the docking operation was successful,
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see DockingStrategy#dock(Dockable, DockingPort, String)
      * @see #getDockingStrategy(Object)
      * @see #setDockingStrategy(Class, DockingStrategy)
@@ -361,12 +343,7 @@ public class DockingManager {
         }
 
         DockingStrategy strategy = getDockingStrategy(port);
-        if (strategy != null) {
-            return strategy.dock(dockable, port, region);
-        }
-
-        return false; // TODO think of changing it to runtime exception I
-        // don't see a situation when there would be no docker.
+        return strategy != null && strategy.dock(dockable, port, region);
     }
 
     private static Dockable resolveDockable(Component comp) {
@@ -393,12 +370,10 @@ public class DockingManager {
      * {@code Dockable} will be docked into the {@code DockingPort} relative to
      * the "parent" {@code Dockable}.
      *
-     * @param dockable
-     *            the {@code Component} to be docked
-     * @param parent
-     *            the {@code Component} used as a reference point for docking
+     * @param dockable the {@code Component} to be docked
+     * @param parent   the {@code Component} used as a reference point for docking
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see DockingManager#dock(Dockable, Dockable)
      */
     public static boolean dock(Component dockable, Component parent) {
@@ -415,12 +390,10 @@ public class DockingManager {
      * {@code dock(Dockable dockable, Dockable parent, String region)} and
      * returns {@code false} if any of the input parameters are {@code null}.
      *
-     * @param dockable
-     *            the {@code Dockable} to be docked
-     * @param parent
-     *            the {@code Dockable} used as a reference point for docking
+     * @param dockable the {@code Dockable} to be docked
+     * @param parent   the {@code Dockable} used as a reference point for docking
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see #dock(Dockable, Dockable, String)
      */
     public static boolean dock(Dockable dockable, Dockable parent) {
@@ -444,15 +417,12 @@ public class DockingManager {
      * equal distribution of space between the dockable and parent parameters if
      * docking is successful.
      *
-     * @param dockable
-     *            the {@code Component} to be docked
-     * @param parent
-     *            the {@code Component} used as a reference point for docking
-     * @param region
-     *            the relative docking region into which {@code dockable} will
-     *            be docked
+     * @param dockable the {@code Component} to be docked
+     * @param parent   the {@code Component} used as a reference point for docking
+     * @param region   the relative docking region into which {@code dockable} will
+     *                 be docked
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see #dock(Component, Component, String, float)
      */
     public static boolean dock(Component dockable, Component parent,
@@ -474,14 +444,11 @@ public class DockingManager {
      * equal distribution of space between the dockable and parent parameters if
      * docking is successful.
      *
-     * @param dockable
-     *            the {@code Dockable} to be docked
-     * @param parent
-     *            the {@code Dockable} used as a reference point for docking
-     * @param region
-     *            the docking region into which {@code dockable} will be docked
+     * @param dockable the {@code Dockable} to be docked
+     * @param parent   the {@code Dockable} used as a reference point for docking
+     * @param region   the docking region into which {@code dockable} will be docked
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see #dock(Dockable, Dockable, String, float)
      */
     public static boolean dock(Dockable dockable, Dockable parent, String region) {
@@ -505,24 +472,18 @@ public class DockingManager {
      * processing to
      * {@code dock(Dockable dockable, Dockable parent, String region, float proportion)}.
      *
-     * @param dockable
-     *            the {@code Component} to be docked
-     * @param parent
-     *            the {@code Component} used as a reference point for docking
-     * @param region
-     *            the relative docking region into which {@code dockable} will
-     *            be docked
-     * @param proportion
-     *            the proportional space to allot the {@code dockable} argument
-     *            if the docking operation results in a split layout.
+     * @param dockable   the {@code Component} to be docked
+     * @param parent     the {@code Component} used as a reference point for docking
+     * @param region     the relative docking region into which {@code dockable} will
+     *                   be docked
+     * @param proportion the proportional space to allot the {@code dockable} argument
+     *                   if the docking operation results in a split layout.
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      */
     public static boolean dock(Component dockable, Component parent,
                                String region, float proportion) {
-        Dockable newDockable = resolveDockable(dockable);
-        Dockable parentDockable = resolveDockable(parent);
-        return dock(newDockable, parentDockable, region, proportion);
+        return dock(resolveDockable(dockable), resolveDockable(parent), region, proportion);
     }
 
     /**
@@ -537,28 +498,23 @@ public class DockingManager {
      * result with the proportional space specified in the {@code proportion}
      * parameter allotted to the {@code dockable} argument.
      *
-     * @param dockable
-     *            the {@code Dockable} to be docked
-     * @param parent
-     *            the {@code Dockable} used as a reference point for docking
-     * @param region
-     *            the docking region into which {@code dockable} will be docked
-     * @param proportion
-     *            the proportional space to allot the {@code dockable} argument
-     *            if the docking operation results in a split layout.
+     * @param dockable   the {@code Dockable} to be docked
+     * @param parent     the {@code Dockable} used as a reference point for docking
+     * @param region     the docking region into which {@code dockable} will be docked
+     * @param proportion the proportional space to allot the {@code dockable} argument
+     *                   if the docking operation results in a split layout.
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      */
     public static boolean dock(Dockable dockable, Dockable parent,
                                String region, float proportion) {
-        return DockingUtility
-               .dockRelative(dockable, parent, region, proportion);
+        return DockingUtility.dockRelative(dockable, parent, region, proportion);
     }
 
     private static DockingStrategy findDockingStrategy(Dockable dockable) {
         DockingPort port = dockable.getDockingPort();
         DockingStrategy strategy = port == null ? null : port
-                                   .getDockingStrategy();
+                .getDockingStrategy();
         if (strategy == null) {
             DockingManager mgr = getDockingManager();
             strategy = mgr == null ? null : mgr.defaultDocker;
@@ -575,10 +531,9 @@ public class DockingManager {
      * if no parent {@code DockingPort} is present. This method returns
      * {@code false} if the {@code Component} parameter is {@code null}.
      *
-     * @param component
-     *            the {@code Component} whose docking status is to be examined
+     * @param component the {@code Component} whose docking status is to be examined
      * @return {@code true} if the {@code Component} is currently docked;
-     *         otherwise {@code false}.
+     * otherwise {@code false}.
      */
     public static boolean isDocked(Component component) {
         return getDockingPort(component) != null;
@@ -593,10 +548,9 @@ public class DockingManager {
      * method returns {@code false} if the {@code Dockable} parameter is
      * {@code null}.
      *
-     * @param dockable
-     *            the {@code Dockable} whose docking status is to be examined
+     * @param dockable the {@code Dockable} whose docking status is to be examined
      * @return {@code true} if the {@code Dockable} is currently docked;
-     *         otherwise {@code false}.
+     * otherwise {@code false}.
      */
     public static boolean isDocked(Dockable dockable) {
         return getDockingPort(dockable) != null;
@@ -609,12 +563,10 @@ public class DockingManager {
      * {@code false} otherwise. This method returns {@code false} if either of
      * the input parameters are {@code null}.
      *
-     * @param dockingPort
-     *            the {@code DockingPort} to be tested
-     * @param dockable
-     *            the {@code Dockable} instance to be examined
+     * @param dockingPort the {@code DockingPort} to be tested
+     * @param dockable    the {@code Dockable} instance to be examined
      * @return {@code true} if the supplied {@code DockingPort} contains the
-     *         specified {@code Dockable}; {@code false} otherwise.
+     * specified {@code Dockable}; {@code false} otherwise.
      */
     public static boolean isDocked(DockingPort dockingPort, Dockable dockable) {
         return dockingPort != null && dockable != null && dockingPort.isParentDockingPort(dockable.getComponent());
@@ -625,7 +577,7 @@ public class DockingManager {
      * processing to {@code FloatPolicyManager.isGlobalFloatingEnabled()}.
      *
      * @return {@code true} if global floating support is enabled, {@code false}
-     *         otherwise.
+     * otherwise.
      * @see FloatPolicyManager#isGlobalFloatingEnabled()
      */
     public static boolean isFloatingEnabled() {
@@ -644,14 +596,13 @@ public class DockingManager {
      * overridden.
      *
      * @return {@code true} if the default setting for {@code DockingPorts}
-     *         allows a tabbed layout for a single {@code Dockable} in the
-     *         CENTER region; {@code false} otherwise.
+     * allows a tabbed layout for a single {@code Dockable} in the
+     * CENTER region; {@code false} otherwise.
      * @see PropertyManager#getDockingPortRoot()
      * @see org.flexdock.docking.props.DockingPortPropertySet#isSingleTabsAllowed()
      */
     public static boolean isSingleTabsAllowed() {
-        return PropertyManager.getDockingPortRoot().isSingleTabsAllowed()
-               .booleanValue();
+        return PropertyManager.getDockingPortRoot().isSingleTabsAllowed();
     }
 
     /**
@@ -661,15 +612,14 @@ public class DockingManager {
      * {@code WEST_REGION}, and {@code CENTER_REGION}. This method returns
      * {@code true} if the supplied parameter is equal to one of these values.
      *
-     * @param region
-     *            the region value to be tested
+     * @param region the region value to be tested
      * @return {@code true} if the supplied parameter is a valid docking region;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      */
     public static boolean isValidDockingRegion(String region) {
         return CENTER_REGION.equals(region) || NORTH_REGION.equals(region)
-               || SOUTH_REGION.equals(region) || EAST_REGION.equals(region)
-               || WEST_REGION.equals(region);
+                || SOUTH_REGION.equals(region) || EAST_REGION.equals(region)
+                || WEST_REGION.equals(region);
     }
 
     private static void updateDragListeners(Component dragSrc,
@@ -720,10 +670,9 @@ public class DockingManager {
      * If {@code comp} is {@code null}, no exception is thrown and no action is
      * performed.
      *
-     * @param comp
-     *            the target component for the {@code Dockable}.
+     * @param comp the target component for the {@code Dockable}.
      * @return the {@code Dockable} that has been registered for the supplied
-     *         {@code Component}
+     * {@code Component}
      * @see #registerDockable(Dockable)
      * @see #registerDockable(Component, String)
      */
@@ -780,14 +729,12 @@ public class DockingManager {
      * dispatches to {@code registerDockable(Dockable init)}. If {@code comp}
      * is {@code null}, no exception is thrown and no action is performed.
      *
-     * @param comp
-     *            the target component for the Dockable, both drag-starter and
-     *            docking source
-     * @param tabText
-     *            the description of the docking source. Used as the tab-title
-     *            of docked in a tabbed pane
+     * @param comp    the target component for the Dockable, both drag-starter and
+     *                docking source
+     * @param tabText the description of the docking source. Used as the tab-title
+     *                of docked in a tabbed pane
      * @return the {@code Dockable} that has been registered for the supplied
-     *         {@code Component}
+     * {@code Component}
      * @see #registerDockable(Dockable)
      */
     public static Dockable registerDockable(Component comp, String tabText) {
@@ -795,7 +742,7 @@ public class DockingManager {
     }
 
     private static Dockable registerDockable(Component comp, String tabText,
-            String dockingId) {
+                                             String dockingId) {
         if (comp == null) {
             return null;
         }
@@ -804,8 +751,7 @@ public class DockingManager {
             tabText = determineTabText(comp, dockingId);
         }
 
-        Dockable dockable = getDockableForComponent(comp, tabText, dockingId);
-        return registerDockable(dockable);
+        return registerDockable(getDockableForComponent(comp, tabText, dockingId));
     }
 
     /**
@@ -820,8 +766,7 @@ public class DockingManager {
      * {@code Exception} is thrown and no action is taken. The {@code Dockable}
      * returned by this method will be the same object passed in as an argument.
      *
-     * @param dockable
-     *            the Dockable that is being registered.
+     * @param dockable the Dockable that is being registered.
      * @return the {@code Dockable} that has been registered.
      * @see org.flexdock.event.RegistrationEvent
      */
@@ -842,7 +787,7 @@ public class DockingManager {
         // implement the interface directly
         Component c = dockable.getComponent();
         SwingUtility.putClientProperty(c, Dockable.DOCKABLE_INDICATOR,
-                                       Boolean.TRUE);
+                Boolean.TRUE);
 
         // add drag listeners
         updateDragListeners(dockable);
@@ -856,11 +801,11 @@ public class DockingManager {
         // make sure we have docking-properties initialized (must come after
         // ID-caching)
         DockablePropertySet props = PropertyManager
-                                    .getDockablePropertySet(dockable);
+                .getDockablePropertySet(dockable);
 
         // dispatch a registration event
         EventManager.dispatch(new RegistrationEvent(dockable,
-                              DockingManager.SINGLETON, true));
+                DockingManager.SINGLETON, true));
 
         // return the dockable
         return dockable;
@@ -906,7 +851,7 @@ public class DockingManager {
 
         // dispatch a registration event
         EventManager.dispatch(new RegistrationEvent(dockable,
-                              DockingManager.SINGLETON, false));
+                DockingManager.SINGLETON, false));
     }
 
     /**
@@ -915,8 +860,7 @@ public class DockingManager {
      * present, then no action is taken. Drag listeners used by the docking
      * system are of type {@code org.flexdock.docking.drag.DragManager}.
      *
-     * @param comp
-     *            the {@code Component} from which to remove drag listeners.
+     * @param comp the {@code Component} from which to remove drag listeners.
      * @see DragManager
      */
     public static void removeDragListeners(Component comp) {
@@ -965,10 +909,9 @@ public class DockingManager {
      * parameter is {@code null}, no {@code Exception} is thrown and no action
      * is taken.
      *
-     * @param dockable
-     *            the {@code Dockable} to be displayed.
+     * @param dockable the {@code Dockable} to be displayed.
      * @return {@code true} if the {@code Dockable} was successfully displayed;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see #getLayoutManager()
      * @see LayoutManager#display(Dockable)
      */
@@ -995,10 +938,9 @@ public class DockingManager {
      * parameter is {@code null}, no {@code Exception} is thrown and no action
      * is taken.
      *
-     * @param dockable
-     *            the ID of the {@code Dockable} to be displayed.
+     * @param dockable the ID of the {@code Dockable} to be displayed.
      * @return {@code true} if the {@code Dockable} was successfully displayed;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see #display(Dockable)
      * @see #getLayoutManager()
      * @see LayoutManager#display(Dockable)
@@ -1018,7 +960,7 @@ public class DockingManager {
 
         synchronized (persistentIdLock) {
             String pId = desiredId == null ? obj.getClass().getName()
-                         : desiredId;
+                    : desiredId;
             StringBuffer baseId = new StringBuffer(pId);
             for (int i = 1; hasRegisteredDockableId(pId); i++) {
                 baseId.append("_").append(i);
@@ -1052,11 +994,10 @@ public class DockingManager {
      * If a class association is never found, then an instance of
      * {@code DefaultDockingStrategy} is returned.
      *
-     * @param obj
-     *            the object whose {@code DockingStrategy} association we wish
+     * @param obj the object whose {@code DockingStrategy} association we wish
      *            to test
      * @return the {@code DockingStrategy} associated with the {@code Class}
-     *         type of the {@code Object} parameter.
+     * type of the {@code Object} parameter.
      * @see #getDockingStrategy(Class)
      * @see #setDockingStrategy(Class, DockingStrategy)
      * @see ClassMapping#getClassInstance(Class)
@@ -1084,17 +1025,16 @@ public class DockingManager {
      * If a class association is never found, then an instance of
      * {@code DefaultDockingStrategy} is returned.
      *
-     * @param classKey
-     *            the {@code Class} whose {@code DockingStrategy} association we
-     *            wish to test
+     * @param classKey the {@code Class} whose {@code DockingStrategy} association we
+     *                 wish to test
      * @return the {@code DockingStrategy} associated with the specified
-     *         {@code Class}.
+     * {@code Class}.
      * @see #setDockingStrategy(Class, DockingStrategy)
      * @see ClassMapping#getClassInstance(Class)
      */
-    public static DockingStrategy getDockingStrategy(Class classKey) {
+    private static DockingStrategy getDockingStrategy(Class classKey) {
         DockingStrategy strategy = (DockingStrategy) DOCKING_STRATEGIES
-                                   .getClassInstance(classKey);
+                .getClassInstance(classKey);
         return strategy;
     }
 
@@ -1109,7 +1049,7 @@ public class DockingManager {
      * {@code java.util.Set} and is <b>not</b> guaranteed.
      *
      * @return an array of all known {@code RootWindows} that contain
-     *         {@code DockingPorts}
+     * {@code DockingPorts}
      * @see RootWindow
      * @see DockingPortTracker#getDockingWindows()
      */
@@ -1127,8 +1067,7 @@ public class DockingManager {
      * {@code portId} should match the value returned by a {@code DockingPort's}
      * {@code getPersistentId()} method.
      *
-     * @param portId
-     *            the ID of the {@code DockingPort} to be looked up
+     * @param portId the ID of the {@code DockingPort} to be looked up
      * @return the {@code DockingPort} with the specified ID
      * @see DockingPort#getPersistentId()
      * @see DockingPortTracker#findById(String)
@@ -1169,11 +1108,10 @@ public class DockingManager {
      * reference is also returned if the root window does not contain any
      * {@code DockingPorts}.
      *
-     * @param comp
-     *            the {@code Component} whose root window will be checked for a
-     *            main {@code DockingPort}
+     * @param comp the {@code Component} whose root window will be checked for a
+     *             main {@code DockingPort}
      * @return the main {@code DockingPort} within the root window that contains
-     *         {@code comp}
+     * {@code comp}
      * @see #getRootDockingPortInfo(Component)
      * @see #getRootDockingPort(Component)
      * @see DockingPortTracker#getRootDockingPortInfo(Component)
@@ -1210,11 +1148,10 @@ public class DockingManager {
      * {@code getMainDockingPort(Component comp)} will exhibit identical
      * behavior.
      *
-     * @param comp
-     *            the {@code Component} whose root window will be checked for a
-     *            root {@code DockingPort}
+     * @param comp the {@code Component} whose root window will be checked for a
+     *             root {@code DockingPort}
      * @return the first root {@code DockingPort} found within the root window
-     *         that contains {@code comp}
+     * that contains {@code comp}
      * @see #getMainDockingPort(Component)
      * @see DockingPortTracker#findByWindow(Component)
      * @see RootDockingPortInfo
@@ -1243,15 +1180,14 @@ public class DockingManager {
      * This method dispatches internally to
      * {@code org.flexdock.docking.event.hierarchy.DockingPortTracker.getRootDockingPortInfo(Component comp)}.
      *
-     * @param comp
-     *            the {@code Component} whose root window will be checked for an
-     *            associated {@code RootDockingPortInfo}.
+     * @param comp the {@code Component} whose root window will be checked for an
+     *             associated {@code RootDockingPortInfo}.
      * @return the {@code RootDockingPortInfo} instance associated with the root
-     *         window containing {@code comp}.
+     * window containing {@code comp}.
      * @see RootDockingPortInfo
      * @see DockingPortTracker#getRootDockingPortInfo(Component)
      */
-    public static RootDockingPortInfo getRootDockingPortInfo(Component comp) {
+    private static RootDockingPortInfo getRootDockingPortInfo(Component comp) {
         return DockingPortTracker.getRootDockingPortInfo(comp);
     }
 
@@ -1273,15 +1209,15 @@ public class DockingManager {
      * during the persistence process, an {@code IOException} is thrown.
      *
      * @return {@code true} if the current layout model was succesfully stored,
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @throws IOException
      * @throws PersisterException
      * @see #getLayoutManager()
      * @see #setLayoutManager(LayoutManager)
      * @see LayoutManager#store()
      */
-    public static boolean storeLayoutModel() throws IOException,
-        PersistenceException {
+    static boolean storeLayoutModel() throws IOException,
+            PersistenceException {
         LayoutManager mgr = getLayoutManager();
         return mgr != null && mgr.store();
     }
@@ -1306,14 +1242,14 @@ public class DockingManager {
      * loading process, an {@code IOException} is thrown.
      *
      * @return {@code true} if the current layout model was succesfully loaded,
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @throws IOException
      * @throws PersisterException
      * @see #loadLayoutModel(boolean)
      * @see LayoutManager#load()
      */
     public static boolean loadLayoutModel() throws IOException,
-        PersistenceException {
+            PersistenceException {
         return loadLayoutModel(false);
     }
 
@@ -1340,7 +1276,7 @@ public class DockingManager {
      * loading process, an {@code IOException} is thrown.
      *
      * @return {@code true} if the current layout model was succesfully loaded,
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @throws IOException
      * @throws PersisterException
      * @see #getLayoutManager()
@@ -1348,8 +1284,8 @@ public class DockingManager {
      * @see #restoreLayout(boolean)
      * @see LayoutManager#load()
      */
-    public static boolean loadLayoutModel(boolean restore) throws IOException,
-        PersistenceException {
+    private static boolean loadLayoutModel(boolean restore) throws IOException,
+            PersistenceException {
         LayoutManager mgr = getLayoutManager();
         if (mgr == null) {
             return false;
@@ -1374,7 +1310,7 @@ public class DockingManager {
      * method returns {@code false}.
      *
      * @return {@code true} if the in-memory layout model was properly restored
-     *         to the application view, {@code false} otherwise.
+     * to the application view, {@code false} otherwise.
      * @throws PersisterException
      * @see #restoreLayout(boolean)
      * @see #getLayoutManager()
@@ -1386,12 +1322,12 @@ public class DockingManager {
             return restoreLayout(false);
         } catch (IOException e) {
             // shouldn't happen since we're not intending to load from storage
-            System.err.println("Exception: " +e.getMessage());
+            System.err.println("Exception: " + e.getMessage());
             e.printStackTrace();
             return false;
         } catch (PersistenceException e) {
             // TODO Auto-generated catch block
-            System.err.println("Exception: " +e.getMessage());
+            System.err.println("Exception: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -1411,25 +1347,24 @@ public class DockingManager {
      * view. If a problem occurs while loading from exernal storage, this method
      * throws an {@code IOException}.
      *
-     * @param loadFromStorage
-     *            instructs whether to load any layout model from external
-     *            storage into memory before synchronizing the application view.
+     * @param loadFromStorage instructs whether to load any layout model from external
+     *                        storage into memory before synchronizing the application view.
      * @return {@code true} if the in-memory layout model was properly restored
-     *         to the application view, {@code false} otherwise.
+     * to the application view, {@code false} otherwise.
      * @throws PersisterException
      * @see #getLayoutManager()
      * @see #setLayoutManager(LayoutManager)
      * @see LayoutManager#restore(boolean)
      */
     public static boolean restoreLayout(boolean loadFromStorage)
-    throws IOException, PersistenceException {
+            throws IOException, PersistenceException {
         LayoutManager mgr = getLayoutManager();
         return mgr != null && mgr.restore(loadFromStorage);
     }
 
     private static Dockable loadAndRegister(String id) {
         DockableFactory factory = id == null ? null
-                                  : getDockingManager().dockableFactory;
+                : getDockingManager().dockableFactory;
         if (factory == null) {
             return null;
         }
@@ -1471,7 +1406,7 @@ public class DockingManager {
     }
 
     private static Dockable getDockableForComponent(Component c, String desc,
-            String dockingId) {
+                                                    String dockingId) {
         if (c == null) {
             return null;
         }
@@ -1495,9 +1430,9 @@ public class DockingManager {
                 dockable = DockableComponentWrapper.create((DockingStub) c);
             } else {
                 String persistentId = dockingId == null ? generatePersistentId(c)
-                                      : dockingId;
+                        : dockingId;
                 dockable = DockableComponentWrapper.create(c, persistentId,
-                           desc);
+                        desc);
             }
         }
 
@@ -1527,11 +1462,10 @@ public class DockingManager {
      * conditions cannot be satisfied, then this method returns a {@code null}
      * reference.
      *
-     * @param dockable
-     *            the {@code Component} whose parent {@code DockingPort} is to
-     *            be returned.
+     * @param dockable the {@code Component} whose parent {@code DockingPort} is to
+     *                 be returned.
      * @return the imediate parent {@code DockingPort} that contains the
-     *         specified {@code Component}.
+     * specified {@code Component}.
      */
     public static DockingPort getDockingPort(Component dockable) {
         return DockingUtility.getParentDockingPort(dockable);
@@ -1553,11 +1487,10 @@ public class DockingManager {
      * conditions cannot be satisfied, then this method returns a {@code null}
      * reference.
      *
-     * @param dockable
-     *            the {@code Dockable} whose parent {@code DockingPort} is to be
-     *            returned.
+     * @param dockable the {@code Dockable} whose parent {@code DockingPort} is to be
+     *                 returned.
      * @return the imediate parent {@code DockingPort} that contains the
-     *         specified {@code Dockable}.
+     * specified {@code Dockable}.
      */
     public static DockingPort getDockingPort(Dockable dockable) {
         return DockingUtility.getParentDockingPort(dockable);
@@ -1577,9 +1510,8 @@ public class DockingManager {
      * returned by this method. If no mapping is found for the specified
      * {@code Component}, then this method returns a {@code null} reference.
      *
-     * @param comp
-     *            the {@code Component} whose {@code Dockable} instance is to be
-     *            returned.
+     * @param comp the {@code Component} whose {@code Dockable} instance is to be
+     *             returned.
      * @return the {@code Dockable} that models the specified {@code Component}
      * @see #registerDockable(Dockable)
      * @see Dockable#getComponent()
@@ -1602,9 +1534,8 @@ public class DockingManager {
      * returned by this method. If no mapping is found for the specified
      * {@code id}, then this method returns a {@code null} reference.
      *
-     * @param id
-     *            the persistent ID of the {@code Dockable} instance is to be
-     *            returned.
+     * @param id the persistent ID of the {@code Dockable} instance is to be
+     *           returned.
      * @return the {@code Dockable} that has the specified perstent ID.
      * @see #registerDockable(Dockable)
      * @see Dockable#getPersistentId()
@@ -1632,19 +1563,19 @@ public class DockingManager {
      * registered with the framework. The IDs returned by this method will
      * correspond to the values returned for the {@code getPersistentId()}
      * method for each {@code Dockable} registered with the framework.
-     *
+     * <p>
      * {@code Dockable} IDs are cached during
      * {@code registerDockable(Dockable dockable)}. Thus, for an ID to appear
      * within the {@code Set} returned by this method, the corresponding
      * {@code Dockable} must have first been registered via
      * {@code registerDockable(Dockable dockable)}.
-     *
+     * <p>
      * If no {@code Dockables} have been registered with the framework, then an
      * empty {@code Set} is returned. This method will never return a
      * {@code null} reference.
      *
      * @return a {@code Set} of {@code String} IDs for all {@code Dockables}
-     *         registered with the framework.
+     * registered with the framework.
      * @see #registerDockable(Dockable)
      * @see Dockable#getPersistentId()
      */
@@ -1666,10 +1597,9 @@ public class DockingManager {
      * returns a {@code null}, or if the {@code Dockable} has not previously
      * been registered, this method will return a {@code null} reference.
      *
-     * @param dockable
-     *            the {@code Dockable} whose drag listener is to be returned.
+     * @param dockable the {@code Dockable} whose drag listener is to be returned.
      * @return the {@code DragManager} responsible for listening to an managing
-     *         drag-related mouse events for the specified {@code Dockable}.
+     * drag-related mouse events for the specified {@code Dockable}.
      * @see DragManager
      * @see Dockable#getDragSources()
      * @see #registerDockable(Dockable)
@@ -1791,7 +1721,7 @@ public class DockingManager {
      * insfrastructure, this method will never return a {@code null} reference.
      *
      * @return the {@code FloatManager} provided by the currently installed
-     *         {@code LayoutManager}
+     * {@code LayoutManager}
      * @see #getLayoutManager()
      * @see #setLayoutManager(LayoutManager)
      * @see LayoutManager#getFloatManager()
@@ -1836,11 +1766,10 @@ public class DockingManager {
      * use as the reference itself may possibly become stale over time depending
      * on the {@code LayoutManager} implementation.
      *
-     * @param dockableId
-     *            the persistent ID of the {@code Dockable} whose current
-     *            {@code DockingState} is to be returned
+     * @param dockableId the persistent ID of the {@code Dockable} whose current
+     *                   {@code DockingState} is to be returned
      * @return the current {@code DockingState} maintained by the
-     *         {@code LayoutManager} for the specified {@code Dockable}
+     * {@code LayoutManager} for the specified {@code Dockable}
      * @see DockingState
      * @see #getLayoutManager()
      * @see LayoutManager#getDockingState(String)
@@ -1883,11 +1812,10 @@ public class DockingManager {
      * use as the reference itself may possibly become stale over time depending
      * on the {@code LayoutManager} implementation.
      *
-     * @param dockable
-     *            the {@code Dockable} whose current {@code DockingState} is to
-     *            be returned
+     * @param dockable the {@code Dockable} whose current {@code DockingState} is to
+     *                 be returned
      * @return the current {@code DockingState} maintained by the
-     *         {@code LayoutManager} for the specified {@code Dockable}
+     * {@code LayoutManager} for the specified {@code Dockable}
      * @see #getLayoutManager()
      * @see LayoutManager#getDockingState(String)
      */
@@ -1918,7 +1846,7 @@ public class DockingManager {
      * @see #getDockable(String)
      * @see DockableFactory#getDockable(String)
      */
-    public static DockableFactory getDockableFactory() {
+    private static DockableFactory getDockableFactory() {
         return getDockingManager().dockableFactory;
     }
 
@@ -1933,9 +1861,8 @@ public class DockingManager {
      * shutdown hook automatically calls {@code storeLayoutModel()}, catching
      * and reporting any {@code IOExceptions} that may occur.
      *
-     * @param enabled
-     *            {@code true} if automatic persistence is desired;
-     *            {@code false} otherwise.
+     * @param enabled {@code true} if automatic persistence is desired;
+     *                {@code false} otherwise.
      * @see #storeLayoutModel()
      * @see Runtime#addShutdownHook(java.lang.Thread)
      */
@@ -1985,12 +1912,10 @@ public class DockingManager {
      * to see if the tabbed layout resides within a parent split layout. If so,
      * the resolved split layout is resized. Otherwise no action is taken.
      *
-     * @param dockable
-     *            the {@code Component} whose containing split layout is to be
-     *            resized.
-     * @param proportion
-     *            the percentage of containing split layout size to which the
-     *            split divider should be set.
+     * @param dockable   the {@code Component} whose containing split layout is to be
+     *                   resized.
+     * @param proportion the percentage of containing split layout size to which the
+     *                   split divider should be set.
      * @see #setSplitProportion(Dockable, float)
      * @see #getDockable(Component)
      */
@@ -2035,15 +1960,13 @@ public class DockingManager {
      * to see if the tabbed layout resides within a parent split layout. If so,
      * the resolved split layout is resized. Otherwise no action is taken.
      *
-     * @param dockable
-     *            the {@code Dockable} whose containing split layout is to be
-     *            resized.
-     * @param proportion
-     *            the percentage of containing split layout size to which the
-     *            split divider should be set.
+     * @param dockable   the {@code Dockable} whose containing split layout is to be
+     *                   resized.
+     * @param proportion the percentage of containing split layout size to which the
+     *                   split divider should be set.
      * @see #getDockable(Component)
      */
-    public static void setSplitProportion(Dockable dockable, float proportion) {
+    private static void setSplitProportion(Dockable dockable, float proportion) {
         DockingUtility.setSplitProportion(dockable, proportion);
     }
 
@@ -2077,12 +2000,10 @@ public class DockingManager {
      * {@code Exception} is thrown and no action is taken. Identical behavior
      * occurs if the {@code DockingPort} does not contain split layout.
      *
-     * @param port
-     *            the {@code DockingPort} containing the split layout is to be
-     *            resized.
-     * @param proportion
-     *            the percentage of split layout size to which the split divider
-     *            should be set.
+     * @param port       the {@code DockingPort} containing the split layout is to be
+     *                   resized.
+     * @param proportion the percentage of split layout size to which the split divider
+     *                   should be set.
      */
     public static void setSplitProportion(DockingPort port, float proportion) {
         DockingUtility.setSplitProportion(port, proportion);
@@ -2104,8 +2025,7 @@ public class DockingManager {
      * transparently registering and returning the newly created
      * {@code Dockable} from {@code getDockable(String id)}.
      *
-     * @param factory
-     *            the {@code DockableFactory} to install
+     * @param factory the {@code DockableFactory} to install
      * @see #getDockableFactory()
      * @see #getDockable(String)
      * @see DockableFactory#getDockable(String)
@@ -2133,11 +2053,9 @@ public class DockingManager {
      * thereof. If the specified {@code Dockable} is {@code null}, no
      * {@code Exception} is thrown and no action is taken.
      *
-     * @param dockable
-     *            the {@code Dockable} whose minimzed state is to be modified
-     * @param minimized
-     *            {@code true} if the specified {@code Dockable} should be
-     *            minimized, {@code false} otherwise.
+     * @param dockable  the {@code Dockable} whose minimzed state is to be modified
+     * @param minimized {@code true} if the specified {@code Dockable} should be
+     *                  minimized, {@code false} otherwise.
      * @see #setMinimized(Dockable, boolean, Component)
      * @see #getMinimizeManager()
      * @see MinimizationManager#setMinimized(Dockable, boolean, Component, int)
@@ -2146,7 +2064,7 @@ public class DockingManager {
     public static void setMinimized(Dockable dockable, boolean minimized) {
         Component cmp = dockable == null ? null : dockable.getComponent();
         Window window = cmp == null ? null : SwingUtilities
-                        .getWindowAncestor(cmp);
+                .getWindowAncestor(cmp);
         setMinimized(dockable, minimized, window);
     }
 
@@ -2173,24 +2091,21 @@ public class DockingManager {
      * thereof. If the specified {@code Dockable} is {@code null}, no
      * {@code Exception} is thrown and no action is taken.
      *
-     * @param dockable
-     *            the {@code Dockable} whose minimzed state is to be modified
-     * @param minimized
-     *            {@code true} if the specified {@code Dockable} should be
-     *            minimized, {@code false} otherwise.
-     * @param window
-     *            the {@code Component} whose root window will be used by the
-     *            underlying {@code MinimizationManager} for rendering the
-     *            {@code Dockable} in its new minimized state.
+     * @param dockable  the {@code Dockable} whose minimzed state is to be modified
+     * @param minimized {@code true} if the specified {@code Dockable} should be
+     *                  minimized, {@code false} otherwise.
+     * @param window    the {@code Component} whose root window will be used by the
+     *                  underlying {@code MinimizationManager} for rendering the
+     *                  {@code Dockable} in its new minimized state.
      * @see #setMinimized(Dockable, boolean, Component, int)
      * @see #getMinimizeManager()
      * @see MinimizationManager#setMinimized(Dockable, boolean, Component, int)
      * @see DockingState#getMinimizedConstraint()
      */
-    public static void setMinimized(Dockable dockable, boolean minimized,
-                                    Component window) {
+    private static void setMinimized(Dockable dockable, boolean minimized,
+                                     Component window) {
         setMinimized(dockable, minimized, window,
-                     MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT);
+                MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT);
     }
 
     /**
@@ -2217,14 +2132,11 @@ public class DockingManager {
      * thereof. If the specified {@code Dockable} is {@code null}, no
      * {@code Exception} is thrown and no action is taken.
      *
-     * @param dockable
-     *            the {@code Dockable} whose minimzed state is to be modified
-     * @param minimizing
-     *            {@code true} if the specified {@code Dockable} should be
-     *            minimized, {@code false} otherwise.
-     * @param constraint
-     *            a value to indicate to the {@code MinimizationManager} desired
-     *            rendering of the minimized {@code Dockable}
+     * @param dockable   the {@code Dockable} whose minimzed state is to be modified
+     * @param minimizing {@code true} if the specified {@code Dockable} should be
+     *                   minimized, {@code false} otherwise.
+     * @param constraint a value to indicate to the {@code MinimizationManager} desired
+     *                   rendering of the minimized {@code Dockable}
      * @see #setMinimized(Dockable, boolean, Component, int)
      * @see #getMinimizeManager()
      * @see MinimizationManager#setMinimized(Dockable, boolean, Component, int)
@@ -2262,24 +2174,20 @@ public class DockingManager {
      * {@code MinimizationManager} implementation and, thus any integer value
      * may theoretically be valid for {@code constraint}.
      *
-     * @param dockable
-     *            the {@code Dockable} whose minimzed state is to be modified
-     * @param minimizing
-     *            {@code true} if the specified {@code Dockable} should be
-     *            minimized, {@code false} otherwise.
-     * @param window
-     *            the {@code Component} whose root window will be used by the
-     *            underlying {@code MinimizationManager} for rendering the
-     *            {@code Dockable} in its new minimized state.
-     * @param constraint
-     *            a value to indicate to the {@code MinimizationManager} desired
-     *            rendering of the minimized {@code Dockable}
+     * @param dockable   the {@code Dockable} whose minimzed state is to be modified
+     * @param minimizing {@code true} if the specified {@code Dockable} should be
+     *                   minimized, {@code false} otherwise.
+     * @param window     the {@code Component} whose root window will be used by the
+     *                   underlying {@code MinimizationManager} for rendering the
+     *                   {@code Dockable} in its new minimized state.
+     * @param constraint a value to indicate to the {@code MinimizationManager} desired
+     *                   rendering of the minimized {@code Dockable}
      * @see #getMinimizeManager()
      * @see MinimizationManager#setMinimized(Dockable, boolean, Component, int)
      * @see DockingState#getMinimizedConstraint()
      */
-    public static void setMinimized(Dockable dockable, boolean minimizing,
-                                    Component window, int constraint) {
+    private static void setMinimized(Dockable dockable, boolean minimizing,
+                                     Component window, int constraint) {
         if (dockable == null) {
             return;
         }
@@ -2292,7 +2200,7 @@ public class DockingManager {
         }
 
         getMinimizeManager().setMinimized(dockable, minimizing, window,
-                                          constraint);
+                constraint);
     }
 
     /**
@@ -2319,12 +2227,10 @@ public class DockingManager {
      * If {@code comp} is {@code null} or the root window cannot be resolved,
      * then this method returns with no action taken.
      *
-     * @param window
-     *            the {@code Component} whose root window will be checked for a
-     *            main {@code DockingPort}
-     * @param portId
-     *            the persistent ID of the {@code DockingPort} to use as the
-     *            main {@code DockingPort} for the specified window.
+     * @param window the {@code Component} whose root window will be checked for a
+     *               main {@code DockingPort}
+     * @param portId the persistent ID of the {@code DockingPort} to use as the
+     *               main {@code DockingPort} for the specified window.
      * @see #getRootDockingPortInfo(Component)
      * @see #getRootDockingPort(Component)
      * @see DockingPortTracker#getRootDockingPortInfo(Component)
@@ -2363,13 +2269,12 @@ public class DockingManager {
      * {@code null} value is passed into this method, the default
      * {@code MinimizationManager} provided by the framework is used instead.
      *
-     * @param mgr
-     *            the {@code MinimizationManager} to be installed
+     * @param mgr the {@code MinimizationManager} to be installed
      * @see MinimizationManager
      * @see #getMinimizeManager()
      * @see #setMinimizeManager(String)
      */
-    public static void setMinimizeManager(MinimizationManager mgr) {
+    private static void setMinimizeManager(MinimizationManager mgr) {
         DockingManager dockingManager = getDockingManager();
         if (mgr == null) {
             // do not allow null minimization managers
@@ -2414,14 +2319,13 @@ public class DockingManager {
      * {@code null} value is passed into this method, the default
      * {@code MinimizationManager} provided by the framework is used instead.
      *
-     * @param mgrClass
-     *            the class name of the {@code MinimizationManager} to be
-     *            installed
+     * @param mgrClass the class name of the {@code MinimizationManager} to be
+     *                 installed
      * @see MinimizationManager
      * @see #getMinimizeManager()
      * @see #setMinimizeManager(String)
      */
-    public static void setMinimizeManager(String mgrClass) {
+    private static void setMinimizeManager(String mgrClass) {
         Object instance = Utilities.getInstance(mgrClass);
         setMinimizeManager((MinimizationManager) instance);
     }
@@ -2431,9 +2335,8 @@ public class DockingManager {
      * to
      * {@code FloatPolicyManager.setGlobalFloatingEnabled(boolean globalFloatingEnabled)}.
      *
-     * @param enabled
-     *            {@code true} if global floating support should be enabled,
-     *            {@code false} otherwise.
+     * @param enabled {@code true} if global floating support should be enabled,
+     *                {@code false} otherwise.
      * @see FloatPolicyManager#setGlobalFloatingEnabled(boolean)
      * @see FloatPolicyManager#isGlobalFloatingEnabled()
      */
@@ -2460,10 +2363,9 @@ public class DockingManager {
      * As such, there are multiple "scopes" at which this property may be
      * overridden.
      *
-     * @param allowed
-     *            {@code true} if the default setting for {@code DockingPorts}
-     *            should allow a tabbed layout for a single {@code Dockable} in
-     *            the CENTER region; {@code false} otherwise.
+     * @param allowed {@code true} if the default setting for {@code DockingPorts}
+     *                should allow a tabbed layout for a single {@code Dockable} in
+     *                the CENTER region; {@code false} otherwise.
      * @see PropertyManager#getDockingPortRoot()
      * @see org.flexdock.docking.props.DockingPortPropertySet#setSingleTabsAllowed(boolean)
      */
@@ -2493,13 +2395,12 @@ public class DockingManager {
      * implementation. If this method is passed a {@code null} argument, the
      * default {@code LayoutManager} is used instead.
      *
-     * @param mgr
-     *            the {@code LayoutManager} to install.
+     * @param mgr the {@code LayoutManager} to install.
      * @see LayoutManager
      * @see #setLayoutManager(String)
      * @see #getLayoutManager()
      */
-    public static void setLayoutManager(LayoutManager mgr) {
+    private static void setLayoutManager(LayoutManager mgr) {
         DockingManager dockingManager = getDockingManager();
         if (mgr == null) {
             // do not allow a null layout manager.
@@ -2540,13 +2441,12 @@ public class DockingManager {
      * implementation. If this method is passed a {@code null} argument, the
      * default {@code LayoutManager} is used instead.
      *
-     * @param mgrClass
-     *            the class name of the {@code LayoutManager} to install.
+     * @param mgrClass the class name of the {@code LayoutManager} to install.
      * @see LayoutManager
      * @see #setLayoutManager(LayoutManager)
      * @see #getLayoutManager()
      */
-    public static void setLayoutManager(String mgrClass) {
+    private static void setLayoutManager(String mgrClass) {
         Object instance = Utilities.getInstance(mgrClass);
         setLayoutManager((LayoutManager) instance);
     }
@@ -2568,12 +2468,10 @@ public class DockingManager {
      * their own specific {@code DockingStrategy} mapping.
      * <p>
      *
-     * @param classKey
-     *            the {@code Class} whose {@code DockingStrategy} association we
-     *            wish to set
-     * @param strategy
-     *            the {@code DockingStrategy} to be associated with the
-     *            specified {@code Class}.
+     * @param classKey the {@code Class} whose {@code DockingStrategy} association we
+     *                 wish to set
+     * @param strategy the {@code DockingStrategy} to be associated with the
+     *                 specified {@code Class}.
      * @see #getDockingStrategy(Class)
      * @see #getDockingStrategy(Object)
      * @see ClassMapping#addClassMapping(Class, Class, Object)
@@ -2600,7 +2498,7 @@ public class DockingManager {
      * returns {@code false} with no action taken. Otherwise, this method
      * returns {@code true} if the undocking operation was successful and
      * {@code false} if the undocking operation could not be completed.
-     *
+     * <p>
      * This method determines the {@code DockingStrategy} to be used for
      * {@code DockingPort} containing the specified {@code Dockable} and defers
      * processing to the {@code undock(Dockable dockable)} method on the
@@ -2612,10 +2510,9 @@ public class DockingManager {
      * a {@code DockingPort} implementation class and a customized
      * {@code DockingStrategy}.
      *
-     * @param dockable
-     *            the {@code Dockable} to be undocked.
+     * @param dockable the {@code Dockable} to be undocked.
      * @return {@code true} if the undocking operation was successful,
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see DockingStrategy#undock(Dockable)
      * @see #getDockingStrategy(Object)
      * @see #setDockingStrategy(Class, DockingStrategy)
@@ -2658,9 +2555,8 @@ public class DockingManager {
      * If the specified {@code Dockable} is {@code null}, then no
      * {@code Exception} is thrown and no action is taken.
      *
-     * @param dockable
-     *            the {@code Dockable} whose drag sources are to be checked for
-     *            {@code DragManagers} and updated accordingly.
+     * @param dockable the {@code Dockable} whose drag sources are to be checked for
+     *                 {@code DragManagers} and updated accordingly.
      * @see #registerDockable(Dockable)
      * @see Dockable#getDragSources()
      * @see DragManager
@@ -2698,7 +2594,7 @@ public class DockingManager {
         return getDockingManager().defaultSiblingSize;
     }
 
-    public static void setDefaultSiblingSize(float size) {
+    private static void setDefaultSiblingSize(float size) {
         size = Math.max(size, 0);
         size = Math.min(size, 1);
         getDockingManager().defaultSiblingSize = size;
@@ -2722,7 +2618,7 @@ public class DockingManager {
      * @param comp
      * @see #toggleMaximized(Dockable)
      */
-    public static void toggleMaximized(Component comp) {
+    static void toggleMaximized(Component comp) {
         Dockable dockable = getDockable(comp);
         if (dockable == null) {
             return;
@@ -2751,7 +2647,7 @@ public class DockingManager {
         if (state != null) {
             if (state.getDockable() != dockable) {
                 throw new IllegalStateException(
-                    "Can't maximize while different dockable is maximized");
+                        "Can't maximize while different dockable is maximized");
                 // maybe silently switch maximized dockables instead?
             }
             restoreFromMaximized(dockable, rootPort, state);
@@ -2760,7 +2656,7 @@ public class DockingManager {
         }
     }
 
-    public static boolean isMaximized(Dockable dockable) {
+    private static boolean isMaximized(Dockable dockable) {
         DockingPort rootPort = getRootDockingPort(dockable.getComponent());
         MaximizedState state = getMaximizedState(rootPort);
 
@@ -2778,7 +2674,7 @@ public class DockingManager {
     }
 
     private static void restoreFromMaximized(Dockable dockable,
-            DockingPort rootPort, MaximizedState state) {
+                                             DockingPort rootPort, MaximizedState state) {
 
         // restore original state in reverse order than maximizing it
         // (otherwise this will not work if original port and root port are

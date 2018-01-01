@@ -27,7 +27,6 @@ import org.flexdock.docking.event.DockingEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import static org.flexdock.docking.DockingConstants.CENTER_REGION;
@@ -39,9 +38,9 @@ import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 public class FloatingDockingPort extends DefaultDockingPort {
     private static final Set EMPTY_SET = new HashSet(0);
     protected DockingFrame frame;
-    protected FrameDragListener dragListener;
+    private FrameDragListener dragListener;
 
-    public FloatingDockingPort(DockingFrame frame, String persistentId) {
+    FloatingDockingPort(DockingFrame frame, String persistentId) {
         super(persistentId);
         getDockingProperties().setSingleTabsAllowed(true);
         setTabsAsDragSource(true);
@@ -104,7 +103,7 @@ public class FloatingDockingPort extends DefaultDockingPort {
         }
     }
 
-    protected void toggleListeners(Component comp, boolean add) {
+    private void toggleListeners(Component comp, boolean add) {
         Dockable dockable = DockingManager.getDockable(comp);
         if(add) {
             installListeners(dockable);
@@ -113,10 +112,10 @@ public class FloatingDockingPort extends DefaultDockingPort {
         }
     }
 
-    protected void installListeners(Dockable dockable) {
+    private void installListeners(Dockable dockable) {
         Set frameDraggers = getFrameDragSources(dockable);
-        for(Iterator it=frameDraggers.iterator(); it.hasNext();) {
-            Component frameDragSrc = (Component)it.next();
+        for (Object frameDragger : frameDraggers) {
+            Component frameDragSrc = (Component) frameDragger;
             frameDragSrc.addMouseListener(dragListener);
             frameDragSrc.addMouseMotionListener(dragListener);
         }
@@ -124,10 +123,10 @@ public class FloatingDockingPort extends DefaultDockingPort {
         dockable.addDockingListener(this);
     }
 
-    protected void uninstallListeners(Dockable dockable) {
+    private void uninstallListeners(Dockable dockable) {
         Set frameDraggers = getFrameDragSources(dockable);
-        for(Iterator it=frameDraggers.iterator(); it.hasNext();) {
-            Component frameDragSrc = (Component)it.next();
+        for (Object frameDragger : frameDraggers) {
+            Component frameDragSrc = (Component) frameDragger;
             frameDragSrc.removeMouseListener(dragListener);
             frameDragSrc.removeMouseMotionListener(dragListener);
         }

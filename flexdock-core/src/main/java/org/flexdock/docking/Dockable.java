@@ -21,14 +21,14 @@
  */
 package org.flexdock.docking;
 
-import java.awt.Component;
-import java.beans.PropertyChangeListener;
-import java.util.List;
-import java.util.Set;
-
 import org.flexdock.docking.event.DockingListener;
 import org.flexdock.docking.event.DockingMonitor;
 import org.flexdock.docking.props.DockablePropertySet;
+
+import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This interface is designed to specify the API's required by
@@ -42,6 +42,8 @@ public interface Dockable extends DockingListener, DockingMonitor {
 
     /**
      * A constant property key to signify that a component is dockable.
+     *
+     * @deprecated Won't be needed once the adapter classes are removed
      */
     String DOCKABLE_INDICATOR = "Dockable.DOCKABLE_INDICATOR";
 
@@ -50,8 +52,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * added with {@code putClientProperty} will return a non-{@code null}
      * value.
      *
-     * @param key
-     *            the key that is being queried
+     * @param key the key that is being queried
      * @return the value of this property or {@code null}
      * @see javax.swing.JComponent#getClientProperty(java.lang.Object)
      */
@@ -74,8 +75,8 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * If not currently docked, this method will return null.
      *
      * @return the docking port this dockable resides in, or {@code null} if the
-     *         dockable is not currently docked (i.e. in the middle of a drag
-     *         operation).
+     * dockable is not currently docked (i.e. in the middle of a drag
+     * operation).
      */
     DockingPort getDockingPort();
 
@@ -85,7 +86,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * returned by {@code getComponent()}.
      *
      * @return a list containing the components that may be used to drag this
-     *         dockable.
+     * dockable.
      */
     List getDragSources();
 
@@ -101,7 +102,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * any "drag-to-dock" behavior while the Dockable is in a floating state.
      *
      * @return a set containing the components that may be used to drag the
-     *         frame this dockable resides in, if the dockable is floating.
+     * frame this dockable resides in, if the dockable is floating.
      */
     Set getFrameDragSources();
 
@@ -120,7 +121,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * method may <b>not</b> return a {@code null} reference.
      *
      * @return the persistence id for this dockable. This id ensures that only
-     *         one copy of a given dockable will exist.
+     * one copy of a given dockable will exist.
      */
     String getPersistentId();
 
@@ -128,13 +129,11 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * Adds an arbitrary key/value "client property" to this {@code Dockable}.
      * {@code null} values are allowed.
      *
-     * @param key
-     *            the new client property key.
-     * @param value
-     *            the new client property value; if <code>null</code> this
-     *            method will remove the property.
+     * @param key   the new client property key.
+     * @param value the new client property value; if <code>null</code> this
+     *              method will remove the property.
      * @see javax.swing.JComponent#putClientProperty(java.lang.Object,
-     *      java.lang.Object)
+     * java.lang.Object)
      */
     void putClientProperty(Object key, Object value);
 
@@ -151,8 +150,8 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * {@code PropertyManager.getDockablePropertySet(this)}.
      *
      * @return the {@code DockablePropertySet} associated with this
-     *         {@code Dockable} This method may not return a {@code null}
-     *         reference.
+     * {@code Dockable} This method may not return a {@code null}
+     * reference.
      * @see org.flexdock.docking.props.DockablePropertySet
      * @see org.flexdock.docking.props.PropertyManager#getDockablePropertySet(Dockable)
      */
@@ -168,10 +167,9 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * recommended approach is to use the default implementation with the
      * following line: <p> {@code return DockingManager.dock(dockable, this);}
      *
-     * @param dockable
-     *            the {@code Dockable} to dock relative to this {@code Dockable}
+     * @param dockable the {@code Dockable} to dock relative to this {@code Dockable}
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see #dock(Dockable, String)
      * @see #dock(Dockable, String, float)
      * @see DockingManager#dock(Dockable, Dockable)
@@ -192,13 +190,11 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * following line: <p>
      * {@code return DockingManager.dock(dockable, this, relativeRegion);}
      *
-     * @param dockable
-     *            the {@code Dockable} to dock relative to this {@code Dockable}
-     * @param relativeRegion
-     *            the docking region into which to dock the specified
-     *            {@code Dockable}
+     * @param dockable       the {@code Dockable} to dock relative to this {@code Dockable}
+     * @param relativeRegion the docking region into which to dock the specified
+     *                       {@code Dockable}
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see #dock(Dockable, String, float)
      * @see DockingManager#dock(Dockable, Dockable, String)
      */
@@ -222,16 +218,13 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * <p>
      * {@code return DockingManager.dock(dockable, this, relativeRegion, ratio);}
      *
-     * @param dockable
-     *            the {@code Dockable} to dock relative to this {@code Dockable}
-     * @param relativeRegion
-     *            the docking region into which to dock the specified
-     *            {@code Dockable}
-     * @param ratio
-     *            the proportion of available space in the resulting layout to
-     *            allot to the new sibling {@code Dockable}.
+     * @param dockable       the {@code Dockable} to dock relative to this {@code Dockable}
+     * @param relativeRegion the docking region into which to dock the specified
+     *                       {@code Dockable}
+     * @param ratio          the proportion of available space in the resulting layout to
+     *                       allot to the new sibling {@code Dockable}.
      * @return {@code true} if the docking operation was successful;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      * @see DockingManager#dock(Dockable, Dockable, String, float)
      */
     boolean dock(Dockable dockable, String relativeRegion, float ratio);
@@ -244,9 +237,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * <p>
      * If listener is null, no exception is thrown and no action is performed.
      *
-     * @param listener
-     *            the PropertyChangeListener to be added
-     *
+     * @param listener the PropertyChangeListener to be added
      * @see #removePropertyChangeListener(PropertyChangeListener)
      */
     void addPropertyChangeListener(PropertyChangeListener listener);
@@ -258,9 +249,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * <p>
      * If listener is null, no exception is thrown and no action is performed.
      *
-     * @param listener
-     *            the PropertyChangeListener to be removed
-     *
+     * @param listener the PropertyChangeListener to be removed
      * @see #addPropertyChangeListener
      */
     void removePropertyChangeListener(PropertyChangeListener listener);
