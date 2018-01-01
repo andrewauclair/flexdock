@@ -19,21 +19,19 @@
  */
 package org.flexdock.docking.defaults;
 
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.RegionChecker;
 
+import java.awt.*;
+
+import static org.flexdock.docking.DockingConstants.*;
+
 /**
  * @author Christopher Butler
  */
-public class DefaultRegionChecker implements RegionChecker, DockingConstants {
+public class DefaultRegionChecker implements RegionChecker {
 
     /**
      * Returns the docking region of the supplied {@code Component} that

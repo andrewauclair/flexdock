@@ -19,25 +19,7 @@
  */
 package org.flexdock.docking.state;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.Window;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-
-
-
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.defaults.DockingSplitPane;
@@ -45,11 +27,19 @@ import org.flexdock.docking.state.tree.SplitNode;
 import org.flexdock.util.DockingUtility;
 import org.flexdock.util.SwingUtility;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.*;
+import java.util.List;
+
+import static org.flexdock.docking.DockingConstants.*;
+
 /**
  * @author Christopher Butler
  */
 @SuppressWarnings(value = { "serial" })
-public class DockingPath implements Cloneable, DockingConstants, Serializable {
+public class DockingPath implements Cloneable, Serializable {
 
     public static final String RESTORE_PATH_KEY = "DockingPath.RESTORE_PATH_KEY";
 
@@ -117,7 +107,7 @@ public class DockingPath implements Cloneable, DockingConstants, Serializable {
 
     private static SplitNode createNode(DockingPort port, JSplitPane split) {
         int orientation = split.getOrientation();
-        boolean topLeft = split.getLeftComponent()==port? true: false;
+        boolean topLeft = split.getLeftComponent() == port;
 
         int region = 0;
         String siblingId = null;

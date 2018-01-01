@@ -21,23 +21,6 @@
  */
 package org.flexdock.docking;
 
-import java.awt.Component;
-import java.awt.Window;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.io.IOException;
-import java.util.EventListener;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.WeakHashMap;
-
-import javax.swing.SwingUtilities;
-
 import org.flexdock.docking.activation.ActiveDockableListener;
 import org.flexdock.docking.adapter.AdapterFactory;
 import org.flexdock.docking.adapter.DockingAdapter;
@@ -53,19 +36,21 @@ import org.flexdock.docking.event.hierarchy.RootDockingPortInfo;
 import org.flexdock.docking.floating.policy.FloatPolicyManager;
 import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.docking.props.PropertyManager;
-import org.flexdock.docking.state.DockingState;
-import org.flexdock.docking.state.FloatManager;
+import org.flexdock.docking.state.*;
 import org.flexdock.docking.state.LayoutManager;
-import org.flexdock.docking.state.MinimizationManager;
-import org.flexdock.docking.state.PersistenceException;
 import org.flexdock.event.EventManager;
 import org.flexdock.event.RegistrationEvent;
-import org.flexdock.util.ClassMapping;
-import org.flexdock.util.DockingUtility;
-import org.flexdock.util.ResourceManager;
-import org.flexdock.util.RootWindow;
-import org.flexdock.util.SwingUtility;
-import org.flexdock.util.Utilities;
+import org.flexdock.util.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
+
+import static org.flexdock.docking.DockingConstants.*;
 
 /**
  * This class is used as a public facade into the framework docking system. It
@@ -98,7 +83,7 @@ import org.flexdock.util.Utilities;
  *
  * @author Christopher Butler
  */
-public class DockingManager implements DockingConstants {
+public class DockingManager {
 
     public static final String MINIMIZE_MANAGER = "minimize.manager";
 
@@ -1439,7 +1424,7 @@ public class DockingManager implements DockingConstants {
     public static boolean restoreLayout(boolean loadFromStorage)
     throws IOException, PersistenceException {
         LayoutManager mgr = getLayoutManager();
-        return mgr == null ? false : mgr.restore(loadFromStorage);
+        return mgr != null && mgr.restore(loadFromStorage);
     }
 
     private static Dockable loadAndRegister(String id) {
@@ -1638,7 +1623,7 @@ public class DockingManager implements DockingConstants {
 
     private static Dockable getDockableImpl(String id) {
         synchronized (DOCKABLES_BY_ID) {
-            return id == null ? null : (Dockable) DOCKABLES_BY_ID.get(id);
+            return id == null ? null : DOCKABLES_BY_ID.get(id);
         }
     }
 

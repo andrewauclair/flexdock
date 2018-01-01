@@ -19,20 +19,20 @@
  */
 package org.flexdock.docking.state.tree;
 
-import java.awt.Component;
-
-import javax.swing.JSplitPane;
-
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.DockingStrategy;
 import org.flexdock.docking.state.LayoutNode;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static org.flexdock.docking.DockingConstants.*;
 
 /**
  * @author Christopher Butler
  */
 @SuppressWarnings(value = { "serial" })
-public class SplitNode extends DockingNode implements DockingConstants {
+public class SplitNode extends DockingNode {
 
     private int orientation;
     private int region;

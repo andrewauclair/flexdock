@@ -19,26 +19,7 @@
  */
 package org.flexdock.docking.defaults;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Map;
-
-import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
-
-import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
-import org.flexdock.docking.DockingManager;
-import org.flexdock.docking.DockingPort;
-import org.flexdock.docking.DockingStrategy;
-import org.flexdock.docking.RegionChecker;
+import org.flexdock.docking.*;
 import org.flexdock.docking.drag.DragManager;
 import org.flexdock.docking.drag.DragOperation;
 import org.flexdock.docking.event.DockingEvent;
@@ -50,11 +31,20 @@ import org.flexdock.util.DockingUtility;
 import org.flexdock.util.RootWindow;
 import org.flexdock.util.SwingUtility;
 
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Map;
+
+import static org.flexdock.docking.DockingConstants.*;
+
 /**
  * @author Christopher Butler
  */
-public class DefaultDockingStrategy implements DockingStrategy,
-    DockingConstants {
+public class DefaultDockingStrategy implements DockingStrategy {
 
     public static final String PREFERRED_PROPORTION = "DefaultDockingStrategy.PREFERRED_PROPORTION";
 
@@ -483,11 +473,7 @@ public class DefaultDockingStrategy implements DockingStrategy,
         // TODO: break this check out into a separate DropPolicy class.
         // should be any customizable criteria, not hardcoded to checking
         // for being outside the bounds of a window
-        if (token.isOverWindow()) {
-            return false;
-        }
-
-        return true;
+        return !token.isOverWindow();
     }
 
 

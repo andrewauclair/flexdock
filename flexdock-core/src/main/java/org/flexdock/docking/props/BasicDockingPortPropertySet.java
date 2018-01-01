@@ -19,17 +19,18 @@
  */
 package org.flexdock.docking.props;
 
-import java.util.Map;
-
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.RegionChecker;
 import org.flexdock.util.TypedHashtable;
+
+import java.util.Map;
+
+import static org.flexdock.docking.DockingConstants.*;
 
 /**
  * @author Christopher Butler
  */
 @SuppressWarnings(value = { "serial" })
-public class BasicDockingPortPropertySet extends TypedHashtable implements DockingPortPropertySet, DockingConstants {
+public class BasicDockingPortPropertySet extends TypedHashtable implements DockingPortPropertySet {
 
     public static String getRegionInsetKey(String region) {
         if(NORTH_REGION.equals(region)) {

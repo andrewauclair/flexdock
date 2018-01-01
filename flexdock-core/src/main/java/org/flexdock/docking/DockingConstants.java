@@ -19,8 +19,7 @@
  */
 package org.flexdock.docking;
 
-import javax.swing.JSplitPane;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 /**
  * A collection of constants used by flexdock.
@@ -28,7 +27,6 @@ import javax.swing.SwingConstants;
  * @author Christopher Butler
  */
 public interface DockingConstants {
-    String DOCKING_ID = "docking-id";
 
     /**
      * Used when a sibling does not specify a size preference when docking

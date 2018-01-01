@@ -19,22 +19,22 @@
  */
 package org.flexdock.docking.props;
 
+import org.flexdock.docking.Dockable;
+import org.flexdock.util.TypedHashtable;
+import org.flexdock.util.Utilities;
+
+import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Map;
 
-import javax.swing.Icon;
-
-import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
-import org.flexdock.util.TypedHashtable;
-import org.flexdock.util.Utilities;
+import static org.flexdock.docking.DockingConstants.*;
 
 /**
  * @author Christopher Butler
  */
 @SuppressWarnings(value = { "serial" })
-public class BasicDockablePropertySet extends TypedHashtable implements DockablePropertySet, DockingConstants {
+public class BasicDockablePropertySet extends TypedHashtable implements DockablePropertySet {
     private String dockingId;
     private PropertyChangeSupport changeSupport;
 

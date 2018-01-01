@@ -19,31 +19,26 @@
  */
 package org.flexdock.docking.floating.frames;
 
-import java.applet.Applet;
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.Frame;
-import java.awt.Window;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-
-import javax.swing.JDialog;
-import javax.swing.JRootPane;
-import javax.swing.SwingUtilities;
-
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.state.FloatingGroup;
 import org.flexdock.util.RootWindow;
+
+import javax.swing.*;
+import java.applet.Applet;
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 /**
  * @author Andreas Ernst
  * @author Christopher Butler
  */
 @SuppressWarnings(value = { "serial" })
-public class DockingFrame extends JDialog implements DockingConstants {
+public class DockingFrame extends JDialog {
     private static final BoundsMonitor BOUNDS_MONITOR = new BoundsMonitor();
 
     private FloatingDockingPort dockingPort;

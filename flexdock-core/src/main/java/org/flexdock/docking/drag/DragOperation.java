@@ -19,21 +19,18 @@
  */
 package org.flexdock.docking.drag;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-import java.util.EventListener;
-
-import javax.swing.SwingUtilities;
-
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 
-public class DragOperation implements DockingConstants {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.EventListener;
+
+import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
+
+public class DragOperation {
     public static final String DRAG_IMAGE = "DragOperation.DRAG_IMAGE";
 
     private Component dragSource;

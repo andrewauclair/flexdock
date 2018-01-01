@@ -19,34 +19,28 @@
  */
 package org.flexdock.docking.activation;
 
-import java.awt.AWTEvent;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.KeyboardFocusManager;
-import java.awt.Point;
-import java.awt.Toolkit;
+import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingManager;
+import org.flexdock.util.DockingUtility;
+import org.flexdock.util.SwingUtility;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
-import org.flexdock.docking.DockingManager;
-import org.flexdock.util.DockingUtility;
-import org.flexdock.util.SwingUtility;
+import static org.flexdock.docking.DockingConstants.ACTIVE_WINDOW;
+import static org.flexdock.docking.DockingConstants.PERMANENT_FOCUS_OWNER;
 
 /**
  * @author Christopher Butler
  */
-public class ActiveDockableListener implements DockingConstants, PropertyChangeListener, ChangeListener, AWTEventListener {
+public class ActiveDockableListener implements PropertyChangeListener, ChangeListener, AWTEventListener {
     private static final ActiveDockableListener SINGLETON = new ActiveDockableListener();
     private static final HashSet PROP_EVENTS = new HashSet();
 

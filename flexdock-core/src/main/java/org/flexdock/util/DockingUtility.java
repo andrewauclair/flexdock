@@ -19,16 +19,6 @@
  */
 package org.flexdock.util;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Point;
-
-import javax.swing.JComponent;
-import javax.swing.JRootPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
@@ -38,10 +28,15 @@ import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.docking.state.DockingState;
 import org.flexdock.docking.state.MinimizationManager;
 
+import javax.swing.*;
+import java.awt.*;
+
+import static org.flexdock.docking.DockingConstants.*;
+
 /**
  * @author Christopher Butler
  */
-public class DockingUtility implements DockingConstants {
+public class DockingUtility {
     private DockingUtility() {
         // does nothing
     }

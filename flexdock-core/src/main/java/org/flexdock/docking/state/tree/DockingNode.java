@@ -19,17 +19,15 @@
  */
 package org.flexdock.docking.state.tree;
 
-import java.util.Enumeration;
+import org.flexdock.docking.state.LayoutNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-
-import org.flexdock.docking.DockingConstants;
-import org.flexdock.docking.state.LayoutNode;
+import java.util.Enumeration;
 
 /**
  * @author Christopher Butler
  */
-public abstract class DockingNode extends DefaultMutableTreeNode implements LayoutNode, DockingConstants {
+public abstract class DockingNode extends DefaultMutableTreeNode implements LayoutNode {
 
     @Override
     public Object getUserObject() {

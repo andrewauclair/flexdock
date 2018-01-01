@@ -19,20 +19,7 @@
  */
 package org.flexdock.docking.drag;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.util.Map;
-
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.drag.effects.DragPreview;
@@ -40,8 +27,14 @@ import org.flexdock.docking.drag.effects.EffectsManager;
 import org.flexdock.util.NestedComponents;
 import org.flexdock.util.RootWindow;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
+
+import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
+
 @SuppressWarnings(value = {"serial"})
-public class DragGlasspane extends JComponent implements DockingConstants {
+public class DragGlasspane extends JComponent {
 	
 	private NestedComponents currentDropTargets;
 	private Component cachedGlassPane;

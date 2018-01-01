@@ -19,19 +19,22 @@
  */
 package org.flexdock.docking.state;
 
-import java.awt.Point;
-import java.io.Serializable;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
+
+import java.awt.*;
+import java.io.Serializable;
+
+import static org.flexdock.docking.DockingConstants.UNINITIALIZED_RATIO;
+import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  *
  * @author Mateusz Szczap
  */
 @SuppressWarnings(value = { "serial" })
-public class DockingState implements Cloneable, Serializable, DockingConstants {
+public class DockingState implements Cloneable, Serializable {
 
     private String dockableId;
 
