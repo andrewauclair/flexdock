@@ -19,20 +19,15 @@
  */
 package org.flexdock.plaf.common.border;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Point;
-
 import javax.swing.border.Border;
+import java.awt.*;
 
-import org.flexdock.docking.DockingConstants;
+import static org.flexdock.docking.DockingConstants.*;
 
 /**
  * @author Christopher Butler
  */
-public class SlideoutBorder implements Border, DockingConstants {
+public class SlideoutBorder implements Border {
     private int orientation;
     public static final Color WIN32_GRAY = new Color(212, 208, 200);
 
@@ -42,7 +37,7 @@ public class SlideoutBorder implements Border, DockingConstants {
     @Override
     public Insets getBorderInsets(Component c) {
         Insets insets = new Insets(0, 0, 0, 0);
-        switch(orientation) {
+        switch (orientation) {
             case LEFT:
                 insets.right = 2;
                 break;
@@ -64,6 +59,7 @@ public class SlideoutBorder implements Border, DockingConstants {
     public boolean isBorderOpaque() {
         return true;
     }
+
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Color outer = Color.BLACK;
@@ -81,30 +77,30 @@ public class SlideoutBorder implements Border, DockingConstants {
         Point inner1 = new Point(0, 0);
         Point inner2 = new Point(0, 0);
 
-        switch(orientation) {
+        switch (orientation) {
             case LEFT:
-                outer1.setLocation(w-1, 0);
-                outer2.setLocation(w-1, h-1);
-                inner1.setLocation(w-2, 0);
-                inner2.setLocation(w-2, h-1);
+                outer1.setLocation(w - 1, 0);
+                outer2.setLocation(w - 1, h - 1);
+                inner1.setLocation(w - 2, 0);
+                inner2.setLocation(w - 2, h - 1);
                 break;
             case RIGHT:
                 outer1.setLocation(0, 0);
-                outer2.setLocation(0, h-1);
+                outer2.setLocation(0, h - 1);
                 inner1.setLocation(1, 0);
-                inner2.setLocation(1, h-1);
+                inner2.setLocation(1, h - 1);
                 break;
             case TOP:
-                outer1.setLocation(0, h-1);
-                outer2.setLocation(w-1, h-1);
-                inner1.setLocation(0, h-2);
-                inner2.setLocation(w-1, h-2);
+                outer1.setLocation(0, h - 1);
+                outer2.setLocation(w - 1, h - 1);
+                inner1.setLocation(0, h - 2);
+                inner2.setLocation(w - 1, h - 2);
                 break;
             case BOTTOM:
                 outer1.setLocation(0, 0);
-                outer2.setLocation(w-1, 0);
+                outer2.setLocation(w - 1, 0);
                 inner1.setLocation(0, 1);
-                inner2.setLocation(w-1, 1);
+                inner2.setLocation(w - 1, 1);
                 break;
         }
 
@@ -119,6 +115,7 @@ public class SlideoutBorder implements Border, DockingConstants {
     public int getOrientation() {
         return orientation;
     }
+
     public void setOrientation(int orientation) {
         this.orientation = orientation;
     }

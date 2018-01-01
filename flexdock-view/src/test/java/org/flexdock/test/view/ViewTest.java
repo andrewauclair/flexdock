@@ -3,36 +3,6 @@
  */
 package org.flexdock.test.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.border.EmptyBorder;
-
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.plaf.Configurator;
 import org.flexdock.plaf.PlafManager;
 import org.flexdock.plaf.theme.Theme;
@@ -42,11 +12,21 @@ import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
 import org.w3c.dom.Element;
 
+import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.*;
+import java.util.List;
+
+import static org.flexdock.docking.DockingConstants.*;
+
 /**
  * @author Christopher Butler
  * @author Claudio Romano
  */
-public class ViewTest implements DockingConstants {
+public class ViewTest {
 
     private JList viewUIList;
     private JList titlebarUIList;
@@ -70,7 +50,7 @@ public class ViewTest implements DockingConstants {
         JFrame f = new JFrame();
         f.setJMenuBar(buildMenuBar());
         f.setContentPane(buildContent());
-        f.setSize( new Dimension( 800,600));
+        f.setSize(new Dimension(800, 600));
         SwingUtility.centerOnScreen(f);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
@@ -88,7 +68,7 @@ public class ViewTest implements DockingConstants {
         View view2 = buildView("plafchooser.view", "Plaf Chooser", buidViewContentPane());
 
         viewport.dock(view2);
-        view2.dock( view1, EAST_REGION, .2f);
+        view2.dock(view1, EAST_REGION, .2f);
 
         return content;
     }
@@ -120,7 +100,7 @@ public class ViewTest implements DockingConstants {
 
     private JComponent buidViewContentPane() {
         JPanel contentPane = new JPanel(new BorderLayout());
-        contentPane.setBorder( BorderFactory.createEmptyBorder( 5, 5, 5, 5));
+        contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPane.add(buildLists(), BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -152,7 +132,7 @@ public class ViewTest implements DockingConstants {
     }
 
     private JComponent createUIListComp(String name, JList uiList) {
-        uiList.setSelectionMode( ListSelectionModel.SINGLE_SELECTION);
+        uiList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -160,7 +140,7 @@ public class ViewTest implements DockingConstants {
 
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(Color.LIGHT_GRAY);
-        header.setBorder( BorderFactory.createEmptyBorder(2,2,2,2));
+        header.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         header.add(new JLabel(name), BorderLayout.WEST);
 
         uiList.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -175,7 +155,7 @@ public class ViewTest implements DockingConstants {
     private Object[] getUIList(String tagName) {
         List tagNames = new ArrayList();
         HashMap elements = Configurator.getNamedElementsByTagName(tagName);
-        for (Iterator it = elements.keySet().iterator(); it.hasNext();) {
+        for (Iterator it = elements.keySet().iterator(); it.hasNext(); ) {
             Element elem = (Element) elements.get(it.next());
             tagNames.add(elem.getAttribute(Configurator.NAME_KEY));
         }
@@ -192,13 +172,13 @@ public class ViewTest implements DockingConstants {
         @Override
         public void actionPerformed(ActionEvent arg0) {
             Properties p = new Properties();
-            if( viewUIList.getSelectedValue() != null) {
+            if (viewUIList.getSelectedValue() != null) {
                 p.setProperty(UIFactory.VIEW_KEY, viewUIList.getSelectedValue().toString());
             }
-            if( titlebarUIList.getSelectedValue() != null) {
+            if (titlebarUIList.getSelectedValue() != null) {
                 p.setProperty(UIFactory.TITLEBAR_KEY, titlebarUIList.getSelectedValue().toString());
             }
-            if( buttonUIList.getSelectedValue() != null) {
+            if (buttonUIList.getSelectedValue() != null) {
                 p.setProperty(UIFactory.BUTTON_KEY, buttonUIList.getSelectedValue().toString());
             }
 
@@ -210,7 +190,7 @@ public class ViewTest implements DockingConstants {
 
     }
 
-    private  class ChangeLookAndFeelAction extends AbstractAction {
+    private class ChangeLookAndFeelAction extends AbstractAction {
 
         private LookAndFeelInfo lfInfo;
 

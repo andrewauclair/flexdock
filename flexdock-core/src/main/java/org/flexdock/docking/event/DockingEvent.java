@@ -19,14 +19,15 @@
  */
 package org.flexdock.docking.event;
 
-import java.awt.AWTEvent;
-import java.awt.Component;
-import java.util.Map;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.event.Event;
+
+import java.awt.*;
+import java.util.Map;
+
+import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * @author Kevin Duffey

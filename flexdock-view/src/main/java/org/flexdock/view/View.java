@@ -19,34 +19,7 @@
  */
 package org.flexdock.view;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.LayoutManager2;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
-import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
-import org.flexdock.docking.DockingManager;
-import org.flexdock.docking.DockingPort;
-import org.flexdock.docking.DockingStrategy;
+import org.flexdock.docking.*;
 import org.flexdock.docking.defaults.DefaultDockingStrategy;
 import org.flexdock.docking.event.DockingEvent;
 import org.flexdock.docking.event.DockingListener;
@@ -58,6 +31,19 @@ import org.flexdock.util.DockingUtility;
 import org.flexdock.util.ResourceManager;
 import org.flexdock.util.SwingUtility;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
+
 /**
  * The {@code View} class is slightly incompatible with {@code JComponent}.
  * Similar to JFC/Swing top-level containers, a {@code View} contains only a
@@ -66,28 +52,26 @@ import org.flexdock.util.SwingUtility;
  * convenience {@code add} and its variants, {@code remove(Component)} and
  * {@code setLayout} have been overridden to forward to the
  * {@code contentPane} as necessary. This means you can write:
- *
+ * <p>
  * <pre>
  * view.add(child);
  * </pre>
- *
+ * <p>
  * And the child will be added to the contentPane. The content pane will always
  * be non-null. Attempting to set it to null will cause the View to throw an
  * exception. The default content pane will not have a layout manager set.
  *
- * @see javax.swing.JFrame
- * @see javax.swing.JRootPane
- *
  * @author Christopher Butler
  * @author Karl Schaefer
+ * @see javax.swing.JFrame
+ * @see javax.swing.JRootPane
  */
-public class View extends JComponent implements Dockable, DockingConstants {
+public class View extends JComponent implements Dockable {
     protected class ViewLayout implements LayoutManager2, Serializable {
         /**
          * Returns the amount of space the layout would like to have.
          *
-         * @param parent
-         *            the Container for which this layout manager is being used
+         * @param parent the Container for which this layout manager is being used
          * @return a Dimension object containing the layout's preferred size
          */
         @Override
@@ -106,14 +90,13 @@ public class View extends JComponent implements Dockable, DockingConstants {
                 tpd = new Dimension(0, 0);
             }
             return new Dimension(Math.max(rd.width, tpd.width) + i.left
-                                 + i.right, rd.height + tpd.height + i.top + i.bottom);
+                    + i.right, rd.height + tpd.height + i.top + i.bottom);
         }
 
         /**
          * Returns the minimum amount of space the layout needs.
          *
-         * @param parent
-         *            the Container for which this layout manager is being used
+         * @param parent the Container for which this layout manager is being used
          * @return a Dimension object containing the layout's minimum size
          */
         @Override
@@ -131,14 +114,13 @@ public class View extends JComponent implements Dockable, DockingConstants {
                 tpd = new Dimension(0, 0);
             }
             return new Dimension(Math.max(rd.width, tpd.width) + i.left
-                                 + i.right, rd.height + tpd.height + i.top + i.bottom);
+                    + i.right, rd.height + tpd.height + i.top + i.bottom);
         }
 
         /**
          * Returns the maximum amount of space the layout can use.
          *
-         * @param target
-         *            the Container for which this layout manager is being used
+         * @param target the Container for which this layout manager is being used
          * @return a Dimension object containing the layout's maximum size
          */
         @Override
@@ -155,18 +137,17 @@ public class View extends JComponent implements Dockable, DockingConstants {
             } else {
                 // This is silly, but should stop an overflow error
                 rd = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE - i.top
-                                   - i.bottom - tpd.height - 1);
+                        - i.bottom - tpd.height - 1);
             }
             return new Dimension(Math.min(rd.width, tpd.width) + i.left
-                                 + i.right, rd.height + tpd.height + i.top + i.bottom);
+                    + i.right, rd.height + tpd.height + i.top + i.bottom);
         }
 
         /**
          * Instructs the layout manager to perform the layout for the specified
          * container.
          *
-         * @param parent
-         *            the Container for which this layout manager is being used
+         * @param parent the Container for which this layout manager is being used
          */
         @Override
         public void layoutContainer(Container parent) {
@@ -289,17 +270,17 @@ public class View extends JComponent implements Dockable, DockingConstants {
         DockingManager.registerDockable((Dockable) this);
 
         getActionMap().put(ACTION_TOGGLE_NEXT, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    SwingUtility.toggleFocus(+1);
-                }
-            });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtility.toggleFocus(+1);
+            }
+        });
         getActionMap().put(ACTION_TOGGLE_PREVIOUS, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    SwingUtility.toggleFocus(-1);
-                }
-            });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtility.toggleFocus(-1);
+            }
+        });
     }
 
     private static DockingStrategy createDockingStrategy() {
@@ -380,11 +361,9 @@ public class View extends JComponent implements Dockable, DockingConstants {
     /**
      * Sets the content pane for this view.
      *
-     * @param c
-     *            the container to use as the content pane.
-     * @throws IllegalArgumentException
-     *             if {@code c} is {@code null} or if {@code c} is the
-     *             {@code titlepane}.
+     * @param c the container to use as the content pane.
+     * @throws IllegalArgumentException if {@code c} is {@code null} or if {@code c} is the
+     *                                  {@code titlepane}.
      * @see #titlepane
      * @see #getTitlePane()
      */
@@ -415,13 +394,13 @@ public class View extends JComponent implements Dockable, DockingConstants {
 
     protected String getPreferredTitlebarUIName() {
         return ui instanceof ViewUI ? ((ViewUI) ui).getPreferredTitlebarUI()
-               : null;
+                : null;
     }
 
     public void setTitlebar(Titlebar titlebar) {
         if (titlebar != null && titlebar == contentPane) {
             throw new IllegalArgumentException(
-                "Cannot use the same component as both content pane and titlebar.");
+                    "Cannot use the same component as both content pane and titlebar.");
         }
         if (titlepane != null) {
             remove(titlepane);
@@ -616,7 +595,7 @@ public class View extends JComponent implements Dockable, DockingConstants {
     @Override
     public DockingListener[] getDockingListeners() {
         return (DockingListener[]) dockingListeners
-               .toArray(new DockingListener[0]);
+                .toArray(new DockingListener[0]);
     }
 
     @Override
@@ -661,7 +640,7 @@ public class View extends JComponent implements Dockable, DockingConstants {
         Component[] comps = titlepane.getComponents();
         for (int i = 0; i < comps.length; i++) {
             Button button = comps[i] instanceof Button ? (Button) comps[i]
-                            : null;
+                    : null;
             if (button != null) {
                 button.getModel().setRollover(false);
             }
@@ -684,8 +663,7 @@ public class View extends JComponent implements Dockable, DockingConstants {
     }
 
     public boolean isActionBlocked(String actionName) {
-        return actionName == null || blockedActions == null ? false
-               : blockedActions.contains(actionName);
+        return actionName != null && blockedActions != null && blockedActions.contains(actionName);
     }
 
     private HashSet getBlockedActions() {
@@ -712,11 +690,10 @@ public class View extends JComponent implements Dockable, DockingConstants {
     }
 
     /**
-     * @param contentPaneCheckingEnabled
-     *            the contentPaneCheckingEnabled to set
+     * @param contentPaneCheckingEnabled the contentPaneCheckingEnabled to set
      */
     protected void setContentPaneCheckingEnabled(
-        boolean contentPaneCheckingEnabled) {
+            boolean contentPaneCheckingEnabled) {
         this.contentPaneCheckingEnabled = contentPaneCheckingEnabled;
     }
 
@@ -724,8 +701,7 @@ public class View extends JComponent implements Dockable, DockingConstants {
      * Sets the <code>LayoutManager</code>. Overridden to conditionally
      * forward the call to the <code>contentPane</code>.
      *
-     * @param manager
-     *            the <code>LayoutManager</code>
+     * @param manager the <code>LayoutManager</code>
      * @see #setContentPaneCheckingEnabled
      */
     @Override

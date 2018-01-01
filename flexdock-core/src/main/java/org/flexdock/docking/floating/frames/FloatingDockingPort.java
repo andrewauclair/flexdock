@@ -19,18 +19,18 @@
  */
 package org.flexdock.docking.floating.frames;
 
-import java.awt.Component;
-import java.awt.Point;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.JTabbedPane;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.event.DockingEvent;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 /**
  * @author Christopher Butler

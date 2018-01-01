@@ -57,8 +57,6 @@ public interface DockingConstants {
      */
     String ACTIVE_WINDOW = "activeWindow";
 
-    String MOUSE_PRESSED = "mousePressed";
-
     /**
      * A constant representing a "pin/unpin" action. Such actions are added to
      * title bars to enable the pinning/unpinning effect. This is also used as
@@ -67,15 +65,12 @@ public interface DockingConstants {
      *
      * @see java.beans.PropertyChangeListener
      * @see Dockable#addPropertyChangeListener(java.beans.PropertyChangeListener)
-     * @see org.flexdock.view.Titlebar
      */
     String PIN_ACTION = "pin";
 
     /**
      * A constant representing a "close" action. Such actions are added to title
      * bars to enable the close effect.
-     *
-     * @see org.flexdock.view.Titlebar
      */
     String CLOSE_ACTION = "close";
 

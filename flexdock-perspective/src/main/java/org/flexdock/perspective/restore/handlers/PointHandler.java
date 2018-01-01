@@ -18,15 +18,7 @@
  */
 package org.flexdock.perspective.restore.handlers;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Point;
-import java.util.Map;
-
-import javax.swing.SwingUtilities;
-
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.state.DockingState;
@@ -34,13 +26,19 @@ import org.flexdock.perspective.RestorationManager;
 import org.flexdock.util.NestedComponents;
 import org.flexdock.util.RootWindow;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
+
+import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
+
 /**
  * Created on 2005-05-26
  *
  * @author <a href="mailto:marius@eleritec.net">Christopher Butler</a>
  * @version $Id: PointHandler.java,v 1.5 2005-06-20 23:55:48 marius Exp $
  */
-public class PointHandler implements RestorationHandler, DockingConstants {
+public class PointHandler implements RestorationHandler {
 
     @Override
     public boolean restore(Dockable dockable, DockingState dockingState, Map context) {

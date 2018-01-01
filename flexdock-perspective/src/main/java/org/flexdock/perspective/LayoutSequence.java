@@ -19,23 +19,23 @@
  */
 package org.flexdock.perspective;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.state.DockingState;
 import org.flexdock.util.DockingUtility;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
+
 /**
  * @author Christopher Butler
  */
-public class LayoutSequence implements Cloneable, Serializable, DockingConstants {
+public class LayoutSequence implements Cloneable, Serializable {
 
     private List<DockingState> sequence;  // contains DockingState objects
 
@@ -45,8 +45,8 @@ public class LayoutSequence implements Cloneable, Serializable, DockingConstants
 
     public LayoutSequence(DockingState[] dockingStates) {
         this(dockingStates == null
-             ? new ArrayList()
-             : Arrays.asList(dockingStates));
+                ? new ArrayList()
+                : Arrays.asList(dockingStates));
     }
 
     private LayoutSequence(List<DockingState> list) {
@@ -70,17 +70,17 @@ public class LayoutSequence implements Cloneable, Serializable, DockingConstants
     }
 
     public void add(Dockable dockable, Dockable relativeParent, String region, float ratio) {
-        String dockableId = dockable==null? null: dockable.getPersistentId();
-        String parentId = relativeParent==null? null: relativeParent.getPersistentId();
+        String dockableId = dockable == null ? null : dockable.getPersistentId();
+        String parentId = relativeParent == null ? null : relativeParent.getPersistentId();
         add(dockableId, parentId, region, ratio);
     }
 
     public void add(String dockableId, String relativeParentId, String region, float ratio) {
-        if(dockableId==null) {
+        if (dockableId == null) {
             return;
         }
 
-        if(relativeParentId==null && sequence.size() > 0) {
+        if (relativeParentId == null && sequence.size() > 0) {
             throw new IllegalStateException("All calls to add() after the first dockable has been added MUST specify a relative dockable parent.");
         }
 
@@ -100,7 +100,7 @@ public class LayoutSequence implements Cloneable, Serializable, DockingConstants
     }
 
     public void apply(DockingPort port) {
-        if(port==null) {
+        if (port == null) {
             return;
         }
 
@@ -110,12 +110,12 @@ public class LayoutSequence implements Cloneable, Serializable, DockingConstants
         PerspectiveManager.clear(port);
         int len = sequence.size();
         Dockable[] dockables = new Dockable[len];
-        for(int i=0; i<len; i++) {
+        for (int i = 0; i < len; i++) {
             DockingState info = sequence.get(i);
             Dockable dockable = info.getDockable();
             dockables[i] = dockable;
             String region = info.getRegion();
-            if(i==0) {
+            if (i == 0) {
                 DockingManager.dock(info.getDockable(), port, info.getRegion());
                 continue;
             }
@@ -136,7 +136,7 @@ public class LayoutSequence implements Cloneable, Serializable, DockingConstants
     private ArrayList<DockingState> getSequenceClone() {
         ArrayList<DockingState> list = new ArrayList<>(sequence.size());
         for (DockingState info : sequence) {
-            list.add((DockingState)info.clone());
+            list.add((DockingState) info.clone());
         }
         return list;
     }

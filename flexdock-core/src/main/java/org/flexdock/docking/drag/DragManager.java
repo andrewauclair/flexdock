@@ -19,15 +19,6 @@
  */
 package org.flexdock.docking.drag;
 
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.util.EventListener;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
@@ -38,9 +29,16 @@ import org.flexdock.docking.floating.policy.FloatPolicyManager;
 import org.flexdock.event.EventManager;
 import org.flexdock.util.DockingUtility;
 
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.util.EventListener;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Christopher Butler
- *
  */
 public class DragManager extends MouseAdapter implements MouseMotionListener {
     private static final String DRAG_CONTEXT = "DragManager.DRAG_CONTEXT";
@@ -64,7 +62,7 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(dockable==null || dockable.getDockingProperties().isDockingEnabled()==Boolean.FALSE) {
+        if (dockable == null || dockable.getDockingProperties().isDockingEnabled() == Boolean.FALSE) {
             enabled = false;
         } else {
             toggleDragContext(true);
@@ -74,16 +72,16 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent evt) {
-        if(!enabled) {
+        if (!enabled) {
             return;
         }
 
-        if(dragOrigin==null) {
+        if (dragOrigin == null) {
             dragOrigin = evt.getPoint();
         }
 
-        if(pipeline==null || !pipeline.isOpen()) {
-            if(passedDragThreshold(evt)) {
+        if (pipeline == null || !pipeline.isOpen()) {
+            if (passedDragThreshold(evt)) {
                 openPipeline(evt);
             } else {
                 evt.consume();
@@ -95,7 +93,7 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 
     private boolean passedDragThreshold(MouseEvent evt) {
         double distance = dragOrigin.distance(evt.getPoint());
-        float threshold = dockable.getDockingProperties().getDragThreshold().floatValue();
+        float threshold = dockable.getDockingProperties().getDragThreshold();
         return distance > threshold;
     }
 
@@ -117,12 +115,12 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(pipeline==null || dockable.getDockingProperties().isDockingEnabled()==Boolean.FALSE) {
+        if (pipeline == null || dockable.getDockingProperties().isDockingEnabled() == Boolean.FALSE) {
             return;
         }
 
         finishDrag(dockable, pipeline.getDragToken(), e);
-        if(pipeline!=null) {
+        if (pipeline != null) {
             pipeline.close();
         }
         toggleDragContext(false);
@@ -131,7 +129,7 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
     }
 
 
-    protected void finishDrag(Dockable dockable, DragOperation token, MouseEvent mouseEvt) {
+    private void finishDrag(Dockable dockable, DragOperation token, MouseEvent mouseEvt) {
         DockingStrategy docker = DockingManager.getDockingStrategy(dockable);
         DockingPort currentPort = DockingUtility.getParentDockingPort(dockable);
         DockingPort targetPort = token.getTargetPort();
@@ -149,27 +147,10 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 
 
         // attempt to complete the docking operation
-        if(!evt.isConsumed()) {
+        if (!evt.isConsumed()) {
             docker.dock(dockable, targetPort, region, token);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     private static void initializeListenerCaching(DragOperation token) {
@@ -186,11 +167,11 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
         DragManager dragListener = token.getDragListener();
 
         // remove all of the MouseMotionListeners
-        for (int i = 0; i < cachedListeners.length; i++) {
-            dragSrc.removeMouseMotionListener((MouseMotionListener) cachedListeners[i]);
+        for (EventListener cachedListener : cachedListeners) {
+            dragSrc.removeMouseMotionListener((MouseMotionListener) cachedListener);
         }
         // then, re-add the DragManager
-        if(dragListener!=null) {
+        if (dragListener != null) {
             dragSrc.addMouseMotionListener(dragListener);
         }
     }
@@ -201,13 +182,13 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
         DragManager dragListener = token.getDragListener();
 
         // remove the pipeline listener
-        if(dragListener!=null) {
+        if (dragListener != null) {
             dragSrc.removeMouseMotionListener(dragListener);
         }
 
         // now, re-add all of the original MouseMotionListeners
-        for (int i = 0; i < cachedListeners.length; i++) {
-            dragSrc.addMouseMotionListener((MouseMotionListener) cachedListeners[i]);
+        for (EventListener cachedListener : cachedListeners) {
+            dragSrc.addMouseMotionListener((MouseMotionListener) cachedListener);
         }
     }
 
@@ -220,18 +201,18 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
     }
 
     public static Map getDragContext(Dockable dockable) {
-        Object obj = dockable==null? null: dockable.getClientProperty(DRAG_CONTEXT);
-        return obj instanceof Map? (Map)obj: null;
+        Object obj = dockable == null ? null : dockable.getClientProperty(DRAG_CONTEXT);
+        return obj instanceof Map ? (Map) obj : null;
     }
 
     private void toggleDragContext(boolean add) {
-        if(add) {
-            if(dragContext==null) {
+        if (add) {
+            if (dragContext == null) {
                 dragContext = new HashMap();
                 dockable.putClientProperty(DRAG_CONTEXT, dragContext);
             }
         } else {
-            if(dragContext!=null) {
+            if (dragContext != null) {
                 dragContext.clear();
                 dragContext = null;
             }
@@ -248,13 +229,13 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
     }
 
     public static DragOperation getCurrentDragOperation() {
-        synchronized(LOCK) {
+        synchronized (LOCK) {
             return currentDragOperation;
         }
     }
 
     static void setCurrentDragOperation(DragOperation operation) {
-        synchronized(LOCK) {
+        synchronized (LOCK) {
             currentDragOperation = operation;
         }
     }

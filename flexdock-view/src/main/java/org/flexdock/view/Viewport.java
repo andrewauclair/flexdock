@@ -19,23 +19,23 @@
  */
 package org.flexdock.view;
 
-import java.awt.Component;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.JTabbedPane;
-
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.activation.ActiveDockableListener;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.defaults.StandardBorderManager;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
+
 /**
  * @author Christopher Butler
  */
-public class Viewport extends DefaultDockingPort implements DockingConstants {
+public class Viewport extends DefaultDockingPort {
 
     protected HashSet blockedRegions;
 
@@ -56,8 +56,8 @@ public class Viewport extends DefaultDockingPort implements DockingConstants {
     }
 
     public void setRegionBlocked(String region, boolean isBlocked) {
-        if(isValidDockingRegion(region)) {
-            if(isBlocked) {
+        if (isValidDockingRegion(region)) {
+            if (isBlocked) {
                 blockedRegions.add(region);
             } else {
                 blockedRegions.remove(region);
@@ -70,24 +70,24 @@ public class Viewport extends DefaultDockingPort implements DockingConstants {
         // if we're already blocked, then no need to interrogate
         // the components in this dockingport
         boolean blocked = !super.isDockingAllowed(comp, region);
-        if(blocked) {
+        if (blocked) {
             return false;
         }
 
         // check to see if the region itself has been blocked for some reason
-        if(blockedRegions.contains(region)) {
+        if (blockedRegions.contains(region)) {
             return false;
         }
 
         // by default, allow docking in non-CENTER regions
-        if(!CENTER_REGION.equals(region)) {
+        if (!CENTER_REGION.equals(region)) {
             return true;
         }
 
         // allow docking in the CENTER if there's nothing already there,
         // or if there's no Dockable associated with the component there
         Dockable dockable = getCenterDockable();
-        if(dockable==null) {
+        if (dockable == null) {
             return true;
         }
 

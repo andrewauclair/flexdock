@@ -19,19 +19,17 @@
  */
 package org.flexdock.docking.drag.effects;
 
-import java.awt.Component;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.util.Map;
-
-import javax.swing.JTabbedPane;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.RegionChecker;
 import org.flexdock.docking.defaults.DefaultRegionChecker;
 import org.flexdock.util.SwingUtility;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
+
+import static org.flexdock.docking.DockingConstants.*;
 
 /**
  * @author Christopher Butler
