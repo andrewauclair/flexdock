@@ -1,3 +1,7 @@
+
+This fork of flexdock is intended to upgrade flexdock to a newer version of Java and narrow the scope to a very specific application.
+
+---------------------------------------------------------------------------------------
 This is the readme for the binary distribution.  If you want to use the
 sources to build and run flexdock demos, then see README-BUILD.
 
