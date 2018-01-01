@@ -19,7 +19,7 @@
  */
 package org.flexdock.docking;
 
-import java.awt.Component;
+import java.awt.*;
 
 /**
  * This interface is designed to provide an API for allowing the
@@ -76,7 +76,7 @@ public interface DockableFactory {
     /**
      * An empty implementation of {@code DockableFactory}.
      */
-    public static class Stub implements DockableFactory {
+    class Stub implements DockableFactory {
 
         /**
          * {@inheritDoc}

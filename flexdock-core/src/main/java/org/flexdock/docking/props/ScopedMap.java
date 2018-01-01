@@ -26,8 +26,11 @@ import java.util.Map;
  * @author Christopher Butler
  */
 public interface ScopedMap {
-    public Map getRoot();
-    public List getDefaults();
-    public List getLocals();
-    public List getGlobals();
+    Map getRoot();
+
+    List getDefaults();
+
+    List getLocals();
+
+    List getGlobals();
 }

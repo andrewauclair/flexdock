@@ -19,11 +19,11 @@
  */
 package org.flexdock.docking.props;
 
+import org.flexdock.docking.Dockable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.flexdock.docking.Dockable;
 
 
 /**
@@ -33,8 +33,8 @@ import org.flexdock.docking.Dockable;
 public class ScopedDockablePropertySet extends BasicDockablePropertySet implements ScopedMap {
 
     public static final RootDockablePropertySet ROOT_PROPS = new RootDockablePropertySet(null);
-    public static final List DEFAULTS = new ArrayList(0);
-    public static final List GLOBALS = new ArrayList(0);
+    private static final List DEFAULTS = new ArrayList(0);
+    private static final List GLOBALS = new ArrayList(0);
     private ArrayList locals;
 
     public ScopedDockablePropertySet(Dockable dockable) {

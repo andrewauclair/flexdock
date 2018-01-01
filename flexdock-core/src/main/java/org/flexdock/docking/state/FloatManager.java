@@ -19,11 +19,10 @@
  */
 package org.flexdock.docking.state;
 
-import java.awt.Component;
-import java.awt.Rectangle;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.floating.frames.DockingFrame;
+
+import java.awt.*;
 
 /**
  * This interface defines the API used for floating and grouping <code>Dockables</code>.  Classes
@@ -45,9 +44,6 @@ import org.flexdock.docking.floating.frames.DockingFrame;
  * @author Christopher Butler
  */
 public interface FloatManager {
-
-    FloatManager DEFAULT_STUB = new Stub();
-
     FloatingGroup getGroup(String groupName);
 
     FloatingGroup getGroup(Dockable dockable);
@@ -60,7 +56,7 @@ public interface FloatManager {
 
     DockingFrame floatDockable(Dockable dockable, Component frameOwner, Rectangle screenBounds);
 
-    public static class Stub implements FloatManager {
+    class Stub implements FloatManager {
 
         @Override
         public void addToGroup(Dockable dockable, String groupId) {
