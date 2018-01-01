@@ -272,12 +272,8 @@ public class DockingManager {
      * {@code false} otherwise.
      * @see #dock(Component, DockingPort, String)
      */
-    private static boolean dock(Component dockable, DockingPort port) {
-        return dock(dockable, port, CENTER_REGION);
-    }
-
     public static boolean dock(DockingStub dockable, DockingPort port) {
-        return dock((Component) dockable, port, CENTER_REGION);
+        return dock(dockable, port, CENTER_REGION);
     }
 
     /**
@@ -300,11 +296,9 @@ public class DockingManager {
      * {@code false} if the docking operation cannot be completed.
      * @see #dock(Dockable, DockingPort, String)
      */
-    public static boolean dock(Component dockable, DockingPort port,
-                               String region) {
-        return dock(resolveDockable(dockable), port, region);
-    }
-
+    public static boolean dock(DockingStub dockable, DockingPort port, String region) {
+    	return dock(resolveDockable(dockable.getComponent()), port, region);
+	}
     /**
      * Docks the specified {@code Dockable} into the supplied region of the
      * specified {@code DockingPort}. If the {@code Dockable} or
@@ -376,10 +370,13 @@ public class DockingManager {
      * {@code false} otherwise.
      * @see DockingManager#dock(Dockable, Dockable)
      */
-    public static boolean dock(Component dockable, Component parent) {
+    private static boolean dock(Component dockable, Component parent) {
         return dock(resolveDockable(dockable), resolveDockable(parent));
     }
 
+    public static boolean dock(DockingStub dockable, DockingStub parent) {
+    	return dock(resolveDockable(dockable.getComponent()), resolveDockable(parent.getComponent()));
+	}
     /**
      * Docks the specified {@code Dockable} relative to another already-docked
      * {@code Dockable} in the CENTER region. The "parent" {@code Dockable} must
@@ -425,11 +422,10 @@ public class DockingManager {
      * {@code false} otherwise.
      * @see #dock(Component, Component, String, float)
      */
-    public static boolean dock(Component dockable, Component parent,
-                               String region) {
-        return dock(dockable, parent, region, 0.5f);
-    }
-
+    public static boolean dock(DockingStub dockable, DockingStub parent, String region) {
+    	return dock(dockable.getComponent(), parent.getComponent(), region, 0.5f);
+	}
+	
     /**
      * Docks the specified {@code Dockable} relative to another already-docked
      * {@code Dockable} in the specified region. The "parent" {@code Dockable}
@@ -481,11 +477,15 @@ public class DockingManager {
      * @return {@code true} if the docking operation was successful;
      * {@code false} otherwise.
      */
-    public static boolean dock(Component dockable, Component parent,
+    private static boolean dock(Component dockable, Component parent,
                                String region, float proportion) {
         return dock(resolveDockable(dockable), resolveDockable(parent), region, proportion);
     }
 
+    public static boolean dock(DockingStub dockable, DockingStub parent, String region, float proportion) {
+    	return dock(resolveDockable(dockable.getComponent()), resolveDockable(parent.getComponent()), region, proportion);
+	}
+	
     /**
      * Docks the specified {@code Dockable} relative to another already-docked
      * {@code Dockable} in the specified region with the specified split
@@ -510,7 +510,7 @@ public class DockingManager {
                                String region, float proportion) {
         return DockingUtility.dockRelative(dockable, parent, region, proportion);
     }
-
+    
     private static DockingStrategy findDockingStrategy(Dockable dockable) {
         DockingPort port = dockable.getDockingPort();
         DockingStrategy strategy = port == null ? null : port
