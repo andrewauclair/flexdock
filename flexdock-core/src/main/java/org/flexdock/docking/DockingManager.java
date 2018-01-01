@@ -632,8 +632,7 @@ public class DockingManager implements DockingConstants {
      *         specified {@code Dockable}; {@code false} otherwise.
      */
     public static boolean isDocked(DockingPort dockingPort, Dockable dockable) {
-        return dockingPort == null || dockable == null ? false : dockingPort
-               .isParentDockingPort(dockable.getComponent());
+        return dockingPort != null && dockable != null && dockingPort.isParentDockingPort(dockable.getComponent());
     }
 
     /**
@@ -692,9 +691,9 @@ public class DockingManager implements DockingConstants {
                                             DragManager listener) {
         MouseMotionListener motionListener = null;
         EventListener[] listeners = dragSrc.getMouseMotionListeners();
-        for (int i = 0; i < listeners.length; i++) {
-            if (listeners[i] instanceof DragManager) {
-                motionListener = (MouseMotionListener) listeners[i];
+        for (EventListener listener2 : listeners) {
+            if (listener2 instanceof DragManager) {
+                motionListener = (MouseMotionListener) listener2;
                 break;
             }
         }
@@ -707,9 +706,9 @@ public class DockingManager implements DockingConstants {
 
         MouseListener mouseListener = null;
         listeners = dragSrc.getMouseListeners();
-        for (int i = 0; i < listeners.length; i++) {
-            if (listeners[i] instanceof DragManager) {
-                mouseListener = (MouseListener) listeners[i];
+        for (EventListener listener1 : listeners) {
+            if (listener1 instanceof DragManager) {
+                mouseListener = (MouseListener) listener1;
                 break;
             }
         }
@@ -942,9 +941,9 @@ public class DockingManager implements DockingConstants {
 
         MouseMotionListener motionListener = null;
         EventListener[] listeners = comp.getMouseMotionListeners();
-        for (int i = 0; i < listeners.length; i++) {
-            if (listeners[i] instanceof DragManager) {
-                motionListener = (MouseMotionListener) listeners[i];
+        for (EventListener listener1 : listeners) {
+            if (listener1 instanceof DragManager) {
+                motionListener = (MouseMotionListener) listener1;
                 break;
             }
         }
@@ -954,9 +953,9 @@ public class DockingManager implements DockingConstants {
 
         MouseListener mouseListener = null;
         listeners = comp.getMouseListeners();
-        for (int i = 0; i < listeners.length; i++) {
-            if (listeners[i] instanceof DragManager) {
-                mouseListener = (MouseListener) listeners[i];
+        for (EventListener listener : listeners) {
+            if (listener instanceof DragManager) {
+                mouseListener = (MouseListener) listener;
                 break;
             }
         }
@@ -1131,8 +1130,7 @@ public class DockingManager implements DockingConstants {
      */
     public static RootWindow[] getDockingWindows() {
         Set windowSet = DockingPortTracker.getDockingWindows();
-        return windowSet == null ? new RootWindow[0] : (RootWindow[]) windowSet
-               .toArray(new RootWindow[0]);
+        return (RootWindow[]) windowSet.toArray(new RootWindow[0]);
     }
 
     /**
@@ -1197,7 +1195,7 @@ public class DockingManager implements DockingConstants {
      * @see RootDockingPortInfo#getMainPort()
      * @see RootDockingPortInfo#setMainPort(String)
      */
-    public static DockingPort getMainDockingPort(Component comp) {
+    private static DockingPort getMainDockingPort(Component comp) {
         RootDockingPortInfo info = getRootDockingPortInfo(comp);
         return info == null ? null : info.getMainPort();
     }
@@ -1300,7 +1298,7 @@ public class DockingManager implements DockingConstants {
     public static boolean storeLayoutModel() throws IOException,
         PersistenceException {
         LayoutManager mgr = getLayoutManager();
-        return mgr == null ? false : mgr.store();
+        return mgr != null && mgr.store();
     }
 
     /**
@@ -1602,7 +1600,7 @@ public class DockingManager implements DockingConstants {
      * @see Dockable#getComponent()
      */
     public static Dockable getDockable(Component comp) {
-        return comp == null ? null : (Dockable) DOCKABLES_BY_COMPONENT.get(comp);
+        return comp == null ? null : DOCKABLES_BY_COMPONENT.get(comp);
     }
 
     /**
@@ -1665,9 +1663,9 @@ public class DockingManager implements DockingConstants {
      * @see #registerDockable(Dockable)
      * @see Dockable#getPersistentId()
      */
-    public static Set getDockableIds() {
+    public static Set<String> getDockableIds() {
         synchronized (DOCKABLES_BY_ID) {
-            return new HashSet(DOCKABLES_BY_ID.keySet());
+            return new HashSet<>(DOCKABLES_BY_ID.keySet());
         }
     }
 
@@ -1696,8 +1694,7 @@ public class DockingManager implements DockingConstants {
             return null;
         }
 
-        for (Iterator it = dockable.getDragSources().iterator(); it.hasNext();) {
-            Object obj = it.next();
+        for (Object obj : dockable.getDragSources()) {
             if (obj instanceof Component) {
                 DragManager listener = getDragListener((Component) obj);
                 if (listener != null) {
@@ -1710,9 +1707,9 @@ public class DockingManager implements DockingConstants {
 
     private static DragManager getDragListener(Component c) {
         EventListener[] listeners = c.getMouseMotionListeners();
-        for (int i = 0; i < listeners.length; i++) {
-            if (listeners[i] instanceof DragManager) {
-                return (DragManager) listeners[i];
+        for (EventListener listener : listeners) {
+            if (listener instanceof DragManager) {
+                return (DragManager) listener;
             }
         }
         return null;
@@ -2693,8 +2690,7 @@ public class DockingManager implements DockingConstants {
             dragListener = new DragManager(dockable);
         }
 
-        for (Iterator it = dockable.getDragSources().iterator(); it.hasNext();) {
-            Object obj = it.next();
+        for (Object obj : dockable.getDragSources()) {
             if (obj instanceof Component) {
                 updateDragListeners((Component) obj, dragListener);
             }
@@ -2706,8 +2702,7 @@ public class DockingManager implements DockingConstants {
             return;
         }
 
-        for (Iterator it = dockable.getDragSources().iterator(); it.hasNext();) {
-            Object obj = it.next();
+        for (Object obj : dockable.getDragSources()) {
             if (obj instanceof Component) {
                 removeDragListeners((Component) obj);
             }
