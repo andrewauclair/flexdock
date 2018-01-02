@@ -19,17 +19,6 @@
  */
 package org.flexdock.demos.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.demos.util.VSNetStartPage;
 import org.flexdock.docking.DockingConstants;
@@ -37,6 +26,11 @@ import org.flexdock.docking.DockingManager;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -47,12 +41,7 @@ public class ViewDemo extends JFrame implements DockingConstants {
         SwingUtility.setPlaf("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 //                SwingUtility.setPlaf("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 //                SwingUtility.setPlaf("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                startup();
-            }
-        });
+        EventQueue.invokeLater(() -> startup());
     }
 
     private static void startup() {
@@ -66,7 +55,7 @@ public class ViewDemo extends JFrame implements DockingConstants {
         f.setVisible(true);
     }
 
-    public ViewDemo() {
+    private ViewDemo() {
         super("Viewport Demo");
         setContentPane(createContentPane());
     }

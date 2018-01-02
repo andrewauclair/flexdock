@@ -19,40 +19,35 @@
  */
 package org.flexdock.docking.defaults;
 
-import java.awt.Component;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.AbstractAction;
-import javax.swing.JSplitPane;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
-
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.util.DockingUtility;
 import org.flexdock.util.SwingUtility;
 
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Christopher Butler
  */
-@SuppressWarnings(value = { "serial" })
+@SuppressWarnings(value = {"serial"})
 public class DockingSplitPane extends JSplitPane implements DockingConstants {
     protected DockingPort dockingPort;
 
     protected String region;
 
-    protected boolean dividerLocDetermined;
+    private boolean dividerLocDetermined;
 
-    protected boolean controllerInTopLeft;
+    private boolean controllerInTopLeft;
 
-    protected double initialDividerRatio = .5;
+    private double initialDividerRatio = .5;
 
-    protected double percent = -1;
+    private double percent = -1;
 
     private int dividerHashCode = -1;
 
@@ -66,18 +61,16 @@ public class DockingSplitPane extends JSplitPane implements DockingConstants {
      * or {@code region} may be {@code null}. {@code region} must be a valid
      * docking region as defined by {@code isValidDockingRegion(String region)}.
      *
-     * @param port
-     *            the {@code DockingPort} for which this
-     *            {@code DockingSplitPane} is to be created.
-     * @param region
-     *            the region within the specified {@code DockingPort} for which
-     *            this {@code DockingSplitPane} is to be created.
+     * @param port   the {@code DockingPort} for which this
+     *               {@code DockingSplitPane} is to be created.
+     * @param region the region within the specified {@code DockingPort} for which
+     *               this {@code DockingSplitPane} is to be created.
      * @throws {@code IllegalArgumentException}
-     *             if either {@code port} is {@code null} or }region} is
-     *             {@code null} or invalid.
+     *                if either {@code port} is {@code null} or }region} is
+     *                {@code null} or invalid.
      * @see DockingManager#isValidDockingRegion(String)
      */
-    public DockingSplitPane(DockingPort port, String region) {
+    DockingSplitPane(DockingPort port, String region) {
         if (port == null) {
             throw new IllegalArgumentException("'port' cannot be null.");
         }
@@ -96,33 +89,29 @@ public class DockingSplitPane extends JSplitPane implements DockingConstants {
         int weight = controllerInTopLeft ? 1 : 0;
         setResizeWeight(weight);
 
-        addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+        addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, pce -> {
+            if (constantPercent && getUI() instanceof BasicSplitPaneUI) {
+                BasicSplitPaneUI ui = (BasicSplitPaneUI) getUI();
+                if (dividerHashCode != ui.getDivider().hashCode()) {
+                    dividerHashCode = ui.getDivider().hashCode();
+                    ui.getDivider().addMouseListener(new MouseAdapter() {
 
-                @Override
-                public void propertyChange(PropertyChangeEvent pce) {
-                    if (constantPercent && getUI() instanceof BasicSplitPaneUI) {
-                        BasicSplitPaneUI ui = (BasicSplitPaneUI) getUI();
-                        if (dividerHashCode != ui.getDivider().hashCode()) {
-                            dividerHashCode = ui.getDivider().hashCode();
-                            ui.getDivider().addMouseListener(new MouseAdapter() {
-
-                                @Override
-                                    public void mouseReleased(MouseEvent e) {
-                                        DockingSplitPane.this.percent = SwingUtility.getDividerProportion(DockingSplitPane.this);
-                                        DockingSplitPane.this.setResizeWeight(percent);
-                                    }
-                                });
+                        @Override
+                        public void mouseReleased(MouseEvent e) {
+                            DockingSplitPane.this.percent = SwingUtility.getDividerProportion(DockingSplitPane.this);
+                            DockingSplitPane.this.setResizeWeight(percent);
                         }
-                    }
+                    });
                 }
-            });
+            }
+        });
 
         getActionMap().put("toggleFocus", new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    SwingUtility.toggleFocus(+1);
-                }
-            });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtility.toggleFocus(+1);
+            }
+        });
     }
 
     @Override
@@ -154,7 +143,7 @@ public class DockingSplitPane extends JSplitPane implements DockingConstants {
             // preferred size
             if (extraSpace >= 0) {
                 setDividerLocation(i.top + topH
-                                   + ((int) (extraSpace * getResizeWeight() + .5)));
+                        + ((int) (extraSpace * getResizeWeight() + .5)));
             }
 
             // TODO implement shrinking excess space to ensure that one has
@@ -169,7 +158,7 @@ public class DockingSplitPane extends JSplitPane implements DockingConstants {
             // preferred size
             if (extraSpace >= 0) {
                 setDividerLocation(i.left + leftH
-                                   + ((int) (extraSpace * getResizeWeight() + .5)));
+                        + ((int) (extraSpace * getResizeWeight() + .5)));
             }
 
             // TODO implement shrinking excess space to ensure that one has
@@ -196,11 +185,8 @@ public class DockingSplitPane extends JSplitPane implements DockingConstants {
         return -1;
     }
 
-    protected boolean isDividerSizeProperlyDetermined() {
-        if (getDividerLocation() != 0) {
-            return true;
-        }
-        return dividerLocDetermined;
+    private boolean isDividerSizeProperlyDetermined() {
+        return getDividerLocation() != 0 || dividerLocDetermined;
     }
 
     /**
@@ -225,13 +211,13 @@ public class DockingSplitPane extends JSplitPane implements DockingConstants {
      * {@code DockingSplitPane}.
      *
      * @return the 'oldest' {@code Component} to have been added to this
-     *         {@code DockingSplitPane} as a result of a docking operation.
+     * {@code DockingSplitPane} as a result of a docking operation.
      * @see #getRegion()
      * @see DockingPort#getDockedComponent()
      */
     public Component getElderComponent() {
         Component c = controllerInTopLeft ? getLeftComponent()
-            : getRightComponent();
+                : getRightComponent();
         if (c instanceof DockingPort) {
             c = ((DockingPort) c).getDockedComponent();
         }
@@ -251,7 +237,7 @@ public class DockingSplitPane extends JSplitPane implements DockingConstants {
      * instantiation.
      *
      * @return the docking region for which this {@code DockingSplitPane} was
-     *         created.
+     * created.
      * @see #DockingSplitPane(DockingPort, String)
      */
     public String getRegion() {
@@ -277,8 +263,8 @@ public class DockingSplitPane extends JSplitPane implements DockingConstants {
      * {@code DockingSplitPane}.
      *
      * @return {@code true} if the 'oldest' {@code Component} to have been added
-     *         to this {@code DockingSplitPane} is in the TOP or LEFT side of
-     *         the split pane; {@code false} otherwise.
+     * to this {@code DockingSplitPane} is in the TOP or LEFT side of
+     * the split pane; {@code false} otherwise.
      * @see #getElderComponent()
      * @see #getRegion()
      */
@@ -329,16 +315,14 @@ public class DockingSplitPane extends JSplitPane implements DockingConstants {
      * Sets the initial divider ration for creating split panes. The default
      * value is {@code 0.5}.
      *
-     * @exception IllegalArgumentException
-     *                if {@code ratio} is less than 0.0 or greater than 1.0.
-     * @param ratio
-     *            a ratio for determining weighting between the two sides of a
-     *            split pane.
+     * @param ratio a ratio for determining weighting between the two sides of a
+     *              split pane.
+     * @throws IllegalArgumentException if {@code ratio} is less than 0.0 or greater than 1.0.
      */
     public void setInitialDividerRatio(double ratio) {
         if (ratio < 0.0 || ratio > 1.0) {
             throw new IllegalArgumentException("ratio (" + ratio
-                                               + ") must be between [0.0,1,0] inclusive");
+                    + ") must be between [0.0,1,0] inclusive");
         }
         initialDividerRatio = ratio;
     }

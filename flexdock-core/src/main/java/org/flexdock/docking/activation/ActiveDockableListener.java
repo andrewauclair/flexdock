@@ -42,7 +42,7 @@ import static org.flexdock.docking.DockingConstants.PERMANENT_FOCUS_OWNER;
  */
 public class ActiveDockableListener implements PropertyChangeListener, ChangeListener, AWTEventListener {
     private static final ActiveDockableListener SINGLETON = new ActiveDockableListener();
-    private static final HashSet PROP_EVENTS = new HashSet();
+    private static final HashSet<String> PROP_EVENTS = new HashSet<>();
 
     static {
         primeImpl();
@@ -55,13 +55,10 @@ public class ActiveDockableListener implements PropertyChangeListener, ChangeLis
         PROP_EVENTS.add(PERMANENT_FOCUS_OWNER);
         PROP_EVENTS.add(ACTIVE_WINDOW);
 
-        EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    focusManager.addPropertyChangeListener(SINGLETON);
-                }
-            });
+        EventQueue.invokeLater(() -> {
+            KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+            focusManager.addPropertyChangeListener(SINGLETON);
+        });
 
         Toolkit.getDefaultToolkit().addAWTEventListener(SINGLETON, AWTEvent.MOUSE_EVENT_MASK);
     }
@@ -179,13 +176,6 @@ public class ActiveDockableListener implements PropertyChangeListener, ChangeLis
         final Component deep = SwingUtilities.getDeepestComponentAt(comp, comp.getWidth()/2, comp.getHeight()/2);
         // invokeLater because the new tab may not yet be showing, meaning the enumeration of its
         // focus-cycle will return empty.  the parent dockable in the new tab must be showing.
-        EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    ActiveDockableTracker.focusDockable(deep, dockable, true);
-                }
-            });
-
+        EventQueue.invokeLater(() -> ActiveDockableTracker.focusDockable(deep, dockable, true));
     }
-
 }

@@ -19,32 +19,15 @@
  */
 package org.flexdock.util;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.KeyboardFocusManager;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.image.BufferedImage;
-
-import javax.swing.JComponent;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
+import com.l2fprod.gui.plaf.skin.Skin;
+import com.l2fprod.gui.plaf.skin.SkinLookAndFeel;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.defaults.DockingSplitPane;
 
-import com.l2fprod.gui.plaf.skin.Skin;
-import com.l2fprod.gui.plaf.skin.SkinLookAndFeel;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Christopher Butler
@@ -297,7 +280,7 @@ public class SwingUtility {
             }
         }
 
-        Container focusRoot = null;
+        Container focusRoot;
         if(c instanceof Container) {
             Container cnt = (Container)c;
             focusRoot = cnt.isFocusCycleRoot(cnt)? cnt: cnt.getFocusCycleRootAncestor();
@@ -442,7 +425,7 @@ public class SwingUtility {
             return 0;
         }
 
-        boolean horiz = splitPane.getOrientation()==JSplitPane.HORIZONTAL_SPLIT? true: false;
+        boolean horiz = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
         return horiz? splitPane.getWidth(): splitPane.getHeight();
     }
 
@@ -484,15 +467,10 @@ public class SwingUtility {
             return;
         }
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                setSplitDivider(split, percent);
-            }
-        });
+        EventQueue.invokeLater(() -> setSplitDivider(split, percent));
     }
 
-    public static boolean isSkinLFInstalled() {
+    private static boolean isSkinLFInstalled() {
         return LookAndFeelSettings.isSkinLFSupported();
 
     }
@@ -507,7 +485,7 @@ public class SwingUtility {
     }
 
     private static Component getNext(Component comp, int direction) {
-        Component next = null;
+        Component next;
         JTabbedPane tab;
         if (comp instanceof JTabbedPane) {
             tab = (JTabbedPane) comp;

@@ -241,7 +241,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
     private static final WeakHashMap COMPONENT_TITLES = new WeakHashMap();
 
-    protected ArrayList dockingListeners;
+    private ArrayList dockingListeners;
 
     private Component dockedComponent;
 
@@ -309,7 +309,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
         setBorderManager(createBorderManager());
     }
 
-    protected LayoutManager createLayout() {
+    private LayoutManager createLayout() {
         return new PortLayout();
     }
 
@@ -320,7 +320,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
      *
      * @return the border manager for this docking port.
      */
-    protected BorderManager createBorderManager() {
+    private BorderManager createBorderManager() {
         return new StandardBorderManager(new EmptyBorder(0, 0, 0, 0));
     }
 
@@ -576,7 +576,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
      * @see #getDockingProperties()
      * @see DockingPortPropertySet#getRegionChecker()
      */
-    public RegionChecker getRegionChecker() {
+    private RegionChecker getRegionChecker() {
         return getDockingProperties().getRegionChecker();
     }
 
@@ -604,7 +604,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
      * @see DockingManager#getDockable(Component)
      * @see JTabbedPane#getComponentAt(int x, int y)
      */
-    public Dockable getDockableAt(Point location) {
+    private Dockable getDockableAt(Point location) {
         if (location == null) {
             return null;
         }
@@ -1308,7 +1308,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
      * @see DockingPortPropertySet#isSingleTabsAllowed()
      * @see DockingPortPropertySet#setSingleTabsAllowed(boolean)
      */
-    public boolean isSingleTabAllowed() {
+    private boolean isSingleTabAllowed() {
         return getDockingProperties().isSingleTabsAllowed().booleanValue();
     }
 
@@ -1347,7 +1347,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
      * @see DockingPortPropertySet#setSingleTabsAllowed(boolean)
      * @see DockingPortPropertySet#isSingleTabsAllowed()
      */
-    public void setSingleTabAllowed(boolean allowed) {
+    private void setSingleTabAllowed(boolean allowed) {
         getDockingProperties().setSingleTabsAllowed(allowed);
     }
 
@@ -1763,7 +1763,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
         return set;
     }
 
-    protected boolean isValidDockableChild(Component c, Class desiredClass) {
+    private boolean isValidDockableChild(Component c, Class desiredClass) {
         return desiredClass == null ? DockingManager.getDockable(c) != null
                : desiredClass.isAssignableFrom(c.getClass());
     }
@@ -1959,7 +1959,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
         return tabsAsDragSource;
     }
 
-    protected int getInitTabPlacement() {
+    private int getInitTabPlacement() {
         return getDockingProperties().getTabPlacement().intValue();
     }
 
@@ -2363,7 +2363,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
         private final Border border;
 
-        public MaximizationInstallInfo(Component content, Border border) {
+        MaximizationInstallInfo(Component content, Border border) {
             this.content = content;
             this.border = border;
         }
@@ -2381,15 +2381,15 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
         MaximizationInstallInfo {
         private int tabIndex;
 
-        public MaximizationReleaseInfo(Component content, Border border) {
+        MaximizationReleaseInfo(Component content, Border border) {
             super(content, border);
         }
 
-        public int getTabIndex() {
+        int getTabIndex() {
             return tabIndex;
         }
 
-        public void setTabIndex(int tabIndex) {
+        void setTabIndex(int tabIndex) {
             this.tabIndex = tabIndex;
         }
     }

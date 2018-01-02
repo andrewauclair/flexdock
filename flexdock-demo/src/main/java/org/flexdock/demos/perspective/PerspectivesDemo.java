@@ -19,26 +19,6 @@
  */
 package org.flexdock.demos.perspective;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.io.IOException;
-
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.DockableFactory;
 import org.flexdock.docking.DockingConstants;
@@ -57,6 +37,11 @@ import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
 import org.flexdock.view.actions.DefaultDisplayAction;
 
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.io.IOException;
+
 /**
  * Created on 2005-04-17
  *
@@ -65,7 +50,7 @@ import org.flexdock.view.actions.DefaultDisplayAction;
  */
 public class PerspectivesDemo extends JFrame implements DockingConstants {
 
-    public static final String PERSPECTIVE_FILE = "PerspectiveDemo.data";
+    private static final String PERSPECTIVE_FILE = "PerspectiveDemo.data";
     private static final String MAIN_VIEW = "main.view";
     private static final String BIRD_VIEW = "bird.view";
     private static final String MESSAGE_VIEW = "message.log";
@@ -83,12 +68,7 @@ public class PerspectivesDemo extends JFrame implements DockingConstants {
         configureDocking();
 
         // create and show the GUI
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                runGUI();
-            }
-        });
+        EventQueue.invokeLater(PerspectivesDemo::runGUI);
     }
 
     private static void runGUI() {
@@ -104,7 +84,7 @@ public class PerspectivesDemo extends JFrame implements DockingConstants {
     }
 
 
-    public PerspectivesDemo() {
+    private PerspectivesDemo() {
         super("FlexDock Demo");
         setContentPane(createContentPane());
         setJMenuBar(createApplicationMenuBar());
