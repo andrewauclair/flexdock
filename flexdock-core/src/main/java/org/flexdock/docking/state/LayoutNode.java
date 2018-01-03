@@ -19,21 +19,20 @@
  */
 package org.flexdock.docking.state;
 
-import java.io.Serializable;
-
 import javax.swing.tree.MutableTreeNode;
+import java.io.Serializable;
 
 /**
  * @author Christopher Butler
  */
 public interface LayoutNode extends MutableTreeNode, Cloneable, Serializable {
 
-    Object getUserObject();
+	Object getUserObject();
 
-    Object getDockingObject();
+	Object getDockingObject();
 
-    void add(MutableTreeNode child);
+	void add(MutableTreeNode child);
 
-    Object clone();
+	Object clone();
 
 }

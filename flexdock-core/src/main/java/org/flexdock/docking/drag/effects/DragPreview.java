@@ -26,7 +26,7 @@ import java.awt.*;
 import java.util.Map;
 
 public interface DragPreview {
-    Polygon createPreviewPolygon(Component dockable, DockingPort port, Dockable hover, String targetRegion, Component paintingTarget, Map dragInfo);
+	Polygon createPreviewPolygon(Component dockable, DockingPort port, Dockable hover, String targetRegion, Component paintingTarget, Map dragInfo);
 
-    void drawPreview(Graphics2D g, Polygon poly, Dockable dockable, Map dragInfo);
+	void drawPreview(Graphics2D g, Polygon poly, Dockable dockable, Map dragInfo);
 }

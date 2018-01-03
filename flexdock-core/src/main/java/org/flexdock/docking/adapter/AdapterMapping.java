@@ -23,87 +23,86 @@ package org.flexdock.docking.adapter;
  * This POJO contains values for an adapted components dockable requirements.
  *
  * @author Christopher Butler
- *
  * @deprecated All adapter classes will be removed
  */
 public class AdapterMapping {
-    private String className;
+	private String className;
 
-    private String dragSource;
+	private String dragSource;
 
-    private String dragSourceList;
+	private String dragSourceList;
 
-    private String frameDragSource;
+	private String frameDragSource;
 
-    private String frameDragSourceList;
+	private String frameDragSourceList;
 
-    private String persistentId;
+	private String persistentId;
 
-    private String tabText;
+	private String tabText;
 
-    private String dockbarIcon;
+	private String dockbarIcon;
 
-    public String getClassName() {
-        return className;
-    }
+	public String getClassName() {
+		return className;
+	}
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
+	public void setClassName(String className) {
+		this.className = className;
+	}
 
-    public String getDockbarIcon() {
-        return dockbarIcon;
-    }
+	public String getDockbarIcon() {
+		return dockbarIcon;
+	}
 
-    public void setDockbarIcon(String dockbarIcon) {
-        this.dockbarIcon = dockbarIcon;
-    }
+	public void setDockbarIcon(String dockbarIcon) {
+		this.dockbarIcon = dockbarIcon;
+	}
 
-    public String getDragSource() {
-        return dragSource;
-    }
+	public String getDragSource() {
+		return dragSource;
+	}
 
-    public void setDragSource(String dragSource) {
-        this.dragSource = dragSource;
-    }
+	public void setDragSource(String dragSource) {
+		this.dragSource = dragSource;
+	}
 
-    public String getDragSourceList() {
-        return dragSourceList;
-    }
+	public String getDragSourceList() {
+		return dragSourceList;
+	}
 
-    public void setDragSourceList(String dragSourceList) {
-        this.dragSourceList = dragSourceList;
-    }
+	public void setDragSourceList(String dragSourceList) {
+		this.dragSourceList = dragSourceList;
+	}
 
-    public String getFrameDragSource() {
-        return frameDragSource;
-    }
+	public String getFrameDragSource() {
+		return frameDragSource;
+	}
 
-    public void setFrameDragSource(String frameDragSource) {
-        this.frameDragSource = frameDragSource;
-    }
+	public void setFrameDragSource(String frameDragSource) {
+		this.frameDragSource = frameDragSource;
+	}
 
-    public String getFrameDragSourceList() {
-        return frameDragSourceList;
-    }
+	public String getFrameDragSourceList() {
+		return frameDragSourceList;
+	}
 
-    public void setFrameDragSourceList(String frameDragSourceList) {
-        this.frameDragSourceList = frameDragSourceList;
-    }
+	public void setFrameDragSourceList(String frameDragSourceList) {
+		this.frameDragSourceList = frameDragSourceList;
+	}
 
-    public String getPersistentId() {
-        return persistentId;
-    }
+	public String getPersistentId() {
+		return persistentId;
+	}
 
-    public void setPersistentId(String persistentId) {
-        this.persistentId = persistentId;
-    }
+	public void setPersistentId(String persistentId) {
+		this.persistentId = persistentId;
+	}
 
-    public String getTabText() {
-        return tabText;
-    }
+	public String getTabText() {
+		return tabText;
+	}
 
-    public void setTabText(String tabText) {
-        this.tabText = tabText;
-    }
+	public void setTabText(String tabText) {
+		this.tabText = tabText;
+	}
 }

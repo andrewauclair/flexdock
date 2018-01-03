@@ -19,50 +19,50 @@
  */
 package org.flexdock.docking.state.tree;
 
-import javax.swing.tree.MutableTreeNode;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
+
+import javax.swing.tree.MutableTreeNode;
 
 /**
  * @author Christopher Butler
  */
 public class DockableNode extends DockingNode {
 
-    private String dockableId;
+	private String dockableId;
 
-    public DockableNode() {
-    }
+	public DockableNode() {
+	}
 
-    private DockableNode(String id) {
-        dockableId = id;
-    }
+	private DockableNode(String id) {
+		dockableId = id;
+	}
 
-    public String getDockableId() {
-        return dockableId;
-    }
+	public String getDockableId() {
+		return dockableId;
+	}
 
-    public void setDockableId(String dockableId) {
-        this.dockableId = dockableId;
-    }
+	public void setDockableId(String dockableId) {
+		this.dockableId = dockableId;
+	}
 
-    public Dockable getDockable() {
-        return DockingManager.getDockable(dockableId);
-    }
+	public Dockable getDockable() {
+		return DockingManager.getDockable(dockableId);
+	}
 
-    @Override
-    public void add(MutableTreeNode newChild) {
-        // noop
-    }
+	@Override
+	public void add(MutableTreeNode newChild) {
+		// noop
+	}
 
-    @Override
-    public Object getDockingObject() {
-        return getDockable();
-    }
+	@Override
+	public Object getDockingObject() {
+		return getDockable();
+	}
 
-    @Override
-    protected DockingNode shallowClone() {
-        return new DockableNode(dockableId);
-    }
+	@Override
+	protected DockingNode shallowClone() {
+		return new DockableNode(dockableId);
+	}
 
 }

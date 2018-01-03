@@ -29,33 +29,33 @@ import java.util.Enumeration;
  */
 public abstract class DockingNode extends DefaultMutableTreeNode implements LayoutNode {
 
-    @Override
-    public Object getUserObject() {
-        Object obj = super.getUserObject();
-        if(obj==null) {
-            obj = getDockingObject();
-            setUserObject(obj);
-        }
-        return obj;
-    }
+	@Override
+	public Object getUserObject() {
+		Object obj = super.getUserObject();
+		if (obj == null) {
+			obj = getDockingObject();
+			setUserObject(obj);
+		}
+		return obj;
+	}
 
-    @Override
-    public abstract Object getDockingObject();
+	@Override
+	public abstract Object getDockingObject();
 
-    protected abstract DockingNode shallowClone();
+	protected abstract DockingNode shallowClone();
 
-    @Override
-    public Object clone() {
-        return deepClone();
-    }
+	@Override
+	public Object clone() {
+		return deepClone();
+	}
 
-    public DockingNode deepClone() {
-        DockingNode clone = shallowClone();
-        for(Enumeration en=children(); en.hasMoreElements();) {
-            DockingNode child = (DockingNode)en.nextElement();
-            clone.add(child.deepClone());
-        }
-        return clone;
-    }
+	public DockingNode deepClone() {
+		DockingNode clone = shallowClone();
+		for (Enumeration en = children(); en.hasMoreElements(); ) {
+			DockingNode child = (DockingNode) en.nextElement();
+			clone.add(child.deepClone());
+		}
+		return clone;
+	}
 
 }

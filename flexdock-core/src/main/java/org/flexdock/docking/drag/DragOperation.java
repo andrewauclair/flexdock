@@ -31,176 +31,176 @@ import java.util.EventListener;
 import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 public class DragOperation {
-    public static final String DRAG_IMAGE = "DragOperation.DRAG_IMAGE";
+	public static final String DRAG_IMAGE = "DragOperation.DRAG_IMAGE";
 
-    private Component dragSource;
-    private Component dockable;
-    private Point mouseOffset;
-    private Point currentMouse;
-    private EventListener[] cachedListeners;
-    private DragManager dragListener;
-    private DockingPort targetPort;
-    private String targetRegion;
-    private boolean overWindow;
-    private boolean pseudoDrag;
-    private long started;
-    private Dockable dockableRef;
-    private DockingPort sourcePort;
+	private Component dragSource;
+	private Component dockable;
+	private Point mouseOffset;
+	private Point currentMouse;
+	private EventListener[] cachedListeners;
+	private DragManager dragListener;
+	private DockingPort targetPort;
+	private String targetRegion;
+	private boolean overWindow;
+	private boolean pseudoDrag;
+	private long started;
+	private Dockable dockableRef;
+	private DockingPort sourcePort;
 
 
-    DragOperation(Component dockable, Point dragOrigin, MouseEvent evt) {
-        if (dockable == null) {
-            throw new NullPointerException("'dockable' parameter cannot be null.");
-        }
-        if (evt == null) {
-            throw new NullPointerException("'evt' parameter cannot be null.");
-        }
-        if (!(evt.getSource() instanceof Component)) {
-            throw new IllegalArgumentException("'evt.getSource()' must be an instance of java.awt.Component.");
-        }
+	DragOperation(Component dockable, Point dragOrigin, MouseEvent evt) {
+		if (dockable == null) {
+			throw new NullPointerException("'dockable' parameter cannot be null.");
+		}
+		if (evt == null) {
+			throw new NullPointerException("'evt' parameter cannot be null.");
+		}
+		if (!(evt.getSource() instanceof Component)) {
+			throw new IllegalArgumentException("'evt.getSource()' must be an instance of java.awt.Component.");
+		}
 
-        if (dragOrigin == null) {
-            dragOrigin = evt.getPoint();
-        }
-        init(dockable, (Component) evt.getSource(), dragOrigin);
-    }
+		if (dragOrigin == null) {
+			dragOrigin = evt.getPoint();
+		}
+		init(dockable, (Component) evt.getSource(), dragOrigin);
+	}
 
-    private void init(Component dockable, Component dragSource, Point currentMouse) {
-        this.dockable = dockable;
-        this.dragSource = dragSource;
-        this.currentMouse = currentMouse;
-        mouseOffset = calculateMouseOffset(currentMouse);
-        pseudoDrag = false;
+	private void init(Component dockable, Component dragSource, Point currentMouse) {
+		this.dockable = dockable;
+		this.dragSource = dragSource;
+		this.currentMouse = currentMouse;
+		mouseOffset = calculateMouseOffset(currentMouse);
+		pseudoDrag = false;
 
-        sourcePort = DockingManager.getDockingPort(dockable);
-        started = -1;
-    }
+		sourcePort = DockingManager.getDockingPort(dockable);
+		started = -1;
+	}
 
-    private Point calculateMouseOffset(Point evtPoint) {
-        if (evtPoint == null) {
-            return null;
-        }
+	private Point calculateMouseOffset(Point evtPoint) {
+		if (evtPoint == null) {
+			return null;
+		}
 
-        if (dockable.isVisible()) {
-            Point dockableLoc = dockable.getLocationOnScreen();
-            SwingUtilities.convertPointToScreen(evtPoint, dragSource);
-            Point offset = new Point();
-            offset.x = dockableLoc.x - evtPoint.x;
-            offset.y = dockableLoc.y - evtPoint.y;
-            return offset;
-        }
+		if (dockable.isVisible()) {
+			Point dockableLoc = dockable.getLocationOnScreen();
+			SwingUtilities.convertPointToScreen(evtPoint, dragSource);
+			Point offset = new Point();
+			offset.x = dockableLoc.x - evtPoint.x;
+			offset.y = dockableLoc.y - evtPoint.y;
+			return offset;
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public Component getDockable() {
-        return dockable;
-    }
+	public Component getDockable() {
+		return dockable;
+	}
 
-    public Dockable getDockableReference() {
-        if (dockableRef == null) {
-            dockableRef = DockingManager.getDockable(dockable);
-        }
-        return dockableRef;
-    }
+	public Dockable getDockableReference() {
+		if (dockableRef == null) {
+			dockableRef = DockingManager.getDockable(dockable);
+		}
+		return dockableRef;
+	}
 
-    public Point getMouseOffset() {
-        return (Point) mouseOffset.clone();
-    }
+	public Point getMouseOffset() {
+		return (Point) mouseOffset.clone();
+	}
 
-    public void updateMouse(MouseEvent me) {
-        if (me != null && me.getSource() == dragSource) {
-            currentMouse = me.getPoint();
-        }
-    }
+	public void updateMouse(MouseEvent me) {
+		if (me != null && me.getSource() == dragSource) {
+			currentMouse = me.getPoint();
+		}
+	}
 
-    public Point getCurrentMouse(boolean relativeToScreen) {
-        Point p = (Point) currentMouse.clone();
-        if (relativeToScreen) {
-            SwingUtilities.convertPointToScreen(p, dragSource);
-        }
-        return p;
-    }
+	public Point getCurrentMouse(boolean relativeToScreen) {
+		Point p = (Point) currentMouse.clone();
+		if (relativeToScreen) {
+			SwingUtilities.convertPointToScreen(p, dragSource);
+		}
+		return p;
+	}
 
-    public Rectangle getDragRect(boolean relativeToScreen) {
-        Point p = getCurrentMouse(relativeToScreen);
-        Point offset = getMouseOffset();
-        p.x += offset.x;
-        p.y += offset.y;
+	public Rectangle getDragRect(boolean relativeToScreen) {
+		Point p = getCurrentMouse(relativeToScreen);
+		Point offset = getMouseOffset();
+		p.x += offset.x;
+		p.y += offset.y;
 
-        Rectangle r = new Rectangle(getDragSize());
-        r.setLocation(p);
-        return r;
+		Rectangle r = new Rectangle(getDragSize());
+		r.setLocation(p);
+		return r;
 
-    }
+	}
 
-    public Point getCurrentMouse(Component target) {
-        if (target == null || !target.isVisible()) {
-            return null;
-        }
-        return SwingUtilities.convertPoint(dragSource, currentMouse, target);
-    }
+	public Point getCurrentMouse(Component target) {
+		if (target == null || !target.isVisible()) {
+			return null;
+		}
+		return SwingUtilities.convertPoint(dragSource, currentMouse, target);
+	}
 
-    private Dimension getDragSize() {
-        return dockable.getSize();
-    }
+	private Dimension getDragSize() {
+		return dockable.getSize();
+	}
 
-    public Component getDragSource() {
-        return dragSource;
-    }
+	public Component getDragSource() {
+		return dragSource;
+	}
 
-    public void setTarget(DockingPort port, String region) {
-        targetPort = port;
-        targetRegion = region == null ? UNKNOWN_REGION : region;
-    }
+	public void setTarget(DockingPort port, String region) {
+		targetPort = port;
+		targetRegion = region == null ? UNKNOWN_REGION : region;
+	}
 
-    public DockingPort getTargetPort() {
-        return targetPort;
-    }
+	public DockingPort getTargetPort() {
+		return targetPort;
+	}
 
-    public String getTargetRegion() {
-        return targetRegion;
-    }
+	public String getTargetRegion() {
+		return targetRegion;
+	}
 
-    public EventListener[] getCachedListeners() {
-        return cachedListeners == null ? new EventListener[0] : cachedListeners;
-    }
+	public EventListener[] getCachedListeners() {
+		return cachedListeners == null ? new EventListener[0] : cachedListeners;
+	}
 
-    public void setCachedListeners(EventListener[] listeners) {
-        cachedListeners = listeners;
-    }
+	public void setCachedListeners(EventListener[] listeners) {
+		cachedListeners = listeners;
+	}
 
-    public DragManager getDragListener() {
-        return dragListener;
-    }
+	public DragManager getDragListener() {
+		return dragListener;
+	}
 
-    public void setDragListener(DragManager listener) {
-        this.dragListener = listener;
-    }
+	public void setDragListener(DragManager listener) {
+		this.dragListener = listener;
+	}
 
-    public boolean isOverWindow() {
-        return overWindow;
-    }
+	public boolean isOverWindow() {
+		return overWindow;
+	}
 
-    public void setOverWindow(boolean overWindow) {
-        this.overWindow = overWindow;
-    }
+	public void setOverWindow(boolean overWindow) {
+		this.overWindow = overWindow;
+	}
 
-    public boolean isPseudoDrag() {
-        return pseudoDrag;
-    }
+	public boolean isPseudoDrag() {
+		return pseudoDrag;
+	}
 
-    public void start() {
-        if (started == -1) {
-            started = System.currentTimeMillis();
-        }
-    }
+	public void start() {
+		if (started == -1) {
+			started = System.currentTimeMillis();
+		}
+	}
 
-    public long getStartTime() {
-        return started;
-    }
+	public long getStartTime() {
+		return started;
+	}
 
-    public DockingPort getSourcePort() {
-        return sourcePort;
-    }
+	public DockingPort getSourcePort() {
+		return sourcePort;
+	}
 }

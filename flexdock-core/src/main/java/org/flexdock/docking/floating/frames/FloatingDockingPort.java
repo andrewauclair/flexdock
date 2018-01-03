@@ -34,116 +34,117 @@ import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 /**
  * @author Christopher Butler
  */
-@SuppressWarnings(value = { "serial" })
+@SuppressWarnings(value = {"serial"})
 public class FloatingDockingPort extends DefaultDockingPort {
-    private static final Set EMPTY_SET = new HashSet(0);
-    protected DockingFrame frame;
-    private FrameDragListener dragListener;
+	private static final Set EMPTY_SET = new HashSet(0);
+	protected DockingFrame frame;
+	private FrameDragListener dragListener;
 
-    FloatingDockingPort(DockingFrame frame, String persistentId) {
-        super(persistentId);
-        getDockingProperties().setSingleTabsAllowed(true);
-        setTabsAsDragSource(true);
-        this.frame = frame;
-        dragListener = new FrameDragListener(frame);
-    }
+	FloatingDockingPort(DockingFrame frame, String persistentId) {
+		super(persistentId);
+		getDockingProperties().setSingleTabsAllowed(true);
+		setTabsAsDragSource(true);
+		this.frame = frame;
+		dragListener = new FrameDragListener(frame);
+	}
 
-    @Override
-    public String getRegion(Point p) {
-        // only allow docking in CENTER
-        return CENTER_REGION;
-    }
+	@Override
+	public String getRegion(Point p) {
+		// only allow docking in CENTER
+		return CENTER_REGION;
+	}
 
-    public boolean isDockingAllowed(String region, Component comp) {
-        // only allow docking in CENTER
-        if(!CENTER_REGION.equals(region)) {
-            return false;
-        }
-        return super.isDockingAllowed(comp, region);
-    }
+	public boolean isDockingAllowed(String region, Component comp) {
+		// only allow docking in CENTER
+		if (!CENTER_REGION.equals(region)) {
+			return false;
+		}
+		return super.isDockingAllowed(comp, region);
+	}
 
-    @Override
-    public boolean dock(Dockable dockable, String region) {        // only dock to the CENTER region
-        boolean ret = super.dock(dockable, CENTER_REGION);
-        if(ret) {
-            toggleListeners(dockable.getComponent(), true);
-        }
-        return ret;
-    }
+	@Override
+	public boolean dock(Dockable dockable, String region) {        // only dock to the CENTER region
+		boolean ret = super.dock(dockable, CENTER_REGION);
+		if (ret) {
+			toggleListeners(dockable.getComponent(), true);
+		}
+		return ret;
+	}
 
-    @Override
-    public boolean undock(Component comp) {
-        boolean ret = super.undock(comp);
-        if(ret) {
-            toggleListeners(comp, false);
-        }
-        return ret;
-    }
+	@Override
+	public boolean undock(Component comp) {
+		boolean ret = super.undock(comp);
+		if (ret) {
+			toggleListeners(comp, false);
+		}
+		return ret;
+	}
 
-    @Override
-    public void dragStarted(DockingEvent evt) {
-        super.dragStarted(evt);
+	@Override
+	public void dragStarted(DockingEvent evt) {
+		super.dragStarted(evt);
 
-        Component dragSrc = (Component)evt.getTriggerSource();
-        Dockable dockable = (Dockable)evt.getSource();
+		Component dragSrc = (Component) evt.getTriggerSource();
+		Dockable dockable = (Dockable) evt.getSource();
 
-        boolean listenerEnabled = getFrameDragSources(dockable).contains(dragSrc);
-        dragListener.setEnabled(listenerEnabled);
-        if(listenerEnabled) {
-            evt.consume();
-        }
-    }
+		boolean listenerEnabled = getFrameDragSources(dockable).contains(dragSrc);
+		dragListener.setEnabled(listenerEnabled);
+		if (listenerEnabled) {
+			evt.consume();
+		}
+	}
 
-    @Override
-    public void undockingComplete(DockingEvent evt) {
-        super.undockingComplete(evt);
-        if(evt.getOldDockingPort()==this && getDockableCount()==0) {
-            frame.destroy();
-            frame = null;
-        }
-    }
+	@Override
+	public void undockingComplete(DockingEvent evt) {
+		super.undockingComplete(evt);
+		if (evt.getOldDockingPort() == this && getDockableCount() == 0) {
+			frame.destroy();
+			frame = null;
+		}
+	}
 
-    private void toggleListeners(Component comp, boolean add) {
-        Dockable dockable = DockingManager.getDockable(comp);
-        if(add) {
-            installListeners(dockable);
-        } else {
-            uninstallListeners(dockable);
-        }
-    }
+	private void toggleListeners(Component comp, boolean add) {
+		Dockable dockable = DockingManager.getDockable(comp);
+		if (add) {
+			installListeners(dockable);
+		}
+		else {
+			uninstallListeners(dockable);
+		}
+	}
 
-    private void installListeners(Dockable dockable) {
-        Set frameDraggers = getFrameDragSources(dockable);
-        for (Object frameDragger : frameDraggers) {
-            Component frameDragSrc = (Component) frameDragger;
-            frameDragSrc.addMouseListener(dragListener);
-            frameDragSrc.addMouseMotionListener(dragListener);
-        }
+	private void installListeners(Dockable dockable) {
+		Set frameDraggers = getFrameDragSources(dockable);
+		for (Object frameDragger : frameDraggers) {
+			Component frameDragSrc = (Component) frameDragger;
+			frameDragSrc.addMouseListener(dragListener);
+			frameDragSrc.addMouseMotionListener(dragListener);
+		}
 
-        dockable.addDockingListener(this);
-    }
+		dockable.addDockingListener(this);
+	}
 
-    private void uninstallListeners(Dockable dockable) {
-        Set frameDraggers = getFrameDragSources(dockable);
-        for (Object frameDragger : frameDraggers) {
-            Component frameDragSrc = (Component) frameDragger;
-            frameDragSrc.removeMouseListener(dragListener);
-            frameDragSrc.removeMouseMotionListener(dragListener);
-        }
-        dockable.removeDockingListener(this);
-    }
+	private void uninstallListeners(Dockable dockable) {
+		Set frameDraggers = getFrameDragSources(dockable);
+		for (Object frameDragger : frameDraggers) {
+			Component frameDragSrc = (Component) frameDragger;
+			frameDragSrc.removeMouseListener(dragListener);
+			frameDragSrc.removeMouseMotionListener(dragListener);
+		}
+		dockable.removeDockingListener(this);
+	}
 
-    public int getDockableCount() {
-        Component comp = getDockedComponent();
-        if(!(comp instanceof JTabbedPane)) {
-            return 0;
-        }
-        return ((JTabbedPane)comp).getTabCount();
-    }
+	public int getDockableCount() {
+		Component comp = getDockedComponent();
+		if (!(comp instanceof JTabbedPane)) {
+			return 0;
+		}
+		return ((JTabbedPane) comp).getTabCount();
+	}
 
-    protected Set getFrameDragSources(Dockable dockable) {
-        Set set = dockable==null? null: dockable.getFrameDragSources();
-        return set==null? EMPTY_SET: set;
-    }
+	protected Set getFrameDragSources(Dockable dockable) {
+		Set set = dockable == null ? null : dockable.getFrameDragSources();
+		return set == null ? EMPTY_SET : set;
+	}
 
 }

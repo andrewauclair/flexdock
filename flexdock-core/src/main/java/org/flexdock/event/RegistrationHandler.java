@@ -27,28 +27,28 @@ import java.util.EventListener;
  */
 public class RegistrationHandler extends EventHandler {
 
-    @Override
-    public boolean acceptsEvent(Event evt) {
-        return evt instanceof RegistrationEvent;
-    }
+	@Override
+	public boolean acceptsEvent(Event evt) {
+		return evt instanceof RegistrationEvent;
+	}
 
-    @Override
-    public boolean acceptsListener(EventListener listener) {
-        return listener instanceof RegistrationListener;
-    }
+	@Override
+	public boolean acceptsListener(EventListener listener) {
+		return listener instanceof RegistrationListener;
+	}
 
-    @Override
-    public void handleEvent(Event evt, EventListener listener, int eventType) {
-        RegistrationEvent regEvt = (RegistrationEvent)evt;
-        RegistrationListener regListener = (RegistrationListener)listener;
+	@Override
+	public void handleEvent(Event evt, EventListener listener, int eventType) {
+		RegistrationEvent regEvt = (RegistrationEvent) evt;
+		RegistrationListener regListener = (RegistrationListener) listener;
 
-        switch(eventType) {
-            case RegistrationEvent.REGISTERED:
-                regListener.registered(regEvt);
-                break;
-            case RegistrationEvent.UNREGISTERED:
-                regListener.unregistered(regEvt);
-                break;
-        }
-    }
+		switch (eventType) {
+		case RegistrationEvent.REGISTERED:
+			regListener.registered(regEvt);
+			break;
+		case RegistrationEvent.UNREGISTERED:
+			regListener.unregistered(regEvt);
+			break;
+		}
+	}
 }

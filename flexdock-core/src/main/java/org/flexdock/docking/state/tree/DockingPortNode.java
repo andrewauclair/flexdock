@@ -19,51 +19,51 @@
  */
 package org.flexdock.docking.state.tree;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.DockingStrategy;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 
 /**
  * @author Christopher Butler
  */
-@SuppressWarnings(value = { "serial" })
+@SuppressWarnings(value = {"serial"})
 public class DockingPortNode extends DockingNode {
 
-    @Override
-    public Object getDockingObject() {
-        TreeNode parent = getParent();
-        if(!(parent instanceof SplitNode)) {
-            return null;
-        }
+	@Override
+	public Object getDockingObject() {
+		TreeNode parent = getParent();
+		if (!(parent instanceof SplitNode)) {
+			return null;
+		}
 
-        TreeNode grandParent = parent.getParent();
-        if(!(grandParent instanceof DockingPortNode)) {
-            return null;
-        }
+		TreeNode grandParent = parent.getParent();
+		if (!(grandParent instanceof DockingPortNode)) {
+			return null;
+		}
 
-        DockingPort superPort = (DockingPort)((DefaultMutableTreeNode)grandParent).getUserObject();
-        DockingStrategy strategy = superPort.getDockingStrategy();
-        return strategy.createDockingPort(superPort);
-    }
+		DockingPort superPort = (DockingPort) ((DefaultMutableTreeNode) grandParent).getUserObject();
+		DockingStrategy strategy = superPort.getDockingStrategy();
+		return strategy.createDockingPort(superPort);
+	}
 
-    public DockingPort getDockingPort() {
-        return (DockingPort)getUserObject();
-    }
+	public DockingPort getDockingPort() {
+		return (DockingPort) getUserObject();
+	}
 
-    public boolean isSplit() {
-        int cnt = getChildCount();
-        if(cnt!=1) {
-            return false;
-        }
+	public boolean isSplit() {
+		int cnt = getChildCount();
+		if (cnt != 1) {
+			return false;
+		}
 
-        return getChildAt(0) instanceof SplitNode;
-    }
+		return getChildAt(0) instanceof SplitNode;
+	}
 
-    @Override
-    protected DockingNode shallowClone() {
-        return new DockingPortNode();
-    }
+	@Override
+	protected DockingNode shallowClone() {
+		return new DockingPortNode();
+	}
 }

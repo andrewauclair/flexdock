@@ -30,170 +30,172 @@ import static org.flexdock.docking.DockingConstants.UNINITIALIZED_RATIO;
 import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
- *
  * @author Mateusz Szczap
  */
-@SuppressWarnings(value = { "serial" })
+@SuppressWarnings(value = {"serial"})
 public class DockingState implements Cloneable, Serializable {
 
-    private String dockableId;
+	private String dockableId;
 
-    private String relativeParentId;
+	private String relativeParentId;
 
-    private String region = UNKNOWN_REGION;
+	private String region = UNKNOWN_REGION;
 
-    private float splitRatio = UNINITIALIZED_RATIO;
+	private float splitRatio = UNINITIALIZED_RATIO;
 
-    private String floatingGroup;
+	private String floatingGroup;
 
-    //if the view is minimized we store the dockbar edge to which it is minimized
-    private int minimizedConstraint = MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT;
+	//if the view is minimized we store the dockbar edge to which it is minimized
+	private int minimizedConstraint = MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT;
 
-    private DockingPath dockingPath;
+	private DockingPath dockingPath;
 
-    private int centerX = DockingConstants.UNINITIALIZED;
+	private int centerX = DockingConstants.UNINITIALIZED;
 
-    private int centerY = DockingConstants.UNINITIALIZED;
+	private int centerY = DockingConstants.UNINITIALIZED;
 
-    public DockingState(String dockableId) {
-        this.dockableId = dockableId;
-    }
+	public DockingState(String dockableId) {
+		this.dockableId = dockableId;
+	}
 
-    public Dockable getDockable() {
-        return DockingManager.getDockable(this.dockableId);
-    }
+	public Dockable getDockable() {
+		return DockingManager.getDockable(this.dockableId);
+	}
 
-    public String getDockableId() {
-        return this.dockableId;
-    }
+	public String getDockableId() {
+		return this.dockableId;
+	}
 
-    public float getSplitRatio() {
-        return this.splitRatio;
-    }
+	public float getSplitRatio() {
+		return this.splitRatio;
+	}
 
-    public void setSplitRatio(float ratio) {
-        this.splitRatio = ratio;
-    }
+	public void setSplitRatio(float ratio) {
+		this.splitRatio = ratio;
+	}
 
-    public String getRegion() {
-        return this.region;
-    }
+	public String getRegion() {
+		return this.region;
+	}
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
+	public void setRegion(String region) {
+		this.region = region;
+	}
 
-    public int getMinimizedConstraint() {
-        return minimizedConstraint;
-    }
+	public int getMinimizedConstraint() {
+		return minimizedConstraint;
+	}
 
-    public String getFloatingGroup() {
-        return this.floatingGroup;
-    }
+	public String getFloatingGroup() {
+		return this.floatingGroup;
+	}
 
-    public boolean isFloating() {
-        return this.floatingGroup!=null;
-    }
+	public boolean isFloating() {
+		return this.floatingGroup != null;
+	}
 
-    public boolean isMinimized() {
-        return this.minimizedConstraint!=MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT;
-    }
+	public boolean isMinimized() {
+		return this.minimizedConstraint != MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT;
+	}
 
-    public boolean hasDockingPath() {
-        return this.dockingPath!=null;
-    }
+	public boolean hasDockingPath() {
+		return this.dockingPath != null;
+	}
 
-    public DockingPath getPath() {
-        return this.dockingPath;
-    }
+	public DockingPath getPath() {
+		return this.dockingPath;
+	}
 
-    public void setPath(DockingPath path) {
-        this.dockingPath = path;
-    }
+	public void setPath(DockingPath path) {
+		this.dockingPath = path;
+	}
 
-    public void setMinimizedConstraint(int constraint) {
-        this.minimizedConstraint = constraint;
-        if(constraint!=MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT) {
-            this.floatingGroup = null;
-        }
-    }
+	public void setMinimizedConstraint(int constraint) {
+		this.minimizedConstraint = constraint;
+		if (constraint != MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT) {
+			this.floatingGroup = null;
+		}
+	}
 
-    public void setFloatingGroup(String group) {
-        this.floatingGroup = group;
-        if(group!=null) {
-            this.minimizedConstraint = MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT;
-        }
-    }
+	public void setFloatingGroup(String group) {
+		this.floatingGroup = group;
+		if (group != null) {
+			this.minimizedConstraint = MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT;
+		}
+	}
 
-    public Dockable getRelativeParent() {
-        return DockingManager.getDockable(this.relativeParentId);
-    }
+	public Dockable getRelativeParent() {
+		return DockingManager.getDockable(this.relativeParentId);
+	}
 
-    public String getRelativeParentId() {
-        return this.relativeParentId;
-    }
+	public String getRelativeParentId() {
+		return this.relativeParentId;
+	}
 
-    public void setRelativeParent(Dockable parent) {
-        String parentId = parent==null? null: parent.getPersistentId();
-        setRelativeParentId(parentId);
-    }
+	public void setRelativeParent(Dockable parent) {
+		String parentId = parent == null ? null : parent.getPersistentId();
+		setRelativeParentId(parentId);
+	}
 
-    public void setRelativeParentId(String relativeParentId) {
-        this.relativeParentId = relativeParentId;
-    }
+	public void setRelativeParentId(String relativeParentId) {
+		this.relativeParentId = relativeParentId;
+	}
 
-    @Override
-    public String toString() {
-        return "DockingState[id=" + this.dockableId +
-               "; center=[" + centerX + "%," + centerY + "%]" +
-               "; parent=" + this.relativeParentId +
-               "; region=" + this.region + "; ratio=" + this.splitRatio +
-               "; float=" + this.floatingGroup + "; minimization=" + this.minimizedConstraint + "; ]";
-    }
+	@Override
+	public String toString() {
+		return "DockingState[id=" + this.dockableId +
+				"; center=[" + centerX + "%," + centerY + "%]" +
+				"; parent=" + this.relativeParentId +
+				"; region=" + this.region + "; ratio=" + this.splitRatio +
+				"; float=" + this.floatingGroup + "; minimization=" + this.minimizedConstraint + "; ]";
+	}
 
-    public int getCenterX() {
-        return centerX;
-    }
-    public void setCenterX(int centerX) {
-        this.centerX = centerX;
-    }
-    public int getCenterY() {
-        return centerY;
-    }
-    public void setCenterY(int centerY) {
-        this.centerY = centerY;
-    }
+	public int getCenterX() {
+		return centerX;
+	}
 
-    public void setCenter(Point p) {
-        centerX = p==null? 0: p.x;
-        centerY = p==null? 0: p.y;
-    }
+	public void setCenterX(int centerX) {
+		this.centerX = centerX;
+	}
 
-    public Point getCenterPoint() {
-        if (this.centerX == DockingConstants.UNINITIALIZED || this.centerY == DockingConstants.UNINITIALIZED) {
-            return null;
-        }
-        return new Point(this.centerX, this.centerY);
-    }
+	public int getCenterY() {
+		return centerY;
+	}
 
-    public boolean hasCenterPoint() {
-        return (centerX != DockingConstants.UNINITIALIZED && centerY != DockingConstants.UNINITIALIZED);
-    }
+	public void setCenterY(int centerY) {
+		this.centerY = centerY;
+	}
 
-    @Override
-    public Object clone() {
-        DockingState dockingStateClone = new DockingState(this.dockableId);
+	public void setCenter(Point p) {
+		centerX = p == null ? 0 : p.x;
+		centerY = p == null ? 0 : p.y;
+	}
 
-        dockingStateClone.relativeParentId = this.relativeParentId;
-        dockingStateClone.region = this.region;
-        dockingStateClone.splitRatio = this.splitRatio;
-        dockingStateClone.floatingGroup = this.floatingGroup;
-        dockingStateClone.minimizedConstraint = this.minimizedConstraint;
-        dockingStateClone.dockingPath = this.dockingPath==null? null: (DockingPath)this.dockingPath.clone();
-        dockingStateClone.centerX = centerX;
-        dockingStateClone.centerY = centerY;
+	public Point getCenterPoint() {
+		if (this.centerX == DockingConstants.UNINITIALIZED || this.centerY == DockingConstants.UNINITIALIZED) {
+			return null;
+		}
+		return new Point(this.centerX, this.centerY);
+	}
 
-        return dockingStateClone;
-    }
+	public boolean hasCenterPoint() {
+		return (centerX != DockingConstants.UNINITIALIZED && centerY != DockingConstants.UNINITIALIZED);
+	}
+
+	@Override
+	public Object clone() {
+		DockingState dockingStateClone = new DockingState(this.dockableId);
+
+		dockingStateClone.relativeParentId = this.relativeParentId;
+		dockingStateClone.region = this.region;
+		dockingStateClone.splitRatio = this.splitRatio;
+		dockingStateClone.floatingGroup = this.floatingGroup;
+		dockingStateClone.minimizedConstraint = this.minimizedConstraint;
+		dockingStateClone.dockingPath = this.dockingPath == null ? null : (DockingPath) this.dockingPath.clone();
+		dockingStateClone.centerX = centerX;
+		dockingStateClone.centerY = centerY;
+
+		return dockingStateClone;
+	}
 
 }

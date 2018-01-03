@@ -19,38 +19,38 @@
  */
 package org.flexdock.docking.state;
 
-import java.io.IOException;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingPort;
+
+import java.io.IOException;
 
 /**
  * @author Christopher Butler
  */
 public interface LayoutManager {
 
-    DockingState getDockingState(String dockableId);
+	DockingState getDockingState(String dockableId);
 
-    DockingState getDockingState(Dockable dockable);
+	DockingState getDockingState(Dockable dockable);
 
-    FloatManager getFloatManager();
+	FloatManager getFloatManager();
 
-    LayoutNode createLayout(DockingPort port);
+	LayoutNode createLayout(DockingPort port);
 
-    boolean display(Dockable dockable);
+	boolean display(Dockable dockable);
 
-    boolean store() throws IOException, PersistenceException;
+	boolean store() throws IOException, PersistenceException;
 
-    boolean store(String persistenceKey) throws IOException, PersistenceException;
+	boolean store(String persistenceKey) throws IOException, PersistenceException;
 
-    boolean load() throws IOException, PersistenceException;
+	boolean load() throws IOException, PersistenceException;
 
-    boolean load(String persistenceKey) throws IOException, PersistenceException;
+	boolean load(String persistenceKey) throws IOException, PersistenceException;
 
-    boolean restore(boolean loadFromStorage) throws IOException, PersistenceException;
+	boolean restore(boolean loadFromStorage) throws IOException, PersistenceException;
 
-    String getDefaultPersistenceKey();
+	String getDefaultPersistenceKey();
 
-    void setDefaultPersistenceKey(String key);
+	void setDefaultPersistenceKey(String key);
 
 }

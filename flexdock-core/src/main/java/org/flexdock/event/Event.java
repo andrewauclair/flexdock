@@ -26,20 +26,20 @@ import java.util.EventObject;
  */
 @SuppressWarnings(value = {"serial"})
 public class Event extends EventObject {
-    private int eventType;
+	private int eventType;
 
-    /**
-     * An event object.
-     *
-     * @param src     the source of the event.
-     * @param evtType the type of the event.
-     */
-    public Event(Object src, int evtType) {
-        super(src);
-        eventType = evtType;
-    }
+	/**
+	 * An event object.
+	 *
+	 * @param src     the source of the event.
+	 * @param evtType the type of the event.
+	 */
+	public Event(Object src, int evtType) {
+		super(src);
+		eventType = evtType;
+	}
 
-    public int getEventType() {
-        return eventType;
-    }
+	public int getEventType() {
+		return eventType;
+	}
 }

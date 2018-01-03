@@ -37,131 +37,131 @@ import static org.flexdock.docking.DockingConstants.CENTER_REGION;
  * @author Andreas Ernst
  * @author Christopher Butler
  */
-@SuppressWarnings(value = { "serial" })
+@SuppressWarnings(value = {"serial"})
 public class DockingFrame extends JDialog {
-    private static final BoundsMonitor BOUNDS_MONITOR = new BoundsMonitor();
+	private static final BoundsMonitor BOUNDS_MONITOR = new BoundsMonitor();
 
-    private FloatingDockingPort dockingPort;
+	private FloatingDockingPort dockingPort;
 
-    private String groupName;
+	private String groupName;
 
-    public static DockingFrame create(Component c, String groupName) {
-        RootWindow rootWin = RootWindow.getRootContainer(c);
-        Component window = rootWin.getRootContainer();
-        if (window instanceof DockingFrame) {
-            window = ((Window) window).getOwner();
-        }
+	public static DockingFrame create(Component c, String groupName) {
+		RootWindow rootWin = RootWindow.getRootContainer(c);
+		Component window = rootWin.getRootContainer();
+		if (window instanceof DockingFrame) {
+			window = ((Window) window).getOwner();
+		}
 
-        //Applets are actually contained in a frame
-        if (window instanceof Applet) {
-            window = SwingUtilities.windowForComponent(window);
-        }
+		//Applets are actually contained in a frame
+		if (window instanceof Applet) {
+			window = SwingUtilities.windowForComponent(window);
+		}
 
-        if (window instanceof Frame) {
-            return new DockingFrame((Frame) window, groupName);
-        }
-        if (window instanceof Dialog) {
-            return new DockingFrame((Dialog) window, groupName);
-        }
+		if (window instanceof Frame) {
+			return new DockingFrame((Frame) window, groupName);
+		}
+		if (window instanceof Dialog) {
+			return new DockingFrame((Dialog) window, groupName);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    // constructor
-    public DockingFrame(Frame owner, String groupName) {
-        super(owner);
-        initialize(groupName);
-    }
+	// constructor
+	public DockingFrame(Frame owner, String groupName) {
+		super(owner);
+		initialize(groupName);
+	}
 
-    public DockingFrame(Dialog owner, String groupName) {
-        super(owner);
-        initialize(groupName);
-    }
+	public DockingFrame(Dialog owner, String groupName) {
+		super(owner);
+		initialize(groupName);
+	}
 
-    // private
+	// private
 
-    private void initialize(String groupName) {
-        setUndecorated(true);
-        getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+	private void initialize(String groupName) {
+		setUndecorated(true);
+		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 
-        // TODO I am not sure null should be passed here,
-        // maybe we should use our IDPersistentIdProvider
-        dockingPort = new FloatingDockingPort(this, null);
-        setContentPane(dockingPort);
-        this.groupName = groupName;
-        addComponentListener(BOUNDS_MONITOR);
-    }
+		// TODO I am not sure null should be passed here,
+		// maybe we should use our IDPersistentIdProvider
+		dockingPort = new FloatingDockingPort(this, null);
+		setContentPane(dockingPort);
+		this.groupName = groupName;
+		addComponentListener(BOUNDS_MONITOR);
+	}
 
-    // override
+	// override
 
-    @Override
-    protected JRootPane createRootPane() {
-        return new RootPane(this);
-    }
+	@Override
+	protected JRootPane createRootPane() {
+		return new RootPane(this);
+	}
 
-    public DockingPort getDockingPort() {
-        return dockingPort;
-    }
+	public DockingPort getDockingPort() {
+		return dockingPort;
+	}
 
-    public void addDockable(Dockable dockable) {
-        if (dockable == null) {
-            return;
-        }
+	public void addDockable(Dockable dockable) {
+		if (dockable == null) {
+			return;
+		}
 
-        dockingPort.dock(dockable, CENTER_REGION);
-    }
+		dockingPort.dock(dockable, CENTER_REGION);
+	}
 
-    public void destroy() {
-        setVisible(false);
-        dockingPort = null;
-        FloatingGroup group = getGroup();
-        if (group != null) {
-            group.setFrame(null);
-        }
-        dispose();
-    }
+	public void destroy() {
+		setVisible(false);
+		dockingPort = null;
+		FloatingGroup group = getGroup();
+		if (group != null) {
+			group.setFrame(null);
+		}
+		dispose();
+	}
 
-    public String getGroupName() {
-        return groupName;
-    }
+	public String getGroupName() {
+		return groupName;
+	}
 
-    public FloatingGroup getGroup() {
-        return DockingManager.getFloatManager().getGroup(getGroupName());
-    }
+	public FloatingGroup getGroup() {
+		return DockingManager.getFloatManager().getGroup(getGroupName());
+	}
 
-    private static class BoundsMonitor implements ComponentListener {
+	private static class BoundsMonitor implements ComponentListener {
 
-        @Override
-        public void componentHidden(ComponentEvent e) {
-            // noop
-        }
+		@Override
+		public void componentHidden(ComponentEvent e) {
+			// noop
+		}
 
-        @Override
-        public void componentMoved(ComponentEvent e) {
-            updateBounds(e);
-        }
+		@Override
+		public void componentMoved(ComponentEvent e) {
+			updateBounds(e);
+		}
 
-        @Override
-        public void componentResized(ComponentEvent e) {
-            updateBounds(e);
-        }
+		@Override
+		public void componentResized(ComponentEvent e) {
+			updateBounds(e);
+		}
 
-        @Override
-        public void componentShown(ComponentEvent e) {
-            updateBounds(e);
-        }
+		@Override
+		public void componentShown(ComponentEvent e) {
+			updateBounds(e);
+		}
 
-        private void updateBounds(ComponentEvent evt) {
-            Component c = evt.getComponent();
-            if (!(c instanceof DockingFrame)) {
-                return;
-            }
+		private void updateBounds(ComponentEvent evt) {
+			Component c = evt.getComponent();
+			if (!(c instanceof DockingFrame)) {
+				return;
+			}
 
-            DockingFrame frame = (DockingFrame) c;
-            FloatingGroup group = frame.getGroup();
-            if (group != null) {
-                group.setBounds(frame.getBounds());
-            }
-        }
-    }
+			DockingFrame frame = (DockingFrame) c;
+			FloatingGroup group = frame.getGroup();
+			if (group != null) {
+				group.setBounds(frame.getBounds());
+			}
+		}
+	}
 }

@@ -19,89 +19,90 @@
  */
 package org.flexdock.docking.event;
 
-import java.util.EventListener;
-import java.util.Vector;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.event.Event;
 import org.flexdock.event.EventHandler;
+
+import java.util.EventListener;
+import java.util.Vector;
 
 /**
  * @author Christopher Butler
  */
 public class DockingEventHandler extends EventHandler {
-    private static final String DOCKING_LISTENERS_KEY = "EventManager.DOCKING_LISTENERS_KEY";
+	private static final String DOCKING_LISTENERS_KEY = "EventManager.DOCKING_LISTENERS_KEY";
 
-    public static DockingListener[] getDockingListeners(Dockable dockable) {
-        Vector<DockingListener> list = getDockingListenersList(dockable);
-        return list==null? null: (DockingListener[])list.toArray(new DockingListener[0]);
-    }
+	public static DockingListener[] getDockingListeners(Dockable dockable) {
+		Vector<DockingListener> list = getDockingListenersList(dockable);
+		return list == null ? null : (DockingListener[]) list.toArray(new DockingListener[0]);
+	}
 
-    public static void addDockingListener(Dockable dockable, DockingListener listener) {
-        if(dockable!=null && listener!=null) {
-            getDockingListenersList(dockable).add(listener);
-        }
-    }
+	public static void addDockingListener(Dockable dockable, DockingListener listener) {
+		if (dockable != null && listener != null) {
+			getDockingListenersList(dockable).add(listener);
+		}
+	}
 
-    public static void removeDockingListener(Dockable dockable, DockingListener listener) {
-        if(dockable!=null && listener!=null) {
-            getDockingListenersList(dockable).remove(listener);
-        }
-    }
+	public static void removeDockingListener(Dockable dockable, DockingListener listener) {
+		if (dockable != null && listener != null) {
+			getDockingListenersList(dockable).remove(listener);
+		}
+	}
 
-    private static Vector<DockingListener> getDockingListenersList(Dockable dockable) {
-        if(dockable==null) {
-            return null;
-        }
+	private static Vector<DockingListener> getDockingListenersList(Dockable dockable) {
+		if (dockable == null) {
+			return null;
+		}
 
-        Vector<DockingListener> list = (Vector<DockingListener>)dockable.getClientProperty(DOCKING_LISTENERS_KEY);
-        if(list==null) {
-            list = new Vector<>();
-            dockable.putClientProperty(DOCKING_LISTENERS_KEY, list);
-        }
-        return list;
-    }
+		Vector<DockingListener> list = (Vector<DockingListener>) dockable.getClientProperty(DOCKING_LISTENERS_KEY);
+		if (list == null) {
+			list = new Vector<>();
+			dockable.putClientProperty(DOCKING_LISTENERS_KEY, list);
+		}
+		return list;
+	}
 
-    @Override
-    public boolean acceptsEvent(Event evt) {
-        return evt instanceof DockingEvent;
-    }
-    @Override
-    public boolean acceptsListener(EventListener listener) {
-        return listener instanceof DockingListener;
-    }
+	@Override
+	public boolean acceptsEvent(Event evt) {
+		return evt instanceof DockingEvent;
+	}
+
+	@Override
+	public boolean acceptsListener(EventListener listener) {
+		return listener instanceof DockingListener;
+	}
 
 
-    @Override
-    public void handleEvent(Event evt, EventListener listener, int eventType) {
-        DockingEvent event = (DockingEvent)evt;
-        DockingListener consumer = (DockingListener)listener;
+	@Override
+	public void handleEvent(Event evt, EventListener listener, int eventType) {
+		DockingEvent event = (DockingEvent) evt;
+		DockingListener consumer = (DockingListener) listener;
 
-        switch(event.getEventType()) {
-            case DockingEvent.DRAG_STARTED:
-                consumer.dragStarted(event);
-                break;
-            case DockingEvent.DROP_STARTED:
-                consumer.dropStarted(event);
-                break;
-            case DockingEvent.DOCKING_COMPLETE:
-                consumer.dockingComplete(event);
-                break;
-            case DockingEvent.DOCKING_CANCELED:
-                consumer.dockingCanceled(event);
-                break;
-            case DockingEvent.UNDOCKING_COMPLETE:
-                consumer.undockingComplete(event);
-                break;
-            case DockingEvent.UNDOCKING_STARTED:
-                consumer.undockingStarted(event);
-                break;
-        }
-    }
+		switch (event.getEventType()) {
+		case DockingEvent.DRAG_STARTED:
+			consumer.dragStarted(event);
+			break;
+		case DockingEvent.DROP_STARTED:
+			consumer.dropStarted(event);
+			break;
+		case DockingEvent.DOCKING_COMPLETE:
+			consumer.dockingComplete(event);
+			break;
+		case DockingEvent.DOCKING_CANCELED:
+			consumer.dockingCanceled(event);
+			break;
+		case DockingEvent.UNDOCKING_COMPLETE:
+			consumer.undockingComplete(event);
+			break;
+		case DockingEvent.UNDOCKING_STARTED:
+			consumer.undockingStarted(event);
+			break;
+		}
+	}
 
-    @Override
-    public EventListener[] getListeners(Object eventTarget) {
-        return eventTarget instanceof DockingMonitor?
-               ((DockingMonitor)eventTarget).getDockingListeners(): null;
-    }
+	@Override
+	public EventListener[] getListeners(Object eventTarget) {
+		return eventTarget instanceof DockingMonitor ?
+				((DockingMonitor) eventTarget).getDockingListeners() : null;
+	}
 }

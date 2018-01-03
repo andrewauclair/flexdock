@@ -31,142 +31,143 @@ import static org.flexdock.docking.DockingConstants.*;
 /**
  * @author Christopher Butler
  */
-@SuppressWarnings(value = { "serial" })
+@SuppressWarnings(value = {"serial"})
 public class SplitNode extends DockingNode {
 
-    private int orientation;
-    private int region;
-    private float percentage;
-    private String siblingId;
-    private String dockingRegion;
+	private int orientation;
+	private int region;
+	private float percentage;
+	private String siblingId;
+	private String dockingRegion;
 
-    public SplitNode(int orientation, int region, float percentage, String siblingId) {
-        this.orientation = orientation;
-        this.region = region;
-        this.percentage = percentage;
-        this.siblingId = siblingId;
-    }
+	public SplitNode(int orientation, int region, float percentage, String siblingId) {
+		this.orientation = orientation;
+		this.region = region;
+		this.percentage = percentage;
+		this.siblingId = siblingId;
+	}
 
-    public int getOrientation() {
-        return orientation;
-    }
+	public int getOrientation() {
+		return orientation;
+	}
 
-    public void setOrientation(int orientation) {
-        this.orientation = orientation;
-    }
+	public void setOrientation(int orientation) {
+		this.orientation = orientation;
+	}
 
-    public float getPercentage() {
-        return percentage;
-    }
+	public float getPercentage() {
+		return percentage;
+	}
 
-    public void setPercentage(float percentage) {
-        this.percentage = percentage;
-    }
+	public void setPercentage(float percentage) {
+		this.percentage = percentage;
+	}
 
-    public int getRegion() {
-        return region;
-    }
+	public int getRegion() {
+		return region;
+	}
 
-    public void setRegion(int region) {
-        this.region = region;
-    }
+	public void setRegion(int region) {
+		this.region = region;
+	}
 
-    public String getSiblingId() {
-        return siblingId;
-    }
+	public String getSiblingId() {
+		return siblingId;
+	}
 
-    public void setSiblingId(String siblingId) {
-        this.siblingId = siblingId;
-    }
+	public void setSiblingId(String siblingId) {
+		this.siblingId = siblingId;
+	}
 
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer("SplitNode[");
-        sb.append("orient=").append(getOrientationDesc()).append("; ");
-        sb.append("region=").append(getRegionDesc()).append("; ");
-        sb.append("percent=").append(percentage).append("%;");
-        sb.append("]");
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer("SplitNode[");
+		sb.append("orient=").append(getOrientationDesc()).append("; ");
+		sb.append("region=").append(getRegionDesc()).append("; ");
+		sb.append("percent=").append(percentage).append("%;");
+		sb.append("]");
+		return sb.toString();
+	}
 
-    public String getRegionDesc() {
-        switch(region) {
-            case TOP:
-                return "top";
-            case BOTTOM:
-                return "bottom";
-            case RIGHT:
-                return "right";
-            default:
-                return "left";
-        }
-    }
+	public String getRegionDesc() {
+		switch (region) {
+		case TOP:
+			return "top";
+		case BOTTOM:
+			return "bottom";
+		case RIGHT:
+			return "right";
+		default:
+			return "left";
+		}
+	}
 
-    public String getOrientationDesc() {
-        return orientation==VERTICAL? "vertical": "horizontal";
-    }
+	public String getOrientationDesc() {
+		return orientation == VERTICAL ? "vertical" : "horizontal";
+	}
 
-    @Override
-    public Object clone() {
-        return new SplitNode(orientation, region, percentage, siblingId);
-    }
+	@Override
+	public Object clone() {
+		return new SplitNode(orientation, region, percentage, siblingId);
+	}
 
-    public String getDockingRegion() {
-        return dockingRegion;
-    }
-    public void setDockingRegion(String dockingRegion) {
-        this.dockingRegion = dockingRegion;
-    }
+	public String getDockingRegion() {
+		return dockingRegion;
+	}
 
-    @Override
-    public Object getDockingObject() {
-        if(dockingRegion==null) {
-            return null;
-        }
+	public void setDockingRegion(String dockingRegion) {
+		this.dockingRegion = dockingRegion;
+	}
 
-        if(!(getParent() instanceof DockingPortNode)) {
-            return null;
-        }
+	@Override
+	public Object getDockingObject() {
+		if (dockingRegion == null) {
+			return null;
+		}
 
-        DockingPortNode superNode = (DockingPortNode)getParent();
-        Object userObj = superNode.getUserObject();
-        if(!(userObj instanceof DockingPort)) {
-            return null;
-        }
+		if (!(getParent() instanceof DockingPortNode)) {
+			return null;
+		}
 
-        DockingPort superPort = (DockingPort)userObj;
-        DockingStrategy strategy = superPort.getDockingStrategy();
-        return strategy.createSplitPane(superPort, dockingRegion, percentage);
-    }
+		DockingPortNode superNode = (DockingPortNode) getParent();
+		Object userObj = superNode.getUserObject();
+		if (!(userObj instanceof DockingPort)) {
+			return null;
+		}
 
-    public JSplitPane getSplitPane() {
-        return (JSplitPane)getUserObject();
-    }
+		DockingPort superPort = (DockingPort) userObj;
+		DockingStrategy strategy = superPort.getDockingStrategy();
+		return strategy.createSplitPane(superPort, dockingRegion, percentage);
+	}
 
-    public Component getLeftComponent() {
-        return getChildComponent(0);
-    }
+	public JSplitPane getSplitPane() {
+		return (JSplitPane) getUserObject();
+	}
 
-    public Component getRightComponent() {
-        return getChildComponent(1);
-    }
+	public Component getLeftComponent() {
+		return getChildComponent(0);
+	}
 
-    private Component getChildComponent(int indx) {
-        LayoutNode child = getChild(indx);
-        return child==null? null: (Component)child.getUserObject();
-    }
+	public Component getRightComponent() {
+		return getChildComponent(1);
+	}
 
-    private LayoutNode getChild(int indx) {
-        if(indx >= getChildCount()) {
-            return null;
-        }
-        return (LayoutNode)getChildAt(indx);
-    }
+	private Component getChildComponent(int indx) {
+		LayoutNode child = getChild(indx);
+		return child == null ? null : (Component) child.getUserObject();
+	}
 
-    @Override
-    protected DockingNode shallowClone() {
-        SplitNode clone = new SplitNode(orientation, region, percentage, siblingId);
-        clone.dockingRegion = dockingRegion;
-        return clone;
-    }
+	private LayoutNode getChild(int indx) {
+		if (indx >= getChildCount()) {
+			return null;
+		}
+		return (LayoutNode) getChildAt(indx);
+	}
+
+	@Override
+	protected DockingNode shallowClone() {
+		SplitNode clone = new SplitNode(orientation, region, percentage, siblingId);
+		clone.dockingRegion = dockingRegion;
+		return clone;
+	}
 }
