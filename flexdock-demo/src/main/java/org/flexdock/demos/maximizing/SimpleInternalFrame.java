@@ -72,35 +72,7 @@ public class SimpleInternalFrame extends JPanel {
     private boolean isSelected;
 
     // Instance Creation ****************************************************
-
-    /**
-     * Constructs a <code>SimpleInternalFrame</code> with an empty title.
-     *
-     * @param title the initial title
-     */
-    public SimpleInternalFrame() {
-        this(null, "", null, null);
-    }
-
-    /**
-     * Constructs a <code>SimpleInternalFrame</code> with the specified title.
-     *
-     * @param title the initial title
-     */
-    public SimpleInternalFrame(String title) {
-        this(null, title, null, null);
-    }
-
-    /**
-     * Constructs a <code>SimpleInternalFrame</code> with the specified icon, and title.
-     *
-     * @param icon the initial icon
-     * @param title the initial title
-     */
-    public SimpleInternalFrame(Icon icon, String title) {
-        this(icon, title, null, null);
-    }
-
+    
     /**
      * Constructs a <code>SimpleInternalFrame</code> with the specified title, tool bar, and content panel.
      *
@@ -108,7 +80,7 @@ public class SimpleInternalFrame extends JPanel {
      * @param bar the initial tool bar
      * @param content the initial content pane
      */
-    public SimpleInternalFrame(String title, JToolBar bar, JComponent content) {
+    SimpleInternalFrame(String title, JToolBar bar, JComponent content) {
         this(null, title, bar, content);
     }
 
@@ -121,7 +93,7 @@ public class SimpleInternalFrame extends JPanel {
      * @param bar the initial tool bar
      * @param content the initial content pane
      */
-    public SimpleInternalFrame(Icon icon, String title, JToolBar bar, JComponent content) {
+    private SimpleInternalFrame(Icon icon, String title, JToolBar bar, JComponent content) {
         super(new BorderLayout());
         this.isSelected = false;
         this.titleLabel = new JLabel(title, icon, SwingConstants.LEADING);
@@ -144,7 +116,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @return the frame's icon
      */
-    public Icon getFrameIcon() {
+    private Icon getFrameIcon() {
         return titleLabel.getIcon();
     }
 
@@ -184,7 +156,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @return the current toolbar - if any
      */
-    public JToolBar getToolBar() {
+    private JToolBar getToolBar() {
         return headerPanel.getComponentCount() > 1 ? (JToolBar) headerPanel.getComponent(1) : null;
     }
 
@@ -193,7 +165,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @param newToolBar the tool bar to be set in the header
      */
-    public void setToolBar(JToolBar newToolBar) {
+    private void setToolBar(JToolBar newToolBar) {
         JToolBar oldToolBar = getToolBar();
         if (oldToolBar == newToolBar) {
             return;
@@ -214,7 +186,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @return the current content
      */
-    public Component getContent() {
+    private Component getContent() {
         return hasContent() ? getComponent(1) : null;
     }
 
@@ -223,7 +195,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @param newContent the panel's new content
      */
-    public void setContent(Component newContent) {
+    private void setContent(Component newContent) {
         Component oldContent = getContent();
         if (hasContent()) {
             remove(oldContent);
@@ -239,7 +211,7 @@ public class SimpleInternalFrame extends JPanel {
      * @return boolean a boolean, where true means the frame is selected (currently active) and false means it
      *         is not
      */
-    public boolean isSelected() {
+    private boolean isSelected() {
         return isSelected;
     }
 
@@ -250,7 +222,7 @@ public class SimpleInternalFrame extends JPanel {
      * @param newValue a boolean, where true means the frame is selected (currently active) and false means it
      *            is not
      */
-    public void setSelected(boolean newValue) {
+    private void setSelected(boolean newValue) {
         boolean oldValue = isSelected();
         isSelected = newValue;
         updateHeader();
@@ -329,7 +301,7 @@ public class SimpleInternalFrame extends JPanel {
      * @param selected true to lookup the active color, false for the inactive
      * @return the color of the foreground text
      */
-    protected Color getTextForeground(boolean selected) {
+    private Color getTextForeground(boolean selected) {
         Color c = UIManager.getColor(selected ? "SimpleInternalFrame.activeTitleForeground"
                                      : "SimpleInternalFrame.inactiveTitleForeground");
         if (c != null) {
@@ -345,7 +317,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @return the color of the header's background
      */
-    protected Color getHeaderBackground() {
+    private Color getHeaderBackground() {
         Color c = UIManager.getColor("SimpleInternalFrame.activeTitleBackground");
         if (c != null) {
             return c;

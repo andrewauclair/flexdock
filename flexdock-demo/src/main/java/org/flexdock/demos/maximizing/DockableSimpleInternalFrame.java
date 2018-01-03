@@ -27,11 +27,11 @@ import org.flexdock.docking.defaults.AbstractDockable;
 public class DockableSimpleInternalFrame extends AbstractDockable {
     private Component component;
 
-    public DockableSimpleInternalFrame(SimpleInternalFrame sif) {
+    DockableSimpleInternalFrame(SimpleInternalFrame sif) {
         this(sif, sif.getTitle());
     }
 
-    public DockableSimpleInternalFrame(SimpleInternalFrame sif, String id) {
+    private DockableSimpleInternalFrame(SimpleInternalFrame sif, String id) {
         super(id);
         this.component = sif;
         getDragSources().add(sif.getDragHandle());

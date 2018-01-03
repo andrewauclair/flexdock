@@ -66,10 +66,13 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * Consequently, this method may <b>not</b> return a {@code null}
      * reference.
      *
+     * @deprecated Being replaced with {@code getDockingStub}
      * @return the component wrapped by this dockable.
      */
     Component getComponent();
 
+    //<T extends Component & DockingStub> T getDockingStub();
+    
     /**
      * Returns the DockingPort within which this Dockable is currently docked.
      * If not currently docked, this method will return null.
@@ -88,7 +91,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * @return a list containing the components that may be used to drag this
      * dockable.
      */
-    List getDragSources();
+    List<Component> getDragSources();
 
     /**
      * Returns a {@code Set} of the {@code Components} that are used as frame
@@ -104,7 +107,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
      * @return a set containing the components that may be used to drag the
      * frame this dockable resides in, if the dockable is floating.
      */
-    Set getFrameDragSources();
+    Set<Component> getFrameDragSources();
 
     /**
      * Returns a {@code String} identifier that is unique within a JVM instance,

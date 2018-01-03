@@ -53,7 +53,7 @@ public abstract class AbstractDockable implements Dockable {
 
     private Hashtable<Object, Object> clientProperties;
 
-    private HashSet frameDragSources;
+    private HashSet<Component> frameDragSources;
 
     /**
      * Creates a new {@code AbstractDockable} instance. This constructor is
@@ -94,7 +94,7 @@ public abstract class AbstractDockable implements Dockable {
      * @see #getComponent()
      */
     @Override
-    public List getDragSources() {
+    public List<Component> getDragSources() {
         return dragListeners;
     }
 
@@ -124,9 +124,9 @@ public abstract class AbstractDockable implements Dockable {
      * @see Dockable#getFrameDragSources()
      */
     @Override
-    public Set getFrameDragSources() {
+    public Set<Component> getFrameDragSources() {
         if (frameDragSources == null) {
-            frameDragSources = new HashSet();
+            frameDragSources = new HashSet<>();
         }
         return frameDragSources;
     }
