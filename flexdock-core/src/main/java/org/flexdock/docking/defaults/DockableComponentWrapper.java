@@ -165,12 +165,17 @@ public class DockableComponentWrapper implements Dockable {
         return dockable;
     }
 
-    /**
-     * @param src
-     * @param id
-     * @param desc
-     * @param resizable
-     */
+    public <T extends Component & DockingStub> DockableComponentWrapper(T dockable) {
+        dragSrc = dockable;
+        getDockingProperties().setDockableDesc(dockable.getTabText());
+        persistentId = dockable.getPersistentId();
+        
+        dockingListeners = new ArrayList<>();
+        dragListeners = new ArrayList<>(1);
+        
+        initDragListeners();
+    }
+    
     private DockableComponentWrapper(Component src, String id, String desc) {
         dragSrc = src;
         getDockingProperties().setDockableDesc(desc);

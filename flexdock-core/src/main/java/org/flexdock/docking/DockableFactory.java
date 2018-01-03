@@ -61,7 +61,7 @@ public interface DockableFactory {
      *            the ID for the requested dockable {@code Component}
      * @return the {@code Component} for the specified ID
      */
-    Component getDockableComponent(String dockableId);
+    <T extends Component & DockingStub> T getDockableComponent(String dockableId);
 
     /**
      * Returns a {@code Dockable} for the specified Dockable ID, possibly

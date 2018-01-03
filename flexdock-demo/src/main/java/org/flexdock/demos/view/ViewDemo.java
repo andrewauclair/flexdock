@@ -41,7 +41,7 @@ public class ViewDemo extends JFrame implements DockingConstants {
         SwingUtility.setPlaf("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 //                SwingUtility.setPlaf("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 //                SwingUtility.setPlaf("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        EventQueue.invokeLater(() -> startup());
+        EventQueue.invokeLater(ViewDemo::startup);
     }
 
     private static void startup() {

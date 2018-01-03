@@ -63,7 +63,7 @@ public interface DockingPort extends DockingListener, DockingMonitor {
      * Docks the specified Component in the specified region. Returns
      * {@code true} for success and {@code false} for failure.
      */
-    boolean dock(Component comp, String region);
+    <T extends Component & DockingStub> boolean dock(T comp, String region);
 
     /**
      * Returns a reference to the currently docked component.

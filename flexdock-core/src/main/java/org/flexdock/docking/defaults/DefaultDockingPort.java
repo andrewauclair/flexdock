@@ -402,7 +402,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
         }
     }
 
-    private void dockCmp(DockingPort port, Component c) {
+    private void dockCmp(DockingPort port, Dockable c) {
         port.dock(c, CENTER_REGION);
     }
 
@@ -875,7 +875,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
      * @see DockingManager#registerDockable(Component)
      */
     @Override
-    public boolean dock(Component comp, String region) {
+    public <T extends Component & DockingStub> boolean dock(T comp, String region) {
         if (comp == null || region == null) {
             return false;
         }
@@ -993,7 +993,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
         }
 
         boolean success = CENTER_REGION.equals(region) ? dockInCenterRegion(comp)
-                          : dockInOuterRegion(comp, region);
+                          : dockInOuterRegion(dockable, region);
 
         if (success) {
             evaluateDockingBorderStatus();
@@ -1099,7 +1099,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
         tabs.setIconAt(indx, icon);
     }
 
-    private boolean dockInOuterRegion(Component comp, String region) {
+    private boolean dockInOuterRegion(Dockable comp, String region) {
         // cache the current size and cut it in half for later in the method.
         Dimension halfSize = getSize();
         halfSize.width /= 2;

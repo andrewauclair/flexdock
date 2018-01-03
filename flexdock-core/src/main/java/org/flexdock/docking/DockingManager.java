@@ -272,7 +272,7 @@ public class DockingManager {
      * {@code false} otherwise.
      * @see #dock(Component, DockingPort, String)
      */
-    public static boolean dock(DockingStub dockable, DockingPort port) {
+    public static <T extends Component & DockingStub> boolean dock(T dockable, DockingPort port) {
         return dock(dockable, port, CENTER_REGION);
     }
 
@@ -296,8 +296,8 @@ public class DockingManager {
      * {@code false} if the docking operation cannot be completed.
      * @see #dock(Dockable, DockingPort, String)
      */
-    public static boolean dock(DockingStub dockable, DockingPort port, String region) {
-    	return dock(resolveDockable(dockable.getComponent()), port, region);
+	public static <T extends Component & DockingStub> boolean dock(T dockable, DockingPort port, String region) {
+    	return dock(resolveDockable(dockable), port, region);
 	}
     /**
      * Docks the specified {@code Dockable} into the supplied region of the
@@ -340,7 +340,7 @@ public class DockingManager {
         return strategy != null && strategy.dock(dockable, port, region);
     }
 
-    private static Dockable resolveDockable(Component comp) {
+    private static <T extends Component & DockingStub> Dockable resolveDockable(T comp) {
         if (comp == null) {
             return null;
         }
@@ -370,13 +370,10 @@ public class DockingManager {
      * {@code false} otherwise.
      * @see DockingManager#dock(Dockable, Dockable)
      */
-    private static boolean dock(Component dockable, Component parent) {
-        return dock(resolveDockable(dockable), resolveDockable(parent));
-    }
-
-    public static boolean dock(DockingStub dockable, DockingStub parent) {
-    	return dock(resolveDockable(dockable.getComponent()), resolveDockable(parent.getComponent()));
+	public static <T extends Component & DockingStub> boolean dock(T dockable, T parent) {
+    	return dock(resolveDockable(dockable), resolveDockable(parent));
 	}
+	
     /**
      * Docks the specified {@code Dockable} relative to another already-docked
      * {@code Dockable} in the CENTER region. The "parent" {@code Dockable} must
@@ -422,8 +419,8 @@ public class DockingManager {
      * {@code false} otherwise.
      * @see #dock(Component, Component, String, float)
      */
-    public static boolean dock(DockingStub dockable, DockingStub parent, String region) {
-    	return dock(dockable.getComponent(), parent.getComponent(), region, 0.5f);
+    public static <T extends Component & DockingStub> boolean dock(T dockable, T parent, String region) {
+    	return dock(dockable, parent, region, 0.5f);
 	}
 	
     /**
@@ -477,13 +474,8 @@ public class DockingManager {
      * @return {@code true} if the docking operation was successful;
      * {@code false} otherwise.
      */
-    private static boolean dock(Component dockable, Component parent,
-                               String region, float proportion) {
-        return dock(resolveDockable(dockable), resolveDockable(parent), region, proportion);
-    }
-
-    public static boolean dock(DockingStub dockable, DockingStub parent, String region, float proportion) {
-    	return dock(resolveDockable(dockable.getComponent()), resolveDockable(parent.getComponent()), region, proportion);
+    public static <T extends Component & DockingStub> boolean dock(T dockable, T parent, String region, float proportion) {
+    	return dock(resolveDockable(dockable), resolveDockable(parent), region, proportion);
 	}
 	
     /**
@@ -676,7 +668,7 @@ public class DockingManager {
      * @see #registerDockable(Dockable)
      * @see #registerDockable(Component, String)
      */
-    public static Dockable registerDockable(Component comp) {
+    public static <T extends Component & DockingStub> Dockable registerDockable(T comp) {
         if (comp == null) {
             return null;
         }
@@ -737,11 +729,11 @@ public class DockingManager {
      * {@code Component}
      * @see #registerDockable(Dockable)
      */
-    public static Dockable registerDockable(Component comp, String tabText) {
+    public static <T extends Component & DockingStub> Dockable registerDockable(T comp, String tabText) {
         return registerDockable(comp, tabText, null);
     }
 
-    private static Dockable registerDockable(Component comp, String tabText,
+    private static <T extends Component & DockingStub> Dockable registerDockable(T comp, String tabText,
                                              String dockingId) {
         if (comp == null) {
             return null;
@@ -1380,11 +1372,12 @@ public class DockingManager {
             if (tmp == null) {
                 registerDockable(dockable);
             }
-        } else {
+        }
+        else {
             // if we couldn't find a dockable from the factory, then try getting
             // a component.
-            Component comp = factory.getDockableComponent(id);
-            // we already weren't able to get a Dockable from the factory. If
+			Component comp = factory.getDockableComponent(id);
+			// we already weren't able to get a Dockable from the factory. If
             // we couldn't get a Component either, then give up.
             if (comp == null) {
                 return null;
@@ -1394,18 +1387,18 @@ public class DockingManager {
             // then register it.
             dockable = getDockable(comp);
             if (dockable == null) {
-                dockable = registerDockable(comp, null, id);
+                dockable = registerDockable(factory.getDockableComponent(id), null, id);
             }
         }
 
         return dockable;
     }
 
-    private static Dockable getDragInitiator(Component c) {
+    private static <T extends Component & DockingStub> Dockable getDragInitiator(T c) {
         return getDockableForComponent(c, null, null);
     }
 
-    private static Dockable getDockableForComponent(Component c, String desc,
+    private static <T extends Component & DockingStub> Dockable getDockableForComponent(T c, String desc,
                                                     String dockingId) {
         if (c == null) {
             return null;
@@ -2531,7 +2524,7 @@ public class DockingManager {
         // don't see a situation when there would be no default docker.
     }
 
-    public static boolean undock(final Component dockable) {
+    public static <T extends Component & DockingStub> boolean undock(final T dockable) {
         return undock(resolveDockable(dockable));
     }
 

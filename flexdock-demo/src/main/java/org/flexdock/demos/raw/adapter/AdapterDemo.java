@@ -42,12 +42,7 @@ public class AdapterDemo extends JFrame {
         System.setProperty(AdapterFactory.ADAPTER_RESOURCE_KEY, "org/flexdock/demos/raw/adapter/docking-adapter.xml");
         DockingManager.setFloatingEnabled(true);
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                createAndShowGui();
-            }
-        });
+        EventQueue.invokeLater(AdapterDemo::createAndShowGui);
     }
 
     private static void createAndShowGui() {

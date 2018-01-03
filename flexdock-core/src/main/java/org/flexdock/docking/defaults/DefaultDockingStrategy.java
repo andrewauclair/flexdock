@@ -535,7 +535,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
             target = results.dropTarget;
         }
 
-        results.success = target.dock(dockableCmp, region);
+        results.success = target.dock(dockable, region);
         SwingUtility.revalidate((Component) target);
         return results;
     }

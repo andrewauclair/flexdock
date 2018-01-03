@@ -19,20 +19,19 @@
  */
 package org.flexdock.demos.raw;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
+import org.flexdock.docking.DockingStub;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 
-public class SimpleDemo extends JFrame implements DockingConstants {
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
+
+public class SimpleDemo extends JFrame {
     public static void main(String[] args) {
         JFrame f = new SimpleDemo();
         f.setSize(600, 400);
@@ -55,12 +54,41 @@ public class SimpleDemo extends JFrame implements DockingConstants {
         return p;
     }
 
+    private class Panel extends JPanel implements DockingStub {
+	
+		@Override
+		public Component getDragSource() {
+			return null;
+		}
+	
+		@Override
+		public Component getFrameDragSource() {
+			return null;
+		}
+	
+		@Override
+		public String getPersistentId() {
+			return null;
+		}
+	
+		@Override
+		public String getTabText() {
+			return null;
+		}
+	
+		@Override
+		public JComponent getComponent() {
+			return null;
+		}
+	}
+	
     private DefaultDockingPort buildDockingPort(Color color, String desc) {
         // create the DockingPort
         DefaultDockingPort port = createDockingPort();
 
         // create and register the Dockable panel
-        JPanel p = new JPanel();
+        SimpleDemo.Panel p = new SimpleDemo.Panel();
+        
         p.setBackground(color);
         p.add(new JLabel("Drag Me"));
         DockingManager.registerDockable(p, desc);
