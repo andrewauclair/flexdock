@@ -729,7 +729,7 @@ public class DockingManager {
      * {@code Component}
      * @see #registerDockable(Dockable)
      */
-    public static <T extends Component & DockingStub> Dockable registerDockable(T comp, String tabText) {
+    private static <T extends Component & DockingStub> Dockable registerDockable(T comp, String tabText) {
         return registerDockable(comp, tabText, null);
     }
 
