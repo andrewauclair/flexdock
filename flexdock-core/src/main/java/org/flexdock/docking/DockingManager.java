@@ -646,77 +646,8 @@ public class DockingManager {
             dragSrc.addMouseListener(listener);
         }
     }
-
-    /**
-     * Creates, registers, and returns a {@code Dockable} for the specified
-     * {@code Component}. If the specified {@code Component} implements the
-     * {@code Dockable} interface, then this method dispatches to
-     * {@code registerDockable(Dockable dockable)}. Otherwise, this method
-     * dispatches to {@code registerDockable(Component comp, String tabText)}.
-     * <p>
-     * This method attempts to resolve an appropriate value for {@code tabText}
-     * by calling {@code getName()} on the specified {@code Component}. If the
-     * resolved value is {@code null} or empty, then the value {@code "null"} is
-     * used.
-     * <p>
-     * If {@code comp} is {@code null}, no exception is thrown and no action is
-     * performed.
-     *
-     * @param comp the target component for the {@code Dockable}.
-     * @return the {@code Dockable} that has been registered for the supplied
-     * {@code Component}
-     * @see #registerDockable(Dockable)
-     * @see #registerDockable(Component, String)
-     */
-    public static <T extends Component & DockingStub> Dockable registerDockable(T comp) {
-        if (comp == null) {
-            return null;
-        }
-
-        if (comp instanceof Dockable) {
-            return registerDockable((Dockable) comp);
-        }
-
-        return registerDockable(comp, null, null);
-    }
-
-    private static String determineTabText(Component comp, String persistId) {
-        String tabText = null;
-        // if 'comp' is a DockingStub, then we may be able to
-        // pull the tab text from it
-        if (comp instanceof DockingStub) {
-            tabText = ((DockingStub) comp).getTabText();
-        } else {
-            // if we can find an adapter mapping, then try to pull
-            // the tab text from there
-            DockingAdapter adapter = AdapterFactory.getAdapter(comp);
-            if (adapter != null) {
-                tabText = adapter.getTabText();
-            }
-        }
-
-        // if 'comp' wasn't a DockingStub, or the stub returned a null tabText,
-        // then try the component name
-        if (tabText == null) {
-            tabText = comp.getName();
-        }
-
-        // if tabText is still null, then use the persistentId
-        if (tabText == null) {
-            tabText = persistId;
-        }
-
-        // get rid of null and empty cases. use the string "null" if nothing
-        // else can be found
-        tabText = tabText == null ? "null" : tabText.trim();
-        if (tabText.length() == 0) {
-            tabText = "null";
-        }
-
-        return tabText;
-    }
-
-    /**
+	
+	/**
      * Creates a {@code Dockable} for the specified {@code Component} and
      * dispatches to {@code registerDockable(Dockable init)}. If {@code comp}
      * is {@code null}, no exception is thrown and no action is performed.
@@ -729,21 +660,8 @@ public class DockingManager {
      * {@code Component}
      * @see #registerDockable(Dockable)
      */
-    private static <T extends Component & DockingStub> Dockable registerDockable(T comp, String tabText) {
-        return registerDockable(comp, tabText, null);
-    }
-
-    private static <T extends Component & DockingStub> Dockable registerDockable(T comp, String tabText,
-                                             String dockingId) {
-        if (comp == null) {
-            return null;
-        }
-
-        if (tabText == null) {
-            tabText = determineTabText(comp, dockingId);
-        }
-
-        return registerDockable(getDockableForComponent(comp, tabText, dockingId));
+    public static <T extends Component & DockingStub> Dockable registerDockable(T comp) {
+        return registerDockable(getDockableForComponent(comp, comp.getTabText(), comp.getPersistentId()));
     }
 
     /**
@@ -769,8 +687,7 @@ public class DockingManager {
         }
 
         if (dockable.getPersistentId() == null) {
-            throw new IllegalArgumentException(
-                    "Dockable must have a non-null persistent ID.");
+            throw new IllegalArgumentException("Dockable must have a non-null persistent ID.");
         }
 
         DOCKABLES_BY_COMPONENT.put(dockable.getComponent(), dockable);
@@ -1387,7 +1304,7 @@ public class DockingManager {
             // then register it.
             dockable = getDockable(comp);
             if (dockable == null) {
-                dockable = registerDockable(factory.getDockableComponent(id), null, id);
+                dockable = registerDockable(getDockableForComponent(factory.getDockableComponent(id), null, id));
             }
         }
 

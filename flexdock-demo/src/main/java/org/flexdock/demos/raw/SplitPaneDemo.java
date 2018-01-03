@@ -41,7 +41,7 @@ public class SplitPaneDemo extends JPanel implements DockingConstants {
     private JLabel titlebar;
     private Dockable dockableImpl;
 
-    public SplitPaneDemo(String title) {
+    private SplitPaneDemo(String title) {
         super();
         titlebar = createTitlebar(" " + title);
         add(titlebar);

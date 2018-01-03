@@ -317,8 +317,7 @@ public class DockingSplitPane extends JSplitPane {
 	 */
 	public void setInitialDividerRatio(double ratio) {
 		if (ratio < 0.0 || ratio > 1.0) {
-			throw new IllegalArgumentException("ratio (" + ratio
-					+ ") must be between [0.0,1,0] inclusive");
+			throw new IllegalArgumentException("ratio (" + ratio + ") must be between [0.0,1,0] inclusive");
 		}
 		initialDividerRatio = ratio;
 	}

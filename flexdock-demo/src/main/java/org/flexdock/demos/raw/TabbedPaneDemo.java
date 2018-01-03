@@ -43,7 +43,7 @@ public class TabbedPaneDemo extends JPanel implements DockingConstants {
     private JLabel titlebar;
     private Dockable dockableImpl;
 
-    public TabbedPaneDemo(String title) {
+    private TabbedPaneDemo(String title) {
         super();
         titlebar = createTitlebar(" " + title);
         add(titlebar);
