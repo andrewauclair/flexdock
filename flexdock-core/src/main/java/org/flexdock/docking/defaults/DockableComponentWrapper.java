@@ -78,7 +78,7 @@ public class DockableComponentWrapper implements Dockable {
 
 	private Hashtable<Object, Object> clientProperties;
 
-	private HashSet frameDragSources;
+	private HashSet<Component> frameDragSources;
 
 	/**
 	 * Creates a {@code DockableComponentWrapper} instance using the specified
@@ -136,7 +136,7 @@ public class DockableComponentWrapper implements Dockable {
 		DockableComponentWrapper dockable = create(comp, id, tabText);
 
 		List<Component> dragSources = adapter.getDragSources();
-		Set frameDragSources = adapter.getFrameDragSources();
+		Set<Component> frameDragSources = adapter.getFrameDragSources();
 		Icon icon = adapter.getDockbarIcon();
 
 		if (dragSources != null) {
@@ -245,7 +245,7 @@ public class DockableComponentWrapper implements Dockable {
 	 * @see #create(Component, String, String)
 	 */
 	@Override
-	public List getDragSources() {
+	public List <Component> getDragSources() {
 		return dragListeners;
 	}
 
@@ -275,7 +275,7 @@ public class DockableComponentWrapper implements Dockable {
 	 * @see Dockable#getFrameDragSources()
 	 */
 	@Override
-	public Set getFrameDragSources() {
+	public Set<Component> getFrameDragSources() {
 		if (frameDragSources == null) {
 			frameDragSources = new HashSet();
 		}

@@ -68,11 +68,11 @@ public class DockingAdapter {
 		return null;
 	}
 
-	public Set getFrameDragSources() {
+	public Set<Component> getFrameDragSources() {
 		// first, try to get a set of frame drag sources
 		Object obj = get(component, mapping.getFrameDragSourceList());
 		if (obj instanceof Set) {
-			return (Set) obj;
+			return (Set<Component>) obj;
 		}
 
 		// if we couldn't find a set, then try to get an individual

@@ -53,7 +53,7 @@ public class RootPane extends JRootPane implements MouseListener, MouseMotionLis
 
 	// private
 
-	void ensureValidScreenBounds(Point attemptedPoint) {
+	private void ensureValidScreenBounds(Point attemptedPoint) {
 		// 'attemptedPoint' is the current "attempted" mousepoint based off of a drag-event.
 		// here, we check to see if the attempted mousepoint exceeds our valid minimum frame
 		// bounds such that 'attemptedPoint' logically expresses a new frame-rect which
@@ -79,7 +79,7 @@ public class RootPane extends JRootPane implements MouseListener, MouseMotionLis
 		}
 	}
 
-	void computeMouseLimits(Point p) {
+	private void computeMouseLimits(Point p) {
 		// Called at the very start of a drag operation on the pane edges, not
 		// repeatedly during the drag.  This method computes two things:
 		// 1) The acceptable mouse limits (Rectangle) during the drag.  These have
