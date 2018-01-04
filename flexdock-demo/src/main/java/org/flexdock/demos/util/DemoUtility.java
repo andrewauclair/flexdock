@@ -19,14 +19,10 @@
  */
 package org.flexdock.demos.util;
 
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 public class DemoUtility {
     public static void setDemoDisableExitOnClose() {

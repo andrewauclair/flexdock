@@ -557,4 +557,12 @@ public class SwingUtility {
 		
 		return c;
 	}
+
+    public static void setSystemLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

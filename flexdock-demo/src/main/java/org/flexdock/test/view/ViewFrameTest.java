@@ -39,6 +39,12 @@ public class ViewFrameTest extends JFrame implements ActionListener, DockingCons
     public static void main(String[] args) {
         SwingUtility.setPlaf("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         JFrame f = new ViewFrameTest();
         f.setBounds(100, 100, 100, 65);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

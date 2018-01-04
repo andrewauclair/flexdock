@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.List;
 
 import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
  * @author Christopher Butler
@@ -28,22 +29,15 @@ import static org.flexdock.docking.DockingConstants.*;
  */
 public class ViewTest {
 
-    private JList viewUIList;
-    private JList titlebarUIList;
-    private JList buttonUIList;
+    private JList<Object> viewUIList;
+    private JList<Object> titlebarUIList;
+    private JList<Object> buttonUIList;
     private ThemeInfo themeInfo;
 
     public static void main(String[] args) {
         ViewTest windowTest = new ViewTest();
-        windowTest.configureUI();
+        setSystemLookAndFeel();
         windowTest.buildInterface();
-    }
-
-    private void configureUI() {
-        //UIManager.installLookAndFeel( "Skin LookAndFeel", SkinLookAndFeel.class.getName());
-        //UIManager.installLookAndFeel( "Plastic XP LookAndFeel", PlasticXPLookAndFeel.class.getName());
-
-        SwingUtility.setPlaf("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
     }
 
     private void buildInterface() {
@@ -52,7 +46,7 @@ public class ViewTest {
         f.setContentPane(buildContent());
         f.setSize(new Dimension(800, 600));
         SwingUtility.centerOnScreen(f);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
     }
 
@@ -90,8 +84,8 @@ public class ViewTest {
         menu = new JMenu("Available LookAndFeel's");
 
         LookAndFeelInfo[] lfInfos = UIManager.getInstalledLookAndFeels();
-        for (int i = 0; i < lfInfos.length; i++) {
-            menu.add(new JMenuItem(new ChangeLookAndFeelAction(lfInfos[i])));
+        for (LookAndFeelInfo lfInfo : lfInfos) {
+            menu.add(new JMenuItem(new ChangeLookAndFeelAction(lfInfo)));
         }
         menuBar.add(menu);
 
@@ -117,9 +111,9 @@ public class ViewTest {
     }
 
     private JComponent buildLists() {
-        viewUIList = new JList(getUIList("view-ui"));
-        titlebarUIList = new JList(getUIList("titlebar-ui"));
-        buttonUIList = new JList(getUIList("button-ui"));
+        viewUIList = new JList<>(getUIList("view-ui"));
+        titlebarUIList = new JList<>(getUIList("titlebar-ui"));
+        buttonUIList = new JList<>(getUIList("button-ui"));
 
         JPanel panel = new JPanel(new GridLayout(1, 3, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -153,10 +147,10 @@ public class ViewTest {
     }
 
     private Object[] getUIList(String tagName) {
-        List tagNames = new ArrayList();
+        List<String> tagNames = new ArrayList<>();
         HashMap elements = Configurator.getNamedElementsByTagName(tagName);
-        for (Iterator it = elements.keySet().iterator(); it.hasNext(); ) {
-            Element elem = (Element) elements.get(it.next());
+        for (Object o : Objects.requireNonNull(elements).keySet()) {
+            Element elem = (Element) elements.get(o);
             tagNames.add(elem.getAttribute(Configurator.NAME_KEY));
         }
 
@@ -165,7 +159,7 @@ public class ViewTest {
 
     private class ChangePlafAction extends AbstractAction {
 
-        public ChangePlafAction() {
+        ChangePlafAction() {
             putValue(Action.NAME, "Apply custom theme");
         }
 
@@ -185,7 +179,6 @@ public class ViewTest {
             Theme theme = PlafManager.setCustomTheme("custom.theme", p);
             PlafManager.setPreferredTheme("custom.theme", true);
             themeInfo.update(theme);
-            //PlafManager.installPreferredTheme();
         }
 
     }
@@ -225,7 +218,7 @@ public class ViewTest {
         private final JLabel vTitlebar = new JLabel("");
         private final JLabel vButton = new JLabel("");
 
-        public JPanel createPanel() {
+        JPanel createPanel() {
 
             JPanel panel = new JPanel(null) {
                 @Override
