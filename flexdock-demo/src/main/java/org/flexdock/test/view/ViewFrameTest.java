@@ -19,23 +19,16 @@
  */
 package org.flexdock.test.view;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.floating.frames.DockingFrame;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Christopher Butler
@@ -75,7 +68,7 @@ public class ViewFrameTest extends JFrame implements ActionListener, DockingCons
     }
 
     private DockingFrame createDockingFrame() {
-        DockingFrame frame = new DockingFrame(this, "12345");
+        DockingFrame frame = new DockingFrame("12345");
         frame.addDockable(createView("solution.explorer", "Solution Explorer"));
         frame.addDockable(createView("class.view", "Class View"));
         return frame;

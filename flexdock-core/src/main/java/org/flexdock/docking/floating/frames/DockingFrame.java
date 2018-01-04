@@ -23,10 +23,8 @@ import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.state.FloatingGroup;
-import org.flexdock.util.RootWindow;
 
 import javax.swing.*;
-import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -38,51 +36,20 @@ import static org.flexdock.docking.DockingConstants.CENTER_REGION;
  * @author Christopher Butler
  */
 @SuppressWarnings(value = {"serial"})
-public class DockingFrame extends JDialog {
+public class DockingFrame extends JFrame {
 	private static final BoundsMonitor BOUNDS_MONITOR = new BoundsMonitor();
 
 	private FloatingDockingPort dockingPort;
 
 	private String groupName;
 
-	public static DockingFrame create(Component c, String groupName) {
-		RootWindow rootWin = RootWindow.getRootContainer(c);
-		Component window = rootWin.getRootContainer();
-		if (window instanceof DockingFrame) {
-			window = ((Window) window).getOwner();
-		}
-
-		//Applets are actually contained in a frame
-		if (window instanceof Applet) {
-			window = SwingUtilities.windowForComponent(window);
-		}
-
-		if (window instanceof Frame) {
-			return new DockingFrame((Frame) window, groupName);
-		}
-		if (window instanceof Dialog) {
-			return new DockingFrame((Dialog) window, groupName);
-		}
-
-		return null;
-	}
-
-	// constructor
-	public DockingFrame(Frame owner, String groupName) {
-		super(owner);
+    public DockingFrame(String groupName) {
 		initialize(groupName);
 	}
-
-	public DockingFrame(Dialog owner, String groupName) {
-		super(owner);
-		initialize(groupName);
-	}
-
-	// private
 
 	private void initialize(String groupName) {
-		setUndecorated(true);
-		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+        //setUndecorated(true);
+        //getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 
 		// TODO I am not sure null should be passed here,
 		// maybe we should use our IDPersistentIdProvider
