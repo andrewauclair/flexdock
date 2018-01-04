@@ -32,13 +32,9 @@ import org.flexdock.plaf.common.border.ShadowBorder;
 public class MyDockingPort extends DefaultDockingPort {
 
     static {
-        initStatic();
-    }
-
-    private static void initStatic() {
         DockingManager.setDockingStrategy(MyDockingPort.class, new MyDockingStrategy());
     }
-
+    
     MyDockingPort() {
         this(new ShadowBorder());
     }
