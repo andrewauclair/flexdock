@@ -29,10 +29,13 @@ import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 
+import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
+
 public class BorderDemo extends JFrame implements DockingConstants {
 
-    public BorderDemo() {
+    private BorderDemo() {
         super("Border Docking Demo");
+        setSystemLookAndFeel();
         setContentPane(createContentPane());
     }
 

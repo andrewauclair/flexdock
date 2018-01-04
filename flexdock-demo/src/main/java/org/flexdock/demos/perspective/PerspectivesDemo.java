@@ -146,9 +146,7 @@ public class PerspectivesDemo extends JFrame implements DockingConstants {
         PerspectiveManager.setPersistenceHandler(persister);
         try {
             DockingManager.loadLayoutModel();
-        } catch(IOException e) {
-            e.printStackTrace();
-        } catch (PersistenceException e) {
+        } catch(IOException | PersistenceException e) {
             e.printStackTrace();
         }
         // remember to store on shutdown

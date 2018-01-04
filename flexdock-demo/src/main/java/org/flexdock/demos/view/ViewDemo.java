@@ -32,15 +32,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
+
 /**
  * @author Christopher Butler
  */
 public class ViewDemo extends JFrame implements DockingConstants {
 
     public static void main(String[] args) {
-        SwingUtility.setPlaf("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-//                SwingUtility.setPlaf("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-//                SwingUtility.setPlaf("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+        setSystemLookAndFeel();
         EventQueue.invokeLater(ViewDemo::startup);
     }
 

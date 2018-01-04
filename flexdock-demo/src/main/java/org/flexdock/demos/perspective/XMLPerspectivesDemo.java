@@ -67,7 +67,7 @@ import org.flexdock.view.actions.DefaultDisplayAction;
  */
 public class XMLPerspectivesDemo extends JFrame implements DockingConstants {
 
-    public static final String PERSPECTIVE_FILE = "PerspectiveDemo.xml";
+    private static final String PERSPECTIVE_FILE = "PerspectiveDemo.xml";
 
     private static final String MAIN_VIEW = "main.view";
     private static final String BIRD_VIEW = "bird.view";
@@ -86,12 +86,7 @@ public class XMLPerspectivesDemo extends JFrame implements DockingConstants {
         configureDocking();
 
         // create and show the GUI
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                runGUI();
-            }
-        });
+        EventQueue.invokeLater(XMLPerspectivesDemo::runGUI);
     }
 
     private static void runGUI() {
@@ -106,7 +101,7 @@ public class XMLPerspectivesDemo extends JFrame implements DockingConstants {
         flexDockDemo.setVisible(true);
     }
 
-    public XMLPerspectivesDemo() {
+    private XMLPerspectivesDemo() {
         super("FlexDock Demo");
         setContentPane(createContentPane());
         setJMenuBar(createApplicationMenuBar());
@@ -163,9 +158,7 @@ public class XMLPerspectivesDemo extends JFrame implements DockingConstants {
         PerspectiveManager.setPersistenceHandler(persister);
         try {
             DockingManager.loadLayoutModel();
-        } catch(IOException ex) {
-            ex.printStackTrace();
-        } catch (PersistenceException ex) {
+        } catch(IOException | PersistenceException ex) {
             ex.printStackTrace();
         }
         // remember to store on shutdown
