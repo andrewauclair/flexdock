@@ -23,6 +23,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
+ * @deprecated Java added Generics in Java 7 so we no longer need to wrap Hashtable to convert primitives
  * @author Christopher Butler
  */
 @SuppressWarnings(value = {"serial"})

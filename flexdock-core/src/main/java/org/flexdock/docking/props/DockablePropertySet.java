@@ -26,87 +26,87 @@ import java.beans.PropertyChangeListener;
  * @author Christopher Butler
  */
 public interface DockablePropertySet {
-	public static final String DESCRIPTION = "Dockable.DESCRIPTION";
-	public static final String DOCKING_ENABLED = "Dockable.DOCKING_ENABLED";
-	public static final String MOUSE_MOTION_DRAG_BLOCK = "Dockable.MOUSE_MOTION_DRAG_BLOCK";
-	public static final String DRAG_THRESHOLD = "Dockable.DRAG_THRESHOLD";
+	String DESCRIPTION = "Dockable.DESCRIPTION";
+	String DOCKING_ENABLED = "Dockable.DOCKING_ENABLED";
+	String MOUSE_MOTION_DRAG_BLOCK = "Dockable.MOUSE_MOTION_DRAG_BLOCK";
+	String DRAG_THRESHOLD = "Dockable.DRAG_THRESHOLD";
 
-	public static final String REGION_SIZE_NORTH = "Dockable.REGION_SIZE_NORTH";
-	public static final String SIBLING_SIZE_NORTH = "Dockable.SIBLING_SIZE_NORTH";
-	public static final String TERRITORY_BLOCKED_NORTH = "Dockable.TERRITORY_BLOCKED_NORTH";
+	String REGION_SIZE_NORTH = "Dockable.REGION_SIZE_NORTH";
+	String SIBLING_SIZE_NORTH = "Dockable.SIBLING_SIZE_NORTH";
+	String TERRITORY_BLOCKED_NORTH = "Dockable.TERRITORY_BLOCKED_NORTH";
 
-	public static final String REGION_SIZE_SOUTH = "Dockable.REGION_SIZE_SOUTH";
-	public static final String SIBLING_SIZE_SOUTH = "Dockable.SIBLING_SIZE_SOUTH";
-	public static final String TERRITORY_BLOCKED_SOUTH = "Dockable.TERRITORY_BLOCKED_SOUTH";
+	String REGION_SIZE_SOUTH = "Dockable.REGION_SIZE_SOUTH";
+	String SIBLING_SIZE_SOUTH = "Dockable.SIBLING_SIZE_SOUTH";
+	String TERRITORY_BLOCKED_SOUTH = "Dockable.TERRITORY_BLOCKED_SOUTH";
 
-	public static final String REGION_SIZE_EAST = "Dockable.REGION_SIZE_EAST";
-	public static final String SIBLING_SIZE_EAST = "Dockable.SIBLING_SIZE_EAST";
-	public static final String TERRITORY_BLOCKED_EAST = "Dockable.TERRITORY_BLOCKED_EAST";
+	String REGION_SIZE_EAST = "Dockable.REGION_SIZE_EAST";
+	String SIBLING_SIZE_EAST = "Dockable.SIBLING_SIZE_EAST";
+	String TERRITORY_BLOCKED_EAST = "Dockable.TERRITORY_BLOCKED_EAST";
 
-	public static final String REGION_SIZE_WEST = "Dockable.REGION_SIZE_WEST";
-	public static final String SIBLING_SIZE_WEST = "Dockable.SIBLING_SIZE_WEST";
-	public static final String TERRITORY_BLOCKED_WEST = "Dockable.TERRITORY_BLOCKED_WEST";
+	String REGION_SIZE_WEST = "Dockable.REGION_SIZE_WEST";
+	String SIBLING_SIZE_WEST = "Dockable.SIBLING_SIZE_WEST";
+	String TERRITORY_BLOCKED_WEST = "Dockable.TERRITORY_BLOCKED_WEST";
 
-	public static final String TERRITORY_BLOCKED_CENTER = "Dockable.TERRITORY_BLOCKED_CENTER";
-	public static final String DOCKBAR_ICON = "Dockable.DOCKBAR_ICON";
-	public static final String TAB_ICON = "Dockable.TAB_ICON";
-	public static final String PREVIEW_SIZE = "Dockable.PREVIEW_SIZE";
+	String TERRITORY_BLOCKED_CENTER = "Dockable.TERRITORY_BLOCKED_CENTER";
+	String DOCKBAR_ICON = "Dockable.DOCKBAR_ICON";
+	String TAB_ICON = "Dockable.TAB_ICON";
+	String PREVIEW_SIZE = "Dockable.PREVIEW_SIZE";
 
-	public static final String ACTIVE = "Dockable.ACTIVE";
-
-
-	public String getDockableDesc();
-
-	public Boolean isDockingEnabled();
-
-	public Boolean isMouseMotionListenersBlockedWhileDragging();
-
-	public Float getRegionInset(String region);
-
-	public Float getSiblingSize(String region);
-
-	public Boolean isTerritoryBlocked(String region);
-
-	public Float getDragThreshold();
-
-	public Icon getDockbarIcon();
-
-	public Icon getTabIcon();
-
-	public Float getPreviewSize();
-
-	public String getDockingId();
-
-	public Boolean isActive();
+	String ACTIVE = "Dockable.ACTIVE";
 
 
-	public void setDockableDesc(String desc);
+	String getDockableDesc();
 
-	public void setDockingEnabled(boolean enabled);
+	Boolean isDockingEnabled();
 
-	public void setMouseMotionListenersBlockedWhileDragging(boolean blocked);
+	Boolean isMouseMotionListenersBlockedWhileDragging();
 
-	public void setRegionInset(String region, float inset);
+	Float getRegionInset(String region);
 
-	public void setSiblingSize(String region, float size);
+	Float getSiblingSize(String region);
 
-	public void setTerritoryBlocked(String region, boolean blocked);
+	Boolean isTerritoryBlocked(String region);
 
-	public void setDragTheshold(float threshold);
+	Float getDragThreshold();
 
-	public void setDockbarIcon(Icon icon);
+	Icon getDockbarIcon();
 
-	public void setTabIcon(Icon icon);
+	Icon getTabIcon();
 
-	public void setPreviewSize(float size);
+	Float getPreviewSize();
 
-	public void setActive(boolean active);
+	String getDockingId();
 
-	public Object put(Object key, Object value);
+	Boolean isActive();
 
-	public Object remove(Object key);
 
-	public void addPropertyChangeListener(PropertyChangeListener listener);
+	void setDockableDesc(String desc);
 
-	public void removePropertyChangeListener(PropertyChangeListener listener);
+	void setDockingEnabled(boolean enabled);
+
+	void setMouseMotionListenersBlockedWhileDragging(boolean blocked);
+
+	void setRegionInset(String region, float inset);
+
+	void setSiblingSize(String region, float size);
+
+	void setTerritoryBlocked(String region, boolean blocked);
+
+	void setDragTheshold(float threshold);
+
+	void setDockbarIcon(Icon icon);
+
+	void setTabIcon(Icon icon);
+
+	void setPreviewSize(float size);
+
+	void setActive(boolean active);
+
+	Object put(Object key, Object value);
+
+	Object remove(Object key);
+
+	void addPropertyChangeListener(PropertyChangeListener listener);
+
+	void removePropertyChangeListener(PropertyChangeListener listener);
 }

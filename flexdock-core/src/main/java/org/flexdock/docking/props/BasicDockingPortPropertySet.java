@@ -20,8 +20,8 @@
 package org.flexdock.docking.props;
 
 import org.flexdock.docking.RegionChecker;
-import org.flexdock.util.TypedHashtable;
 
+import java.util.Hashtable;
 import java.util.Map;
 
 import static org.flexdock.docking.DockingConstants.*;
@@ -30,83 +30,82 @@ import static org.flexdock.docking.DockingConstants.*;
  * @author Christopher Butler
  */
 @SuppressWarnings(value = {"serial"})
-public class BasicDockingPortPropertySet extends TypedHashtable implements DockingPortPropertySet {
+public class BasicDockingPortPropertySet extends Hashtable<Object, Object> implements DockingPortPropertySet {
 
-	public static String getRegionInsetKey(String region) {
-		if (NORTH_REGION.equals(region)) {
-			return REGION_SIZE_NORTH;
-		}
-		if (SOUTH_REGION.equals(region)) {
-			return REGION_SIZE_SOUTH;
-		}
-		if (EAST_REGION.equals(region)) {
-			return REGION_SIZE_EAST;
-		}
-		if (WEST_REGION.equals(region)) {
-			return REGION_SIZE_WEST;
-		}
-		return null;
-	}
+    static String getRegionInsetKey(String region) {
+        if (NORTH_REGION.equals(region)) {
+            return REGION_SIZE_NORTH;
+        }
+        if (SOUTH_REGION.equals(region)) {
+            return REGION_SIZE_SOUTH;
+        }
+        if (EAST_REGION.equals(region)) {
+            return REGION_SIZE_EAST;
+        }
+        if (WEST_REGION.equals(region)) {
+            return REGION_SIZE_WEST;
+        }
+        return null;
+    }
 
-	public BasicDockingPortPropertySet() {
-		super();
-	}
+    BasicDockingPortPropertySet() {
+        super();
+    }
 
-	public BasicDockingPortPropertySet(int initialCapacity) {
-		super(initialCapacity);
-	}
+    BasicDockingPortPropertySet(int initialCapacity) {
+        super(initialCapacity);
+    }
 
-	public BasicDockingPortPropertySet(int initialCapacity, float loadFactor) {
-		super(initialCapacity, loadFactor);
-	}
+    BasicDockingPortPropertySet(int initialCapacity, float loadFactor) {
+        super(initialCapacity, loadFactor);
+    }
 
-	public BasicDockingPortPropertySet(Map t) {
-		super(t);
-	}
-
-
-	@Override
-	public RegionChecker getRegionChecker() {
-		return (RegionChecker) get(REGION_CHECKER);
-	}
-
-	@Override
-	public Boolean isSingleTabsAllowed() {
-		return getBoolean(SINGLE_TABS);
-	}
-
-	@Override
-	public Integer getTabPlacement() {
-		return getInt(TAB_PLACEMENT);
-	}
-
-	@Override
-	public Float getRegionInset(String region) {
-		String key = getRegionInsetKey(region);
-		return key == null ? null : (Float) get(key);
-	}
+    BasicDockingPortPropertySet(Map t) {
+        super(t);
+    }
 
 
-	@Override
-	public void setRegionChecker(RegionChecker checker) {
-		put(REGION_CHECKER, checker);
-	}
+    @Override
+    public RegionChecker getRegionChecker() {
+        return (RegionChecker) get(REGION_CHECKER);
+    }
 
-	@Override
-	public void setSingleTabsAllowed(boolean allowed) {
-		put(SINGLE_TABS, allowed);
-	}
+    @Override
+    public Boolean isSingleTabsAllowed() {
+        return (Boolean) get(SINGLE_TABS);
+    }
 
-	@Override
-	public void setTabPlacement(int placement) {
-		put(TAB_PLACEMENT, placement);
-	}
+    @Override
+    public Integer getTabPlacement() {
+        return (Integer) get(TAB_PLACEMENT);
+    }
 
-	@Override
-	public void setRegionInset(String region, float inset) {
-		String key = getRegionInsetKey(region);
-		if (key != null) {
-			put(key, new Float(inset));
-		}
-	}
+    @Override
+    public Float getRegionInset(String region) {
+        String key = getRegionInsetKey(region);
+        return key == null ? null : (Float) get(key);
+    }
+
+    @Override
+    public void setRegionChecker(RegionChecker checker) {
+        put(REGION_CHECKER, checker);
+    }
+
+    @Override
+    public void setSingleTabsAllowed(boolean allowed) {
+        put(SINGLE_TABS, allowed);
+    }
+
+    @Override
+    public void setTabPlacement(int placement) {
+        put(TAB_PLACEMENT, placement);
+    }
+
+    @Override
+    public void setRegionInset(String region, float inset) {
+        String key = getRegionInsetKey(region);
+        if (key != null) {
+            put(key, inset);
+        }
+    }
 }
