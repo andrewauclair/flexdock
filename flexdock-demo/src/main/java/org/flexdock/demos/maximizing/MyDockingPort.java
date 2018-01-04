@@ -39,11 +39,11 @@ public class MyDockingPort extends DefaultDockingPort {
         DockingManager.setDockingStrategy(MyDockingPort.class, new MyDockingStrategy());
     }
 
-    public MyDockingPort() {
+    MyDockingPort() {
         this(new ShadowBorder());
     }
 
-    public MyDockingPort(Border portletBorder) {
+    private MyDockingPort(Border portletBorder) {
         super();
         if (portletBorder != null) {
             setBorderManager(new StandardBorderManager(portletBorder));
