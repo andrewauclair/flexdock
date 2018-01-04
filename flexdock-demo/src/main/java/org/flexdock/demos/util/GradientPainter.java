@@ -19,12 +19,8 @@
  */
 package org.flexdock.demos.util;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import javax.swing.JComponent;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -34,7 +30,7 @@ public class GradientPainter {
     private Color midColor;
 
 
-    public GradientPainter(Color start, Color mid) {
+    GradientPainter(Color start, Color mid) {
         startColor = start;
         midColor = mid;
     }

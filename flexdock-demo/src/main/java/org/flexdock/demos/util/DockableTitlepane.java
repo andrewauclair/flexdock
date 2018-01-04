@@ -28,6 +28,7 @@ import org.flexdock.docking.event.DockingListener;
 import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.docking.props.PropertyManager;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,27 +39,27 @@ import java.util.Set;
  */
 public class DockableTitlepane extends Titlepane implements Dockable {
     private String dockingId;
-    private ArrayList dragSources;
-    private HashSet frameDragSources;
+    private ArrayList<Component> dragSources;
+    private HashSet<Component> frameDragSources;
 
     public DockableTitlepane(String id, String title) {
         super(title);
         dockingId = id;
 
         // initialize the drag sources
-        dragSources = new ArrayList();
-        frameDragSources = new HashSet();
+        dragSources = new ArrayList<>();
+        frameDragSources = new HashSet<>();
         // use the titlebar as a drag source
         dragSources.add(getTitlebar());
         frameDragSources.add(getTitlebar());
     }
 
     @Override
-    public List getDragSources() {
+    public List<Component> getDragSources() {
         return dragSources;
     }
     @Override
-    public Set getFrameDragSources() {
+    public Set<Component> getFrameDragSources() {
         return frameDragSources;
     }
 

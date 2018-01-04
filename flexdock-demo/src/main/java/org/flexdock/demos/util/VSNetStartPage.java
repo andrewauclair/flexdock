@@ -19,21 +19,11 @@
  */
 package org.flexdock.demos.util;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
-
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.util.ResourceManager;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -50,8 +40,6 @@ public class VSNetStartPage extends JPanel {
     private JButton newProjButton;
     private JButton openProjButton;
     private JPanel tablePane;
-    private JPanel contentPane;
-    private JTabbedPane tabbedPane;
 
     public VSNetStartPage() {
         super(new BorderLayout(0, 0));
@@ -66,12 +54,12 @@ public class VSNetStartPage extends JPanel {
 
         tablePane = createTablePane();
 
-        contentPane = createContentPane();
+        JPanel contentPane = createContentPane();
         contentPane.add(tablePane);
         contentPane.add(newProjButton);
         contentPane.add(openProjButton);
 
-        tabbedPane = createTabbedPane();
+        JTabbedPane tabbedPane = createTabbedPane();
         tabbedPane.addTab("Start Page", contentPane);
         tabbedPane.setBorder(null);
 

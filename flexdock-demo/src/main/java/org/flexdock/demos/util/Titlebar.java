@@ -19,28 +19,26 @@
  */
 package org.flexdock.demos.util;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
-import javax.swing.JLabel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
  */
 public class Titlebar extends JLabel {
 
-    public Titlebar() {
+    Titlebar() {
         super();
         init();
     }
 
-    public Titlebar(String text) {
+    Titlebar(String text) {
         super(text);
         init();
     }
 
-    public Titlebar(String text, Color bgColor) {
+    Titlebar(String text, Color bgColor) {
         super(text);
         init();
         setBackground(bgColor);
