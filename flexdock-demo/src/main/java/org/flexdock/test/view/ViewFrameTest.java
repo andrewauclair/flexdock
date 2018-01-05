@@ -30,6 +30,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
+
 /**
  * @author Christopher Butler
  */
@@ -37,21 +39,15 @@ public class ViewFrameTest extends JFrame implements ActionListener, DockingCons
     private DockingFrame dockingFrame;
 
     public static void main(String[] args) {
-        SwingUtility.setPlaf("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        setSystemLookAndFeel();
 
         JFrame f = new ViewFrameTest();
         f.setBounds(100, 100, 100, 65);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
     }
 
-    public ViewFrameTest() {
+    private ViewFrameTest() {
         super("ViewFrame Demo");
 
         Container c = getContentPane();
@@ -61,6 +57,17 @@ public class ViewFrameTest extends JFrame implements ActionListener, DockingCons
         b.addActionListener(this);
         c.add(b);
 
+        JButton floatUndecorated = new JButton("Float Undecorated");
+        floatUndecorated.addActionListener(e -> {
+            DockingFrame frame = new DockingFrame("Testing", false);
+            frame.setSize(200, 300);
+            frame.addDockable(createView("solution.explorer", "Solution Explorer"));
+            frame.pack();
+            SwingUtility.centerOnScreen(frame);
+            frame.setVisible(true);
+        });
+        c.add(floatUndecorated);
+        
         dockingFrame = createDockingFrame();
     }
 
@@ -74,7 +81,7 @@ public class ViewFrameTest extends JFrame implements ActionListener, DockingCons
     }
 
     private DockingFrame createDockingFrame() {
-        DockingFrame frame = new DockingFrame("12345");
+        DockingFrame frame = new DockingFrame("12345", true);
         frame.addDockable(createView("solution.explorer", "Solution Explorer"));
         frame.addDockable(createView("class.view", "Class View"));
         return frame;

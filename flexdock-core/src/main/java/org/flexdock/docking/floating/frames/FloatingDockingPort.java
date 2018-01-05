@@ -36,35 +36,26 @@ import static org.flexdock.docking.DockingConstants.CENTER_REGION;
  */
 @SuppressWarnings(value = {"serial"})
 public class FloatingDockingPort extends DefaultDockingPort {
-	private static final Set EMPTY_SET = new HashSet(0);
 	protected DockingFrame frame;
 	private FrameDragListener dragListener;
-
+	private final boolean useOwnListener;
+	
 	FloatingDockingPort(DockingFrame frame, String persistentId) {
 		super(persistentId);
-		getDockingProperties().setSingleTabsAllowed(true);
-		setTabsAsDragSource(true);
+		getDockingProperties().setSingleTabsAllowed(false);
+		setTabsAsDragSource(true); // TODO This should only happen if the frame is not decorated
 		this.frame = frame;
-		dragListener = new FrameDragListener(frame);
+		useOwnListener = frame.isUndecorated();
+
+		dragListener = new FrameDragListener(frame); // TODO Should this only happen if the frame is not decorated?
 	}
 
 	@Override
-	public String getRegion(Point p) {
-		// only allow docking in CENTER
-		return CENTER_REGION;
-	}
-
-	public boolean isDockingAllowed(String region, Component comp) {
-		// only allow docking in CENTER
-		if (!CENTER_REGION.equals(region)) {
-			return false;
+	public boolean dock(Dockable dockable, String region) {
+		boolean ret = super.dock(dockable, region);
+		if (!useOwnListener) {
+			return ret;
 		}
-		return super.isDockingAllowed(comp, region);
-	}
-
-	@Override
-	public boolean dock(Dockable dockable, String region) {        // only dock to the CENTER region
-		boolean ret = super.dock(dockable, CENTER_REGION);
 		if (ret) {
 			toggleListeners(dockable.getComponent(), true);
 		}
@@ -74,6 +65,9 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	@Override
 	public boolean undock(Component comp) {
 		boolean ret = super.undock(comp);
+		if (!useOwnListener) {
+			return ret;
+		}
 		if (ret) {
 			toggleListeners(comp, false);
 		}
@@ -84,6 +78,9 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	public void dragStarted(DockingEvent evt) {
 		super.dragStarted(evt);
 
+		if (!useOwnListener) {
+			return;
+		}
 		Component dragSrc = (Component) evt.getTriggerSource();
 		Dockable dockable = (Dockable) evt.getSource();
 
@@ -97,6 +94,9 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	@Override
 	public void undockingComplete(DockingEvent evt) {
 		super.undockingComplete(evt);
+		if (!useOwnListener) {
+			return;
+		}
 		if (evt.getOldDockingPort() == this && getDockableCount() == 0) {
 			frame.destroy();
 			frame = null;
@@ -142,9 +142,7 @@ public class FloatingDockingPort extends DefaultDockingPort {
 		return ((JTabbedPane) comp).getTabCount();
 	}
 
-	protected Set getFrameDragSources(Dockable dockable) {
-		Set set = dockable == null ? null : dockable.getFrameDragSources();
-		return set == null ? EMPTY_SET : set;
+	protected Set<Component> getFrameDragSources(Dockable dockable) {
+		return dockable == null ? new HashSet<>() : dockable.getFrameDragSources();
 	}
-
 }

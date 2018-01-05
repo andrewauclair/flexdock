@@ -332,7 +332,7 @@ public class Layout implements Cloneable, FloatManager, Serializable {
 
         DockingFrame frame = group.getFrame();
         if (frame == null) {
-            frame = new DockingFrame(group.getName());
+            frame = new DockingFrame(group.getName(), true);
             group.setFrame(frame);
             floatingGroups.put(group.getName(), group);
         }

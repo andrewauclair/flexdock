@@ -12,14 +12,29 @@ import java.awt.*;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 public class CoreDemo extends JFrame {
+	public class ToolWindow extends DockingPanel {
+		
+		ToolWindow(String name) {
+			super(name);
+		}
+	}
 	public class DockingPanel extends JPanel implements DockingStub {
 		
 		private final String name;
 
         DockingPanel(String name) {
 			this.name = name;
-            add(new JTextField("Test"));
-            setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+			setLayout(new GridBagLayout());
+			
+			JPanel panel = new JPanel();
+            panel.add(new JTextField("Test"));
+            panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.weightx = 1.0;
+            gbc.weighty = 1.0;
+            add(panel, gbc);
 		}
 		
 		@Override
@@ -75,6 +90,4 @@ public class CoreDemo extends JFrame {
 
         setContentPane(fullPanel);
 	}
-	
-	
 }

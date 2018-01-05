@@ -43,7 +43,8 @@ public class DockingFrame extends JFrame {
 
 	private String groupName;
 
-    public DockingFrame(String groupName) {
+    public DockingFrame(String groupName, boolean decorated) {
+    	setUndecorated(!decorated);
 		initialize(groupName);
 	}
 
