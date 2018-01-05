@@ -42,7 +42,7 @@ public class ViewFrameTest extends JFrame implements ActionListener, DockingCons
         setSystemLookAndFeel();
 
         JFrame f = new ViewFrameTest();
-        f.setBounds(100, 100, 100, 65);
+        f.setBounds(100, 100, 100, 150);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
     }
@@ -62,7 +62,7 @@ public class ViewFrameTest extends JFrame implements ActionListener, DockingCons
             DockingFrame frame = new DockingFrame("Testing", false);
             frame.setSize(200, 300);
             frame.addDockable(createView("solution.explorer", "Solution Explorer"));
-            frame.pack();
+            
             SwingUtility.centerOnScreen(frame);
             frame.setVisible(true);
         });
