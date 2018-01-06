@@ -26,8 +26,6 @@ import org.flexdock.docking.state.LayoutNode;
 import javax.swing.*;
 import java.awt.*;
 
-import static org.flexdock.docking.DockingConstants.*;
-
 /**
  * @author Christopher Butler
  */
@@ -91,11 +89,11 @@ public class SplitNode extends DockingNode {
 
 	public String getRegionDesc() {
 		switch (region) {
-		case TOP:
+		case SwingConstants.TOP:
 			return "top";
-		case BOTTOM:
+		case SwingConstants.BOTTOM:
 			return "bottom";
-		case RIGHT:
+		case SwingConstants.RIGHT:
 			return "right";
 		default:
 			return "left";
@@ -103,7 +101,7 @@ public class SplitNode extends DockingNode {
 	}
 
 	public String getOrientationDesc() {
-		return orientation == VERTICAL ? "vertical" : "horizontal";
+		return orientation == JSplitPane.VERTICAL_SPLIT ? "vertical" : "horizontal";
 	}
 
 	@Override

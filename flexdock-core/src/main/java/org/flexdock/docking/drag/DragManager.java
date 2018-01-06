@@ -99,10 +99,13 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 
 		if (pipeline == null || !pipeline.isOpen()) {
 			if (passedDragThreshold(evt)) {
-				openPipeline(evt);
-			}
-			else {
-//				evt.consume();
+				System.out.println("isFloating: " + DockingUtility.isFloating(dockable));
+				//if (!DockingUtility.isFloating(dockable)) {
+				//DockingManager.getFloatManager().floatDockable(dockable, dockable.getComponent());
+				////}
+				//else {
+				SwingUtilities.invokeLater(() -> openPipeline(evt));
+				//}
 			}
 		}
 		else {

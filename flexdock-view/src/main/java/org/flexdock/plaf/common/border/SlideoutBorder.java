@@ -19,10 +19,9 @@
  */
 package org.flexdock.plaf.common.border;
 
+import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-
-import static org.flexdock.docking.DockingConstants.*;
 
 /**
  * @author Christopher Butler
@@ -38,16 +37,16 @@ public class SlideoutBorder implements Border {
     public Insets getBorderInsets(Component c) {
         Insets insets = new Insets(0, 0, 0, 0);
         switch (orientation) {
-            case LEFT:
+        case SwingConstants.LEFT:
                 insets.right = 2;
                 break;
-            case RIGHT:
+        case SwingConstants.RIGHT:
                 insets.left = 2;
                 break;
-            case TOP:
+        case SwingConstants.TOP:
                 insets.bottom = 2;
                 break;
-            case BOTTOM:
+        case SwingConstants.BOTTOM:
                 insets.top = 2;
                 break;
         }
@@ -78,25 +77,25 @@ public class SlideoutBorder implements Border {
         Point inner2 = new Point(0, 0);
 
         switch (orientation) {
-            case LEFT:
+        case SwingConstants.LEFT:
                 outer1.setLocation(w - 1, 0);
                 outer2.setLocation(w - 1, h - 1);
                 inner1.setLocation(w - 2, 0);
                 inner2.setLocation(w - 2, h - 1);
                 break;
-            case RIGHT:
+        case SwingConstants.RIGHT:
                 outer1.setLocation(0, 0);
                 outer2.setLocation(0, h - 1);
                 inner1.setLocation(1, 0);
                 inner2.setLocation(1, h - 1);
                 break;
-            case TOP:
+        case SwingConstants.TOP:
                 outer1.setLocation(0, h - 1);
                 outer2.setLocation(w - 1, h - 1);
                 inner1.setLocation(0, h - 2);
                 inner2.setLocation(w - 1, h - 2);
                 break;
-            case BOTTOM:
+        case SwingConstants.BOTTOM:
                 outer1.setLocation(0, 0);
                 outer2.setLocation(w - 1, 0);
                 inner1.setLocation(0, 1);

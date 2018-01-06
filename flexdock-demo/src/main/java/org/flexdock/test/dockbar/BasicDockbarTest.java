@@ -19,21 +19,14 @@
  */
 package org.flexdock.test.dockbar;
 
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.view.View;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Bobby Rosenberger
@@ -68,10 +61,10 @@ public class BasicDockbarTest {
         JButton leftButton = new JButton("Pin Left");
         JButton bottomButton = new JButton("Pin Bottom");
         JButton rightButton = new JButton("Pin Right");
-
-        leftButton.addActionListener(createMinimizeAction(DockingConstants.LEFT));
-        bottomButton.addActionListener(createMinimizeAction(DockingConstants.BOTTOM));
-        rightButton.addActionListener(createMinimizeAction(DockingConstants.RIGHT));
+    
+        leftButton.addActionListener(createMinimizeAction(SwingConstants.LEFT));
+        bottomButton.addActionListener(createMinimizeAction(SwingConstants.BOTTOM));
+        rightButton.addActionListener(createMinimizeAction(SwingConstants.RIGHT));
 
         cp.add(leftButton);
         cp.add(bottomButton);

@@ -33,7 +33,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 /**
  * @author Christopher Butler
@@ -112,11 +112,11 @@ public class DockingPath implements Cloneable, Serializable {
 		int region = 0;
 		String siblingId = null;
 		if (topLeft) {
-			region = orientation == JSplitPane.VERTICAL_SPLIT ? TOP : LEFT;
+			region = orientation == JSplitPane.VERTICAL_SPLIT ? SwingConstants.TOP : SwingConstants.LEFT;
 			siblingId = getSiblingId(split.getRightComponent());
 		}
 		else {
-			region = orientation == JSplitPane.VERTICAL_SPLIT ? BOTTOM : RIGHT;
+			region = orientation == JSplitPane.VERTICAL_SPLIT ? SwingConstants.BOTTOM : SwingConstants.RIGHT;
 			siblingId = getSiblingId(split.getLeftComponent());
 		}
 		
@@ -291,7 +291,7 @@ public class DockingPath implements Cloneable, Serializable {
 			}
 			
 			// assume there is a transient sub-dockingPort in the split pane
-			comp = node.getRegion() == LEFT || node.getRegion() == TOP ? splitPane.getLeftComponent() : splitPane.getRightComponent();
+			comp = node.getRegion() == SwingConstants.LEFT || node.getRegion() == SwingConstants.TOP ? splitPane.getLeftComponent() : splitPane.getRightComponent();
 			port = (DockingPort) comp;
 			
 			// move on to the next node

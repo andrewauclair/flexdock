@@ -11,6 +11,9 @@ import java.awt.*;
 
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
+/**
+ * @author Andrew Auclair
+ */
 public class CoreDemo extends JFrame {
 	public class ToolWindow extends DockingPanel {
 		
@@ -18,23 +21,24 @@ public class CoreDemo extends JFrame {
 			super(name);
 		}
 	}
+	
 	public class DockingPanel extends JPanel implements DockingStub {
 		
 		private final String name;
-
-        DockingPanel(String name) {
+		
+		DockingPanel(String name) {
 			this.name = name;
 			setLayout(new GridBagLayout());
 			
 			JPanel panel = new JPanel();
-            panel.add(new JTextField("Test"));
-            panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.fill = GridBagConstraints.BOTH;
-            gbc.weightx = 1.0;
-            gbc.weighty = 1.0;
-            add(panel, gbc);
+			panel.add(new JTextField("Test"));
+			panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+			
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.fill = GridBagConstraints.BOTH;
+			gbc.weightx = 1.0;
+			gbc.weighty = 1.0;
+			add(panel, gbc);
 		}
 		
 		@Override
@@ -75,19 +79,19 @@ public class CoreDemo extends JFrame {
 			demo.setVisible(true);
 		});
 	}
-
-    private CoreDemo() {
-        DefaultDockingPort port = new DefaultDockingPort();
-
-        JPanel fullPanel = new JPanel(new BorderLayout());
-        fullPanel.add(port, BorderLayout.CENTER);
-
-        DockingPanel panel = new DockingPanel("Test");
-        DockingPanel panel2 = new DockingPanel("Test2");
-
-        DockingManager.dock(panel, port);
-        DockingManager.dock(panel2, port);
-
-        setContentPane(fullPanel);
+	
+	private CoreDemo() {
+		DefaultDockingPort port = new DefaultDockingPort();
+		
+		JPanel fullPanel = new JPanel(new BorderLayout());
+		fullPanel.add(port, BorderLayout.CENTER);
+		
+		DockingPanel panel = new DockingPanel("Test");
+		DockingPanel panel2 = new DockingPanel("Test2");
+		
+		DockingManager.dock(panel, port);
+		DockingManager.dock(panel2, port);
+		
+		setContentPane(fullPanel);
 	}
 }

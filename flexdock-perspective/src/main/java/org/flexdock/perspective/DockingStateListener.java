@@ -19,15 +19,6 @@
  */
 package org.flexdock.perspective;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.Point;
-
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
@@ -44,6 +35,9 @@ import org.flexdock.docking.state.tree.SplitNode;
 import org.flexdock.util.DockingUtility;
 import org.flexdock.util.RootWindow;
 import org.flexdock.util.SwingUtility;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -81,13 +75,8 @@ public class DockingStateListener extends DockingListener.Stub {
         } else {
             floatManager.removeFromGroup(dockable);
         }
-
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                updateState(dockingEvent);
-            }
-        });
+    
+        EventQueue.invokeLater(() -> updateState(dockingEvent));
     }
 
     @Override
@@ -133,7 +122,7 @@ public class DockingStateListener extends DockingListener.Stub {
         // try the regionInsets
         Float ratioObject = dockable.getDockingProperties().getRegionInset(region);
         if (ratioObject != null) {
-            return ratioObject.floatValue();
+            return ratioObject;
         }
         // if we still can't find a specified splitPane percentage, then use
         // the default value

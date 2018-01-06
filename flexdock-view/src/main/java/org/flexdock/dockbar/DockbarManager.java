@@ -53,7 +53,7 @@ import java.util.WeakHashMap;
 public class DockbarManager {
 	private static final WeakHashMap<RootWindow, DockbarManager> MANAGERS_BY_WINDOW = new WeakHashMap<>();
 	private static final Integer DOCKBAR_LAYER = JLayeredPane.PALETTE_LAYER - 5;
-	public static final int DEFAULT_EDGE = MinimizationManager.LEFT;
+	public static final int DEFAULT_EDGE = SwingConstants.LEFT;
 	
 	private static String dockbarManagerClassName;
 	
@@ -208,9 +208,9 @@ public class DockbarManager {
 		dockbarLayout = new DockbarLayout(this);
 		activationListener = new ActivationListener(this);
 		
-		leftBar = new Dockbar(this, MinimizationManager.LEFT);
-		rightBar = new Dockbar(this, MinimizationManager.RIGHT);
-		bottomBar = new StatusDockbar(this, MinimizationManager.BOTTOM);
+		leftBar = new Dockbar(this, SwingConstants.LEFT);
+		rightBar = new Dockbar(this, SwingConstants.RIGHT);
+		bottomBar = new StatusDockbar(this, SwingConstants.BOTTOM);
 		viewPane = new ViewPane(this);
 		
 		windowRef = new WeakReference<>(window);
@@ -317,16 +317,16 @@ public class DockbarManager {
 		// center points.  whichever is the shortest, that is the edge the dockable is
 		// 'closest' to and that will be the edge we'll return
 		double min = Math.abs(dockCenter.distance(leftCenter));
-		int edge = MinimizationManager.LEFT;
+		int edge = SwingConstants.LEFT;
 		double delta = Math.abs(dockCenter.distance(rightCenter));
 		if (delta < min) {
 			min = delta;
-			edge = MinimizationManager.RIGHT;
+			edge = SwingConstants.RIGHT;
 		}
 		delta = Math.abs(dockCenter.distance(bottomCenter));
 		if (delta < min) {
 			min = delta;
-			edge = MinimizationManager.BOTTOM;
+			edge = SwingConstants.BOTTOM;
 		}
 		
 		return edge;
@@ -341,13 +341,13 @@ public class DockbarManager {
 		Dockbar dockbar = getDockbar(dockable);
 		
 		if (dockbar == leftBar) {
-			return MinimizationManager.LEFT;
+			return SwingConstants.LEFT;
 		}
 		if (dockbar == rightBar) {
-			return MinimizationManager.RIGHT;
+			return SwingConstants.RIGHT;
 		}
 		if (dockbar == bottomBar) {
-			return MinimizationManager.BOTTOM;
+			return SwingConstants.BOTTOM;
 		}
 		return MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT;
 	}
@@ -372,9 +372,9 @@ public class DockbarManager {
 	private Dockbar getDockbar(int edge) {
 		edge = Dockbar.getValidOrientation(edge);
 		switch (edge) {
-		case MinimizationManager.RIGHT:
+		case SwingConstants.RIGHT:
 			return rightBar;
-		case MinimizationManager.BOTTOM:
+		case SwingConstants.BOTTOM:
 			return bottomBar;
 		default:
 			return leftBar;
@@ -513,9 +513,9 @@ public class DockbarManager {
 	private Dockbar getActiveDockbar() {
 		int edge = getActiveEdge();
 		switch (edge) {
-		case MinimizationManager.TOP:
+		case SwingConstants.TOP:
 			return bottomBar;
-		case MinimizationManager.RIGHT:
+		case SwingConstants.RIGHT:
 			return rightBar;
 		default:
 			return leftBar;

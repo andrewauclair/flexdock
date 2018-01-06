@@ -20,7 +20,6 @@
 package org.flexdock.docking.state;
 
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 
 import java.awt.*;
 
@@ -32,17 +31,7 @@ public interface MinimizationManager {
 	MinimizationManager DEFAULT_STUB = new Stub();
 
 	int UNSPECIFIED_LAYOUT_CONSTRAINT = -1;
-
-	int TOP = DockingConstants.TOP;
-
-	int LEFT = DockingConstants.LEFT;
-
-	int BOTTOM = DockingConstants.BOTTOM;
-
-	int RIGHT = DockingConstants.RIGHT;
-
-	int CENTER = DockingConstants.CENTER;
-
+	
 	boolean close(Dockable dockable);
 
 	void preview(Dockable dockable, boolean locked);

@@ -19,17 +19,14 @@
  */
 package org.flexdock.dockbar;
 
-import java.awt.Dimension;
+import org.flexdock.docking.Dockable;
+import org.flexdock.plaf.common.border.SlideoutBorder;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
-
-import org.flexdock.docking.Dockable;
-import org.flexdock.docking.state.MinimizationManager;
-import org.flexdock.plaf.common.border.SlideoutBorder;
 
 
 /**
@@ -47,14 +44,14 @@ public class Dockbar extends JPanel {
 
     public static int getValidOrientation(int orient) {
         switch (orient) {
-            case MinimizationManager.LEFT:
-                return MinimizationManager.LEFT;
-            case MinimizationManager.RIGHT:
-                return MinimizationManager.RIGHT;
-            case MinimizationManager.BOTTOM:
-                return MinimizationManager.BOTTOM;
+		case SwingConstants.LEFT:
+			return SwingConstants.LEFT;
+		case SwingConstants.RIGHT:
+			return SwingConstants.RIGHT;
+		case SwingConstants.BOTTOM:
+			return SwingConstants.BOTTOM;
             default:
-                return MinimizationManager.LEFT;
+				return SwingConstants.LEFT;
         }
     }
 
@@ -124,9 +121,9 @@ public class Dockbar extends JPanel {
         if(border instanceof SlideoutBorder) {
             ((SlideoutBorder)border).setOrientation(orientation);
         }
-
-        int boxConstraint = orientation==MinimizationManager.TOP ||
-                            orientation==MinimizationManager.BOTTOM? BoxLayout.LINE_AXIS: BoxLayout.PAGE_AXIS;
+	
+		int boxConstraint = orientation == SwingConstants.TOP ||
+				orientation == SwingConstants.BOTTOM ? BoxLayout.LINE_AXIS : BoxLayout.PAGE_AXIS;
         setLayout(new BoxLayout(this, boxConstraint));
     }
 

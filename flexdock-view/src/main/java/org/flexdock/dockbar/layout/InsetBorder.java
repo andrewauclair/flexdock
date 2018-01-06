@@ -19,12 +19,11 @@
  */
 package org.flexdock.dockbar.layout;
 
-import java.awt.Insets;
-
-import javax.swing.border.Border;
-
-import org.flexdock.docking.state.MinimizationManager;
 import org.flexdock.plaf.common.border.CompoundEmptyBorder;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -57,13 +56,13 @@ public class InsetBorder extends CompoundEmptyBorder {
 
     public void toggleEdge(int edge, boolean on) {
         switch(edge) {
-            case MinimizationManager.LEFT:
+		case SwingConstants.LEFT:
                 leftEdge = on;
                 break;
-            case MinimizationManager.RIGHT:
+		case SwingConstants.RIGHT:
                 rightEdge = on;
                 break;
-            case MinimizationManager.BOTTOM:
+		case SwingConstants.BOTTOM:
                 bottomEdge = on;
                 break;
         }

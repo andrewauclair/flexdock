@@ -19,18 +19,12 @@
  */
 package org.flexdock.dockbar;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
-
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.state.MinimizationManager;
 import org.flexdock.plaf.common.border.SlideoutBorder;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
 
 /**
  * A special dockbar which can be used to hold a statusbar panel at the bottom.
@@ -82,9 +76,9 @@ public class StatusDockbar extends Dockbar {
         if (border instanceof SlideoutBorder) {
             ((SlideoutBorder) border).setOrientation(orientation);
         }
-
-        int boxConstraint = orientation == MinimizationManager.TOP
-                            || orientation == MinimizationManager.BOTTOM ? BoxLayout.LINE_AXIS
+	
+		int boxConstraint = orientation == SwingConstants.TOP
+				|| orientation == SwingConstants.BOTTOM ? BoxLayout.LINE_AXIS
                             : BoxLayout.PAGE_AXIS;
         labelPanel.setLayout(new BoxLayout(labelPanel, boxConstraint));
     }

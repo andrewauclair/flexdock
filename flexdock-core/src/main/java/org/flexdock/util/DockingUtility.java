@@ -355,11 +355,6 @@ public class DockingUtility {
 	 * @param regionType the orientation constant to translate into a docking region
 	 * @return the {@code String} docking region for the specified orientation
 	 * constant.
-	 * @see DockingConstants#LEFT
-	 * @see DockingConstants#RIGHT
-	 * @see DockingConstants#TOP
-	 * @see DockingConstants#BOTTOM
-	 * @see DockingConstants#CENTER
 	 * @see DockingConstants#WEST_REGION
 	 * @see DockingConstants#EAST_REGION
 	 * @see DockingConstants#NORTH_REGION
@@ -369,15 +364,15 @@ public class DockingUtility {
 	 */
 	public static String getRegion(int regionType) {
 		switch (regionType) {
-		case LEFT:
+		case SwingConstants.LEFT:
 			return WEST_REGION;
-		case RIGHT:
+		case SwingConstants.RIGHT:
 			return EAST_REGION;
-		case TOP:
+		case SwingConstants.TOP:
 			return NORTH_REGION;
-		case BOTTOM:
+		case SwingConstants.BOTTOM:
 			return SOUTH_REGION;
-		case CENTER:
+		case SwingConstants.CENTER:
 			return CENTER_REGION;
 		default:
 			return UNKNOWN_REGION;

@@ -18,27 +18,19 @@ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFT
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.flexdock.dockbar;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-
 import org.flexdock.dockbar.util.TextIcon;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.props.DockablePropertySet;
-import org.flexdock.docking.state.MinimizationManager;
 import org.flexdock.plaf.common.border.RoundedLineBorder;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * @author Andreas Ernst
@@ -61,21 +53,11 @@ public class DockbarLabel extends JLabel implements MouseListener {
 
     private static Insets[] createInsets() {
         Insets[] insets = new Insets[5];
-        insets[MinimizationManager.CENTER] = new Insets(1, 1, 1, 1);
-        insets[MinimizationManager.LEFT] = new Insets(1, 1, 2, 1);
-        insets[MinimizationManager.RIGHT] = new Insets(1, 1, 2, 1);
-        insets[MinimizationManager.TOP] = new Insets(1, 1, 1, 2);
-        insets[MinimizationManager.BOTTOM] = new Insets(1, 1, 1, 2);
         return insets;
     }
 
     private static int[] createRotations() {
         int[] rotations = new int[5];
-        rotations[MinimizationManager.CENTER] = TextIcon.ROTATE_NONE;
-        rotations[MinimizationManager.LEFT] = TextIcon.ROTATE_LEFT;
-        rotations[MinimizationManager.RIGHT] = TextIcon.ROTATE_RIGHT;
-        rotations[MinimizationManager.TOP] = TextIcon.ROTATE_NONE;
-        rotations[MinimizationManager.BOTTOM] = TextIcon.ROTATE_NONE;
         return rotations;
     }
 

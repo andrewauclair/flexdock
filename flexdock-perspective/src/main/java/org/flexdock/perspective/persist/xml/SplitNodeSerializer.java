@@ -24,6 +24,8 @@ import org.flexdock.docking.state.tree.SplitNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import javax.swing.*;
+
 /**
  * Created on 2005-06-23
  *
@@ -70,20 +72,20 @@ public class SplitNodeSerializer extends AbstractLayoutNodeSerializer implements
 
         int orientation = DockingConstants.UNINITIALIZED;
         if (orientationString.equals("vertical")) {
-            orientation = DockingConstants.VERTICAL;
+            orientation = JSplitPane.VERTICAL_SPLIT;
         } else if (orientationString.equals("horizontal")) {
-            orientation = DockingConstants.HORIZONTAL;
+            orientation = JSplitPane.HORIZONTAL_SPLIT;
         }
 
         int region = DockingConstants.UNINITIALIZED;
         if (regionString.equals("top")) {
-            region = DockingConstants.TOP;
+            region = SwingConstants.TOP;
         } else if (regionString.equals("bottom")) {
-            region = DockingConstants.BOTTOM;
+            region = SwingConstants.BOTTOM;
         } else if (regionString.equals("left")) {
-            region = DockingConstants.LEFT;
+            region = SwingConstants.LEFT;
         } else if (regionString.equals("right")) {
-            region = DockingConstants.RIGHT;
+            region = SwingConstants.RIGHT;
         }
 
         splitNode.setOrientation(orientation);

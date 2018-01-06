@@ -19,19 +19,14 @@
  */
 package org.flexdock.dockbar;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
-
-import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.event.MouseInputAdapter;
-
 import org.flexdock.dockbar.event.ResizeListener;
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.state.MinimizationManager;
 import org.flexdock.plaf.common.border.SlideoutBorder;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -103,11 +98,11 @@ public class ViewPane extends JPanel {
     private String getEdgeRegion() {
         int orientation = manager.getActiveEdge();
         switch(orientation) {
-            case MinimizationManager.TOP:
+		case SwingConstants.TOP:
                 return BorderLayout.SOUTH;
-            case MinimizationManager.BOTTOM:
+		case SwingConstants.BOTTOM:
                 return BorderLayout.NORTH;
-            case MinimizationManager.RIGHT:
+		case SwingConstants.RIGHT:
                 return BorderLayout.WEST;
             default:
                 return BorderLayout.EAST;
@@ -116,8 +111,8 @@ public class ViewPane extends JPanel {
 
     public Cursor getResizeCursor() {
         int orientation = manager.getActiveEdge();
-        return orientation==MinimizationManager.LEFT ||
-               orientation==MinimizationManager.RIGHT?
+		return orientation == SwingConstants.LEFT ||
+				orientation == SwingConstants.RIGHT ?
                Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR):
                Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
     }

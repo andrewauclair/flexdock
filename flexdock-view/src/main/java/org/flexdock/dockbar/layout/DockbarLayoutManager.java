@@ -19,17 +19,12 @@
  */
 package org.flexdock.dockbar.layout;
 
-import java.awt.Component;
-import java.awt.Rectangle;
-
-import javax.swing.JComponent;
-import javax.swing.JLayeredPane;
-import javax.swing.SwingUtilities;
-
 import org.flexdock.dockbar.DockbarManager;
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.state.MinimizationManager;
 import org.flexdock.util.RootWindow;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -70,11 +65,11 @@ public class DockbarLayoutManager {
         }
 
         JLayeredPane layeredPane = window.getLayeredPane();
-
-        Component leftEdge = getEdgeGuide(mgr, MinimizationManager.LEFT);
-        Component rightEdge = getEdgeGuide(mgr, MinimizationManager.RIGHT);
-        Component bottomEdge = getEdgeGuide(mgr, MinimizationManager.BOTTOM);
-        Component topEdge = getEdgeGuide(mgr, MinimizationManager.TOP);
+    
+        Component leftEdge = getEdgeGuide(mgr, SwingConstants.LEFT);
+        Component rightEdge = getEdgeGuide(mgr, SwingConstants.RIGHT);
+        Component bottomEdge = getEdgeGuide(mgr, SwingConstants.BOTTOM);
+        Component topEdge = getEdgeGuide(mgr, SwingConstants.TOP);
 
 
         Rectangle leftBounds = SwingUtilities.convertRectangle(leftEdge.getParent(), leftEdge.getBounds(), layeredPane);

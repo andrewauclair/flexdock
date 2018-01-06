@@ -18,8 +18,6 @@
  */
 package org.flexdock.perspective.persist.xml;
 
-import java.awt.Point;
-
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.state.DockingPath;
 import org.flexdock.docking.state.DockingState;
@@ -27,6 +25,9 @@ import org.flexdock.docking.state.MinimizationManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created on 2005-06-03
@@ -95,15 +96,15 @@ public class DockingStateSerializer implements ISerializer {
 
     private String getPresentationMinimizeConstraint(int constraint) {
         switch (constraint) {
-            case MinimizationManager.LEFT:
+        case SwingConstants.LEFT:
                 return "left";
-            case MinimizationManager.BOTTOM:
+        case SwingConstants.BOTTOM:
                 return "bottom";
-            case MinimizationManager.CENTER:
+        case SwingConstants.CENTER:
                 return "center";
-            case MinimizationManager.RIGHT:
+        case SwingConstants.RIGHT:
                 return "right";
-            case MinimizationManager.TOP:
+        case SwingConstants.TOP:
                 return "top";
             case MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT:
                 return "unspecified";
@@ -114,15 +115,15 @@ public class DockingStateSerializer implements ISerializer {
 
     private int getRealMinimizeConstraint(String presConstraint) {
         if (presConstraint.equals("left")) {
-            return MinimizationManager.LEFT;
+            return SwingConstants.LEFT;
         } else if (presConstraint.equals("bottom")) {
-            return MinimizationManager.BOTTOM;
+            return SwingConstants.BOTTOM;
         } else if (presConstraint.equals("center")) {
-            return MinimizationManager.CENTER;
+            return SwingConstants.CENTER;
         } else if (presConstraint.equals("right")) {
-            return MinimizationManager.RIGHT;
+            return SwingConstants.RIGHT;
         } else if (presConstraint.equals("top")) {
-            return MinimizationManager.TOP;
+            return SwingConstants.TOP;
         }
 
         throw new RuntimeException("Minimization conversion error!");

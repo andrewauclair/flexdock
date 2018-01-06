@@ -19,24 +19,19 @@
  */
 package org.flexdock.dockbar.event;
 
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
 import org.flexdock.dockbar.DockbarManager;
 import org.flexdock.dockbar.ViewPane;
 import org.flexdock.dockbar.layout.DockbarLayout;
 import org.flexdock.dockbar.layout.DockbarLayoutManager;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.props.DockablePropertySet;
-import org.flexdock.docking.state.MinimizationManager;
 import org.flexdock.util.RootWindow;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 /**
  * @author Christopher Butler
@@ -102,10 +97,10 @@ public class ResizeListener extends MouseAdapter implements MouseMotionListener 
         p.y = Math.min(p.y, viewArea.height);
 
         int orientation = manager.getActiveEdge();
-        int loc = orientation==MinimizationManager.LEFT || orientation==MinimizationManager.RIGHT? p.x: p.y;
-        int dim = orientation==MinimizationManager.LEFT || orientation==MinimizationManager.RIGHT? viewArea.width: viewArea.height;
-
-        if(orientation==MinimizationManager.RIGHT || orientation==MinimizationManager.BOTTOM) {
+		int loc = orientation == SwingConstants.LEFT || orientation == SwingConstants.RIGHT ? p.x : p.y;
+		int dim = orientation == SwingConstants.LEFT || orientation == SwingConstants.RIGHT ? viewArea.width : viewArea.height;
+	
+		if (orientation == SwingConstants.RIGHT || orientation == SwingConstants.BOTTOM) {
             loc = dim - loc;
         }
 

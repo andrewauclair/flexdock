@@ -19,23 +19,19 @@
  */
 package org.flexdock.dockbar.layout;
 
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.border.Border;
-
 import org.flexdock.dockbar.Dockbar;
 import org.flexdock.dockbar.DockbarManager;
 import org.flexdock.dockbar.ViewPane;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.props.DockablePropertySet;
-import org.flexdock.docking.state.MinimizationManager;
 import org.flexdock.util.Utilities;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Christopher Butler
@@ -43,8 +39,8 @@ import org.flexdock.util.Utilities;
 public class DockbarLayout {
     public static final int MINIMUM_VIEW_SIZE = 20;
     private static final int[] EDGES = {
-        MinimizationManager.LEFT, MinimizationManager.RIGHT,
-        MinimizationManager.BOTTOM
+			SwingConstants.LEFT, SwingConstants.RIGHT,
+			SwingConstants.BOTTOM
     };
 
     private DockbarManager manager;
@@ -96,7 +92,7 @@ public class DockbarLayout {
         // determine what percentage of the viewable area we want the viewpane to take up
         float viewSize = props.getPreviewSize().floatValue();
         int edge = manager.getActiveEdge();
-        if(edge==MinimizationManager.LEFT || edge==MinimizationManager.RIGHT) {
+		if (edge == SwingConstants.LEFT || edge == SwingConstants.RIGHT) {
             return (int)(rect.width*viewSize);
         }
         return (int)(rect.height*viewSize);
@@ -117,13 +113,13 @@ public class DockbarLayout {
         }
 
         Rectangle rect = DockbarLayoutManager.getManager().getViewArea(manager, dockable);
-        if(edge==MinimizationManager.LEFT || edge==MinimizationManager.RIGHT) {
-            if(edge==MinimizationManager.RIGHT) {
+		if (edge == SwingConstants.LEFT || edge == SwingConstants.RIGHT) {
+			if (edge == SwingConstants.RIGHT) {
                 rect.x = rect.x + rect.width - viewpaneSize;
             }
             rect.width = viewpaneSize;
         } else {
-            if(edge==MinimizationManager.BOTTOM) {
+			if (edge == SwingConstants.BOTTOM) {
                 rect.y = rect.y + rect.height - viewpaneSize;
             }
             rect.height = viewpaneSize;
@@ -137,14 +133,14 @@ public class DockbarLayout {
         boolean changed = resetGuideBorders();
 
         HashSet borderSet = new HashSet(3);
-        add(borderSet, getInsetBorder(MinimizationManager.LEFT));
-        add(borderSet, getInsetBorder(MinimizationManager.RIGHT));
-        add(borderSet, getInsetBorder(MinimizationManager.BOTTOM));
+		add(borderSet, getInsetBorder(SwingConstants.LEFT));
+		add(borderSet, getInsetBorder(SwingConstants.RIGHT));
+		add(borderSet, getInsetBorder(SwingConstants.BOTTOM));
 
         HashSet guideSet = new HashSet(3);
-        add(guideSet, getCurrentEdgeGuide(MinimizationManager.LEFT));
-        add(guideSet, getCurrentEdgeGuide(MinimizationManager.RIGHT));
-        add(guideSet, getCurrentEdgeGuide(MinimizationManager.BOTTOM));
+		add(guideSet, getCurrentEdgeGuide(SwingConstants.LEFT));
+		add(guideSet, getCurrentEdgeGuide(SwingConstants.RIGHT));
+		add(guideSet, getCurrentEdgeGuide(SwingConstants.BOTTOM));
 
         for(Iterator it=borderSet.iterator(); it.hasNext();) {
             InsetBorder border = (InsetBorder)it.next();
@@ -160,13 +156,13 @@ public class DockbarLayout {
     }
 
     private boolean resetGuideBorders() {
-        boolean changed = resetGuide(MinimizationManager.LEFT);
-        changed = resetGuide(MinimizationManager.RIGHT) || changed ;
-        changed = resetGuide(MinimizationManager.BOTTOM) || changed ;
-
-        toggleInsetBorder(MinimizationManager.LEFT);
-        toggleInsetBorder(MinimizationManager.RIGHT);
-        toggleInsetBorder(MinimizationManager.BOTTOM);
+		boolean changed = resetGuide(SwingConstants.LEFT);
+		changed = resetGuide(SwingConstants.RIGHT) || changed;
+		changed = resetGuide(SwingConstants.BOTTOM) || changed;
+	
+		toggleInsetBorder(SwingConstants.LEFT);
+		toggleInsetBorder(SwingConstants.RIGHT);
+		toggleInsetBorder(SwingConstants.BOTTOM);
 
         return changed;
     }
@@ -262,11 +258,11 @@ public class DockbarLayout {
 
     private JComponent getCurrentEdgeGuide(int constraint) {
         switch(constraint) {
-            case MinimizationManager.LEFT:
+		case SwingConstants.LEFT:
                 return leftEdgeGuide;
-            case MinimizationManager.RIGHT:
+		case SwingConstants.RIGHT:
                 return rightEdgeGuide;
-            case MinimizationManager.BOTTOM:
+		case SwingConstants.BOTTOM:
                 return bottomEdgeGuide;
         }
         return null;
@@ -275,13 +271,13 @@ public class DockbarLayout {
     private boolean setCurrentEdgeGuide(int constraint, JComponent comp) {
         boolean changed = getCurrentEdgeGuide(constraint)==comp;
         switch(constraint) {
-            case MinimizationManager.LEFT:
+		case SwingConstants.LEFT:
                 leftEdgeGuide = comp;
                 break;
-            case MinimizationManager.RIGHT:
+		case SwingConstants.RIGHT:
                 rightEdgeGuide = comp;
                 break;
-            case MinimizationManager.BOTTOM:
+		case SwingConstants.BOTTOM:
                 bottomEdgeGuide = comp;
                 break;
         }

@@ -19,8 +19,6 @@
  */
 package org.flexdock.docking;
 
-import javax.swing.*;
-
 /**
  * A collection of constants used by flexdock.
  *
@@ -75,60 +73,6 @@ public interface DockingConstants {
 	String CLOSE_ACTION = "close";
 	
 	/**
-	 * Box-orientation constant used to specify the top of a box.
-	 *
-	 * @see SwingConstants#TOP
-	 */
-	int TOP = SwingConstants.TOP;
-	
-	/**
-	 * Box-orientation constant used to specify the left side of a box.
-	 *
-	 * @see SwingConstants#LEFT
-	 */
-	int LEFT = SwingConstants.LEFT;
-	
-	/**
-	 * Box-orientation constant used to specify the bottom of a box.
-	 *
-	 * @see SwingConstants#BOTTOM
-	 */
-	int BOTTOM = SwingConstants.BOTTOM;
-	
-	/**
-	 * Box-orientation constant used to specify the right side of a box.
-	 *
-	 * @see SwingConstants#RIGHT
-	 */
-	int RIGHT = SwingConstants.RIGHT;
-	
-	/**
-	 * The central position in an area. Used for both compass-direction
-	 * constants (NORTH, etc.).
-	 *
-	 * @see SwingConstants#CENTER
-	 */
-	int CENTER = SwingConstants.CENTER;
-	
-	/**
-	 * Horizontal split indicates the {@code Component}s are split along the x
-	 * axis. For example the two {@code Component}s will be split one to the
-	 * left of the other.
-	 *
-	 * @see JSplitPane#HORIZONTAL_SPLIT
-	 */
-	int HORIZONTAL = JSplitPane.HORIZONTAL_SPLIT;
-	
-	/**
-	 * Vertical split indicates the {@code Component}s are split along the y
-	 * axis. For example the two {@code Component}s will be split one on top of
-	 * the other.
-	 *
-	 * @see JSplitPane#VERTICAL_SPLIT
-	 */
-	int VERTICAL = JSplitPane.VERTICAL_SPLIT;
-	
-	/**
 	 * A constant representing the "region" property used when a
 	 * {@code Dockable} region has been changed.
 	 *
@@ -138,37 +82,27 @@ public interface DockingConstants {
 	String REGION = "region";
 	
 	/**
-	 * The central region. The regional equivalent for {@linkplain #CENTER}.
-	 *
-	 * @see #CENTER
+	 * The central region. The regional equivalent for SwingConstants.CENTER
 	 */
 	String CENTER_REGION = "CENTER";
 	
 	/**
-	 * The east region. The regional equivalent for {@linkplain #RIGHT}.
-	 *
-	 * @see #RIGHT
+	 * The east region. The regional equivalent for SwingConstants.RIGHT
 	 */
 	String EAST_REGION = "EAST";
 	
 	/**
-	 * The north region. The regional equivalent for {@linkplain #TOP}.
-	 *
-	 * @see #TOP
+	 * The north region. The regional equivalent for SwingConstants.TOP
 	 */
 	String NORTH_REGION = "NORTH";
 	
 	/**
-	 * The south region. The regional equivalent for {@linkplain #BOTTOM}.
-	 *
-	 * @see #BOTTOM
+	 * The south region. The regional equivalent for SwingConstants.BOTTOM
 	 */
 	String SOUTH_REGION = "SOUTH";
 	
 	/**
-	 * The west region. The regional equivalent for {@linkplain #LEFT}.
-	 *
-	 * @see #LEFT
+	 * The west region. The regional equivalent for SwingConstants.LEFT
 	 */
 	String WEST_REGION = "WEST";
 	
