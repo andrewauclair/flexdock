@@ -33,6 +33,11 @@ public class AlphaPreview extends DefaultPreview {
 	private Color previewColor;
 	private Color borderColor;
 	
+	// TODO Currently used when reflecting to create an instance for EffectsManager defaults
+	public AlphaPreview() {
+		this(Color.black, new Color(119, 173, 255), 0.25f);
+	}
+	
 	public AlphaPreview(Color border, Color fill, float alpha) {
 		setBorderColor(border);
 		setPreviewColor(fill);

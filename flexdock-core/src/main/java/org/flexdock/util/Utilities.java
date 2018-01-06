@@ -305,7 +305,7 @@ public class Utilities {
             return c.newInstance();
         } catch (Throwable e) {
             if (!failSilent) {
-                System.err.println("Exception: " + e.getMessage());
+                e.printStackTrace();
             }
             return null;
         }
