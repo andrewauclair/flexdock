@@ -142,22 +142,22 @@ public class DragPipeline {
 		setCurrentDragOperation(null);
 		open = false;
 	}
-
-	public void processDragEvent(MouseEvent me) {
+	
+	public void processDragEvent(MouseEvent me, Point dragOffset) {
 		if (!open) {
 			return;
 		}
 
 		if (EventQueue.isDispatchThread()) {
-			processDragEventImpl(me);
+			processDragEventImpl(me, dragOffset);
 			return;
 		}
-
-		EventQueue.invokeLater(() -> processDragEventImpl(me));
+		
+		EventQueue.invokeLater(() -> processDragEventImpl(me, dragOffset));
 	}
-
-	private void processDragEventImpl(MouseEvent me) {
-		dragToken.updateMouse(me);
+	
+	private void processDragEventImpl(MouseEvent me, Point dragOffset) {
+		dragToken.updateMouse(me, dragOffset);
 
 		if (heavyweightDockableSupportted) {
 			preprocessHeavyweightDockables();

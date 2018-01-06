@@ -24,6 +24,7 @@ import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.state.FloatingGroup;
 import org.flexdock.util.DockingUtility;
+import org.flexdock.util.SwingUtility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,8 +110,8 @@ public class DragOperation {
 	public Point getMouseOffset() {
 		return (Point) mouseOffset.clone();
 	}
-
-	public void updateMouse(MouseEvent me) {
+	
+	public void updateMouse(MouseEvent me, Point dragOffset) {
 		if (me != null && me.getSource() == dragSource) {
 			currentMouse = me.getPoint();
 			
@@ -123,7 +124,7 @@ public class DragOperation {
 				// TODO This needs to use the dragOffset in FrameDragListener
 				Point loc = me.getPoint();
 				SwingUtilities.convertPointToScreen(loc, (Component) me.getSource());
-//				SwingUtility.subtract(loc, dragOffset);
+				SwingUtility.subtract(loc, dragOffset);
 				floatGroup.getFrame().setLocation(loc);
 				
 			}

@@ -26,9 +26,11 @@ import org.flexdock.docking.DockingStrategy;
 import org.flexdock.docking.drag.effects.EffectsManager;
 import org.flexdock.docking.event.DockingEvent;
 import org.flexdock.docking.floating.policy.FloatPolicyManager;
+import org.flexdock.docking.state.FloatingGroup;
 import org.flexdock.event.EventManager;
 import org.flexdock.util.DockingUtility;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -50,7 +52,9 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 	private boolean enabled;
 	private Point dragOrigin;
 	private HashMap dragContext;
-
+	
+	private Point dragOffset = new Point();
+	
 	public static void prime() {
 		// execute static initializer to preload resources
 		EffectsManager.prime();
@@ -66,6 +70,18 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 			enabled = false;
 		}
 		else {
+			if (DockingUtility.isFloating(dockable)) {
+				dragOffset = e.getPoint();
+				// update the position of the floating frame/dockable
+				String group = DockingUtility.getFloatGroup(dockable);
+				
+				FloatingGroup floatGroup = DockingManager.getFloatManager().getGroup(group);
+				
+				if (e.getSource() != floatGroup.getFrame()) {
+					dragOffset = SwingUtilities.convertPoint((Component) e.getSource(), dragOffset, floatGroup.getFrame());
+				}
+			}
+			
 			toggleDragContext(true);
 			enabled = !isDragCanceled(dockable, e);
 		}
@@ -90,7 +106,7 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 			}
 		}
 		else {
-			pipeline.processDragEvent(evt);
+			pipeline.processDragEvent(evt, dragOffset);
 		}
 	}
 
