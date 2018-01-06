@@ -22,6 +22,7 @@ package org.flexdock.docking.drag.effects;
 import java.awt.*;
 
 /**
+ * @deprecated RubberBand will no longer be needed when we float at the beginning of a drag
  * @author Christopher Butler
  */
 public class RubberBand {
