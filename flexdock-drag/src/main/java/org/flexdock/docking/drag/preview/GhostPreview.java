@@ -36,6 +36,7 @@ import org.flexdock.docking.drag.effects.DefaultPreview;
 import org.flexdock.util.SwingUtility;
 
 /**
+ * @deprecated The GhostPreview looks awful
  * @author Christopher Butler
  */
 public class GhostPreview extends DefaultPreview {

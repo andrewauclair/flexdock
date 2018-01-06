@@ -11,7 +11,7 @@
 		</os>
 	</rubber-bands>
 	
-	<drag-previews default="org.flexdock.docking.drag.preview.XORPreview">
+	<drag-previews default="org.flexdock.docking.drag.preview.AlphaPreview">
 		<!-- We will be adding plaf-specific defaults for previews in here. -->
 	</drag-previews>
 </drag-effects>

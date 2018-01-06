@@ -107,6 +107,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
 	 * @return a set containing the components that may be used to drag the
 	 * frame this dockable resides in, if the dockable is floating.
 	 */
+	// TODO I want everything to always have a titlebar/main drag (top tab) so I think this is no longer needed
 	Set<Component> getFrameDragSources();
 
 	/**

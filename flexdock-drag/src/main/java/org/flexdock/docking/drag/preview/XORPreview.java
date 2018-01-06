@@ -30,6 +30,9 @@ import java.util.Map;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.drag.effects.DefaultPreview;
 
+/**
+ * @deprecated XORPreview is being deprecated in favor of always using AlphaPreview which will be moved to flexdock-core
+ */
 public class XORPreview extends DefaultPreview {
 
     @Override

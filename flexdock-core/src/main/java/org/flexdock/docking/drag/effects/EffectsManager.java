@@ -98,7 +98,7 @@ public class EffectsManager {
 		}
 	}
 
-	private static final Document loadConfig() {
+	private static Document loadConfig() {
 		return ResourceManager.getDocument(CONFIG_URI);
 	}
 
@@ -111,7 +111,7 @@ public class EffectsManager {
 		return (DragPreview) Utilities.createInstance(implClass, DragPreview.class);
 	}
 
-
+	// TODO The HashMap in here uses multiple types, why?
 	private static HashMap loadRubberBandInfoByOS(Document config) {
 		HashMap map = new HashMap();
 
@@ -137,16 +137,16 @@ public class EffectsManager {
 	private static RubberBand loadSystemRubberband(Document config) {
 		List osList = OsInfo.getInstance().getOsNames();
 		HashMap info = loadRubberBandInfoByOS(config);
-
-		for (Iterator it = osList.iterator(); it.hasNext(); ) {
-			String osName = (String) it.next();
+		
+		for (Object anOsList : osList) {
+			String osName = (String) anOsList;
 			List classes = (List) info.get(osName);
 			if (classes == null) {
 				continue;
 			}
-
-			for (Iterator it2 = classes.iterator(); it2.hasNext(); ) {
-				String implClass = (String) it2.next();
+			
+			for (Object aClass : classes) {
+				String implClass = (String) aClass;
 				RubberBand rb = createRubberBand(implClass);
 				if (rb != null) {
 					return rb;

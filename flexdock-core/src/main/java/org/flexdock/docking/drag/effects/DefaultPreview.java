@@ -35,8 +35,8 @@ import static org.flexdock.docking.DockingConstants.*;
  * @author Christopher Butler
  */
 public abstract class DefaultPreview implements DragPreview {
-	public static final int DEFAULT_TAB_WIDTH = 50;
-	public static final int DEFAULT_TAB_HEIGHT = 20;
+	private static final int DEFAULT_TAB_WIDTH = 50;
+	private static final int DEFAULT_TAB_HEIGHT = 20;
 
 	@Override
 	public Polygon createPreviewPolygon(Component dockable, DockingPort port, Dockable hover, String targetRegion, Component paintingTarget, Map dragInfo) {
@@ -55,7 +55,7 @@ public abstract class DefaultPreview implements DragPreview {
 			return createPolyRect(portBounds);
 		}
 
-		Polygon p = null;
+		Polygon p;
 		Component srcAxes = hover.getComponent();
 		if (isOuterRegion(targetRegion)) {
 			p = createPolyRect(port, srcAxes, targetRegion);
@@ -69,7 +69,7 @@ public abstract class DefaultPreview implements DragPreview {
 		return p;
 	}
 
-	protected Polygon createPolyRect(DockingPort port, Component dockable, String region) {
+	private Polygon createPolyRect(DockingPort port, Component dockable, String region) {
 		RegionChecker regionChecker = port.getDockingProperties().getRegionChecker();
 		if (regionChecker == null) {
 			regionChecker = new DefaultRegionChecker();
@@ -79,7 +79,7 @@ public abstract class DefaultPreview implements DragPreview {
 		return createPolyRect(r);
 	}
 
-	protected Polygon createPolyRect(Rectangle r) {
+	private Polygon createPolyRect(Rectangle r) {
 		if (r == null) {
 			return null;
 		}
@@ -92,7 +92,7 @@ public abstract class DefaultPreview implements DragPreview {
 	}
 
 
-	protected Polygon createPolyTab(DockingPort port, Component hover) {
+	private Polygon createPolyTab(DockingPort port, Component hover) {
 		Component c = port.getDockedComponent();
 
 		Rectangle tabPaneRect = createTabbedPaneRect(port, hover);
@@ -103,7 +103,7 @@ public abstract class DefaultPreview implements DragPreview {
 		}
 
 		Rectangle tabRect = new Rectangle(tabPaneRect.x, tabPaneRect.y, DEFAULT_TAB_WIDTH, DEFAULT_TAB_HEIGHT);
-		boolean tabsOnTop = port.getDockingProperties().getTabPlacement().intValue() == JTabbedPane.TOP;
+		boolean tabsOnTop = port.getDockingProperties().getTabPlacement() == JTabbedPane.TOP;
 		// if 'c' is a JTabbedPane, then there is already a tab out there and
 		// we can model our bounds off of it.
 		if (c instanceof JTabbedPane) {
@@ -146,7 +146,7 @@ public abstract class DefaultPreview implements DragPreview {
 		return tabPaneRect;
 	}
 
-	protected Polygon createPolyTabOnTop(Rectangle tabPane, Rectangle tab) {
+	private Polygon createPolyTabOnTop(Rectangle tabPane, Rectangle tab) {
 		Polygon p = new Polygon();
 		int tabRight = tab.x + tab.width;
 		int paneRight = tabPane.x + tabPane.width;
@@ -171,7 +171,7 @@ public abstract class DefaultPreview implements DragPreview {
 		return p;
 	}
 
-	protected Polygon createPolyTabOnBottom(Rectangle tabPane, Rectangle tab) {
+	private Polygon createPolyTabOnBottom(Rectangle tabPane, Rectangle tab) {
 		Polygon p = new Polygon();
 		int tabRight = tab.x + tab.width;
 		int paneRight = tabPane.x + tabPane.width;
@@ -199,7 +199,7 @@ public abstract class DefaultPreview implements DragPreview {
 		return p;
 	}
 
-	protected boolean isOuterRegion(String region) {
+	private boolean isOuterRegion(String region) {
 		return NORTH_REGION.equals(region) || SOUTH_REGION.equals(region) ||
 				EAST_REGION.equals(region) || WEST_REGION.equals(region);
 	}

@@ -83,7 +83,7 @@ public class DragGlasspane extends JComponent {
 			return;
 		}
 		
-		String region = null;
+		String region;
 		
 		// don't immediately redraw the rubberband when switching covers
 		// or regions

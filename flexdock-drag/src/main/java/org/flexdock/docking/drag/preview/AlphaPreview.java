@@ -18,76 +18,51 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.flexdock.docking.drag.preview;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.util.Map;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.drag.effects.DefaultPreview;
 
+import java.awt.*;
+import java.util.Map;
+
 public class AlphaPreview extends DefaultPreview {
-
-    public static final float DEFAULT_ALPHA = 0.5f;
-    public static final Color DEFAULT_COLOR = Color.WHITE;
-    public static final Color DEFAULT_BORDER = Color.BLACK;
-
-    public static final AlphaPreview BLUE = new AlphaPreview(Color.BLACK, Color.BLUE.brighter().brighter().brighter().brighter(), .2f, true);
-    public static final AlphaPreview BLACK = new AlphaPreview(Color.BLACK, Color.BLACK.brighter().brighter().brighter().brighter(), .25f, true);
-
-    private float previewAlpha;
-    private Color previewColor;
-    private Color borderColor;
-    private boolean immutable;
-
-    public AlphaPreview() {
-        this(DEFAULT_BORDER, DEFAULT_COLOR, DEFAULT_ALPHA, false);
-    }
-
-    public AlphaPreview(Color border, Color fill, float alpha) {
-        this(border, fill, alpha, false);
-    }
-
-    public AlphaPreview(Color border, Color fill, float alpha, boolean immutable) {
-        setBorderColor(border);
-        setPreviewColor(fill);
-        setAlpha(alpha);
-        this.immutable = immutable;
-    }
-
-    public void setPreviewColor(Color color) {
-        if(!immutable) {
-            previewColor = color==null? DEFAULT_COLOR: color;
-        }
-    }
-
-    public void setAlpha(float alpha) {
-        if(!immutable) {
-            alpha = Math.max(0, alpha);
-            alpha = Math.min(alpha, 1f);
-            previewAlpha = alpha;
-        }
-    }
-
-    public void setBorderColor(Color color) {
-        if(!immutable) {
-            borderColor = color==null? DEFAULT_BORDER: color;
-        }
-    }
-
-    @Override
-    public void drawPreview(Graphics2D g, Polygon p, Dockable dockable, Map dragInfo) {
-        Rectangle rect = p.getBounds();
-
-        g.setColor(borderColor);
-        g.draw3DRect(rect.x, rect.y, rect.width-1, rect.height-1, false);
-        Composite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, previewAlpha);
-        g.setComposite(composite);
-        g.setColor(previewColor);
-        g.fillRect(rect.x, rect.y, rect.width, rect.height);
-    }
-
+	
+	private static final Color DEFAULT_COLOR = Color.WHITE;
+	private static final Color DEFAULT_BORDER = Color.BLACK;
+	
+	private float previewAlpha;
+	private Color previewColor;
+	private Color borderColor;
+	
+	public AlphaPreview(Color border, Color fill, float alpha) {
+		setBorderColor(border);
+		setPreviewColor(fill);
+		setAlpha(alpha);
+	}
+	
+	private void setPreviewColor(Color color) {
+		previewColor = color == null ? DEFAULT_COLOR : color;
+	}
+	
+	private void setAlpha(float alpha) {
+		alpha = Math.max(0, alpha);
+		alpha = Math.min(alpha, 1f);
+		previewAlpha = alpha;
+	}
+	
+	private void setBorderColor(Color color) {
+		borderColor = color == null ? DEFAULT_BORDER : color;
+	}
+	
+	@Override
+	public void drawPreview(Graphics2D g, Polygon p, Dockable dockable, Map dragInfo) {
+		Rectangle rect = p.getBounds();
+		
+		g.setColor(borderColor);
+		g.draw3DRect(rect.x, rect.y, rect.width - 1, rect.height - 1, false);
+		Composite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, previewAlpha);
+		g.setComposite(composite);
+		g.setColor(previewColor);
+		g.fillRect(rect.x, rect.y, rect.width, rect.height);
+	}
+	
 }
