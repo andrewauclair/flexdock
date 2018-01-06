@@ -116,6 +116,7 @@ public class FloatPolicyManager extends DockingListener.Stub {
 	 */
 	@Override
 	public void dragStarted(DockingEvent evt) {
+		System.out.println("FloatPolicyManager.dragStarted");
 		Map context = evt.getDragContext();
 		Dockable d = evt.getDockable();
 		Boolean allowed = isPolicyFloatingSupported(d) ? Boolean.TRUE
@@ -168,9 +169,9 @@ public class FloatPolicyManager extends DockingListener.Stub {
 			evt.consume();
 			return;
 		}
-
-		for (Iterator it = policies.iterator(); it.hasNext(); ) {
-			FloatPolicy policy = (FloatPolicy) it.next();
+		
+		for (Object policy1 : policies) {
+			FloatPolicy policy = (FloatPolicy) policy1;
 			if (!policy.isFloatDropAllowed(evt)) {
 				evt.consume();
 				return;

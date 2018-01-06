@@ -86,7 +86,7 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 				openPipeline(evt);
 			}
 			else {
-				evt.consume();
+//				evt.consume();
 			}
 		}
 		else {
@@ -101,7 +101,7 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 	}
 
 	private void openPipeline(MouseEvent evt) {
-		DragOperation token = new DragOperation(dockable.getComponent(), dragOrigin, evt);
+		DragOperation token = new DragOperation(dockable, dragOrigin, evt);
 		token.setDragListener(this);
 		// initialize listeners on the drag-source
 		initializeListenerCaching(token);
@@ -151,6 +151,7 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 
 		// attempt to complete the docking operation
 		if (!evt.isConsumed()) {
+			System.out.println("Attempt to complete docking.");
 			docker.dock(dockable, targetPort, region, token);
 		}
 	}
@@ -196,10 +197,12 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 	}
 
 	private static boolean isDragCanceled(Dockable dockable, MouseEvent trigger) {
+		System.out.println("isDragCanceled");
 		DockingPort port = DockingUtility.getParentDockingPort(dockable);
 		Map dragContext = getDragContext(dockable);
 		DockingEvent evt = new DockingEvent(dockable, port, null, DockingEvent.DRAG_STARTED, trigger, dragContext);
 		EventManager.dispatch(evt, dockable);
+		System.out.println("canceled: " + evt.isConsumed());
 		return evt.isConsumed();
 	}
 

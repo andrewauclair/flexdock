@@ -19,14 +19,12 @@
  */
 package org.flexdock.dockbar.event;
 
-import java.awt.Point;
-
-
-
 import org.flexdock.dockbar.DockbarManager;
 import org.flexdock.docking.Dockable;
 import org.flexdock.event.EventManager;
 import org.flexdock.util.Utilities;
+
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -85,6 +83,7 @@ public class ActivationListener {
     }
 
     public void mouseExited(Point mousePoint) {
+		System.out.println("ActivationListener.mouseExited");
         if(!mouseOver) {
             return;
         }

@@ -19,6 +19,7 @@
  */
 package org.flexdock.test.view;
 
+import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.floating.frames.DockingFrame;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
@@ -46,6 +47,8 @@ public class ViewFrameTest extends JFrame implements ActionListener {
         f.setBounds(100, 100, 100, 150);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
+    
+        DockingManager.setFloatingEnabled(true);
     }
 
     private ViewFrameTest() {
@@ -62,7 +65,7 @@ public class ViewFrameTest extends JFrame implements ActionListener {
         floatUndecorated.addActionListener(e -> {
             DockingFrame frame = new DockingFrame("Testing", false);
             frame.setSize(200, 300);
-            frame.addDockable(createView("solution.explorer", "Solution Explorer"));
+            frame.addDockable(createView("console", "Console"));
             
             SwingUtility.centerOnScreen(frame);
             frame.setVisible(true);

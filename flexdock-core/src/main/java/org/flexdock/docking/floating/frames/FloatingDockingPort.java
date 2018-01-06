@@ -29,8 +29,6 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.flexdock.docking.DockingConstants.CENTER_REGION;
-
 /**
  * @author Christopher Butler
  */
@@ -42,20 +40,21 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	
 	FloatingDockingPort(DockingFrame frame, String persistentId) {
 		super(persistentId);
+		// TODO Shouldn't we be able to allow single tabs? if they're document views maybe
 		getDockingProperties().setSingleTabsAllowed(false);
 		setTabsAsDragSource(true); // TODO This should only happen if the frame is not decorated
 		this.frame = frame;
 		useOwnListener = frame.isUndecorated();
 
 		dragListener = new FrameDragListener(frame);
+		
+		
 	}
 
 	@Override
 	public boolean dock(Dockable dockable, String region) {
 		boolean ret = super.dock(dockable, region);
-		if (!useOwnListener) {
-			return ret;
-		}
+		
 		if (ret) {
 			toggleListeners(dockable.getComponent(), true);
 		}
@@ -65,9 +64,7 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	@Override
 	public boolean undock(Component comp) {
 		boolean ret = super.undock(comp);
-		if (!useOwnListener) {
-			return ret;
-		}
+		
 		if (ret) {
 			toggleListeners(comp, false);
 		}
@@ -77,23 +74,40 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	@Override
 	public void dragStarted(DockingEvent evt) {
 		super.dragStarted(evt);
-
+		
+		// TODO This is kind of what we want. When dragging starts we want to undecorate the frame if it is decorated
+//		EventQueue.invokeLater(() -> {
+//			frame.dispose();
+//			frame.setUndecorated(true);
+//			frame.setVisible(true);
+//		});
+		
 		if (!useOwnListener) {
 			return;
 		}
+		
 		Component dragSrc = (Component) evt.getTriggerSource();
 		Dockable dockable = (Dockable) evt.getSource();
 
 		boolean listenerEnabled = getFrameDragSources(dockable).contains(dragSrc);
 		dragListener.setEnabled(listenerEnabled);
+		
+		// TODO Right now we have to consume the dragStarted event so that some other part of the code doesn't create a MouseMotionListener, can't find it
+		// TODO It looks like if it isn't consumed here it's consumed when dragging is complete by the FloatingPolicyManager
 		if (listenerEnabled) {
-			evt.consume();
+//			evt.consume();
 		}
 	}
 
 	@Override
 	public void undockingComplete(DockingEvent evt) {
 		super.undockingComplete(evt);
+		System.out.println("FloatingDockingPort.undockingComplete");
+		System.out.println("dockable count: " + getDockableCount());
+		if (getDockableCount() == 0) {
+			frame.destroy();
+			frame = null;
+		}
 		if (!useOwnListener) {
 			return;
 		}
@@ -104,6 +118,7 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	}
 
 	private void toggleListeners(Component comp, boolean add) {
+		System.out.println("Toggle listeners, add: " + add);
 		Dockable dockable = DockingManager.getDockable(comp);
 		if (add) {
 			installListeners(dockable);
@@ -114,22 +129,24 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	}
 
 	private void installListeners(Dockable dockable) {
-		Set frameDraggers = getFrameDragSources(dockable);
-		for (Object frameDragger : frameDraggers) {
-			Component frameDragSrc = (Component) frameDragger;
-			frameDragSrc.addMouseListener(dragListener);
-			frameDragSrc.addMouseMotionListener(dragListener);
+		if (useOwnListener) {
+			Set<Component> frameDraggers = getFrameDragSources(dockable);
+			for (Component frameDragger : frameDraggers) {
+				frameDragger.addMouseListener(dragListener);
+				frameDragger.addMouseMotionListener(dragListener);
+			}
 		}
 
 		dockable.addDockingListener(this);
 	}
 
 	private void uninstallListeners(Dockable dockable) {
-		Set frameDraggers = getFrameDragSources(dockable);
-		for (Object frameDragger : frameDraggers) {
-			Component frameDragSrc = (Component) frameDragger;
-			frameDragSrc.removeMouseListener(dragListener);
-			frameDragSrc.removeMouseMotionListener(dragListener);
+		if (useOwnListener) {
+			Set<Component> frameDraggers = getFrameDragSources(dockable);
+			for (Component frameDragger : frameDraggers) {
+				frameDragger.removeMouseListener(dragListener);
+				frameDragger.removeMouseMotionListener(dragListener);
+			}
 		}
 		dockable.removeDockingListener(this);
 	}

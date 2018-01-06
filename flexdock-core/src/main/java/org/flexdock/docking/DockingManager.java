@@ -619,6 +619,7 @@ public class DockingManager {
 
 	private static void updateDragListeners(Component dragSrc,
 											DragManager listener) {
+		System.out.println("updateDragListeners");
 		MouseMotionListener motionListener = null;
 		EventListener[] listeners = dragSrc.getMouseMotionListeners();
 		for (EventListener listener2 : listeners) {
@@ -779,7 +780,9 @@ public class DockingManager {
 		if (comp == null) {
 			return;
 		}
-
+		
+		System.out.println("Remove drag listeners");
+		
 		MouseMotionListener motionListener = null;
 		EventListener[] listeners = comp.getMouseMotionListeners();
 		for (EventListener listener1 : listeners) {

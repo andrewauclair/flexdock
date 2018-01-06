@@ -68,12 +68,7 @@ public class DragPipeline {
 
 		final DragOperation dToken = token;
 		try {
-			EventQueue.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					openImpl(dToken);
-				}
-			});
+			EventQueue.invokeAndWait(() -> openImpl(dToken));
 		}
 		catch (Exception e) {
 			System.err.println("Exception: " + e.getMessage());

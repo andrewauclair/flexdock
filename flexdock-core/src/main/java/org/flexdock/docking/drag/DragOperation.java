@@ -22,6 +22,8 @@ package org.flexdock.docking.drag;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
+import org.flexdock.docking.state.FloatingGroup;
+import org.flexdock.util.DockingUtility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +36,7 @@ public class DragOperation {
 	public static final String DRAG_IMAGE = "DragOperation.DRAG_IMAGE";
 
 	private Component dragSource;
-	private Component dockable;
+	private Dockable dockable;
 	private Point mouseOffset;
 	private Point currentMouse;
 	private EventListener[] cachedListeners;
@@ -46,9 +48,9 @@ public class DragOperation {
 	private long started;
 	private Dockable dockableRef;
 	private DockingPort sourcePort;
-
-
-	DragOperation(Component dockable, Point dragOrigin, MouseEvent evt) {
+	
+	
+	DragOperation(Dockable dockable, Point dragOrigin, MouseEvent evt) {
 		if (dockable == null) {
 			throw new NullPointerException("'dockable' parameter cannot be null.");
 		}
@@ -64,8 +66,8 @@ public class DragOperation {
 		}
 		init(dockable, (Component) evt.getSource(), dragOrigin);
 	}
-
-	private void init(Component dockable, Component dragSource, Point currentMouse) {
+	
+	private void init(Dockable dockable, Component dragSource, Point currentMouse) {
 		this.dockable = dockable;
 		this.dragSource = dragSource;
 		this.currentMouse = currentMouse;
@@ -80,9 +82,9 @@ public class DragOperation {
 		if (evtPoint == null) {
 			return null;
 		}
-
-		if (dockable.isVisible()) {
-			Point dockableLoc = dockable.getLocationOnScreen();
+		
+		if (dockable.getComponent().isVisible()) {
+			Point dockableLoc = dockable.getComponent().getLocationOnScreen();
 			SwingUtilities.convertPointToScreen(evtPoint, dragSource);
 			Point offset = new Point();
 			offset.x = dockableLoc.x - evtPoint.x;
@@ -94,12 +96,12 @@ public class DragOperation {
 	}
 
 	public Component getDockable() {
-		return dockable;
+		return dockable.getComponent();
 	}
 
 	public Dockable getDockableReference() {
 		if (dockableRef == null) {
-			dockableRef = DockingManager.getDockable(dockable);
+			dockableRef = DockingManager.getDockable(dockable.getComponent());
 		}
 		return dockableRef;
 	}
@@ -111,6 +113,20 @@ public class DragOperation {
 	public void updateMouse(MouseEvent me) {
 		if (me != null && me.getSource() == dragSource) {
 			currentMouse = me.getPoint();
+			
+			if (DockingUtility.isFloating(dockable)) {
+				// update the position of the floating frame/dockable
+				String group = DockingUtility.getFloatGroup(dockable);
+				
+				FloatingGroup floatGroup = DockingManager.getFloatManager().getGroup(group);
+				
+				// TODO This needs to use the dragOffset in FrameDragListener
+				Point loc = me.getPoint();
+				SwingUtilities.convertPointToScreen(loc, (Component) me.getSource());
+//				SwingUtility.subtract(loc, dragOffset);
+				floatGroup.getFrame().setLocation(loc);
+				
+			}
 		}
 	}
 
@@ -142,7 +158,7 @@ public class DragOperation {
 	}
 
 	private Dimension getDragSize() {
-		return dockable.getSize();
+		return dockable.getComponent().getSize();
 	}
 
 	public Component getDragSource() {

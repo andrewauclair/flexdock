@@ -21,7 +21,6 @@ package org.flexdock.event;
 
 import java.util.ArrayList;
 import java.util.EventListener;
-import java.util.Iterator;
 
 /**
  * @author Christopher Butler
@@ -76,8 +75,8 @@ public abstract class EventHandler {
 		int evtType = evt.getEventType();
 
 		// allow all globally registered listeners to handle the event first
-		for (Iterator it = globalListeners.iterator(); it.hasNext(); ) {
-			EventListener listener = (EventListener) it.next();
+		for (Object globalListener : globalListeners) {
+			EventListener listener = (EventListener) globalListener;
 			handleEvent(evt, listener, evtType);
 		}
 
@@ -89,17 +88,16 @@ public abstract class EventHandler {
 
 		// for each of the targets, get their local event listeners
 		// and dispatch the event to them
-		for (int i = 0; i < targets.length; i++) {
+		for (Object target : targets) {
 			// get the local event listeners
-			EventListener[] targetListeners = targets[i] == null ? null
-					: getListeners(targets[i]);
+			EventListener[] targetListeners = target == null ? null
+					: getListeners(target);
 			if (targetListeners == null) {
 				continue;
 			}
-
+			
 			// for each local event listener, dispatch the event
-			for (int j = 0; j < targetListeners.length; j++) {
-				EventListener listener = targetListeners[j];
+			for (EventListener listener : targetListeners) {
 				if (listener != null && acceptsListener(listener)) {
 					handleEvent(evt, listener, evtType);
 				}

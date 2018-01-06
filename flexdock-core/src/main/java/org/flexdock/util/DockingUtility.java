@@ -519,7 +519,11 @@ public class DockingUtility {
 		DockingState info = getDockingState(dockable);
 		return info != null && info.isFloating();
 	}
-
+	
+	public static String getFloatGroup(Dockable dockable) {
+		DockingState info = getDockingState(dockable);
+		return info == null ? "" : info.getFloatingGroup();
+	}
 	/**
 	 * Returns {@code true} if the specified {@code Dockable} is currently
 	 * docked within a {@code DockingPort}. This method returns {@code false}

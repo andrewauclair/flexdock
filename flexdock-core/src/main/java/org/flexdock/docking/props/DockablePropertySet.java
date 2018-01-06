@@ -56,7 +56,8 @@ public interface DockablePropertySet {
 
 
 	String getDockableDesc();
-
+	
+	// TODO You can disable docking? But that's what this is all about
 	Boolean isDockingEnabled();
 
 	Boolean isMouseMotionListenersBlockedWhileDragging();
