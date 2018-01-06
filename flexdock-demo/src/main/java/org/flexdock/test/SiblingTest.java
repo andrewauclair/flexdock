@@ -19,29 +19,6 @@
  */
 package org.flexdock.test;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.demos.util.VSNetStartPage;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingConstants;
@@ -50,6 +27,17 @@ import org.flexdock.docking.defaults.DefaultDockingStrategy;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author Christopher Butler
@@ -152,7 +140,7 @@ public class SiblingTest extends JFrame implements DockingConstants {
 
         View view = new View(id, null, null);
         view.setTerritoryBlocked(CENTER_REGION, true);
-        view.setTitlebar(null);
+        view.removeTitlebar();
         view.setContentPane(page);
 
         return view;

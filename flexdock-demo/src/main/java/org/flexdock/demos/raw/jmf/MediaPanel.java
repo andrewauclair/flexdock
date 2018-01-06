@@ -77,13 +77,10 @@ public class MediaPanel extends JPanel implements DockingStub {
             final Player mediaPlayer = Manager.createRealizedPlayer(locator);
 
             // add a listener to put us in an infinite loop
-            mediaPlayer.addControllerListener(new ControllerListener() {
-                @Override
-                public void controllerUpdate(ControllerEvent evt) {
-                    if (evt instanceof EndOfMediaEvent) {
-                        mediaPlayer.setMediaTime(new Time(0));
-                        mediaPlayer.start();
-                    }
+            mediaPlayer.addControllerListener(evt -> {
+                if (evt instanceof EndOfMediaEvent) {
+                    mediaPlayer.setMediaTime(new Time(0));
+                    mediaPlayer.start();
                 }
             });
             return mediaPlayer;

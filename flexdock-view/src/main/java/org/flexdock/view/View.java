@@ -26,7 +26,6 @@ import org.flexdock.docking.event.DockingListener;
 import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.docking.props.PropertyManager;
 import org.flexdock.plaf.PlafManager;
-import org.flexdock.plaf.theme.ViewUI;
 import org.flexdock.util.DockingUtility;
 import org.flexdock.util.ResourceManager;
 import org.flexdock.util.SwingUtility;
@@ -214,8 +213,7 @@ public class View extends JComponent implements Dockable {
 	private boolean contentPaneCheckingEnabled;
 	
 	private ArrayList<DockingListener> dockingListeners;
-	
-	// protected boolean active;
+
 	private ArrayList<Component> dragSources;
 	
 	private HashSet<Component> frameDragSources;
@@ -301,7 +299,7 @@ public class View extends JComponent implements Dockable {
 	}
 	
 	private LayoutManager createLayout() {
-		return new ViewLayout();
+        return new GridBagLayout();
 	}
 	
 	private Titlebar createTitlebar() {
@@ -383,19 +381,36 @@ public class View extends JComponent implements Dockable {
 		boolean checkingEnabled = isContentPaneCheckingEnabled();
 		try {
 			setContentPaneCheckingEnabled(false);
-			add(contentPane);
+            GridBagConstraints gbc = new GridBagConstraints();
+
+            gbc.weightx = 1;
+            gbc.weighty = 0;
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+
+            if (titlepane != null) {
+                add(titlepane, gbc);
+            }
+
+            gbc.weightx = 1;
+            gbc.weighty = 1;
+            gbc.gridx = 0;
+            gbc.gridy = titlepane == null ? 0 : 1;
+            gbc.fill = GridBagConstraints.BOTH;
+
+            add(contentPane, gbc);
 		}
 		finally {
 			setContentPaneCheckingEnabled(checkingEnabled);
 		}
 	}
-	
-	protected String getPreferredTitlebarUIName() {
-		return ui instanceof ViewUI ? ((ViewUI) ui).getPreferredTitlebarUI()
-				: null;
-	}
-	
-	public void setTitlebar(Titlebar titlebar) {
+
+    public void removeTitlebar() {
+        setTitlebar(null);
+    }
+
+    private void setTitlebar(Titlebar titlebar) {
 		if (titlebar != null && titlebar == contentPane) {
 			throw new IllegalArgumentException(
 					"Cannot use the same component as both content pane and titlebar.");
@@ -412,7 +427,26 @@ public class View extends JComponent implements Dockable {
 			boolean checkingEnabled = isContentPaneCheckingEnabled();
 			try {
 				setContentPaneCheckingEnabled(false);
-				add(titlepane);
+
+                GridBagConstraints gbc = new GridBagConstraints();
+
+                gbc.weightx = 1;
+                gbc.weighty = 0;
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+
+                if (titlepane != null) {
+                    add(titlepane, gbc);
+                }
+
+                gbc.weightx = 1;
+                gbc.weighty = 1;
+                gbc.gridx = 0;
+                gbc.gridy = titlepane == null ? 0 : 1;
+                gbc.fill = GridBagConstraints.BOTH;
+
+                add(contentPane, gbc);
 			}
 			finally {
 				setContentPaneCheckingEnabled(checkingEnabled);

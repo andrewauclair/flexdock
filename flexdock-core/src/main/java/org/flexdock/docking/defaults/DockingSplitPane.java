@@ -76,7 +76,9 @@ public class DockingSplitPane extends JSplitPane {
 		if (!DockingManager.isValidDockingRegion(region)) {
 			throw new IllegalArgumentException("'" + region + "' is not a valid region.");
 		}
-		
+
+        setContinuousLayout(true);
+
 		this.region = region;
 		this.dockingPort = port;
 		// the controlling item is in the topLeft if our new item (represented

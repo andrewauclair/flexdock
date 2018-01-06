@@ -19,27 +19,18 @@
  */
 package org.flexdock.test.perspective;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.demos.util.VSNetStartPage;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 /**
  * @author Christopher Butler
@@ -52,7 +43,7 @@ public class ViewRestorationTest extends JFrame implements DockingConstants {
     private static View view3 = null;
     private static View view4 = null;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 //                Skin theSkinToUse = SkinLookAndFeel.loadThemePack("themepack.zip");
 //        SkinLookAndFeel.setSkin(theSkinToUse);
 
@@ -156,7 +147,7 @@ public class ViewRestorationTest extends JFrame implements DockingConstants {
         String id = "startPage";
         View view = new View(id, null, null);
         view.setTerritoryBlocked(CENTER_REGION, true);
-        view.setTitlebar(null);
+        view.removeTitlebar();
         view.setContentPane(new VSNetStartPage());
         return view;
     }

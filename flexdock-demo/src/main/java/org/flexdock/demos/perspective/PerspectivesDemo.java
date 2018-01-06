@@ -259,7 +259,7 @@ public class PerspectivesDemo extends JFrame implements DockingConstants {
             //blokujemy mozliwosc dokowania do tego view w regionie CENTER
             mainView.setTerritoryBlocked(CENTER_REGION, true);
             //wylaczamy pasek tytulowy
-            mainView.setTitlebar(null);
+            mainView.removeTitlebar();
             //ustawiamy komponent GUI, ktory chcemy aby byl wyswietalny w tym view
             mainView.setContentPane(new JScrollPane(tabbedPane));
 

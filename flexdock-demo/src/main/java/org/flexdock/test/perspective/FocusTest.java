@@ -19,31 +19,13 @@
  */
 package org.flexdock.test.perspective;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.io.IOException;
-
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.DockableFactory;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
+import org.flexdock.docking.defaults.StandardBorderManager;
+import org.flexdock.docking.drag.effects.EffectsManager;
+import org.flexdock.docking.drag.preview.AlphaPreview;
 import org.flexdock.docking.state.PersistenceException;
 import org.flexdock.perspective.LayoutSequence;
 import org.flexdock.perspective.Perspective;
@@ -52,11 +34,17 @@ import org.flexdock.perspective.PerspectiveManager;
 import org.flexdock.perspective.actions.OpenPerspectiveAction;
 import org.flexdock.perspective.persist.FilePersistenceHandler;
 import org.flexdock.perspective.persist.PersistenceHandler;
+import org.flexdock.plaf.common.border.ShadowBorder;
 import org.flexdock.util.ResourceManager;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
 import org.flexdock.view.actions.DefaultDisplayAction;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created on 2005-04-17
@@ -66,7 +54,7 @@ import org.flexdock.view.actions.DefaultDisplayAction;
  */
 public class FocusTest extends JFrame implements DockingConstants {
 
-    public static final String PERSPECTIVE_FILE = "PerspectiveDemo.data";
+    private static final String PERSPECTIVE_FILE = "PerspectiveDemo.data";
     private static final String MAIN_VIEW = "main.view";
     private static final String BIRD_VIEW = "bird.view";
     private static final String MESSAGE_VIEW = "message.log";
@@ -77,6 +65,11 @@ public class FocusTest extends JFrame implements DockingConstants {
     private static final String P2 = "p2";
     private static final String P3 = "p3";
 
+    static {
+        EffectsManager.setPreview(new AlphaPreview(Color.black, new Color(119, 173, 255), 0.25f));
+
+    }
+
     public static void main(String[] args) {
         SwingUtility.setPlaf(UIManager.getSystemLookAndFeelClassName());
 
@@ -84,12 +77,7 @@ public class FocusTest extends JFrame implements DockingConstants {
         configureDocking();
 
         // create and show the GUI
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                runGUI();
-            }
-        });
+        EventQueue.invokeLater(FocusTest::runGUI);
     }
 
     private static void runGUI() {
@@ -105,7 +93,7 @@ public class FocusTest extends JFrame implements DockingConstants {
     }
 
 
-    public FocusTest() {
+    private FocusTest() {
         super("FlexDock Demo");
         setContentPane(createContentPane());
         setJMenuBar(createApplicationMenuBar());
@@ -121,6 +109,7 @@ public class FocusTest extends JFrame implements DockingConstants {
 //        Border innerBorder = new ShadowBorder();
 //        viewport.setBorderManager(new StandardBorderManager(BorderFactory.createCompoundBorder(outerBorder, innerBorder)));
 
+        viewport.setBorderManager(new StandardBorderManager(new ShadowBorder()));
 //        viewport.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         //rejestrujemy glowny view port
@@ -167,9 +156,7 @@ public class FocusTest extends JFrame implements DockingConstants {
         PerspectiveManager.setPersistenceHandler(persister);
         try {
             DockingManager.loadLayoutModel();
-        } catch(IOException e) {
-            e.printStackTrace();
-        } catch (PersistenceException e) {
+        } catch (IOException | PersistenceException e) {
             e.printStackTrace();
         }
         // remember to store on shutdown
@@ -285,7 +272,7 @@ public class FocusTest extends JFrame implements DockingConstants {
             //blokujemy mozliwosc dokowania do tego view w regionie CENTER
             mainView.setTerritoryBlocked(CENTER_REGION, true);
             //wylaczamy pasek tytulowy
-            mainView.setTitlebar(null);
+            mainView.removeTitlebar();
             //ustawiamy komponent GUI, ktory chcemy aby byl wyswietalny w tym view
             mainView.setContentPane(new JScrollPane(tabbedPane));
 

@@ -19,29 +19,21 @@
  */
 package org.flexdock.view;
 
-import java.awt.Component;
+import org.flexdock.plaf.theme.TitlebarUI;
+import org.flexdock.view.actions.ViewAction;
+import org.flexdock.view.model.ViewButtonModel;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
-import org.flexdock.plaf.PlafManager;
-import org.flexdock.plaf.theme.TitlebarUI;
-import org.flexdock.view.actions.ViewAction;
-import org.flexdock.view.model.ViewButtonModel;
-
 /**
  * @author Christopher Butler
  */
-public class Titlebar extends JComponent {
-    public static final String UI_CLASS_ID = "Flexdock.titlebar";
+public class Titlebar extends JPanel {
 
     private Icon titleIcon;
 
@@ -54,6 +46,7 @@ public class Titlebar extends JComponent {
     private Button[] buttonList;
 
     private View parentView;
+    private JLabel titleLabel;
 
     public Titlebar() {
         this(null, null);
@@ -67,22 +60,26 @@ public class Titlebar extends JComponent {
         this(null, actions);
     }
 
+    // title border 0, 4, 0, 0
+    // close button border 4, 4, 4, 4
+    // title color 183, 201, 217
+
     public Titlebar(String title, Action[] actions) {
+        titleLabel = new JLabel();
+        add(titleLabel);
         setText(title);
         setActions(actions);
-        updateUI();
     }
 
     /**
      * Sets the text for this titlebar to {@code text} or empty string if text
      * is {@code null}.
      *
-     * @param text
-     *            the text to set.
+     * @param text the text to set.
      */
     public void setText(String text) {
         titleText = text == null ? "" : text;
-        repaint();
+        titleLabel.setText(titleText);
     }
 
     protected void setActions(Action[] actions) {
@@ -93,8 +90,8 @@ public class Titlebar extends JComponent {
         }
 
         removeAllActions();
-        for (int i = 0; i < actions.length; i++) {
-            addAction(actions[i]);
+        for (Action action : actions) {
+            addAction(action);
         }
     }
 
@@ -116,7 +113,7 @@ public class Titlebar extends JComponent {
         String key = getKey(action);
         if (key == null) {
             throw new IllegalArgumentException(
-                "Cannot add an Action that has no Name associated with it.");
+                    "Cannot add an Action that has no Name associated with it.");
         }
 
         // don't add the same action more than once
@@ -150,12 +147,12 @@ public class Titlebar extends JComponent {
         }
     }
 
-    public Action getAction(String key) {
+    private Action getAction(String key) {
         if (key == null) {
             return null;
         }
 
-        for (Iterator it = actionList.iterator(); it.hasNext();) {
+        for (Iterator it = actionList.iterator(); it.hasNext(); ) {
             Action action = (Action) it.next();
             String actionName = (String) action.getValue(Action.NAME);
             if (key.equals(actionName)) {
@@ -169,7 +166,7 @@ public class Titlebar extends JComponent {
         return (Action[]) actionList.toArray(new Action[0]);
     }
 
-    protected Button getButton(String key) {
+    private Button getButton(String key) {
         return (Button) actionButtons.get(key);
     }
 
@@ -177,7 +174,7 @@ public class Titlebar extends JComponent {
         return getButton(actionName);
     }
 
-    protected boolean hasAction(String key) {
+    private boolean hasAction(String key) {
         return actionButtons.containsKey(key);
     }
 
@@ -198,7 +195,7 @@ public class Titlebar extends JComponent {
         removeAction(key);
     }
 
-    public synchronized void removeAction(String key) {
+    private synchronized void removeAction(String key) {
         if (!hasAction(key)) {
             return;
         }
@@ -232,7 +229,7 @@ public class Titlebar extends JComponent {
         regenerateButtonList();
     }
 
-    protected String getKey(Action action) {
+    private String getKey(Action action) {
         Object obj = action == null ? null : action.getValue(Action.NAME);
         return obj instanceof String ? (String) obj : null;
     }
@@ -247,19 +244,19 @@ public class Titlebar extends JComponent {
     }
 
     public boolean isActive() {
-        return parentView == null ? false : parentView.isActive();
+        return parentView != null && parentView.isActive();
     }
 
     void setView(View view) {
         setParentView(view);
     }
 
-    protected void setParentView(View view) {
+    private void setParentView(View view) {
         parentView = view;
         updateButtonModels();
     }
 
-    public Button createActionButton(Action action) {
+    private Button createActionButton(Action action) {
         Button button = new Button(action);
         if (ui instanceof TitlebarUI) {
             ((TitlebarUI) ui).configureAction(action);
@@ -278,11 +275,11 @@ public class Titlebar extends JComponent {
 
     private void updateButtonModels() {
         String viewId = parentView == null ? null : parentView
-                        .getPersistentId();
+                .getPersistentId();
         Component[] comps = getComponents();
         for (int i = 0; i < comps.length; i++) {
             Button button = comps[i] instanceof Button ? (Button) comps[i]
-                            : null;
+                    : null;
             if (button == null) {
                 continue;
             }
@@ -292,23 +289,6 @@ public class Titlebar extends JComponent {
                 ((ViewButtonModel) bm).setViewId(viewId);
             }
         }
-    }
-
-    @Override
-    public void doLayout() {
-        if (ui instanceof TitlebarUI) {
-            ((TitlebarUI) ui).layoutComponents(this);
-        }
-    }
-
-    @Override
-    public void updateUI() {
-        setUI(PlafManager.getUI(this));
-    }
-
-    @Override
-    public String getUIClassID() {
-        return UI_CLASS_ID;
     }
 
     public View getView() {

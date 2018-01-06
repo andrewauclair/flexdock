@@ -19,26 +19,6 @@
  */
 package org.flexdock.demos.perspective;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.DockableFactory;
 import org.flexdock.docking.DockingConstants;
@@ -58,6 +38,12 @@ import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
 import org.flexdock.view.actions.DefaultDisplayAction;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created on 2005-04-17
@@ -266,7 +252,7 @@ public class XMLPerspectivesDemo extends JFrame implements DockingConstants {
             //blokujemy mozliwosc dokowania do tego view w regionie CENTER
             mainView.setTerritoryBlocked(CENTER_REGION, true);
             //wylaczamy pasek tytulowy
-            mainView.setTitlebar(null);
+            mainView.removeTitlebar();
             //ustawiamy komponent GUI, ktory chcemy aby byl wyswietalny w tym view
             mainView.setContentPane(new JScrollPane(tabbedPane));
 

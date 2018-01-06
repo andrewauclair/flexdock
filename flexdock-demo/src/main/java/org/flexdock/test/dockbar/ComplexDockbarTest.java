@@ -19,48 +19,37 @@
  */
 package org.flexdock.test.dockbar;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.demos.util.VSNetStartPage;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+
+import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
+
 /**
  * @author Christopher Butler
  */
 public class ComplexDockbarTest extends JFrame implements DockingConstants {
     public static void main(String[] args) {
-        SwingUtility.setPlaf("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        //                SwingUtility.setPlaf("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-        //                SwingUtility.setPlaf("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                startup();
-            }
-        });
+        setSystemLookAndFeel();
+        EventQueue.invokeLater(ComplexDockbarTest::startup);
     }
 
     private static void startup() {
         JFrame f = new ComplexDockbarTest();
         f.setSize(800, 600);
         SwingUtility.centerOnScreen(f);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
     }
 
-    public ComplexDockbarTest() {
+    private ComplexDockbarTest() {
         super("Viewport Demo");
         setContentPane(createContentPane());
     }
@@ -93,7 +82,6 @@ public class ComplexDockbarTest extends JFrame implements DockingConstants {
         view.addAction(PIN_ACTION);
 
         JPanel p = new JPanel();
-        //                p.setBackground(Color.WHITE);
         p.setBorder(new LineBorder(Color.GRAY, 1));
 
         JTextField t = new JTextField(text);
@@ -110,7 +98,7 @@ public class ComplexDockbarTest extends JFrame implements DockingConstants {
         VSNetStartPage page = new VSNetStartPage();
         View view = new View(id, null, null);
         view.setTerritoryBlocked(CENTER_REGION, true);
-        view.setTitlebar(null);
+        view.removeTitlebar();
         view.setContentPane(page);
 
         return view;

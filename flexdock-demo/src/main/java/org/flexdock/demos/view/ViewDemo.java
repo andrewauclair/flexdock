@@ -103,7 +103,7 @@ public class ViewDemo extends JFrame implements DockingConstants {
         String id = "startPage";
         View view = new View(id, null, null);
         view.setTerritoryBlocked(CENTER_REGION, true);
-        view.setTitlebar(null);
+        view.removeTitlebar();
         view.setContentPane(new VSNetStartPage());
         return view;
     }
