@@ -1320,6 +1320,7 @@ public class DockingManager {
 		return getDockableForComponent(c, null, null);
 	}
 
+	// TODO Can we just replace this with the getDockable method?
 	private static <T extends Component & DockingStub> Dockable getDockableForComponent(T c, String desc,
 																						String dockingId) {
 		if (c == null) {
@@ -1341,15 +1342,7 @@ public class DockingManager {
 		// if we weren't able to create from an adapter, then create the
 		// dockable manually
 		if (dockable == null) {
-			if (c instanceof DockingStub) {
-				dockable = DockableComponentWrapper.create((DockingStub) c);
-			}
-			else {
-				String persistentId = dockingId == null ? generatePersistentId(c)
-						: dockingId;
-				dockable = DockableComponentWrapper.create(c, persistentId,
-						desc);
-			}
+			dockable = DockableComponentWrapper.create(c);
 		}
 
 		// make sure the specified description is applied

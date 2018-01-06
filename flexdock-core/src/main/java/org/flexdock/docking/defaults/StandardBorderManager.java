@@ -27,7 +27,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 
 /**
@@ -61,14 +60,14 @@ import java.awt.*;
  */
 public class StandardBorderManager implements BorderManager {
 	private Border assignedBorder;
-
+	
 	/**
 	 * Creates a new {@code StandardBorderManager} with a {@code null} assigned
 	 * border.
 	 */
 	public StandardBorderManager() {
 	}
-
+	
 	/**
 	 * Creates a new {@code StandardBorderManager} with the specified assigned
 	 * border.
@@ -78,7 +77,7 @@ public class StandardBorderManager implements BorderManager {
 	public StandardBorderManager(Border border) {
 		setBorder(border);
 	}
-
+	
 	/**
 	 * Returns the currently assigned border.
 	 *
@@ -87,7 +86,7 @@ public class StandardBorderManager implements BorderManager {
 	public Border getBorder() {
 		return assignedBorder;
 	}
-
+	
 	/**
 	 * Sets the assigned border. Null values are acceptable.
 	 *
@@ -96,7 +95,7 @@ public class StandardBorderManager implements BorderManager {
 	public void setBorder(Border border) {
 		assignedBorder = border;
 	}
-
+	
 	/**
 	 * Set the border on the supplied {@code DockingPort} to the currently
 	 * assigned border.
@@ -107,7 +106,7 @@ public class StandardBorderManager implements BorderManager {
 	public void managePortNullChild(DockingPort port) {
 		setBorder(port, assignedBorder);
 	}
-
+	
 	/**
 	 * Removes any border from the {@code DockingPort's} docked component and
 	 * set the border on the {@code DockingPort} itself to the currently
@@ -122,7 +121,7 @@ public class StandardBorderManager implements BorderManager {
 			setBorder(port, assignedBorder);
 		}
 	}
-
+	
 	/**
 	 * Removes any border from the {@code DockingPort} itself and places the
 	 * currently assigned border on the two child components of the
@@ -135,9 +134,9 @@ public class StandardBorderManager implements BorderManager {
 		if (port == null || !(port.getDockedComponent() instanceof JSplitPane)) {
 			return;
 		}
-
+		
 		setBorder(port, null);
-
+		
 		// clear the border from the split pane
 		JSplitPane split = (JSplitPane) port.getDockedComponent();
 		if (split.getUI() instanceof BasicSplitPaneUI) {
@@ -149,12 +148,12 @@ public class StandardBorderManager implements BorderManager {
 			}
 		}
 		setBorder(split, null);
-
+		
 		// set the borders on each of the child components
 		setSubComponentBorder(split.getLeftComponent(), assignedBorder);
 		setSubComponentBorder(split.getRightComponent(), assignedBorder);
 	}
-
+	
 	private void setSubComponentBorder(Component comp, Border border) {
 		if (comp instanceof DefaultDockingPort) {
 			((DefaultDockingPort) comp).evaluateDockingBorderStatus();
@@ -163,7 +162,7 @@ public class StandardBorderManager implements BorderManager {
 			setBorder(comp, border);
 		}
 	}
-
+	
 	/**
 	 * Removes any border from the {@code DockingPort's} docked
 	 * {@code JTabbedPane} component and sets the border on the
@@ -177,7 +176,7 @@ public class StandardBorderManager implements BorderManager {
 		if (port == null || !(port.getDockedComponent() instanceof JTabbedPane)) {
 			return;
 		}
-
+		
 		// we need to use a special UI to remove the outline around a
 		// JTabbedPane.
 		// this UI will only allow the outline on the side of the JTabbedPane
@@ -186,10 +185,10 @@ public class StandardBorderManager implements BorderManager {
 		JTabbedPane tabs = (JTabbedPane) port.getDockedComponent();
 		// if(!(tabs.getUI() instanceof SimpleTabbedPaneUI))
 		// tabs.setUI(new SimpleTabbedPaneUI());
-
+		
 		// remove any borders from the tabPane children
 		int tc = tabs.getTabCount();
-		Component cmp = null;
+		Component cmp;
 		for (int i = 0; i < tc; i++) {
 			cmp = tabs.getComponentAt(i);
 			if (cmp instanceof JComponent) {
@@ -197,54 +196,17 @@ public class StandardBorderManager implements BorderManager {
 			}
 		}
 	}
-
+	
 	private void setBorder(Component cmp, Border border) {
 		if (cmp instanceof JComponent) {
 			((JComponent) cmp).setBorder(border);
 		}
 	}
-
+	
 	private void setBorder(DockingPort port, Border border) {
 		if (port instanceof JComponent) {
 			((JComponent) port).setBorder(border);
 		}
 	}
-
-	private static class SimpleTabbedPaneUI extends BasicTabbedPaneUI {
-		@Override
-		protected void paintContentBorderBottomEdge(Graphics g,
-													int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-			if (tabPlacement == BOTTOM) {
-				super.paintContentBorderBottomEdge(g, tabPlacement,
-						selectedIndex, x, y, w, h);
-			}
-		}
-
-		@Override
-		protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement,
-												  int selectedIndex, int x, int y, int w, int h) {
-			if (tabPlacement == LEFT) {
-				super.paintContentBorderLeftEdge(g, tabPlacement,
-						selectedIndex, x, y, w, h);
-			}
-		}
-
-		@Override
-		protected void paintContentBorderRightEdge(Graphics g,
-												   int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-			if (tabPlacement == RIGHT) {
-				super.paintContentBorderRightEdge(g, tabPlacement,
-						selectedIndex, x, y, w, h);
-			}
-		}
-
-		@Override
-		protected void paintContentBorderTopEdge(Graphics g, int tabPlacement,
-												 int selectedIndex, int x, int y, int w, int h) {
-			if (tabPlacement == TOP) {
-				super.paintContentBorderTopEdge(g, tabPlacement, selectedIndex,
-						x, y, w, h);
-			}
-		}
-	}
+	
 }

@@ -32,6 +32,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
+
 /**
  * @author Christopher Butler
  * @author Mateusz Szczap
@@ -44,23 +46,16 @@ public class ViewRestorationTest extends JFrame implements DockingConstants {
     private static View view4 = null;
 
     public static void main(String[] args) {
-//                Skin theSkinToUse = SkinLookAndFeel.loadThemePack("themepack.zip");
-//        SkinLookAndFeel.setSkin(theSkinToUse);
-
-//                http://dev.l2fprod.com/javadoc/com/l2fprod/gui/plaf/skin/SkinLookAndFeel.html
-//                SwingUtility.setPlaf("com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-        SwingUtility.setPlaf("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-//                SwingUtility.setPlaf("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-//                SwingUtility.setPlaf("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+        setSystemLookAndFeel();
 
         JFrame f = new ViewRestorationTest();
         f.setSize(800, 600);
         SwingUtility.centerOnScreen(f);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
     }
 
-    public ViewRestorationTest() {
+    private ViewRestorationTest() {
         super("Simple Show Viewport Demo");
         setContentPane(createContentPane());
         setJMenuBar(createApplicationMenuBar());
@@ -127,7 +122,7 @@ public class ViewRestorationTest extends JFrame implements DockingConstants {
 
     private class ShowViewAction extends AbstractAction {
 
-        private String commonView = null;
+        private String commonView;
 
         private ShowViewAction(String commonView) {
             this.commonView = commonView;

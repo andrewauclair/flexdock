@@ -67,18 +67,8 @@ import java.util.List;
  *
  * @author Chris Butler
  */
-public class DockableComponentWrapper implements Dockable {
+public class DockableComponentWrapper extends AbstractDockable {
 	private Component dragSrc;
-
-	private String persistentId;
-
-	private ArrayList<DockingListener> dockingListeners;
-
-	private ArrayList<Component> dragListeners;
-
-	private Hashtable<Object, Object> clientProperties;
-
-	private HashSet<Component> frameDragSources;
 
 	/**
 	 * Creates a {@code DockableComponentWrapper} instance using the specified
@@ -157,23 +147,19 @@ public class DockableComponentWrapper implements Dockable {
 	}
 
 	public <T extends Component & DockingStub> DockableComponentWrapper(T dockable) {
+		super(dockable.getPersistentId());
+		
 		dragSrc = dockable;
 		getDockingProperties().setDockableDesc(dockable.getTabText());
-		persistentId = dockable.getPersistentId();
-
-		dockingListeners = new ArrayList<>();
-		dragListeners = new ArrayList<>(1);
 
 		initDragListeners();
 	}
 
 	private DockableComponentWrapper(Component src, String id, String desc) {
+		super(id);
+		
 		dragSrc = src;
 		getDockingProperties().setDockableDesc(desc);
-		persistentId = id;
-
-		dockingListeners = new ArrayList<>(0);
-		dragListeners = new ArrayList<>(1);
 
 		// initialize the drag sources lists
 		initDragListeners();
@@ -203,20 +189,13 @@ public class DockableComponentWrapper implements Dockable {
 
 		// add the "docking" drag source to the list
 		if (draggable != null) {
-			dragListeners.add(draggable);
+			//dragListeners.add(draggable);
 		}
 
 		// add the floating frame drag source to the list
 		if (frameDragger != null) {
 			getFrameDragSources().add(frameDragger);
 		}
-	}
-
-	private Hashtable<Object, Object> getInternalClientProperties() {
-		if (clientProperties == null) {
-			clientProperties = new Hashtable<>(2);
-		}
-		return clientProperties;
 	}
 
 	/**
@@ -231,338 +210,5 @@ public class DockableComponentWrapper implements Dockable {
 	@Override
 	public Component getComponent() {
 		return dragSrc;
-	}
-
-	/**
-	 * Returns a {@code List} of {@code Components} used to initiate
-	 * drag-to-dock operation. By default, the returned {@code List} contains
-	 * the {@code Component} returned by {@code getComponent()}.
-	 *
-	 * @return a {@code List} of {@code Components} used to initiate
-	 * drag-to-dock operation.
-	 * @see Dockable#getDragSources()
-	 * @see #getComponent()
-	 * @see #create(Component, String, String)
-	 */
-	@Override
-	public List <Component> getDragSources() {
-		return dragListeners;
-	}
-
-	/**
-	 * Returns the persistent ID of this {@code DockableComponentWrapper}
-	 * instance provided when this object was instantiated.
-	 *
-	 * @return the persistent ID of this {@code DockableComponentWrapper}
-	 * @see Dockable#getPersistentId()
-	 * @see #create(Component, String, String)
-	 */
-	@Override
-	public String getPersistentId() {
-		return persistentId;
-	}
-
-	/**
-	 * Returns a {@code HashSet} of {@code Components} used as frame drag
-	 * sources when this {@code Dockable} is floating in a non-decorated
-	 * external dialog. The {@code HashSet} returned by this method is initially
-	 * empty. Because it is mutable, however, new {@code Components} may be
-	 * added to it.
-	 *
-	 * @return a {@code HashSet} of {@code Components} used as frame drag
-	 * sources when this {@code Dockable} is floating in a non-decorated
-	 * external dialog.
-	 * @see Dockable#getFrameDragSources()
-	 */
-	@Override
-	public Set<Component> getFrameDragSources() {
-		if (frameDragSources == null) {
-			frameDragSources = new HashSet();
-		}
-		return frameDragSources;
-	}
-
-	/**
-	 * Adds a {@code DockingListener} to observe docking events for this
-	 * {@code Dockable}. {@code null} arguments are ignored.
-	 *
-	 * @param listener the {@code DockingListener} to add to this {@code Dockable}.
-	 * @see #getDockingListeners()
-	 * @see #removeDockingListener(DockingListener)
-	 */
-	@Override
-	public void addDockingListener(DockingListener listener) {
-		if (listener != null) {
-			dockingListeners.add(listener);
-		}
-	}
-
-	/**
-	 * Returns an array of all {@code DockingListeners} added to this
-	 * {@code Dockable}. If there are no listeners present for this
-	 * {@code Dockable}, then a zero-length array is returned.
-	 *
-	 * @return an array of all {@code DockingListeners} added to this
-	 * {@code Dockable}.
-	 * @see #addDockingListener(DockingListener)
-	 * @see #removeDockingListener(DockingListener)
-	 */
-	@Override
-	public DockingListener[] getDockingListeners() {
-		return dockingListeners.toArray(new DockingListener[0]);
-	}
-
-	/**
-	 * Removes the specified {@code DockingListener} from this {@code Dockable}.
-	 * If the specified {@code DockingListener} is {@code null}, or the
-	 * listener has not previously been added to this {@code Dockable}, then no
-	 * {@code Exception} is thrown and no action is taken.
-	 *
-	 * @param listener the {@code DockingListener} to remove from this
-	 *                 {@code Dockable}
-	 * @see #addDockingListener(DockingListener)
-	 * @see #getDockingListeners()
-	 */
-	@Override
-	public void removeDockingListener(DockingListener listener) {
-		if (listener != null) {
-			dockingListeners.remove(listener);
-		}
-	}
-
-	/**
-	 * No operation. Provided as a method stub to fulfull the
-	 * {@code DockingListener} interface contract.
-	 *
-	 * @param evt the {@code DockingEvent} to respond to.
-	 * @see DockingListener#dockingCanceled(DockingEvent)
-	 */
-	@Override
-	public void dockingCanceled(DockingEvent evt) {
-	}
-
-	/**
-	 * No operation. Provided as a method stub to fulfull the
-	 * {@code DockingListener} interface contract.
-	 *
-	 * @param evt the {@code DockingEvent} to respond to.
-	 * @see DockingListener#dockingComplete(DockingEvent)
-	 */
-	@Override
-	public void dockingComplete(DockingEvent evt) {
-	}
-
-	/**
-	 * No operation. Provided as a method stub to fulfull the
-	 * {@code DockingListener} interface contract.
-	 *
-	 * @param evt the {@code DockingEvent} to respond to.
-	 * @see DockingListener#undockingComplete(DockingEvent)
-	 */
-	@Override
-	public void undockingComplete(DockingEvent evt) {
-	}
-
-	/**
-	 * No operation. Provided as a method stub to fulfull the
-	 * {@code DockingListener} interface contract.
-	 *
-	 * @param evt the {@code DockingEvent} to respond to.
-	 * @see DockingListener#undockingStarted(DockingEvent)
-	 */
-	@Override
-	public void undockingStarted(DockingEvent evt) {
-	}
-
-	/**
-	 * No operation. Provided as a method stub to fulfull the
-	 * {@code DockingListener} interface contract.
-	 *
-	 * @param evt the {@code DockingEvent} to respond to.
-	 * @see DockingListener#dragStarted(DockingEvent)
-	 */
-	@Override
-	public void dragStarted(DockingEvent evt) {
-	}
-
-	/**
-	 * No operation. Provided as a method stub to fulfull the
-	 * {@code DockingListener} interface contract.
-	 *
-	 * @param evt the {@code DockingEvent} to respond to.
-	 * @see DockingListener#dropStarted(DockingEvent)
-	 */
-	@Override
-	public void dropStarted(DockingEvent evt) {
-	}
-
-	/**
-	 * Returns the value of the property with the specified key. Only properties
-	 * added with {@code putClientProperty} will return a non-{@code null}
-	 * value. If {@code key} is {@code null}, a {@code null} reference is
-	 * returned.
-	 * <p>
-	 * If the {@code Component} returned by {@code getComponent()} is an
-	 * instance of {@code JComponent}, then this method will dispatch to that
-	 * {@code JComponent's} {@code getClientProperty(Object, Object)} method.
-	 * Otherwise, this {@code DockableComponentWrapper} will provide its own
-	 * internal mapping of client properties.
-	 *
-	 * @param key the key that is being queried
-	 * @return the value of this property or {@code null}
-	 * @see Dockable#getClientProperty(Object)
-	 * @see javax.swing.JComponent#getClientProperty(java.lang.Object)
-	 */
-	@Override
-	public Object getClientProperty(Object key) {
-		if (key == null) {
-			return null;
-		}
-
-		Component c = getComponent();
-		if (c instanceof JComponent) {
-			return ((JComponent) c).getClientProperty(key);
-		}
-
-		return getInternalClientProperties().get(key);
-	}
-
-	/**
-	 * Adds an arbitrary key/value "client property" to this {@code Dockable}.
-	 * {@code null} values are allowed. If {@code key} is {@code null}, then no
-	 * action is taken.
-	 * <p>
-	 * If the {@code Component} returned by {@code getComponent()} is an
-	 * instance of {@code JComponent}, then this method will dispatch to that
-	 * {@code JComponent's} {@code putClientProperty(Object, Object)} method.
-	 * Otherwise, this {@code DockableComponentWrapper} will provide its own
-	 * internal mapping of client properties.
-	 *
-	 * @param key   the new client property key
-	 * @param value the new client property value; if {@code null} this method
-	 *              will remove the property
-	 * @see Dockable#putClientProperty(Object, Object)
-	 * @see javax.swing.JComponent#putClientProperty(java.lang.Object,
-	 * java.lang.Object)
-	 */
-	@Override
-	public void putClientProperty(Object key, Object value) {
-		if (key == null) {
-			return;
-		}
-
-		Component c = getComponent();
-		if (c instanceof JComponent) {
-			SwingUtility.putClientProperty(c, key, value);
-		}
-		else {
-			getInternalClientProperties().put(key, value);
-		}
-	}
-
-	/**
-	 * Returns a {@code DockablePropertySet} instance associated with this
-	 * {@code Dockable}. This method returns the default implementation
-	 * supplied by the framework by invoking
-	 * {@code getDockablePropertySet(Dockable dockable)} on
-	 * {@code org.flexdock.docking.props.PropertyManager} and supplying an
-	 * argument of {@code this}.
-	 *
-	 * @return the {@code DockablePropertySet} associated with this
-	 * {@code Dockable}. This method will not return a {@code null}
-	 * reference.
-	 * @see Dockable#getDockingProperties()
-	 * @see org.flexdock.docking.props.PropertyManager#getDockablePropertySet(Dockable)
-	 */
-	@Override
-	public DockablePropertySet getDockingProperties() {
-		return PropertyManager.getDockablePropertySet(this);
-	}
-
-	/**
-	 * Returns the {@code DockingPort} within which this {@code Dockable} is
-	 * currently docked. If not currently docked, this method will return
-	 * {@code null}.
-	 * <p>
-	 * This method defers processing to
-	 * {@code getDockingPort(Dockable dockable)}, passing an argument of
-	 * {@code this}.
-	 *
-	 * @return the {@code DockingPort} within which this {@code Dockable} is
-	 * currently docked.
-	 * @see Dockable#getDockingPort()
-	 * @see DockingManager#getDockingPort(Dockable)
-	 */
-	@Override
-	public DockingPort getDockingPort() {
-		return DockingManager.getDockingPort(this);
-	}
-
-	/**
-	 * Provides the default {@code Dockable} implementation of
-	 * {@code dock(Dockable dockable)} by calling and returning
-	 * {@code DockingManager.dock(Dockable dockable, Dockable parent)}.
-	 * {@code 'this'} is passed as the {@code parent} parameter.
-	 *
-	 * @param dockable the {@code Dockable} to dock relative to this {@code Dockable}
-	 * @return {@code true} if the docking operation was successful;
-	 * {@code false} otherwise.
-	 * @see Dockable#dock(Dockable)
-	 * @see DockingManager#dock(Dockable, Dockable)
-	 */
-	@Override
-	public boolean dock(Dockable dockable) {
-		return DockingManager.dock(dockable, this);
-	}
-
-	/**
-	 * Provides the default {@code Dockable} implementation of
-	 * {@code dock(Dockable dockable, String relativeRegion)} by calling and
-	 * returning
-	 * {@code DockingManager.dock(Dockable dockable, Dockable parent, String region)}.
-	 * {@code 'this'} is passed as the {@code parent} parameter.
-	 *
-	 * @param dockable       the {@code Dockable} to dock relative to this {@code Dockable}
-	 * @param relativeRegion the docking region into which to dock the specified
-	 *                       {@code Dockable}
-	 * @return {@code true} if the docking operation was successful;
-	 * {@code false} otherwise.
-	 * @see Dockable#dock(Dockable, String)
-	 * @see DockingManager#dock(Dockable, Dockable, String)
-	 */
-	@Override
-	public boolean dock(Dockable dockable, String relativeRegion) {
-		return DockingManager.dock(dockable, this, relativeRegion);
-	}
-
-	/**
-	 * Provides the default {@code Dockable} implementation of
-	 * {@code dock(Dockable dockable, String relativeRegion, float ratio)} by
-	 * calling and returning
-	 * {@code DockingManager.dock(Dockable dockable, Dockable parent, String region, float proportion)}.
-	 * {@code 'this'} is passed as the {@code parent} parameter.
-	 *
-	 * @param dockable       the {@code Dockable} to dock relative to this {@code Dockable}
-	 * @param relativeRegion the docking region into which to dock the specified
-	 *                       {@code Dockable}
-	 * @param ratio          the proportion of available space in the resulting layout to
-	 *                       allot to the new sibling {@code Dockable}.
-	 * @return {@code true} if the docking operation was successful;
-	 * {@code false} otherwise.
-	 * @see DockingManager#dock(Dockable, Dockable, String, float)
-	 */
-	@Override
-	public boolean dock(Dockable dockable, String relativeRegion, float ratio) {
-		return DockingManager.dock(dockable, this, relativeRegion, ratio);
-	}
-
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		getDockingProperties().addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		getDockingProperties().removePropertyChangeListener(listener);
 	}
 }

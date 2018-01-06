@@ -46,6 +46,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.IOException;
 
+import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
+
 /**
  * Created on 2005-04-17
  *
@@ -71,7 +73,7 @@ public class FocusTest extends JFrame implements DockingConstants {
     }
 
     public static void main(String[] args) {
-        SwingUtility.setPlaf(UIManager.getSystemLookAndFeelClassName());
+        setSystemLookAndFeel();
 
         // setup the flexdock configuration
         configureDocking();
