@@ -47,7 +47,7 @@ public class FloatingDockingPort extends DefaultDockingPort {
 		this.frame = frame;
 		useOwnListener = frame.isUndecorated();
 
-		dragListener = new FrameDragListener(frame); // TODO Should this only happen if the frame is not decorated?
+		dragListener = new FrameDragListener(frame);
 	}
 
 	@Override
