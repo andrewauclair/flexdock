@@ -32,13 +32,14 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+import static org.flexdock.docking.DockingConstants.*;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
  * @author Christopher Butler
  * @author Mateusz Szczap
  */
-public class ViewRestorationTest extends JFrame implements DockingConstants {
+public class ViewRestorationTest extends JFrame {
 
     private static View view1 = null;
     private static View view2 = null;

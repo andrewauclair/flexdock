@@ -46,6 +46,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.IOException;
 
+import static org.flexdock.docking.DockingConstants.*;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
@@ -54,7 +55,7 @@ import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
  * @author <a href="mailto:mati@sz.home.pl">Mateusz Szczap</a>
  * @version $Id: FocusTest.java,v 1.1 2007-03-18 23:54:15 kschaefe Exp $
  */
-public class FocusTest extends JFrame implements DockingConstants {
+public class FocusTest extends JFrame {
 	
 	private static final String PERSPECTIVE_FILE = "PerspectiveDemo.data";
 	private static final String MAIN_VIEW = "main.view";

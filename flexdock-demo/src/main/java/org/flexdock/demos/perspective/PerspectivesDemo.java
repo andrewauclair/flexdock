@@ -42,13 +42,15 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.IOException;
 
+import static org.flexdock.docking.DockingConstants.*;
+
 /**
  * Created on 2005-04-17
  *
  * @author <a href="mailto:mati@sz.home.pl">Mateusz Szczap</a>
  * @version $Id: PerspectivesDemo.java,v 1.17 2005-10-09 21:09:39 eeaston Exp $
  */
-public class PerspectivesDemo extends JFrame implements DockingConstants {
+public class PerspectivesDemo extends JFrame {
 
     private static final String PERSPECTIVE_FILE = "PerspectiveDemo.data";
     private static final String MAIN_VIEW = "main.view";

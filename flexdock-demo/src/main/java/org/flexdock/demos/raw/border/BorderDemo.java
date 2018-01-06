@@ -19,19 +19,16 @@
  */
 package org.flexdock.demos.raw.border;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import org.flexdock.demos.util.DemoUtility;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 
+import javax.swing.*;
+import java.awt.*;
+
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
-public class BorderDemo extends JFrame implements DockingConstants {
+public class BorderDemo extends JFrame {
 
     private BorderDemo() {
         super("Border Docking Demo");

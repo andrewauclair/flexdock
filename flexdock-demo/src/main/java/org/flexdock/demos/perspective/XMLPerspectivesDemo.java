@@ -45,13 +45,15 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+import static org.flexdock.docking.DockingConstants.*;
+
 /**
  * Created on 2005-04-17
  *
  * @author <a href="mailto:mati@sz.home.pl">Mateusz Szczap</a>
  * @version $Id: XMLPerspectivesDemo.java,v 1.11 2005-10-09 21:09:39 eeaston Exp $
  */
-public class XMLPerspectivesDemo extends JFrame implements DockingConstants {
+public class XMLPerspectivesDemo extends JFrame {
 
     private static final String PERSPECTIVE_FILE = "PerspectiveDemo.xml";
 

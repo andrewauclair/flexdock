@@ -20,7 +20,6 @@
 package org.flexdock.test.dockbar;
 
 import org.flexdock.demos.util.VSNetStartPage;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
@@ -30,12 +29,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+import static org.flexdock.docking.DockingConstants.*;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
  * @author Christopher Butler
  */
-public class ComplexDockbarTest extends JFrame implements DockingConstants {
+public class ComplexDockbarTest extends JFrame {
     public static void main(String[] args) {
         setSystemLookAndFeel();
         EventQueue.invokeLater(ComplexDockbarTest::startup);

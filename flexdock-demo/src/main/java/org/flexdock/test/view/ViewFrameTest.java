@@ -19,7 +19,6 @@
  */
 package org.flexdock.test.view;
 
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.floating.frames.DockingFrame;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
@@ -30,12 +29,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static org.flexdock.docking.DockingConstants.CLOSE_ACTION;
+import static org.flexdock.docking.DockingConstants.PIN_ACTION;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
  * @author Christopher Butler
  */
-public class ViewFrameTest extends JFrame implements ActionListener, DockingConstants {
+public class ViewFrameTest extends JFrame implements ActionListener {
     private DockingFrame dockingFrame;
 
     public static void main(String[] args) {

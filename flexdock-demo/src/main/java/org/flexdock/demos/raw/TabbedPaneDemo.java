@@ -19,27 +19,20 @@
  */
 package org.flexdock.demos.raw;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Insets;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.border.LineBorder;
-
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
-import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.defaults.AbstractDockable;
+import org.flexdock.docking.defaults.DefaultDockingPort;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 
-public class TabbedPaneDemo extends JPanel implements DockingConstants {
+public class TabbedPaneDemo extends JPanel {
     private JLabel titlebar;
     private Dockable dockableImpl;
 

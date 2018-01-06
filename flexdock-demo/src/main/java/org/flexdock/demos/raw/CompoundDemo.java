@@ -21,7 +21,6 @@ package org.flexdock.demos.raw;
 
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.defaults.AbstractDockable;
 import org.flexdock.docking.defaults.DefaultDockingPort;
@@ -30,7 +29,9 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class CompoundDemo extends JPanel implements DockingConstants {
+import static org.flexdock.docking.DockingConstants.CENTER_REGION;
+
+public class CompoundDemo extends JPanel {
     private JLabel titlebar;
     private Dockable dockableImpl;
 

@@ -20,7 +20,6 @@
 package org.flexdock.demos.raw.elegant;
 
 import org.flexdock.demos.util.DemoUtility;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.defaults.DefaultDockingPort;
@@ -30,8 +29,11 @@ import org.flexdock.plaf.common.border.ShadowBorder;
 import javax.swing.*;
 import java.awt.*;
 
+import static org.flexdock.docking.DockingConstants.SOUTH_REGION;
+import static org.flexdock.docking.DockingConstants.WEST_REGION;
 
-public class ElegantDemo extends JFrame implements DockingConstants {
+
+public class ElegantDemo extends JFrame {
     private ElegantPanel j2eeHierarchyView;
     private ElegantPanel j2eeNavView;
     private ElegantPanel consoleView;
