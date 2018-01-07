@@ -21,7 +21,6 @@ package org.flexdock.docking.drag;
 
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingPort;
-import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.drag.effects.EffectsManager;
 import org.flexdock.docking.drag.effects.RubberBand;
 import org.flexdock.util.RootWindow;
@@ -30,6 +29,7 @@ import org.flexdock.util.SwingUtility;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class DragPipeline {
@@ -84,15 +84,19 @@ public class DragPipeline {
 		// turn the current drag operation on
 		setCurrentDragOperation(operation);
 
-		windows = RootWindow.getVisibleWindows();
+        // TODO We want to ignore the preview here
+        windows = Arrays.stream(RootWindow.getVisibleWindows())
+                .filter(p -> p.getBounds().width != 200 && p.getBounds().height != 200)
+                .toArray(RootWindow[]::new);
 
 		windowBounds = new Rectangle[windows.length];
 		rootWindowsByBounds = new HashMap();
 
 		for (int i = 0; i < windows.length; i++) {
-			applyGlassPane(windows[i], createGlassPane());
-			windowBounds[i] = windows[i].getBounds();
-			rootWindowsByBounds.put(windowBounds[i], windows[i]);
+            RootWindow window = windows[i];
+            applyGlassPane(window, createGlassPane());
+            windowBounds[i] = window.getBounds();
+            rootWindowsByBounds.put(windowBounds[i], window);
 		}
 
 		// kill the rubberband if floating is not allowed
@@ -157,6 +161,7 @@ public class DragPipeline {
 	}
 	
 	private void processDragEventImpl(MouseEvent me, Point dragOffset) {
+
 		dragToken.updateMouse(me, dragOffset);
 
 		if (heavyweightDockableSupportted) {
@@ -257,6 +262,17 @@ public class DragPipeline {
 	private class GlassPaneMonitor extends MouseAdapter {
 		@Override
 		public void mouseEntered(MouseEvent me) {
+            // TODO If position is within the preview frame then ignore this entered event
+//            System.out.println("mouseEntered: " + me.getComponent().getName());
+//		    // TODO Make sure this isn't the preview
+//
+//            if (me.getComponent() instanceof JFrame) {
+//                JFrame frame = (JFrame) me.getComponent();
+//                if (frame.getTitle().equals("Preview")) {
+//                    System.out.println("Skip mouseEntered on Preview");
+//                    return;
+//                }
+//            }
 			Object obj = me.getSource();
 			if (obj instanceof DragGlasspane) {
 				setCurrentGlassPane((DragGlasspane) obj);
@@ -265,7 +281,18 @@ public class DragPipeline {
 
 		@Override
 		public void mouseExited(MouseEvent me) {
-			setCurrentGlassPane(null);
+            // TODO If position is within the preview frame, then ignore this exited event
+//		    System.out.println("mouseExited: " + me.getComponent().getName());
+//
+//		    // TODO Make sure this isn't the preview
+//			if (me.getComponent() instanceof JFrame) {
+//			    JFrame frame = (JFrame) me.getComponent();
+//			    if (frame.getTitle().equals("Preview")) {
+//			        System.out.println("Skip mouseExited on Preview");
+//			        return;
+//                }
+//            }
+            setCurrentGlassPane(null);
 		}
 	}
 
@@ -294,18 +321,8 @@ public class DragPipeline {
 		DockingPort srcPort = operation == null ? current.getSourcePort() : operation.getSourcePort();
 		DragManager.setCurrentDragOperation(operation);
 		if (srcPort instanceof Component) {
+            // TODO Why is this forcing a repaint?
 			SwingUtility.repaint((Component) srcPort);
-		}
-
-		// TODO: We want to get rid of this code in the future.  I don't like
-		// having a public setDragInProgress() method on the default docking port
-		// and having to know to call it at this level.  If the default docking port
-		// is interested in whether a drag is currently in progress, it should
-		// register some type of listener and handle its personal business internally
-		// with its own code.
-		if (srcPort instanceof DefaultDockingPort) {
-			DefaultDockingPort port = (DefaultDockingPort) srcPort;
-			port.setDragInProgress(operation != null);
 		}
 	}
 

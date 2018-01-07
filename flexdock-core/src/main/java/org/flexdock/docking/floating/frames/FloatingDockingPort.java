@@ -104,7 +104,8 @@ public class FloatingDockingPort extends DefaultDockingPort {
 		super.undockingComplete(evt);
 		System.out.println("FloatingDockingPort.undockingComplete");
 		System.out.println("dockable count: " + getDockableCount());
-		if (getDockableCount() == 0) {
+
+        if (frame != null && getDockableCount() == 0) {
 			frame.destroy();
 			frame = null;
 		}

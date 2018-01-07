@@ -145,8 +145,8 @@ public class DockingUtility {
 			return null;
 		}
 
-		Component deepestComponent = SwingUtilities.getDeepestComponentAt(
-				container, location.x, location.y);
+		Component deepestComponent = SwingUtilities.getDeepestComponentAt(container, location.x, location.y);
+//		Component deepestComponent = DragGlasspane.getDeepestComponentAt(container, location.x, location.y);
 		if (deepestComponent == null) {
 			return null;
 		}

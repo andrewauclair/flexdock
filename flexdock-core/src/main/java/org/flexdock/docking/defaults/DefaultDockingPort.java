@@ -43,8 +43,6 @@ import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.*;
@@ -237,9 +235,12 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		}
 	}
 
-	private static final WeakHashMap COMPONENT_TITLES = new WeakHashMap();
+    private static Color nextColor = Color.black;
+    private Color debugColor;
 
-	private ArrayList dockingListeners;
+    private static final WeakHashMap<Component, String> COMPONENT_TITLES = new WeakHashMap<>();
+
+    private ArrayList<DockingListener> dockingListeners;
 
 	private Component dockedComponent;
 
@@ -304,6 +305,11 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
 		//configure the default border manager
 		setBorderManager(createBorderManager());
+
+        debugColor = nextColor;
+        nextColor = new Color(nextColor.getRed() + 10, nextColor.getGreen(), nextColor.getBlue());
+
+        setBackground(debugColor);
 	}
 
 	private LayoutManager createLayout() {
@@ -1017,12 +1023,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
 		// otherwise, defer applying the divider location reset until
 		// the split pane is rendered.
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				deferSplitDividerReset(splitPane);
-			}
-		});
+        EventQueue.invokeLater(() -> deferSplitDividerReset(splitPane));
 	}
 
 	private void applySplitDividerLocation(JSplitPane splitPane) {
@@ -1231,7 +1232,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
 	private String getValidTabTitle(JTabbedPane tabs, Component comp) {
-		String title = (String) COMPONENT_TITLES.get(comp);
+        String title = COMPONENT_TITLES.get(comp);
 		if (title == null || title.trim().length() == 0) {
 			title = "null";
 		}
@@ -1686,18 +1687,18 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		return getDockableSet(-1, 0, null);
 	}
 
-	protected Set getDockableSet(int depth, int level, Class desiredClass) {
+    protected Set<Dockable> getDockableSet(int depth, int level, Class desiredClass) {
 		Component c = getDockedComponent();
 
 		if (c instanceof JTabbedPane) {
 			JTabbedPane tabs = (JTabbedPane) c;
 			int len = tabs.getTabCount();
-			HashSet set = new HashSet(len);
+            Set<Dockable> set = new HashSet<>(len);
 			for (int i = 0; i < len; i++) {
 				c = tabs.getComponentAt(i);
 				if (isValidDockableChild(c, desiredClass)) {
 					if (c instanceof Dockable) {
-						set.add(c);
+                        set.add((Dockable) c);
 					}
 					else {
 						set.add(DockingManager.getDockable(c));
@@ -1707,7 +1708,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			return set;
 		}
 
-		HashSet set = new HashSet(1);
+        Set<Dockable> set = new HashSet<>(1);
 
 		// if we have a split-layout, then we need to decide whether to get the
 		// child viewSets. If 'depth' is less then zero, then it's implied we
@@ -1732,7 +1733,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
 		if (isValidDockableChild(c, desiredClass)) {
 			if (c instanceof Dockable) {
-				set.add(c);
+                set.add((Dockable) c);
 			}
 			else {
 				set.add(DockingManager.getDockable(c));
@@ -1741,7 +1742,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		return set;
 	}
 
-	private boolean isValidDockableChild(Component c, Class desiredClass) {
+    private boolean isValidDockableChild(Component c, Class<?> desiredClass) {
 		return desiredClass == null ? DockingManager.getDockable(c) != null
 				: desiredClass.isAssignableFrom(c.getClass());
 	}
@@ -1775,7 +1776,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 */
 	@Override
 	public DockingListener[] getDockingListeners() {
-		return (DockingListener[]) dockingListeners
+        return dockingListeners
 				.toArray(new DockingListener[0]);
 	}
 
@@ -1969,59 +1970,6 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
 	/**
-	 * This method is used internally by the framework to notify
-	 * {@code DefaultDockingPorts} whether a drag operation is or is not
-	 * currently in progress and should not be called by application-level
-	 * developers. It will most likely be removed in future versions and the
-	 * logic contained herein will be managed by some type of change listener.
-	 *
-	 * @param inProgress {@code true} if a drag operation involving this
-	 *                   {@code DockingPort} is currently in progress, {@code false}
-	 *                   otherwise.
-	 */
-	public void setDragInProgress(boolean inProgress) {
-		if (inProgress && dragImage != null) {
-			return;
-		}
-
-		if (!inProgress && dragImage == null) {
-			return;
-		}
-
-		if (inProgress) {
-			dragImage = SwingUtility.createImage(this);
-		}
-		else {
-			dragImage = null;
-		}
-		repaint();
-	}
-
-	/**
-	 * Overridden to provide enhancements during drag operations. Some
-	 * {@code DragPreview} implementations may by able to supply a
-	 * {@code BufferedImage} for this {@code DockingPort} to use for painting
-	 * operations. This may be useful for cases in which the dimensions of
-	 * docked {@code Components} are altered in realtime during the drag
-	 * operation to provide a "ghost" image for the {@code DragPreview}. In
-	 * this case, visual feedback for altered subcomponents within this
-	 * {@code DockingPort} may be blocked in favor of a temporary
-	 * {@code BufferedImage} for the life of the drag operation.
-	 *
-	 * @param g the {@code Graphics} context in which to paint
-	 * @see JComponent#paint(java.awt.Graphics)
-	 */
-	@Override
-	public void paint(Graphics g) {
-		if (dragImage == null) {
-			super.paint(g);
-			return;
-		}
-
-		g.drawImage(dragImage, 0, 0, this);
-	}
-
-	/**
 	 * Returns a {@code LayoutNode} containing metadata that describes the
 	 * current layout contained within this {@code DefaultDockingPort}. The
 	 * {@code LayoutNode} returned by this method will be a
@@ -2092,8 +2040,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		// LayoutNode should have a lazy-load mechanism for loading of
 		// userObject at runtime. we just want to make sure the userObject has
 		// been loaded before we proceed.
-		Object obj = node.getUserObject();
-		if (node instanceof SplitNode) {
+        if (node instanceof SplitNode) {
 			splitPaneResizeList.add(node);
 		}
 
@@ -2140,27 +2087,17 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
 	private void deferSplitPaneValidation(final ArrayList splitNodes) {
-		// TODO: I (calixte) deactivated the timer since the border has already been fixed in reconstuct() and
-		//       the divider location has been set in SplitNode. That avoids to have a resize of the splits when
-		//       splits are visible.
-		//       So this method is probably useless... wait for a user feedback.
-		if (false && timer == null) {
-			timer = new Timer(15, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					Runnable r = new Runnable() {
-						@Override
-						public void run() {
-							synchronized (lock) {
-								if (timer != null) {
-									processImportedSplitPaneValidation(splitNodes);
-								}
-							}
-						}
-					};
-					EventQueue.invokeLater(r);
-				}
-			});
+        if (timer == null) {
+            timer = new Timer(15, e -> {
+                Runnable r = () -> {
+                    synchronized (lock) {
+                        if (timer != null) {
+                            processImportedSplitPaneValidation(splitNodes);
+                        }
+                    }
+                };
+                EventQueue.invokeLater(r);
+            });
 			timer.setRepeats(true);
 			timer.start();
 		}
@@ -2179,6 +2116,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			SplitNode node = (SplitNode) splitNodes.get(0);
 			JSplitPane split = node.getSplitPane();
 			int size = split.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? split.getWidth() : split.getHeight();
+
 			// if we're not ready to render, then defer processing again until later
 			if (!split.isValid() || size == 0) {
 				// try to validate first
@@ -2194,23 +2132,22 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
 			// if we're ready to render, then loop through all the splitNodes and
 			// set the split dividers to their appropriate locations.
-			for (int i = 0; i < len; i++) {
-				node = (SplitNode) splitNodes.get(i);
-				split = node.getSplitPane();
-				size = split.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? split.getWidth() : split.getHeight();
-				float percent = node.getPercentage();
-				split.setDividerLocation(percent);
+            for (Object splitNode : splitNodes) {
+                node = (SplitNode) splitNode;
+                split = node.getSplitPane();
+                float percent = node.getPercentage();
+                split.setDividerLocation(percent);
 
-				// make sure to invoke the installed BorderManager how that we have
-				// a hierarchy of DockingPorts. otherwise, we may end up with some
-				// ugly nested borders.
-				DockingPort port = DockingUtility.getParentDockingPort(split);
-				if (port instanceof DefaultDockingPort) {
-					((DefaultDockingPort) port).evaluateDockingBorderStatus();
-				}
+                // make sure to invoke the installed BorderManager how that we have
+                // a hierarchy of DockingPorts. otherwise, we may end up with some
+                // ugly nested borders.
+                DockingPort port = DockingUtility.getParentDockingPort(split);
+                if (port instanceof DefaultDockingPort) {
+                    ((DefaultDockingPort) port).evaluateDockingBorderStatus();
+                }
 
-				split.validate();
-			}
+                split.validate();
+            }
 		}
 	}
 

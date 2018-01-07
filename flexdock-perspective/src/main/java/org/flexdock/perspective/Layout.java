@@ -398,7 +398,7 @@ public class Layout implements Cloneable, FloatManager, Serializable {
     }
 
     public String[] getFloatingGroupIds() {
-        return this.floatingGroups.keySet().toArray(new String[]{});
+        return this.floatingGroups.keySet().toArray(new String[0]);
     }
 
     @Override

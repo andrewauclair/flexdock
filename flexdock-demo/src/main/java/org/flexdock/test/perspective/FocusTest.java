@@ -44,6 +44,7 @@ import org.flexdock.view.actions.DefaultDisplayAction;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 import static org.flexdock.docking.DockingConstants.*;
@@ -129,7 +130,67 @@ public class FocusTest extends JFrame {
 		showViewMenu.add(new DefaultDisplayAction(MESSAGE_VIEW));
 		showViewMenu.add(new DefaultDisplayAction(PROBLEM_VIEW));
 		showViewMenu.add(new DefaultDisplayAction(CONSOLE_VIEW));
-		
+        showViewMenu.add(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame();
+                frame.setTitle("Preview");
+
+                JPanel panel = new JPanel();
+                frame.add(panel, BorderLayout.CENTER);
+                panel.setBackground(new Color(119, 173, 255));
+
+                panel.setBackground(new Color(0, 97, 255));
+
+                Color bgColor = new Color(100, 154, 255);
+                panel.setBackground(bgColor);
+
+                panel.setBorder(BorderFactory.createLineBorder(new Color(94, 94, 94)));
+
+                Color color = Color.gray;
+                panel.setBorder(BorderFactory.createLineBorder(color));
+                frame.setType(Type.UTILITY);
+                frame.setUndecorated(true);
+                frame.setAlwaysOnTop(true);
+
+                frame.setLocation(600, 400);
+                frame.setSize(200, 200);
+
+                frame.setOpacity(0.5f);
+                frame.setVisible(true);
+            }
+        });
+        showViewMenu.add(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame();
+                frame.setTitle("Preview");
+
+                JPanel panel = new JPanel();
+                frame.add(panel, BorderLayout.CENTER);
+                panel.setBackground(new Color(119, 173, 255));
+
+                panel.setBackground(new Color(0, 97, 255));
+
+                Color bgColor = new Color(100, 154, 255);
+                panel.setBackground(Color.RED);
+
+                panel.setBorder(BorderFactory.createLineBorder(new Color(94, 94, 94)));
+
+                Color color = Color.gray;
+                panel.setBorder(BorderFactory.createLineBorder(color));
+                frame.setType(Type.UTILITY);
+                frame.setUndecorated(true);
+                frame.setAlwaysOnTop(true);
+
+                frame.setLocation(500, 400);
+                frame.setSize(200, 200);
+
+                frame.setOpacity(0.5f);
+                frame.setVisible(true);
+            }
+        });
+
 		JMenu perspectiveMenu = new JMenu("Perspective");
 		//pobieramy perspektywe nr 1
 		perspectiveMenu.add(new OpenPerspectiveAction(P1));
