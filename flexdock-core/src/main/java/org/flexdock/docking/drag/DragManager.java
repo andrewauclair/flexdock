@@ -164,13 +164,10 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 		DockingEvent evt = new DockingEvent(dockable, currentPort, targetPort, DockingEvent.DROP_STARTED, mouseEvt, getDragContext());
 		evt.setRegion(region);
 		evt.setOverWindow(token.isOverWindow());
-//                EventManager.notifyDockingMonitor(dockable, evt);
 		EventManager.dispatch(evt, dockable);
-
-
+		
 		// attempt to complete the docking operation
 		if (!evt.isConsumed()) {
-			System.out.println("Attempt to complete docking.");
 			docker.dock(dockable, targetPort, region, token);
 		}
 	}

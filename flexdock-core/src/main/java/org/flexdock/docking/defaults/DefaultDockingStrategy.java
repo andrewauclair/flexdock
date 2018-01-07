@@ -562,8 +562,6 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		DockingEvent dockingEvent = new DockingEvent(dockable, dockingPort,
 				dockingPort, DockingEvent.UNDOCKING_STARTED, dragContext);
 		EventManager.dispatch(dockingEvent);
-		// if(dockingEvent.isConsumed())
-		// return false;
 
 		if (dockingPort != null) {
 			// if 'dragSrc' is currently docked, then undock it instead of using

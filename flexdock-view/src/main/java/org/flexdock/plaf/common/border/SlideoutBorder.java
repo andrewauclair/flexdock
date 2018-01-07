@@ -28,7 +28,7 @@ import java.awt.*;
  */
 public class SlideoutBorder implements Border {
     private int orientation;
-    public static final Color WIN32_GRAY = new Color(212, 208, 200);
+    private static final Color WIN32_GRAY = new Color(212, 208, 200);
 
     public SlideoutBorder() {
     }
@@ -61,11 +61,6 @@ public class SlideoutBorder implements Border {
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        Color outer = Color.BLACK;
-        Color inner = Color.GRAY;
-        outer = WIN32_GRAY;
-        inner = Color.WHITE;
-
         Color base = g.getColor();
 
         int w = c.getWidth();
@@ -102,10 +97,10 @@ public class SlideoutBorder implements Border {
                 inner2.setLocation(w - 1, 1);
                 break;
         }
-
-        g.setColor(outer);
+    
+        g.setColor(WIN32_GRAY);
         g.drawLine(outer1.x, outer1.y, outer2.x, outer2.y);
-        g.setColor(inner);
+        g.setColor(Color.WHITE);
         g.drawLine(inner1.x, inner1.y, inner2.x, inner2.y);
 
         g.setColor(base);
