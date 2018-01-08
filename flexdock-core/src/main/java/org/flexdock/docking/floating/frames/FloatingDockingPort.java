@@ -47,8 +47,6 @@ public class FloatingDockingPort extends DefaultDockingPort {
 		useOwnListener = frame.isUndecorated();
 
 		dragListener = new FrameDragListener(frame);
-		
-		
 	}
 
 	@Override
@@ -91,24 +89,17 @@ public class FloatingDockingPort extends DefaultDockingPort {
 
 		boolean listenerEnabled = getFrameDragSources(dockable).contains(dragSrc);
 		dragListener.setEnabled(listenerEnabled);
-		
-		// TODO Right now we have to consume the dragStarted event so that some other part of the code doesn't create a MouseMotionListener, can't find it
-		// TODO It looks like if it isn't consumed here it's consumed when dragging is complete by the FloatingPolicyManager
-		if (listenerEnabled) {
-//			evt.consume();
-		}
 	}
 
 	@Override
 	public void undockingComplete(DockingEvent evt) {
 		super.undockingComplete(evt);
-		System.out.println("FloatingDockingPort.undockingComplete");
-		System.out.println("dockable count: " + getDockableCount());
 
         if (frame != null && getDockableCount() == 0) {
 			frame.destroy();
 			frame = null;
 		}
+
 		if (!useOwnListener) {
 			return;
 		}
@@ -119,7 +110,6 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	}
 
 	private void toggleListeners(Component comp, boolean add) {
-		System.out.println("Toggle listeners, add: " + add);
 		Dockable dockable = DockingManager.getDockable(comp);
 		if (add) {
 			installListeners(dockable);
@@ -160,7 +150,7 @@ public class FloatingDockingPort extends DefaultDockingPort {
 		return ((JTabbedPane) comp).getTabCount();
 	}
 
-	protected Set<Component> getFrameDragSources(Dockable dockable) {
+    private Set<Component> getFrameDragSources(Dockable dockable) {
 		return dockable == null ? new HashSet<>() : dockable.getFrameDragSources();
 	}
 }

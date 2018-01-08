@@ -24,7 +24,6 @@ import org.flexdock.docking.drag.DragManager;
 import org.flexdock.docking.event.DockingEvent;
 import org.flexdock.docking.event.DockingListener;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
@@ -64,15 +63,15 @@ public class FloatPolicyManager extends DockingListener.Stub {
 	 *
 	 * @see DragManager#getDragContext(Dockable)
 	 */
-	public static final String FLOATING_ALLOWED = "FloatPolicyManager.FLOATING_ALLOWED";
+	private static final String FLOATING_ALLOWED = "FloatPolicyManager.FLOATING_ALLOWED";
 
 	/**
 	 * System property key used during framework initialization to determine the
 	 * default setting for global floating support.
 	 */
-	public static final String GLOBAL_FLOATING_ENABLED = "global.floating.enabled";
+	private static final String GLOBAL_FLOATING_ENABLED = "global.floating.enabled";
 
-	private Vector policies;
+	private Vector<FloatPolicy> policies;
 
 	private boolean globalFloatingEnabled;
 
@@ -86,7 +85,7 @@ public class FloatPolicyManager extends DockingListener.Stub {
 	}
 
 	private FloatPolicyManager() {
-		policies = new Vector();
+		policies = new Vector<>();
 		addPolicy(DefaultFloatPolicy.getInstance());
 		globalFloatingEnabled = Boolean.getBoolean(GLOBAL_FLOATING_ENABLED);
 	}
@@ -215,7 +214,7 @@ public class FloatPolicyManager extends DockingListener.Stub {
 		}
 
 		Boolean floatAllowed = (Boolean) context.get(FLOATING_ALLOWED);
-		return floatAllowed == null ? true : floatAllowed.booleanValue();
+		return floatAllowed == null ? true : floatAllowed;
 	}
 
 	/**
@@ -235,13 +234,13 @@ public class FloatPolicyManager extends DockingListener.Stub {
 	 * {@code Dockable}; {@code false} otherwise.
 	 * @see FloatPolicy#isFloatingAllowed(Dockable)
 	 */
-	public boolean isPolicyFloatingSupported(Dockable dockable) {
+	private boolean isPolicyFloatingSupported(Dockable dockable) {
 		if (dockable == null) {
 			return false;
 		}
 
-		for (Iterator it = policies.iterator(); it.hasNext(); ) {
-			FloatPolicy policy = (FloatPolicy) it.next();
+		for (Object policy1 : policies) {
+			FloatPolicy policy = (FloatPolicy) policy1;
 			if (!policy.isFloatingAllowed(dockable)) {
 				return false;
 			}
@@ -258,7 +257,7 @@ public class FloatPolicyManager extends DockingListener.Stub {
 	 * @param policy the {@code FloatPolicy} to add to the system
 	 * @see #removePolicy(FloatPolicy)
 	 */
-	public void addPolicy(FloatPolicy policy) {
+	private void addPolicy(FloatPolicy policy) {
 		if (policy != null) {
 			policies.add(policy);
 		}
@@ -274,7 +273,7 @@ public class FloatPolicyManager extends DockingListener.Stub {
 	 * @param policy the {@code FloatPolicy} to remove from the system
 	 * @see #addPolicy(FloatPolicy)
 	 */
-	public void removePolicy(FloatPolicy policy) {
+	private void removePolicy(FloatPolicy policy) {
 		if (policy != null) {
 			policies.remove(policy);
 		}

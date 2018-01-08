@@ -40,8 +40,6 @@ public class RootPane extends JRootPane implements MouseListener, MouseMotionLis
 	private Point offset;
 	private DockingFrame frame;
 
-	// constructor
-
 	RootPane(DockingFrame frame) {
 		this.frame = frame;
 
@@ -50,8 +48,6 @@ public class RootPane extends JRootPane implements MouseListener, MouseMotionLis
 		addMouseMotionListener(this);
 		offset = new Point();
 	}
-
-	// private
 
 	private void ensureValidScreenBounds(Point attemptedPoint) {
 		// 'attemptedPoint' is the current "attempted" mousepoint based off of a drag-event.
@@ -206,8 +202,6 @@ public class RootPane extends JRootPane implements MouseListener, MouseMotionLis
 	}
 
 
-	// implement MouseListener, MouseMotionListener
-
 	@Override
 	public void mousePressed(MouseEvent e) {
 		currentResizeRegion = getCursor(e.getPoint());
@@ -293,12 +287,9 @@ public class RootPane extends JRootPane implements MouseListener, MouseMotionLis
 		setCursor(mLastCursor);
 	}
 
-	// defaults
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
-
 
 	@Override
 	protected LayoutManager createRootLayout() {

@@ -49,9 +49,6 @@ public class DockingFrame extends JFrame {
 	}
 
 	private void initialize(String groupName) {
-        //setUndecorated(true);
-        //getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-
 		// TODO I am not sure null should be passed here,
 		// maybe we should use our IDPersistentIdProvider
 		dockingPort = new FloatingDockingPort(this, null);
@@ -59,8 +56,6 @@ public class DockingFrame extends JFrame {
 		this.groupName = groupName;
 		addComponentListener(BOUNDS_MONITOR);
 	}
-
-	// override
 
 	@Override
 	protected JRootPane createRootPane() {
@@ -101,7 +96,6 @@ public class DockingFrame extends JFrame {
 
 		@Override
 		public void componentHidden(ComponentEvent e) {
-			// noop
 		}
 
 		@Override

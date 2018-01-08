@@ -40,8 +40,8 @@ public class RootPaneLayout implements LayoutManager2, Serializable {
 	public Dimension preferredLayoutSize(Container parent) {
 		Insets insets = pane.getInsets();
 
-		int preferredWidth = 0;
-		int preferredHeight = 0;
+		int preferredWidth;
+		int preferredHeight;
 
 		// content pane
 		Container contentPane = pane.getContentPane();
@@ -67,8 +67,8 @@ public class RootPaneLayout implements LayoutManager2, Serializable {
 	public Dimension minimumLayoutSize(Container parent) {
 		Insets insets = pane.getInsets();
 
-		int minimumWidth = 0;
-		int minimumHeight = 0;
+		int minimumWidth;
+		int minimumHeight;
 
 		// content pane
 		Container contentPane = pane.getContentPane();
