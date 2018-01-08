@@ -22,8 +22,6 @@
 package org.flexdock.docking;
 
 import org.flexdock.docking.activation.ActiveDockableListener;
-import org.flexdock.docking.adapter.AdapterFactory;
-import org.flexdock.docking.adapter.DockingAdapter;
 import org.flexdock.docking.defaults.DefaultDockingStrategy;
 import org.flexdock.docking.defaults.DockableComponentWrapper;
 import org.flexdock.docking.drag.DragManager;
@@ -184,9 +182,6 @@ public class DockingManager {
 
 		// prime the drag manager for use
 		DragManager.prime();
-
-		// ensure our Dockable adapters have been loaded
-		AdapterFactory.prime();
 
 		// make sure dockingEvents are properly intercepted
 		EventManager.addHandler(new DockingEventHandler());
@@ -1336,17 +1331,7 @@ public class DockingManager {
 			return dockable;
 		}
 
-		// if we need to create a dockable, first try to do it with an adapter
-		DockingAdapter adapter = AdapterFactory.getAdapter(c);
-		if (adapter != null) {
-			dockable = DockableComponentWrapper.create(adapter);
-		}
-
-		// if we weren't able to create from an adapter, then create the
-		// dockable manually
-		if (dockable == null) {
-			dockable = DockableComponentWrapper.create(c);
-		}
+		dockable = DockableComponentWrapper.create(c);
 
 		// make sure the specified description is applied
 		if (desc != null) {

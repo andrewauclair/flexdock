@@ -23,20 +23,9 @@ package org.flexdock.docking.defaults;
 
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
-import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.DockingStub;
-import org.flexdock.docking.adapter.DockingAdapter;
-import org.flexdock.docking.event.DockingEvent;
-import org.flexdock.docking.event.DockingListener;
-import org.flexdock.docking.props.DockablePropertySet;
-import org.flexdock.docking.props.PropertyManager;
-import org.flexdock.util.SwingUtility;
 
-import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeListener;
-import java.util.*;
-import java.util.List;
 
 /**
  * This class models a {@code Dockable} implementation for wrapping a
@@ -68,147 +57,116 @@ import java.util.List;
  * @author Chris Butler
  */
 public class DockableComponentWrapper extends AbstractDockable {
-	private Component dragSrc;
+    private Component dragSrc;
 
-	/**
-	 * Creates a {@code DockableComponentWrapper} instance using the specified
-	 * source component, persistent ID, and docking description. This method is
-	 * used to create {@code Dockable} instances for simple {@code Components}
-	 * where the drag source and drag initiator are the same {@code Component}.
-	 * <p>
-	 * If {@code src} or {@code id} are {@code null}, then this method returns
-	 * a {@code null} reference.
-	 * <p>
-	 * {@code src} will be the {@code Component} returned by invoking
-	 * {@code getComponent()} on the resulting {@code Dockable} and will be
-	 * included in the {@code List} returned by {@code getDragSources()}.
-	 * {@code id} will be the value returned by invoking
-	 * {@code getPersistentId()} on the resulting {@code Dockable}.
-	 * {@code desc} may be used by the {@code Dockable} for descriptive purposes
-	 * (such as tab-text in a tabbed layout). It is not recommended to supply a
-	 * {@code null} value for {@code desc}, but doing so is not illegal.
-	 *
-	 * @param src  the source component
-	 * @param id   the persistent ID for the Dockable instance
-	 * @param desc the docking description
-	 * @return a new {@code DockableComponentWrapper} instance
-	 * @see Dockable#getComponent()
-	 * @see Dockable#getDragSources()
-	 * @see Dockable#getPersistentId()
-	 * @see DockingManager#registerDockable(Component, String)
-	 */
-	public static DockableComponentWrapper create(Component src, String id,
-												  String desc) {
-		if (src == null || id == null) {
-			return null;
-		}
+    /**
+     * Creates a {@code DockableComponentWrapper} instance using the specified
+     * source component, persistent ID, and docking description. This method is
+     * used to create {@code Dockable} instances for simple {@code Components}
+     * where the drag source and drag initiator are the same {@code Component}.
+     * <p>
+     * If {@code src} or {@code id} are {@code null}, then this method returns
+     * a {@code null} reference.
+     * <p>
+     * {@code src} will be the {@code Component} returned by invoking
+     * {@code getComponent()} on the resulting {@code Dockable} and will be
+     * included in the {@code List} returned by {@code getDragSources()}.
+     * {@code id} will be the value returned by invoking
+     * {@code getPersistentId()} on the resulting {@code Dockable}.
+     * {@code desc} may be used by the {@code Dockable} for descriptive purposes
+     * (such as tab-text in a tabbed layout). It is not recommended to supply a
+     * {@code null} value for {@code desc}, but doing so is not illegal.
+     *
+     * @param src  the source component
+     * @param id   the persistent ID for the Dockable instance
+     * @param desc the docking description
+     * @return a new {@code DockableComponentWrapper} instance
+     * @see Dockable#getComponent()
+     * @see Dockable#getDragSources()
+     * @see Dockable#getPersistentId()
+     * @see DockingManager#registerDockable(Component, String)
+     */
+    public static DockableComponentWrapper create(Component src, String id,
+                                                  String desc) {
+        if (src == null || id == null) {
+            return null;
+        }
 
-		return new DockableComponentWrapper(src, id, desc);
-	}
+        return new DockableComponentWrapper(src, id, desc);
+    }
 
-	public static DockableComponentWrapper create(DockingStub stub) {
-		if (!(stub instanceof Component)) {
-			return null;
-		}
+    public static DockableComponentWrapper create(DockingStub stub) {
+        if (!(stub instanceof Component)) {
+            return null;
+        }
 
-		return create((Component) stub, stub.getPersistentId(), stub
-				.getTabText());
-	}
+        return create((Component) stub, stub.getPersistentId(), stub
+                .getTabText());
+    }
 
-	public static DockableComponentWrapper create(DockingAdapter adapter) {
-		if (adapter == null) {
-			return null;
-		}
+    public <T extends Component & DockingStub> DockableComponentWrapper(T dockable) {
+        super(dockable.getPersistentId());
 
-		Component comp = adapter.getComponent();
-		String id = adapter.getPersistentId();
-		String tabText = adapter.getTabText();
-		DockableComponentWrapper dockable = create(comp, id, tabText);
+        dragSrc = dockable;
+        getDockingProperties().setDockableDesc(dockable.getTabText());
 
-		List<Component> dragSources = adapter.getDragSources();
-		Set<Component> frameDragSources = adapter.getFrameDragSources();
-		Icon icon = adapter.getDockbarIcon();
+        initDragListeners();
+    }
 
-		if (dragSources != null) {
-			dockable.getDragSources().clear();
-			dockable.getDragSources().addAll(dragSources);
-		}
+    private DockableComponentWrapper(Component src, String id, String desc) {
+        super(id);
 
-		if (frameDragSources != null) {
-			dockable.getFrameDragSources().clear();
-			dockable.getFrameDragSources().addAll(frameDragSources);
-		}
+        dragSrc = src;
+        getDockingProperties().setDockableDesc(desc);
 
-		if (icon != null) {
-			dockable.getDockingProperties().setDockbarIcon(icon);
-		}
+        // initialize the drag sources lists
+        initDragListeners();
+    }
 
-		return dockable;
-	}
+    private void initDragListeners() {
+        // by default, use the wrapped source component as the drag source
+        // and assume there is no frame drag source defined
+        Component draggable = dragSrc;
+        Component frameDragger = null;
 
-	public <T extends Component & DockingStub> DockableComponentWrapper(T dockable) {
-		super(dockable.getPersistentId());
-		
-		dragSrc = dockable;
-		getDockingProperties().setDockableDesc(dockable.getTabText());
+        // if the wrapped source component is a DockingStub, then
+        // we'll be able to pull some extra data from it
+        if (dragSrc instanceof DockingStub) {
+            DockingStub stub = (DockingStub) dragSrc;
+            Component c = stub.getDragSource();
+            // if the stub defines a specific drag source, then
+            // replace wrapped source component with the specified
+            // drag source
+            if (c != null) {
+                draggable = c;
+            }
+            // if the stub defines a specified frame drag source, then
+            // use it
+            frameDragger = stub.getFrameDragSource();
+        }
 
-		initDragListeners();
-	}
+        // add the "docking" drag source to the list
+        if (draggable != null) {
+            //dragListeners.add(draggable);
+        }
 
-	private DockableComponentWrapper(Component src, String id, String desc) {
-		super(id);
-		
-		dragSrc = src;
-		getDockingProperties().setDockableDesc(desc);
+        // add the floating frame drag source to the list
+        if (frameDragger != null) {
+            getFrameDragSources().add(frameDragger);
+        }
+    }
 
-		// initialize the drag sources lists
-		initDragListeners();
-	}
-
-	private void initDragListeners() {
-		// by default, use the wrapped source component as the drag source
-		// and assume there is no frame drag source defined
-		Component draggable = dragSrc;
-		Component frameDragger = null;
-
-		// if the wrapped source component is a DockingStub, then
-		// we'll be able to pull some extra data from it
-		if (dragSrc instanceof DockingStub) {
-			DockingStub stub = (DockingStub) dragSrc;
-			Component c = stub.getDragSource();
-			// if the stub defines a specific drag source, then
-			// replace wrapped source component with the specified
-			// drag source
-			if (c != null) {
-				draggable = c;
-			}
-			// if the stub defines a specified frame drag source, then
-			// use it
-			frameDragger = stub.getFrameDragSource();
-		}
-
-		// add the "docking" drag source to the list
-		if (draggable != null) {
-			//dragListeners.add(draggable);
-		}
-
-		// add the floating frame drag source to the list
-		if (frameDragger != null) {
-			getFrameDragSources().add(frameDragger);
-		}
-	}
-
-	/**
-	 * Returns the {@code Component} used to create this
-	 * {@code DockableComponentWrapper} instance.
-	 *
-	 * @return the {@code Component} used to create this
-	 * {@code DockableComponentWrapper} instance.
-	 * @see Dockable#getComponent()
-	 * @see #create(Component, String, String)
-	 */
-	@Override
-	public Component getComponent() {
-		return dragSrc;
-	}
+    /**
+     * Returns the {@code Component} used to create this
+     * {@code DockableComponentWrapper} instance.
+     *
+     * @return the {@code Component} used to create this
+     * {@code DockableComponentWrapper} instance.
+     * @see Dockable#getComponent()
+     * @see #create(Component, String, String)
+     */
+    @Override
+    public Component getComponent() {
+        return dragSrc;
+    }
 }

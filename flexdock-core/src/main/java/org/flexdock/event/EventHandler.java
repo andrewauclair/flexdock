@@ -26,7 +26,7 @@ import java.util.EventListener;
  * @author Christopher Butler
  */
 public abstract class EventHandler {
-	protected ArrayList globalListeners = new ArrayList();
+	protected final ArrayList<EventListener> globalListeners = new ArrayList<>();
 
 	/**
 	 * Tests a given event to determine if this handler can handle that event.

@@ -52,12 +52,8 @@ public class DragGlasspane extends JComponent {
 	public Component getCachedGlassPane() {
 		return cachedGlassPane;
 	}
-	
-	public RootWindow getRootWindow() {
-		return rootWindow;
-	}
-	
-	public void setCachedGlassPane(Component cachedGlassPane) {
+
+    public void setCachedGlassPane(Component cachedGlassPane) {
 		this.cachedGlassPane = cachedGlassPane;
 	}
 	
@@ -73,46 +69,7 @@ public class DragGlasspane extends JComponent {
 		return NestedComponents.find(deep, Dockable.class, DockingPort.class);
 	}
 
-    // TODO We copied this out of SwingUtilities, I would like to see if we don't need to do that
-    public static Component getDeepestComponentAt(Component parent, int x, int y) {
-        if (!parent.contains(x, y)) {
-            return null;
-        }
-
-        if (parent.getWidth() == 200 && parent.getHeight() == 200) {
-            int height = parent.getHeight();
-        }
-        if (parent instanceof Container) {
-            Component components[] = ((Container) parent).getComponents();
-            for (Component comp : components) {
-                if (comp != null && comp.isVisible()) {
-                    Point loc = comp.getLocation();
-
-                    if (comp instanceof Container) {
-                        comp = getDeepestComponentAt(comp, x - loc.x, y - loc.y);
-                    } else {
-                        Component parent2 = comp;
-                        comp = comp.getComponentAt(x - loc.x, y - loc.y);
-
-                        // TODO This is how we ignore the overlay display, we need to check if the component is the preview and ignore it by calling deepest component at again
-                        if (comp.getWidth() == 200 && comp.getHeight() == 200) {
-                            if (parent2 instanceof Container) {
-                                comp = getDeepestComponentAt(parent2, x - loc.x, y - loc.y);
-                            } else {
-                                comp = parent2;
-                            }
-                        }
-                    }
-                    if (comp != null && comp.isVisible()) {
-                        return comp;
-                    }
-                }
-            }
-        }
-        return parent;
-    }
-
-	public void processDragEvent(DragOperation token) {
+    public void processDragEvent(DragOperation token) {
 		currentDragToken = token;
 		NestedComponents dropTargets = getDropTargets(token);
 		

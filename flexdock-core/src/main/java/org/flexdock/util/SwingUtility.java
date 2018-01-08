@@ -49,15 +49,7 @@ public class SwingUtility {
 			comp.repaint();
 		}
 	}
-	
-	public static void drawRect(Graphics g, Rectangle r) {
-		if (g == null || r == null) {
-			return;
-		}
-		
-		g.drawRect(r.x, r.y, r.width, r.height);
-	}
-	
+
 	public static DockingPort[] getChildPorts(DockingPort port) {
 		if (!(port instanceof DefaultDockingPort)) {
 			return new DockingPort[0];
@@ -95,8 +87,8 @@ public class SwingUtility {
 	public static Point[] getPoints(Rectangle rect) {
 		return getPoints(rect, null);
 	}
-	
-	public static Point[] getPoints(Rectangle rect, Component convertFromScreen) {
+
+	private static Point[] getPoints(Rectangle rect, Component convertFromScreen) {
 		if (rect == null) {
 			return null;
 		}
@@ -116,8 +108,8 @@ public class SwingUtility {
 				new Point(p.x, p.y + r.height)
 		};
 	}
-	
-	public static final void centerOnScreen(Window window) {
+
+	public static void centerOnScreen(Window window) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension windowSize = window.getSize();
 		
@@ -261,12 +253,8 @@ public class SwingUtility {
 		
 		EventQueue.invokeLater(c::requestFocus);
 	}
-	
-	
-	public static Component getNearestFocusableComponent(Component c) {
-		return getNearestFocusableComponent(c, null);
-	}
-	
+
+
 	public static Component getNearestFocusableComponent(Component c, Container desiredRoot) {
 		if (c == null) {
 			c = desiredRoot;
