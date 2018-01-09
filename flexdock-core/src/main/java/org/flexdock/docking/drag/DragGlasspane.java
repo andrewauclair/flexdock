@@ -39,7 +39,6 @@ public class DragGlasspane extends JComponent {
 	private NestedComponents currentDropTargets;
 	private Component cachedGlassPane;
 	private RootWindow rootWindow;
-	private Runnable postPainter;
 	private DragPreview previewDelegate;
 	private boolean previewInit;
 	private Polygon previewPoly;
@@ -76,15 +75,10 @@ public class DragGlasspane extends JComponent {
 		// if there is no cover, and we're not transitioning away from one,
 		// then invoke postPaint() and return
 		if (currentDropTargets == null && dropTargets == null) {
-			deferPostPaint();
 			return;
 		}
 		
 		String region;
-		
-		// don't immediately redraw the rubberband when switching covers
-		// or regions
-		setPostPainter(null);
 		
 		// now, assign the currentCover to the new one and repaint
 		currentDropTargets = dropTargets;
@@ -138,7 +132,7 @@ public class DragGlasspane extends JComponent {
 	}
 	
 	private void createPreviewPolygon(DragOperation token, DockingPort port, Dockable hover, String region) {
-		DragPreview preview = getPreviewDelegate(token.getDockable());
+		DragPreview preview = getPreviewDelegate();
 		if (preview == null) {
 			previewPoly = null;
 		}
@@ -158,33 +152,14 @@ public class DragGlasspane extends JComponent {
 	@Override
 	public void paint(Graphics g) {
 		paintComponentImpl(g);
-        postPaint();
 	}
 
-    private void postPaint() {
-		if (postPainter != null) {
-			postPainter.run();
-		}
-		postPainter = null;
-	}
-
-	private DragPreview getPreviewDelegate(Component dockable) {
+	private DragPreview getPreviewDelegate() {
 		if (!previewInit) {
-			Dockable d = DockingManager.getDockable(dockable);
 			previewDelegate = EffectsManager.getPreview();
 			previewInit = true;
 		}
 		return previewDelegate;
-	}
-	
-	
-	private void deferPostPaint() {
-        EventQueue.invokeLater(this::postPaint);
-	}
-	
-	
-	void setPostPainter(Runnable painter) {
-		postPainter = painter;
 	}
 	
 	private void paintComponentImpl(Graphics g) {

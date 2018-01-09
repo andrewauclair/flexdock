@@ -203,7 +203,6 @@ public class DragPipeline {
 		// and repaint it.
 		// TODO: Fix post-painter on unchanged glasspane.
 //                currentGlasspane.setPostPainter(getPostPainter(screenRect));
-		currentGlasspane.setPostPainter(null);
 		currentGlasspane.processDragEvent(dragToken);
 	}
 
@@ -213,7 +212,6 @@ public class DragPipeline {
 		currentGlasspane = null;
 
 		// clear out the old glasspane and redraw the rubberband
-		pane.setPostPainter(null);
 		pane.clear();
 	}
 
@@ -222,7 +220,6 @@ public class DragPipeline {
 		currentGlasspane = newGlassPane;
 
 		// process the new glasspane
-		currentGlasspane.setPostPainter(null);
 		currentGlasspane.processDragEvent(dragToken);
 	}
 
