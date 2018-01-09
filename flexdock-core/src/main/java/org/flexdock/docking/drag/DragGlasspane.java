@@ -138,7 +138,7 @@ public class DragGlasspane extends JComponent {
 	}
 	
 	private void createPreviewPolygon(DragOperation token, DockingPort port, Dockable hover, String region) {
-		DragPreview preview = getPreviewDelegate(token.getDockable(), port);
+		DragPreview preview = getPreviewDelegate(token.getDockable());
 		if (preview == null) {
 			previewPoly = null;
 		}
@@ -167,11 +167,11 @@ public class DragGlasspane extends JComponent {
 		}
 		postPainter = null;
 	}
-	
-	private DragPreview getPreviewDelegate(Component dockable, DockingPort port) {
+
+	private DragPreview getPreviewDelegate(Component dockable) {
 		if (!previewInit) {
 			Dockable d = DockingManager.getDockable(dockable);
-			previewDelegate = EffectsManager.getPreview(d, port);
+			previewDelegate = EffectsManager.getPreview();
 			previewInit = true;
 		}
 		return previewDelegate;
