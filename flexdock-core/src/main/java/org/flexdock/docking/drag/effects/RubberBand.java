@@ -25,7 +25,7 @@ import java.awt.*;
  * @deprecated RubberBand will no longer be needed when we float at the beginning of a drag
  * @author Christopher Butler
  */
-public class RubberBand {
+class RubberBand {
 	public static final String DEBUG_OUTPUT = "rubberband.debug";
 
 	public void paint(Graphics g, int x, int y, int width, int height) {

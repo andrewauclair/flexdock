@@ -21,8 +21,6 @@ package org.flexdock.docking.drag;
 
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingPort;
-import org.flexdock.docking.drag.effects.EffectsManager;
-import org.flexdock.docking.drag.effects.RubberBand;
 import org.flexdock.util.RootWindow;
 import org.flexdock.util.SwingUtility;
 
@@ -44,11 +42,9 @@ public class DragPipeline {
 
 	private boolean open;
 	private DragOperation dragToken;
-	private RubberBand rubberBand;
 
 	DragPipeline() {
 		paneMonitor = new GlassPaneMonitor();
-		rubberBand = EffectsManager.getRubberBand();
 	}
 
 	public boolean isOpen() {
@@ -99,11 +95,6 @@ public class DragPipeline {
             rootWindowsByBounds.put(windowBounds[i], window);
 		}
 
-		// kill the rubberband if floating is not allowed
-		if (!DragManager.isFloatingAllowed(operation.getDockableReference())) {
-			rubberBand = null;
-		}
-
 		operation.start();
 		open = true;
 	}
@@ -127,7 +118,6 @@ public class DragPipeline {
 			return;
 		}
 
-		clearRubberBand();
 		for (int i = 0; i < windows.length; i++) {
 			Component cmp = windows[i].getGlassPane();
 			if (cmp instanceof DragGlasspane) {
@@ -170,9 +160,6 @@ public class DragPipeline {
 
 		me.consume();
 
-		// hide the rubber band
-		clearRubberBand();
-
 		// track whether or not we're currently over a window
 		dragToken.setOverWindow(newGlassPane != null);
 
@@ -201,7 +188,6 @@ public class DragPipeline {
 		currentGlasspane = newGlassPane;
 		// now process the new glasspane and redraw the rubberband
 		Rectangle screenRect = dragToken.getDragRect(true);
-		currentGlasspane.setPostPainter(getPostPainter(screenRect));
 		currentGlasspane.processDragEvent(dragToken);
 	}
 
@@ -209,7 +195,6 @@ public class DragPipeline {
 		// just redraw the rubberband if there's no current glasspane
 		Rectangle screenRect = dragToken.getDragRect(true);
 		if (currentGlasspane == null) {
-			drawRubberBand(screenRect);
 			return;
 		}
 
@@ -246,18 +231,6 @@ public class DragPipeline {
 		newGlassPane = gp;
 	}
 
-
-	private Runnable getPostPainter(final Rectangle rect) {
-		return () -> deferRubberBandDrawing(rect);
-	}
-
-	private void deferRubberBandDrawing(final Rectangle rect) {
-		EventQueue.invokeLater(() -> drawRubberBand(rect));
-	}
-
-	private void drawRubberBand(Rectangle rect) {
-		paintRubberBand(rect);
-	}
 
 	private class GlassPaneMonitor extends MouseAdapter {
 		@Override
@@ -298,18 +271,6 @@ public class DragPipeline {
 
 	public DragOperation getDragToken() {
 		return dragToken;
-	}
-
-	private void clearRubberBand() {
-		if (rubberBand != null) {
-			rubberBand.clear();
-		}
-	}
-
-	private void paintRubberBand(Rectangle rect) {
-		if (rubberBand != null) {
-			rubberBand.paint(rect);
-		}
 	}
 
 	private void setCurrentDragOperation(DragOperation operation) {

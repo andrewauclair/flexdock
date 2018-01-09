@@ -45,7 +45,7 @@ public class ResourceManager {
 	 * Defines the file extension used by native shared libraries on the current
 	 * system.
 	 */
-	public static final String LIBRARY_EXTENSION = getLibraryExtension();
+	private static final String LIBRARY_EXTENSION = getLibraryExtension();
 
 	private static String getLibraryExtension() {
 		return isWindowsPlatform() ? ".dll" : ".so";
@@ -58,9 +58,9 @@ public class ResourceManager {
 	 * @return {@code true} if the JVM is currently running on {@code Windows};
 	 * {@code false} otherwise.
 	 */
-	public static boolean isWindowsPlatform() {
+	private static boolean isWindowsPlatform() {
 		String osName = System.getProperty("os.name").toLowerCase();
-		return osName.indexOf("windows") != -1 || osName.endsWith(" nt");
+		return osName.contains("windows") || osName.endsWith(" nt");
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class ResourceManager {
 	 * @return an {@code Image} created from the specified resource URL
 	 * @throws NullPointerException if specified resource cannot be found.
 	 */
-	public static Image createImage(URL imageLocation) {
+	private static Image createImage(URL imageLocation) {
 		try {
 			return Toolkit.getDefaultToolkit().createImage(imageLocation);
 		}
@@ -389,7 +389,7 @@ public class ResourceManager {
 	 * @return a {@code Document} object based on the specified resource
 	 * {@code URL}
 	 */
-	public static Document getDocument(URL url) {
+	private static Document getDocument(URL url) {
 		if (url == null) {
 			return null;
 		}
@@ -486,7 +486,7 @@ public class ResourceManager {
 	 * @return a {@code Properties} object based on the specified resource
 	 * {@code url}.
 	 */
-	public static Properties getProperties(URL url, boolean failSilent) {
+	private static Properties getProperties(URL url, boolean failSilent) {
 		if (failSilent && url == null) {
 			return null;
 		}

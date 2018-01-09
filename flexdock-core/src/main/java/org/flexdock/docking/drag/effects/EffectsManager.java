@@ -21,7 +21,6 @@ package org.flexdock.docking.drag.effects;
 
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingPort;
-import org.flexdock.util.OsInfo;
 import org.flexdock.util.ResourceManager;
 import org.flexdock.util.Utilities;
 import org.w3c.dom.Document;
@@ -29,8 +28,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.awt.*;
-import java.util.*;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Christopher Butler
@@ -41,7 +41,6 @@ public class EffectsManager {
 
 	private static DragPreview defaultPreview;
 	private static DragPreview customPreview;
-	private static RubberBand defaultRubberband;
 	private static RubberBand customRubberband;
 
 	static {
@@ -51,34 +50,11 @@ public class EffectsManager {
 	public static void prime() {
 		Document config = ResourceManager.getDocument(CONFIG_URI);
 		defaultPreview = loadDefaultPreview(config);
-		defaultRubberband = loadSystemRubberband(config);
-	}
-
-	public static RubberBand getRubberBand() {
-		synchronized (LOCK) {
-			return customRubberband == null ? defaultRubberband : customRubberband;
-		}
 	}
 
 	public static DragPreview getPreview(Dockable dockable, DockingPort target) {
 		synchronized (LOCK) {
 			return customPreview == null ? defaultPreview : customPreview;
-		}
-	}
-
-	public static RubberBand setRubberBand(String implClass) {
-		RubberBand rb = createRubberBand(implClass);
-		if (implClass != null && rb == null) {
-			return null;
-		}
-
-		setRubberBand(rb);
-		return rb;
-	}
-
-	public static void setRubberBand(RubberBand rubberBand) {
-		synchronized (LOCK) {
-			customRubberband = rubberBand;
 		}
 	}
 
@@ -100,11 +76,6 @@ public class EffectsManager {
 
 	private static Document loadConfig() {
 		return ResourceManager.getDocument(CONFIG_URI);
-	}
-
-	private static RubberBand createRubberBand(String implClass) {
-		boolean failSilent = !Boolean.getBoolean(RubberBand.DEBUG_OUTPUT);
-		return (RubberBand) Utilities.createInstance(implClass, RubberBand.class, failSilent);
 	}
 
 	private static DragPreview createPreview(String implClass) {
@@ -132,31 +103,6 @@ public class EffectsManager {
 			}
 		}
 		return map;
-	}
-
-	private static RubberBand loadSystemRubberband(Document config) {
-		List osList = OsInfo.getInstance().getOsNames();
-		HashMap info = loadRubberBandInfoByOS(config);
-		
-		for (Object anOsList : osList) {
-			String osName = (String) anOsList;
-			List classes = (List) info.get(osName);
-			if (classes == null) {
-				continue;
-			}
-			
-			for (Object aClass : classes) {
-				String implClass = (String) aClass;
-				RubberBand rb = createRubberBand(implClass);
-				if (rb != null) {
-					return rb;
-				}
-			}
-		}
-
-		String implClass = (String) info.get("default");
-		RubberBand rb = createRubberBand(implClass);
-		return rb == null ? new RubberBand() : rb;
 	}
 
 	private static DragPreview loadDefaultPreview(Document config) {

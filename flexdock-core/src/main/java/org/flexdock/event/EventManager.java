@@ -21,7 +21,6 @@ package org.flexdock.event;
 
 import java.util.Collection;
 import java.util.EventListener;
-import java.util.Iterator;
 import java.util.Stack;
 
 
@@ -30,21 +29,18 @@ import java.util.Stack;
  */
 public class EventManager {
 	private static final EventManager SINGLETON = new EventManager();
-	private Stack handlers = new Stack();
+	private Stack<EventHandler> handlers = new Stack<>();
 
 	static {
 		addHandler(new RegistrationHandler());
 	}
-
 
 	public static EventManager getInstance() {
 		return SINGLETON;
 	}
 
 	private EventManager() {
-
 	}
-
 
 	public static void addHandler(EventHandler handler) {
 		getInstance().addEventHandler(handler);
@@ -76,21 +72,20 @@ public class EventManager {
 	}
 
 
-	public void addEventHandler(EventHandler handler) {
+	private void addEventHandler(EventHandler handler) {
 		if (handler != null) {
 			handlers.push(handler);
 		}
 	}
 
-	public void removeEventHandler(EventHandler handler) {
+	private void removeEventHandler(EventHandler handler) {
 		if (handler != null) {
 			handlers.remove(handler);
 		}
 	}
 
 	private EventHandler getHandler(Event evt) {
-		for (Iterator it = handlers.iterator(); it.hasNext(); ) {
-			EventHandler handler = (EventHandler) it.next();
+		for (EventHandler handler : handlers) {
 			if (handler.acceptsEvent(evt)) {
 				return handler;
 			}
@@ -99,8 +94,7 @@ public class EventManager {
 	}
 
 	private EventHandler getHandler(EventListener listener) {
-		for (Iterator it = handlers.iterator(); it.hasNext(); ) {
-			EventHandler handler = (EventHandler) it.next();
+		for (EventHandler handler : handlers) {
 			if (handler.acceptsListener(listener)) {
 				return handler;
 			}
@@ -108,26 +102,25 @@ public class EventManager {
 		return null;
 	}
 
-	public void addEventListener(EventListener listener) {
+	private void addEventListener(EventListener listener) {
 		EventHandler handler = listener == null ? null : getHandler(listener);
 		if (handler != null) {
 			handler.addListener(listener);
 		}
 	}
 
-	public void removeEventListener(EventListener listener) {
+	private void removeEventListener(EventListener listener) {
 		EventHandler handler = listener == null ? null : getHandler(listener);
 		if (handler != null) {
 			handler.removeListener(listener);
 		}
 	}
 
-
 	public void dispatchEvent(Event evt) {
 		dispatchEvent(evt, null);
 	}
 
-	public void dispatchEvent(Event evt, Object target) {
+	private void dispatchEvent(Event evt, Object target) {
 		Object[] targets = null;
 		if (target instanceof Collection) {
 			targets = ((Collection) target).toArray();
@@ -137,10 +130,9 @@ public class EventManager {
 		}
 
 		dispatchEvent(evt, targets);
-
 	}
 
-	public void dispatchEvent(Event evt, Object[] targets) {
+	private void dispatchEvent(Event evt, Object[] targets) {
 		EventHandler handler = evt == null ? null : getHandler(evt);
 		if (handler != null) {
 			handler.handleEvent(evt, targets);

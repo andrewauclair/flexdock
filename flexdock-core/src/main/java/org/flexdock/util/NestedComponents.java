@@ -62,7 +62,7 @@ import java.awt.*;
  * @author Christopher Butler
  */
 public class NestedComponents {
-	public Component searchSrc;
+    private Component searchSrc;
 
 	public Component child;
 
@@ -116,7 +116,7 @@ public class NestedComponents {
 		return nest;
 	}
 
-	private static boolean isParentContainer(Component c, Class parentClass) {
+    private static boolean isParentContainer(Component c, Class<?> parentClass) {
 		if (parentClass == RootWindow.class) {
 			return RootWindow.isValidRootContainer(c);
 		}
@@ -125,17 +125,13 @@ public class NestedComponents {
 		}
 	}
 
-	private static boolean isInstanceOf(Object obj, Class clazz) {
+    private static boolean isInstanceOf(Object obj, Class<?> clazz) {
 		if (clazz.isAssignableFrom(obj.getClass())) {
 			return true;
 		}
 
 		// special case
-		if (clazz == Dockable.class) {
-			return DockingUtility.isDockable(obj);
-		}
-
-		return false;
+        return clazz == Dockable.class && DockingUtility.isDockable(obj);
 	}
 
 	private NestedComponents(Component searchSrc, Component child,
@@ -143,17 +139,6 @@ public class NestedComponents {
 		this.searchSrc = searchSrc;
 		this.child = child;
 		this.parent = parent;
-	}
-
-	/**
-	 * Returns {@code true} if both {@code child} and {@code parent} fields are
-	 * non-{@code null}; {@code false} otherwise.
-	 *
-	 * @return {@code true} if both {@code child} and {@code parent} fields are
-	 * non-{@code null}; {@code false} otherwise.
-	 */
-	public boolean isFull() {
-		return child != null && parent != null;
 	}
 
 	/**

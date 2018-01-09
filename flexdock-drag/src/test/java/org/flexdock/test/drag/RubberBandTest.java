@@ -19,21 +19,11 @@
  */
 package org.flexdock.test.drag;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.Rectangle;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
-import org.flexdock.docking.drag.effects.EffectsManager;
-import org.flexdock.docking.drag.effects.RubberBand;
 
 
 
@@ -41,12 +31,10 @@ import org.flexdock.docking.drag.effects.RubberBand;
  * @author marius
  */
 public class RubberBandTest extends JFrame {
-    private RubberBand rubberBand;
     private Point offset;
 
     private RubberBandTest() {
         super("Rubber Band Test");
-        rubberBand = EffectsManager.getRubberBand();
         setContentPane(createContentPane());
     }
 
@@ -73,11 +61,9 @@ public class RubberBandTest extends JFrame {
     private void processDrag(MouseEvent me) {
         Rectangle r = getBounds();
         r.setLocation(getMousePoint(me));
-        rubberBand.paint(r);
     }
 
     private void stopDrag(MouseEvent me) {
-        rubberBand.clear();
         setLocation(getMousePoint(me));
         offset = null;
     }

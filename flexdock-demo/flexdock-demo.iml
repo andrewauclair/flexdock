@@ -10,14 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="flexdock-core" />
-    <orderEntry type="library" name="Maven: com.jgoodies:jgoodies-looks:2.7.0" level="project" />
-    <orderEntry type="library" name="Maven: com.jgoodies:jgoodies-common:1.8.1" level="project" />
-    <orderEntry type="module" module-name="flexdock-view" />
-    <orderEntry type="module" module-name="flexdock-perspective" />
-    <orderEntry type="module" module-name="flexdock-drag" />
-    <orderEntry type="library" name="Maven: javax.media:jmf:2.1.1e" level="project" />
-    <orderEntry type="library" name="Maven: net.sf.squirrel-sql.thirdparty-non-maven:skinlf:6.7" level="project" />
     <orderEntry type="library" name="win32-x86-64" level="application" />
     <orderEntry type="module-library">
       <library>
@@ -37,5 +29,13 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="flexdock-core" />
+    <orderEntry type="library" name="Maven: com.jgoodies:jgoodies-looks:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: com.jgoodies:jgoodies-common:1.8.1" level="project" />
+    <orderEntry type="module" module-name="flexdock-view" />
+    <orderEntry type="module" module-name="flexdock-perspective" />
+    <orderEntry type="module" module-name="flexdock-drag" />
+    <orderEntry type="library" name="Maven: javax.media:jmf:2.1.1e" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.squirrel-sql.thirdparty-non-maven:skinlf:6.7" level="project" />
   </component>
 </module>
