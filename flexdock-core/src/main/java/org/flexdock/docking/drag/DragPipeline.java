@@ -187,17 +187,14 @@ public class DragPipeline {
 		// reassign to the new glasspane
 		currentGlasspane = newGlassPane;
 		// now process the new glasspane and redraw the rubberband
-		Rectangle screenRect = dragToken.getDragRect(true);
 		currentGlasspane.processDragEvent(dragToken);
 	}
 
 	private void dontSwitchGlassPanes() {
 		// just redraw the rubberband if there's no current glasspane
-		Rectangle screenRect = dragToken.getDragRect(true);
 		if (currentGlasspane == null) {
 			return;
 		}
-
 
 		// otherwise, process the drag event on the current glasspane
 		// and repaint it.
@@ -304,6 +301,4 @@ public class DragPipeline {
 		}
 		return null;
 	}
-
-
 }

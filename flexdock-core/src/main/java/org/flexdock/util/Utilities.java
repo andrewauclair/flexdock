@@ -290,8 +290,8 @@ public class Utilities {
      * @see Class#isAssignableFrom(java.lang.Class)
      * @see Class#newInstance()
      */
-    public static Object createInstance(String className, Class<?> superType,
-                                        boolean failSilent) {
+    private static Object createInstance(String className, Class<?> superType,
+                                         boolean failSilent) {
         if (className == null) {
             return null;
         }

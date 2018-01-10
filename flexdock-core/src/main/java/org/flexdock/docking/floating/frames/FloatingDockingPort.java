@@ -44,7 +44,7 @@ public class FloatingDockingPort extends DefaultDockingPort {
 		getDockingProperties().setSingleTabsAllowed(false);
 		setTabsAsDragSource(true); // TODO This should only happen if the frame is not decorated
 		this.frame = frame;
-		useOwnListener = frame.isUndecorated();
+        useOwnListener = false;//frame.isUndecorated();
 
 		dragListener = new FrameDragListener(frame);
 	}

@@ -43,225 +43,238 @@ import java.util.Map;
  * @author Christopher Butler
  */
 public class DragManager extends MouseAdapter implements MouseMotionListener {
-	private static final String DRAG_CONTEXT = "DragManager.DRAG_CONTEXT";
-	private static final Object LOCK = new Object();
-	private static DragOperation currentDragOperation;
+    private static final String DRAG_CONTEXT = "DragManager.DRAG_CONTEXT";
+    private static final Object LOCK = new Object();
+    private static DragOperation currentDragOperation;
 
-	private Dockable dockable;
-	private DragPipeline pipeline;
-	private boolean enabled;
-	private Point dragOrigin;
-	private HashMap dragContext;
-	
-	private Point dragOffset = new Point();
-	
-	public static void prime() {
-		// execute static initializer to preload resources
-		EffectsManager.prime();
-	}
+    private Dockable dockable;
+    private DragPipeline pipeline;
+    private boolean enabled;
+    private Point dragOrigin;
+    private HashMap dragContext;
 
-	public DragManager(Dockable dockable) {
-		this.dockable = dockable;
-	}
+    private Point dragOffset = new Point();
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (dockable == null || dockable.getDockingProperties().isDockingEnabled() == Boolean.FALSE) {
-			enabled = false;
-		}
-		else {
-			if (DockingUtility.isFloating(dockable)) {
-				dragOffset = e.getPoint();
-				// update the position of the floating frame/dockable
-				String group = DockingUtility.getFloatGroup(dockable);
-				
-				FloatingGroup floatGroup = DockingManager.getFloatManager().getGroup(group);
-				
-				if (e.getSource() != floatGroup.getFrame()) {
-					dragOffset = SwingUtilities.convertPoint((Component) e.getSource(), dragOffset, floatGroup.getFrame());
-				}
-			}
-			
-			toggleDragContext(true);
-			enabled = !isDragCanceled(dockable, e);
-		}
-	}
+    public static void prime() {
+        // execute static initializer to preload resources
+        EffectsManager.prime();
+    }
 
-	@Override
-	public void mouseDragged(MouseEvent evt) {
-		if (!enabled) {
-			return;
-		}
+    public DragManager(Dockable dockable) {
+        this.dockable = dockable;
+    }
 
-		if (dragOrigin == null) {
-			dragOrigin = evt.getPoint();
-		}
+    @Override
+    public void mousePressed(MouseEvent e) {
+        System.out.println("mousePressed");
+        if (dockable == null || dockable.getDockingProperties().isDockingEnabled() == Boolean.FALSE) {
+            enabled = false;
+        } else {
+            if (DockingUtility.isFloating(dockable)) {
+                dragOffset = e.getPoint();
+                // update the position of the floating frame/dockable
+                String group = DockingUtility.getFloatGroup(dockable);
 
-		if (pipeline == null || !pipeline.isOpen()) {
-			if (passedDragThreshold(evt)) {
-				System.out.println("isFloating: " + DockingUtility.isFloating(dockable));
-				//if (!DockingUtility.isFloating(dockable)) {
-				//DockingManager.getFloatManager().floatDockable(dockable, dockable.getComponent());
-				////}
-				//else {
-				SwingUtilities.invokeLater(() -> openPipeline(evt));
-				//}
-			}
-		}
-		else {
-			pipeline.processDragEvent(evt, dragOffset);
-		}
-	}
+                FloatingGroup floatGroup = DockingManager.getFloatManager().getGroup(group);
 
-	private boolean passedDragThreshold(MouseEvent evt) {
-		double distance = dragOrigin.distance(evt.getPoint());
-		float threshold = dockable.getDockingProperties().getDragThreshold();
-		return distance > threshold;
-	}
+                if (e.getSource() != floatGroup.getFrame()) {
+                    dragOffset = SwingUtilities.convertPoint((Component) e.getSource(), dragOffset, floatGroup.getFrame());
+                }
+            }
 
-	private void openPipeline(MouseEvent evt) {
-		DragOperation token = new DragOperation(dockable, dragOrigin, evt);
-		token.setDragListener(this);
-		// initialize listeners on the drag-source
-		initializeListenerCaching(token);
+            toggleDragContext(true);
+            enabled = !isDragCanceled(dockable, e);
+        }
+    }
 
-		DragPipeline pipeline = new DragPipeline();
-		this.pipeline = pipeline;
-		pipeline.open(token);
-	}
+    @Override
+    public void mouseDragged(MouseEvent evt) {
+        System.out.println("mouseDragged");
+        if (!enabled) {
+            System.out.println("not enabled");
+            return;
+        }
 
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// doesn't do anything
-	}
+        if (dragOrigin == null) {
+            dragOrigin = evt.getPoint();
+        }
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		if (pipeline == null || dockable.getDockingProperties().isDockingEnabled() == Boolean.FALSE) {
-			return;
-		}
+        System.out.println("dragOrigin: " + dragOrigin);
 
-		finishDrag(dockable, pipeline.getDragToken(), e);
-		if (pipeline != null) {
-			pipeline.close();
-		}
-		toggleDragContext(false);
-		dragOrigin = null;
-		pipeline = null;
-	}
+        if (pipeline == null || !pipeline.isOpen()) {
+            if (passedDragThreshold(evt)) {
 
+//                if (!DockingUtility.isFloating(dockable)) {
+//
+//                    // TODO Currently this method always refloats the dockable, making it impossible to dock anything
+//                    // TODO This needs to be positioned based off of where the mouse currently is so we can continue our drag
+//                    // TODO The end drag event should decorate the frame and put it in its final location
+//                    // TODO While dragging the frame should not be decorated
+//
+//                    DockingManager.getFloatManager().floatDockable(dockable, dockable.getComponent());
+//                }
+//                else {
+//                    System.out.println("Floating");
+                SwingUtilities.invokeLater(() -> openPipeline(evt));
+//                }
+            }
+        } else {
+            pipeline.processDragEvent(evt, dragOffset);
+        }
+    }
 
-	private void finishDrag(Dockable dockable, DragOperation token, MouseEvent mouseEvt) {
-		DockingStrategy docker = DockingManager.getDockingStrategy(dockable);
-		DockingPort currentPort = DockingUtility.getParentDockingPort(dockable);
-		DockingPort targetPort = token.getTargetPort();
-		String region = token.getTargetRegion();
+    private boolean passedDragThreshold(MouseEvent evt) {
+        double distance = dragOrigin.distance(evt.getPoint());
+        float threshold = dockable.getDockingProperties().getDragThreshold();
+        return distance > threshold;
+    }
 
-		// remove the listeners from the drag-source and all the old ones back in
-		restoreCachedListeners(token);
+    private void openPipeline(MouseEvent evt) {
+        DragOperation token = new DragOperation(dockable, dragOrigin, evt);
+        token.setDragListener(this);
+        // initialize listeners on the drag-source
+        initializeListenerCaching(token);
 
-		// issue a DockingEvent to allow any listeners the chance to cancel the operation.
-		DockingEvent evt = new DockingEvent(dockable, currentPort, targetPort, DockingEvent.DROP_STARTED, mouseEvt, getDragContext());
-		evt.setRegion(region);
-		evt.setOverWindow(token.isOverWindow());
-		EventManager.dispatch(evt, dockable);
-		
-		// attempt to complete the docking operation
-		if (!evt.isConsumed()) {
-			docker.dock(dockable, targetPort, region, token);
-		}
-	}
+        DragPipeline pipeline = new DragPipeline();
+        this.pipeline = pipeline;
+        pipeline.open(token);
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        // doesn't do anything
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        System.out.println("mouseReleased");
+        if (pipeline == null || dockable.getDockingProperties().isDockingEnabled() == Boolean.FALSE) {
+            return;
+        }
+
+        finishDrag(dockable, pipeline.getDragToken(), e);
+        if (pipeline != null) {
+            pipeline.close();
+        }
+        toggleDragContext(false);
+        dragOrigin = null;
+        pipeline = null;
+    }
 
 
-	private static void initializeListenerCaching(DragOperation token) {
-		// it's easier for us if we remove the MouseMostionListener associated with the dragSource
-		// before dragging, so normally we'll try to do that.  However, if developers really want to
-		// keep them in there, then they can implement the Dockable interface for their dragSource and
-		// let mouseMotionListenersBlockedWhileDragging() return false
+    private void finishDrag(Dockable dockable, DragOperation token, MouseEvent mouseEvt) {
+        System.out.println("finishDrag");
+        DockingStrategy docker = DockingManager.getDockingStrategy(dockable);
+        DockingPort currentPort = DockingUtility.getParentDockingPort(dockable);
+        DockingPort targetPort = token.getTargetPort();
+        String region = token.getTargetRegion();
+
+        // remove the listeners from the drag-source and all the old ones back in
+        restoreCachedListeners(token);
+
+        // issue a DockingEvent to allow any listeners the chance to cancel the operation.
+        DockingEvent evt = new DockingEvent(dockable, currentPort, targetPort, DockingEvent.DROP_STARTED, mouseEvt, getDragContext());
+        evt.setRegion(region);
+        evt.setOverWindow(token.isOverWindow());
+        EventManager.dispatch(evt, dockable);
+
+        // attempt to complete the docking operation
+        if (!evt.isConsumed()) {
+            docker.dock(dockable, targetPort, region, token);
+        }
+    }
+
+
+    private static void initializeListenerCaching(DragOperation token) {
+        System.out.println("initializeListenerCaching");
+        // it's easier for us if we remove the MouseMostionListener associated with the dragSource
+        // before dragging, so normally we'll try to do that.  However, if developers really want to
+        // keep them in there, then they can implement the Dockable interface for their dragSource and
+        // let mouseMotionListenersBlockedWhileDragging() return false
 //                if (!dockableImpl.mouseMotionListenersBlockedWhileDragging())
 //                        return;
 
-		Component dragSrc = token.getDragSource();
-		EventListener[] cachedListeners = dragSrc.getListeners(MouseMotionListener.class);
-		token.setCachedListeners(cachedListeners);
-		DragManager dragListener = token.getDragListener();
+        Component dragSrc = token.getDragSource();
+        EventListener[] cachedListeners = dragSrc.getListeners(MouseMotionListener.class);
+        token.setCachedListeners(cachedListeners);
+        DragManager dragListener = token.getDragListener();
 
-		// remove all of the MouseMotionListeners
-		for (EventListener cachedListener : cachedListeners) {
-			dragSrc.removeMouseMotionListener((MouseMotionListener) cachedListener);
-		}
-		// then, re-add the DragManager
-		if (dragListener != null) {
-			dragSrc.addMouseMotionListener(dragListener);
-		}
-	}
+        // remove all of the MouseMotionListeners
+        for (EventListener cachedListener : cachedListeners) {
+            dragSrc.removeMouseMotionListener((MouseMotionListener) cachedListener);
+        }
+        // then, re-add the DragManager
+        if (dragListener != null) {
+            dragSrc.addMouseMotionListener(dragListener);
+        }
+    }
 
-	private static void restoreCachedListeners(DragOperation token) {
-		Component dragSrc = token.getDragSource();
-		EventListener[] cachedListeners = token.getCachedListeners();
-		DragManager dragListener = token.getDragListener();
+    private static void restoreCachedListeners(DragOperation token) {
+        System.out.println("restoreCachedListeners");
+        Component dragSrc = token.getDragSource();
+        EventListener[] cachedListeners = token.getCachedListeners();
+        DragManager dragListener = token.getDragListener();
 
-		// remove the pipeline listener
-		if (dragListener != null) {
-			dragSrc.removeMouseMotionListener(dragListener);
-		}
+        // remove the pipeline listener
+        if (dragListener != null) {
+            dragSrc.removeMouseMotionListener(dragListener);
+        }
 
-		// now, re-add all of the original MouseMotionListeners
-		for (EventListener cachedListener : cachedListeners) {
-			dragSrc.addMouseMotionListener((MouseMotionListener) cachedListener);
-		}
-	}
+        // now, re-add all of the original MouseMotionListeners
+        for (EventListener cachedListener : cachedListeners) {
+            dragSrc.addMouseMotionListener((MouseMotionListener) cachedListener);
+        }
+    }
 
-	private static boolean isDragCanceled(Dockable dockable, MouseEvent trigger) {
-		System.out.println("isDragCanceled");
-		DockingPort port = DockingUtility.getParentDockingPort(dockable);
-		Map dragContext = getDragContext(dockable);
-		DockingEvent evt = new DockingEvent(dockable, port, null, DockingEvent.DRAG_STARTED, trigger, dragContext);
-		EventManager.dispatch(evt, dockable);
-		System.out.println("canceled: " + evt.isConsumed());
-		return evt.isConsumed();
-	}
+    private static boolean isDragCanceled(Dockable dockable, MouseEvent trigger) {
+        System.out.println("isDragCanceled");
+        DockingPort port = DockingUtility.getParentDockingPort(dockable);
+        Map dragContext = getDragContext(dockable);
+        DockingEvent evt = new DockingEvent(dockable, port, null, DockingEvent.DRAG_STARTED, trigger, dragContext);
+        EventManager.dispatch(evt, dockable);
+        System.out.println("canceled: " + evt.isConsumed());
+        return evt.isConsumed();
+    }
 
-	public static Map getDragContext(Dockable dockable) {
-		Object obj = dockable == null ? null : dockable.getClientProperty(DRAG_CONTEXT);
-		return obj instanceof Map ? (Map) obj : null;
-	}
+    public static Map getDragContext(Dockable dockable) {
+        Object obj = dockable == null ? null : dockable.getClientProperty(DRAG_CONTEXT);
+        return obj instanceof Map ? (Map) obj : null;
+    }
 
-	private void toggleDragContext(boolean add) {
-		if (add) {
-			if (dragContext == null) {
-				dragContext = new HashMap();
-				dockable.putClientProperty(DRAG_CONTEXT, dragContext);
-			}
-		}
-		else {
-			if (dragContext != null) {
-				dragContext.clear();
-				dragContext = null;
-			}
-			dockable.putClientProperty(DRAG_CONTEXT, null);
-		}
-	}
+    private void toggleDragContext(boolean add) {
+        if (add) {
+            if (dragContext == null) {
+                dragContext = new HashMap();
+                dockable.putClientProperty(DRAG_CONTEXT, dragContext);
+            }
+        } else {
+            if (dragContext != null) {
+                dragContext.clear();
+                dragContext = null;
+            }
+            dockable.putClientProperty(DRAG_CONTEXT, null);
+        }
+    }
 
-	private Map getDragContext() {
-		return getDragContext(dockable);
-	}
+    private Map getDragContext() {
+        return getDragContext(dockable);
+    }
 
-	public static boolean isFloatingAllowed(Dockable dockable) {
-		return FloatPolicyManager.isFloatingAllowed(dockable);
-	}
+    public static boolean isFloatingAllowed(Dockable dockable) {
+        return FloatPolicyManager.isFloatingAllowed(dockable);
+    }
 
-	public static DragOperation getCurrentDragOperation() {
-		synchronized (LOCK) {
-			return currentDragOperation;
-		}
-	}
+    public static DragOperation getCurrentDragOperation() {
+        synchronized (LOCK) {
+            return currentDragOperation;
+        }
+    }
 
-	static void setCurrentDragOperation(DragOperation operation) {
-		synchronized (LOCK) {
-			currentDragOperation = operation;
-		}
-	}
+    static void setCurrentDragOperation(DragOperation operation) {
+        synchronized (LOCK) {
+            currentDragOperation = operation;
+        }
+    }
 
 
 }
