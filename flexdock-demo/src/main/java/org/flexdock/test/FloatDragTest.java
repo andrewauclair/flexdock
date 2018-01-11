@@ -30,7 +30,6 @@ public class FloatDragTest {
                 if (create) {
                     create = false;
 
-
                     try {
                         Robot robot = new Robot();
                         robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
@@ -44,19 +43,24 @@ public class FloatDragTest {
                             popup.add(panel, BorderLayout.CENTER);
                             popup.setSize(200, 200);
                             popup.setVisible(true);
+	
+							popup.setLocation(mainFrame.getX() + e.getX() - 100, mainFrame.getY() + e.getY() - 100);
 
                             Robot robot = new Robot();
                             robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                            robot.mouseMove(e.getX(), e.getY());
+//                            robot.mouseMove(e.getX(), e.getY());
                         } catch (AWTException e1) {
                             e1.printStackTrace();
                         }
                     });
 
-                } else {
-                    System.out.println(this + " " + e.getPoint());
-                    popup.setLocation(e.getX() - popup.getWidth(), e.getY() - popup.getHeight());
                 }
+				else {
+					if (popup != null) {
+						Point point = new Point(popup.getX() + e.getX(), popup.getY() + e.getY());
+						popup.setLocation(point.x - 100, point.y - 100);
+					}
+				}
             }
         });
     }
