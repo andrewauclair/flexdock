@@ -81,9 +81,9 @@ import java.util.WeakHashMap;
  * @author Christopher Butler
  */
 public class ClassMapping {
-	private WeakHashMap classes;
+    private final WeakHashMap<Class<?>, Class<?>> classes = new WeakHashMap<>(4);
 
-	private WeakHashMap instances;
+    private final WeakHashMap<Class<?>, Object> instances = new WeakHashMap<>(4);
 
 	private Class defaultClass;
 
@@ -103,34 +103,6 @@ public class ClassMapping {
 	public ClassMapping(Class defaultClass, Object defaultInstance) {
 		this.defaultClass = defaultClass;
 		this.defaultInstance = defaultInstance;
-
-		classes = new WeakHashMap(4);
-		instances = new WeakHashMap(4);
-	}
-
-	/**
-	 * Adds a mapping between the {@code Class} type of the specified
-	 * {@code Object} and the specified {@code value}. This method calls
-	 * {@code getClass()} on the specified {@code Object} and dispatches to
-	 * {@code addClassMapping(Class key, Class value)}. If either {@code obj}
-	 * or {@code value} are {@code null}, then this method returns with no
-	 * action taken. The {@code value} class may later be retrieved by calling
-	 * {@code getClassMapping(Class key)} using the specified {@code key} class ({@code obj.getClass()})
-	 * or any subclass thereof for which a specific class mapping does not
-	 * already exist.
-	 *
-	 * @param obj   the {@code Object} whose {@code Class} will be mapped to the
-	 *              specified {@code value}.
-	 * @param value the {@code Class} to be associated with the specified <b>key</b>
-	 * @see #addClassMapping(Object, Class)
-	 * @see #getClassMapping(Object)
-	 * @see #getClassMapping(Class)
-	 * @see #removeClassMapping(Object)
-	 * @see #removeClassMapping(Class)
-	 */
-	public void addClassMapping(Object obj, Class value) {
-		Class key = obj == null ? null : obj.getClass();
-		addClassMapping(key, value);
 	}
 
 	/**
@@ -182,7 +154,7 @@ public class ClassMapping {
 	 * @see #getClassInstance(Class)
 	 * @see #removeClassMapping(Class)
 	 */
-	public void addClassMapping(Class key, Class value, Object instance) {
+    public void addClassMapping(Class<?> key, Class<?> value, Object instance) {
 		if (key == null || value == null) {
 			return;
 		}
@@ -215,41 +187,10 @@ public class ClassMapping {
 	 * also removed. This means non-specific subclass instance mappings will
 	 * also be removed.
 	 *
-	 * @param obj the {@code Object} whose {@code Class} will be removed from
-	 *            the internal mapping
-	 * @return the {@code Class} whose mapping has been removed
-	 * @see #removeClassMapping(Class)
-	 * @see #addClassMapping(Object, Class)
-	 * @see #getClassMapping(Object)
-	 * @see #getClassInstance(Class)
-	 */
-	public Class removeClassMapping(Object obj) {
-		Class key = obj == null ? null : obj.getClass();
-		return removeClassMapping(key);
-	}
-
-	/**
-	 * Removes any existing class mappings for the {@code Class} type of the
-	 * specified {@code Object}. This method calls {@code getClass()} on the
-	 * specified {@code Object} and dispatches to
-	 * {@code removeClassMapping(Class key)}. If {@code obj} is {@code null},
-	 * then this method returns {@code null}.
-	 * <p>
-	 * Removing the mapping for the specified {@code Class} will also remove it
-	 * for all non-specific subclasses. This means that subclasses of the
-	 * specified {@code Class} will require specific mappings if the it is
-	 * desired for the existing mapping behavior for these classes to remain the
-	 * same.
-	 * <p>
-	 * If any instance mappings exist for the specified {@code Class}, they are
-	 * also removed. This means non-specific subclass instance mappings will
-	 * also be removed.
-	 *
 	 * @param key the {@code Class} whose internal mapping will be removed
 	 * @return the {@code Class} whose mapping has been removed
 	 * @see #addClassMapping(Class, Class)
 	 * @see #addClassMapping(Class, Class, Object)
-	 * @see #getClassMapping(Object)
 	 * @see #getClassInstance(Class)
 	 */
 	public Class removeClassMapping(Class key) {
@@ -257,9 +198,9 @@ public class ClassMapping {
 			return null;
 		}
 
-		Class c = null;
+        Class c;
 		synchronized (classes) {
-			c = (Class) classes.remove(key);
+            c = classes.remove(key);
 		}
 
 		synchronized (instances) {
@@ -267,33 +208,6 @@ public class ClassMapping {
 		}
 
 		return c;
-	}
-
-	/**
-	 * Returns the {@code Class} associated with the {@code Class} of the
-	 * specified {@code Object}. If {@code obj} is {@code null}, this method
-	 * will return the value retrieved from {@code getDefaultMapping()}.
-	 * Otherwise, this method calls {@code obj.getClass()} and dispatches to
-	 * {@code getClassMapping(Class key)}.
-	 * <p>
-	 * If no mapping has been defined for the specified {@code Class}, then
-	 * it's superclass is checked, and then that classes' superclass, and so on
-	 * until {@code java.lang.Object} is reached. If a mapping is found anywhere
-	 * within the superclass hierarchy, then the mapped {@code Class} is
-	 * returned. Otherwise, the value returned by {@code getDefaultMapping()} is
-	 * returned.
-	 *
-	 * @param obj the {@code Object} whose {@code Class's} internal mapping will
-	 *            be returned
-	 * @return the {@code Class} that is mapped internally to the specified key
-	 * {@code Class}
-	 * @see #getDefaultMapping()
-	 * @see #addClassMapping(Object, Class)
-	 * @see #removeClassMapping(Object)
-	 */
-	public Class getClassMapping(Object obj) {
-		Class key = obj == null ? null : obj.getClass();
-		return getClassMapping(key);
 	}
 
 	/**
@@ -310,7 +224,6 @@ public class ClassMapping {
 	 * @param key the {@code Class} whose internal mapping will be returned
 	 * @return the {@code Class} that is mapped internally to the specified
 	 * {@code key}
-	 * @see #getDefaultMapping()
 	 * @see #addClassMapping(Class, Class)
 	 * @see #removeClassMapping(Class)
 	 */
@@ -324,7 +237,7 @@ public class ClassMapping {
 		synchronized (classes) {
 			for (Class c = key; c != null && value == null; c = c
 					.getSuperclass()) {
-				value = (Class) classes.get(c);
+                value = classes.get(c);
 			}
 		}
 
@@ -345,7 +258,6 @@ public class ClassMapping {
 	 * @param key the {@code Class} whose internal mapping will be returned
 	 * @return the {@code Object} instance that is mapped internally to the
 	 * specified {@code key}
-	 * @see #getDefaultInstance()
 	 * @see #addClassMapping(Class, Class, Object)
 	 * @see #removeClassMapping(Class)
 	 */
@@ -366,29 +278,4 @@ public class ClassMapping {
 		return value == null ? defaultInstance : value;
 	}
 
-	/**
-	 * Returns the default {@code Class} used for situations in which there is
-	 * no internal class mapping. This property is read-only and is initialized
-	 * within the {@code ClassMapping} constructor.
-	 *
-	 * @return the default {@code Class} used for situations in which there is
-	 * no internal class mapping.
-	 * @see #ClassMapping(Class, Object)
-	 */
-	public Class getDefaultMapping() {
-		return defaultClass;
-	}
-
-	/**
-	 * Returns the default {@code Object} used for situations in which there is
-	 * no internal instance mapping. This property is read-only and is
-	 * initialized within the {@code ClassMapping} constructor.
-	 *
-	 * @return the default {@code Object} used for situations in which there is
-	 * no internal instance mapping.
-	 * @see #ClassMapping(Class, Object)
-	 */
-	public Object getDefaultInstance() {
-		return defaultInstance;
-	}
 }
