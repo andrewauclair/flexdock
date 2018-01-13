@@ -19,24 +19,6 @@
  */
 package org.flexdock.plaf.theme;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.border.Border;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.plaf.UIResource;
-
 import org.flexdock.plaf.FlexViewComponentUI;
 import org.flexdock.plaf.icons.IconMap;
 import org.flexdock.plaf.icons.IconResource;
@@ -45,6 +27,12 @@ import org.flexdock.plaf.resources.paint.Painter;
 import org.flexdock.view.Button;
 import org.flexdock.view.Titlebar;
 import org.flexdock.view.View;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.UIResource;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -225,23 +213,23 @@ public class TitlebarUI extends FlexViewComponentUI {
 
         View view = titlebar.getView();
         Component[] c = titlebar.getComponents();
-        for (int i = 0; i < c.length; i++) {
-            // start out with the preferred width
-            int width = c[i].getPreferredSize().width;
-            if (c[i] instanceof Button) {
-                // org.flexdock.view.Buttons will be rendered as squares
-                width = h;
-                // don't show the button if its corresponding action is blocked
-                if(view!=null && view.isActionBlocked(((Button) c[i]).getActionName())) {
-                    c[i].setBounds(0, 0, 0, 0);
-                    continue;
-                }
-            }
-            // layout the component over to the right
-            c[i].setBounds(x, margin + rectangle.y, width, h);
-            // move x to the left for the next component
-            x -= width;
-        }
+		for (Component aC : c) {
+			// start out with the preferred width
+			int width = aC.getPreferredSize().width;
+			if (aC instanceof Button) {
+				// org.flexdock.view.Buttons will be rendered as squares
+				width = h;
+				// don't show the button if its corresponding action is blocked
+				if (view != null && view.isActionBlocked(((Button) aC).getActionName())) {
+					aC.setBounds(0, 0, 0, 0);
+					continue;
+				}
+			}
+			// layout the component over to the right
+			aC.setBounds(x, margin + rectangle.y, width, h);
+			// move x to the left for the next component
+			x -= width;
+		}
     }
 
     public void configureAction(Action action) {
@@ -257,13 +245,13 @@ public class TitlebarUI extends FlexViewComponentUI {
 
     private void reconfigureActions(JComponent c) {
         Component[] c1 = c.getComponents();
-        for (int i = 0; i < c1.length; i++) {
-            if (!(c1[i] instanceof Button)) {
-                continue;
-            }
-            Button b = (Button) c1[i];
-            configureAction(b.getAction());
-        }
+		for (Component aC1 : c1) {
+			if (!(aC1 instanceof Button)) {
+				continue;
+			}
+			Button b = (Button) aC1;
+			configureAction(b.getAction());
+		}
     }
 
     protected Color getFontColor(boolean active) {

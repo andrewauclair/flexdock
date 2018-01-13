@@ -18,14 +18,14 @@
  */
 package org.flexdock.perspective.persist.xml;
 
-import java.util.List;
-
 import org.flexdock.docking.state.DockingState;
 import org.flexdock.perspective.LayoutSequence;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.List;
 
 /**
  * Created on 2005-06-03
@@ -46,12 +46,12 @@ public class LayoutSequenceSerializer implements ISerializer {
 
         List dockingStates = layoutSequence.getDockingStates();
         ISerializer dockableStateSerializer = SerializerRegistry.getSerializer(DockingState.class);
-        for (int i = 0; i < dockingStates.size(); i++) {
-            DockingState dockingState = (DockingState) dockingStates.get(i);
-            Element dockingStateElement = dockableStateSerializer.serialize(document, dockingState);
+		for (Object dockingState1 : dockingStates) {
+			DockingState dockingState = (DockingState) dockingState1;
+			Element dockingStateElement = dockableStateSerializer.serialize(document, dockingState);
 
-            layoutSequenceElement.appendChild(dockingStateElement);
-        }
+			layoutSequenceElement.appendChild(dockingStateElement);
+		}
 
         return layoutSequenceElement;
     }

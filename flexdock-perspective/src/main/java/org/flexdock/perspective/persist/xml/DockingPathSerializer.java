@@ -18,15 +18,14 @@
  */
 package org.flexdock.perspective.persist.xml;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.flexdock.docking.state.DockingPath;
 import org.flexdock.docking.state.LayoutNode;
 import org.flexdock.docking.state.tree.SplitNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.util.List;
 
 /**
  * Created on 2005-06-23
@@ -53,11 +52,11 @@ public class DockingPathSerializer implements ISerializer {
 
         List splitNodes = dockingPath.getNodes();
         ISerializer splitNodeSerializer = SerializerRegistry.getSerializer(SplitNode.class);
-        for (Iterator it = splitNodes.iterator(); it.hasNext();) {
-            SplitNode splitNode = (SplitNode) it.next();
-            Element splitNodeElement = splitNodeSerializer.serialize(document, splitNode);
-            dockingPathElement.appendChild(splitNodeElement);
-        }
+		for (Object splitNode1 : splitNodes) {
+			SplitNode splitNode = (SplitNode) splitNode1;
+			Element splitNodeElement = splitNodeSerializer.serialize(document, splitNode);
+			dockingPathElement.appendChild(splitNodeElement);
+		}
 
         return dockingPathElement;
     }
@@ -76,7 +75,7 @@ public class DockingPathSerializer implements ISerializer {
             dockingPath.setSiblingId(siblingId);
         }
         if (isTabbed != null && !"".equals(isTabbed)) {
-            dockingPath.setTabbed(Boolean.valueOf(isTabbed).booleanValue());
+			dockingPath.setTabbed(Boolean.valueOf(isTabbed));
         } else {
             dockingPath.setTabbed(false);
         }

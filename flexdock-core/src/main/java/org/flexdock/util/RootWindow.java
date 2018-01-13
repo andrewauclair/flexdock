@@ -40,9 +40,9 @@ public class RootWindow {
 
 	private LayoutManager maxedLayout;
 
-	private WeakReference root;
+	private WeakReference<Component> root;
 
-	private HashMap clientProperties;
+	private HashMap<Object, Object> clientProperties;
 
 	private static Component getRoot(Component c) {
 		if (c == null) {
@@ -75,11 +75,7 @@ public class RootWindow {
 			return null;
 		}
 
-		RootWindow container = MAP_BY_ROOT_CONTAINER.get(root);
-		if (container == null) {
-			container = new RootWindow(root);
-			MAP_BY_ROOT_CONTAINER.put(root, container);
-		}
+		RootWindow container = MAP_BY_ROOT_CONTAINER.computeIfAbsent(root, RootWindow::new);
 
 		if (container.getRootContainer() != root) {
 			container.setRootContainer(root);
@@ -132,7 +128,7 @@ public class RootWindow {
 	 */
 	protected RootWindow(Component root) {
 		setRootContainer(root);
-		clientProperties = new HashMap();
+		clientProperties = new HashMap<>();
 	}
 
 	/**
@@ -181,18 +177,6 @@ public class RootWindow {
 	}
 
 	/**
-	 * Gets the location of the wrapped component in the form of a point
-	 * specifying the component's top-left corner in the screen's coordinate
-	 * space.
-	 *
-	 * @return An instance of {@code Point} representing the top-left corner of
-	 * the component's bounds in the coordinate space of the screen.
-	 */
-	public Point getLocationOnScreen() {
-		return getRootContainer().getLocationOnScreen();
-	}
-
-	/**
 	 * Returns the {@code LayoutManager} associated with {@code Component}
 	 * maximization within the {@code RootSwingContainer}.
 	 *
@@ -211,33 +195,7 @@ public class RootWindow {
 	 * @return the wrapped root container
 	 */
 	public Component getRootContainer() {
-		return (Component) root.get();
-	}
-
-	/**
-	 * Returns the {@code rootPane} object for the wrapped component.
-	 *
-	 * @return the {@code rootPane} property
-	 */
-	public JRootPane getRootPane() {
-		JRootPane pane = null;
-
-		if (getRootContainer() instanceof RootPaneContainer) {
-			pane = ((RootPaneContainer) getRootContainer()).getRootPane();
-		}
-
-		return pane;
-	}
-
-	/**
-	 * Convenience method that calls {@code revalidate()} on the current content
-	 * pane if it is a {@code JComponent}. If not, no action is taken.
-	 */
-	public void revalidateContentPane() {
-		Container c = getContentPane();
-		if (c instanceof JComponent) {
-			c.revalidate();
-		}
+		return root.get();
 	}
 
 	/**
@@ -259,17 +217,6 @@ public class RootWindow {
 	public void setGlassPane(Component glassPane) {
 		if (getRootContainer() instanceof RootPaneContainer) {
 			((RootPaneContainer) getRootContainer()).setGlassPane(glassPane);
-		}
-	}
-
-	/**
-	 * Sets the {@code layeredPane} property for the wrapped component.
-	 *
-	 * @param layeredPane the {@code layeredPane} object for the wrapped component
-	 */
-	public void setLayeredPane(JLayeredPane layeredPane) {
-		if (getRootContainer() instanceof RootPaneContainer) {
-			((RootPaneContainer) getRootContainer()).setLayeredPane(layeredPane);
 		}
 	}
 
@@ -310,8 +257,8 @@ public class RootWindow {
 	 *
 	 * @param root the new wrapped root container
 	 */
-	protected void setRootContainer(Component root) {
-		this.root = new WeakReference(root);
+	private void setRootContainer(Component root) {
+		this.root = new WeakReference<>(root);
 	}
 
 	public void updateComponentTreeUI() {
@@ -319,7 +266,7 @@ public class RootWindow {
 		pack();
 	}
 
-	public void pack() {
+	private void pack() {
 		Component root = getRootContainer();
 		if (root instanceof JFrame) {
 			((Window) root).pack();

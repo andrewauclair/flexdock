@@ -18,15 +18,10 @@ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFT
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.flexdock.dockbar.util;
 
-import java.awt.Component;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import javax.swing.Icon;
 
 /**
  * @author Andreas Ernst
@@ -51,7 +46,6 @@ public class TextIcon implements Icon, PropertyChangeListener {
     private int       mInset;
     private int       mWidth;
     private int       mHeight;
-    private int       mCharHeight;
     private int       mDescent;
     private int       mRotation;
 
@@ -163,7 +157,7 @@ public class TextIcon implements Icon, PropertyChangeListener {
     private void calcDimensions() {
         FontMetrics fm = mComponent.getFontMetrics(mComponent.getFont());
 
-        mCharHeight = fm.getAscent() + fm.getDescent();
+		int mCharHeight = fm.getAscent() + fm.getDescent();
         mDescent    = fm.getDescent();
 
         if (mRotation == ROTATE_NONE) {
@@ -197,72 +191,79 @@ public class TextIcon implements Icon, PropertyChangeListener {
         g2d.setColor(c.getForeground());
         g2d.setFont(c.getFont());
 
-        if (mRotation == ROTATE_NONE) {
-            if ( mIcon != null) {
-                x += mInset;
-                y += mInset;
+		switch (mRotation) {
+			case ROTATE_NONE: {
+				if (mIcon != null) {
+					x += mInset;
+					y += mInset;
 
-                int iconHeight = mIcon.getIconHeight();
+					int iconHeight = mIcon.getIconHeight();
 
-                mIcon.paintIcon(mComponent, g, x, y + (mHeight - 2 * mInset - iconHeight) / 2); // center vertically
+					mIcon.paintIcon(mComponent, g, x, y + (mHeight - 2 * mInset - iconHeight) / 2); // center vertically
 
-                x += mIconSpace + mIcon.getIconWidth();
-            } // if
+					x += mIconSpace + mIcon.getIconWidth();
+				} // if
 
-            Object renderingHint = g2d.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				Object renderingHint = g2d.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            g.drawString(mText, x, mHeight- mDescent - mInset);
+				g.drawString(mText, x, mHeight - mDescent - mInset);
 
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 
-        } else if (mRotation == ROTATE_LEFT) { // Bottom up
-            int translateX = x + mWidth  - mInset;
-            int translateY = y + mHeight - mInset;
+				break;
+			}
+			case ROTATE_LEFT: { // Bottom up
+				int translateX = x + mWidth - mInset;
+				int translateY = y + mHeight - mInset;
 
-            g2d.translate(translateX, translateY);
-            g2d.rotate(-NINETY_DEGREES);
+				g2d.translate(translateX, translateY);
+				g2d.rotate(-NINETY_DEGREES);
 
-            if (mIcon != null) {
-                int iconHeight = mIcon.getIconHeight();
-                int iconOffset = (mWidth - 2 * mInset - iconHeight) / 2; // center icon
+				if (mIcon != null) {
+					int iconHeight = mIcon.getIconHeight();
+					int iconOffset = (mWidth - 2 * mInset - iconHeight) / 2; // center icon
 
-                mIcon.paintIcon(mComponent, g2d, 0, -mIcon.getIconWidth() - iconOffset);
-            } // if
+					mIcon.paintIcon(mComponent, g2d, 0, -mIcon.getIconWidth() - iconOffset);
+				} // if
 
-            Object renderingHint = g2d.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				Object renderingHint = g2d.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            g2d.drawString(mText, mIcon != null ? mIcon.getIconHeight() + mIconSpace: 0, -mDescent);
+				g2d.drawString(mText, mIcon != null ? mIcon.getIconHeight() + mIconSpace : 0, -mDescent);
 
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 
-            g2d.rotate(NINETY_DEGREES);
-            g2d.translate(-translateX, -translateY);
-        } else if (mRotation == ROTATE_RIGHT) { // top down
-            int translateX = x + mInset;
-            int translateY = y + mInset;
+				g2d.rotate(NINETY_DEGREES);
+				g2d.translate(-translateX, -translateY);
+				break;
+			}
+			case ROTATE_RIGHT: { // top down
+				int translateX = x + mInset;
+				int translateY = y + mInset;
 
-            g2d.translate(translateX, translateY);
-            g2d.rotate(NINETY_DEGREES);
+				g2d.translate(translateX, translateY);
+				g2d.rotate(NINETY_DEGREES);
 
-            if ( mIcon != null) {
-                int iconHeight = mIcon.getIconHeight();
-                int iconOffset = (mWidth - 2 * mInset - iconHeight) / 2; // center icon
+				if (mIcon != null) {
+					int iconHeight = mIcon.getIconHeight();
+					int iconOffset = (mWidth - 2 * mInset - iconHeight) / 2; // center icon
 
-                mIcon.paintIcon(mComponent, g2d, 0, -mIcon.getIconWidth() - iconOffset);
-            } // if
+					mIcon.paintIcon(mComponent, g2d, 0, -mIcon.getIconWidth() - iconOffset);
+				} // if
 
-            Object renderingHint = g2d.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				Object renderingHint = g2d.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            g2d.drawString(mText, mIcon != null ? mIcon.getIconHeight() + mIconSpace: 0, -mDescent);
+				g2d.drawString(mText, mIcon != null ? mIcon.getIconHeight() + mIconSpace : 0, -mDescent);
 
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 
-            g2d.rotate(-NINETY_DEGREES);
-            g2d.translate(-translateX, -translateY);
-        } // if
+				g2d.rotate(-NINETY_DEGREES);
+				g2d.translate(-translateX, -translateY);
+				break;
+			}
+		}
     }
 
     public void validate() {

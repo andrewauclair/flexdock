@@ -236,9 +236,8 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
     private static Color nextColor = Color.black;
-    private Color debugColor;
 
-    private static final WeakHashMap<Component, String> COMPONENT_TITLES = new WeakHashMap<>();
+	private static final WeakHashMap<Component, String> COMPONENT_TITLES = new WeakHashMap<>();
 
     private ArrayList<DockingListener> dockingListeners;
 
@@ -306,7 +305,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		//configure the default border manager
 		setBorderManager(createBorderManager());
 
-        debugColor = nextColor;
+		Color debugColor = nextColor;
         nextColor = new Color(nextColor.getRed() + 10, nextColor.getGreen(), nextColor.getBlue());
 
         setBackground(debugColor);
@@ -1147,11 +1146,9 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		double proportion = strategy.getDividerProportion(this,
 				newDockedContent);
 		SwingUtility.putClientProperty((Component) oldContent,
-				DefaultDockingStrategy.PREFERRED_PROPORTION, new Float(
-						proportion));
+				DefaultDockingStrategy.PREFERRED_PROPORTION, (float) proportion);
 		SwingUtility.putClientProperty((Component) newContent,
-				DefaultDockingStrategy.PREFERRED_PROPORTION, new Float(
-						1f - proportion));
+				DefaultDockingStrategy.PREFERRED_PROPORTION, (float) (1f - proportion));
 
 		return true;
 	}

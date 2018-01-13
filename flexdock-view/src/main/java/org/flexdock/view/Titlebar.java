@@ -27,7 +27,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -42,8 +41,6 @@ public class Titlebar extends JPanel {
     private List actionList;
 
     private HashMap actionButtons;
-
-    private Button[] buttonList;
 
     private View parentView;
     private JLabel titleLabel;
@@ -143,7 +140,7 @@ public class Titlebar extends JPanel {
         }
 
         synchronized (this) {
-            buttonList = list;
+			Button[] buttonList = list;
         }
     }
 
@@ -152,13 +149,13 @@ public class Titlebar extends JPanel {
             return null;
         }
 
-        for (Iterator it = actionList.iterator(); it.hasNext(); ) {
-            Action action = (Action) it.next();
-            String actionName = (String) action.getValue(Action.NAME);
-            if (key.equals(actionName)) {
-                return action;
-            }
-        }
+		for (Object anActionList : actionList) {
+			Action action = (Action) anActionList;
+			String actionName = (String) action.getValue(Action.NAME);
+			if (key.equals(actionName)) {
+				return action;
+			}
+		}
         return null;
     }
 
@@ -277,18 +274,18 @@ public class Titlebar extends JPanel {
         String viewId = parentView == null ? null : parentView
                 .getPersistentId();
         Component[] comps = getComponents();
-        for (int i = 0; i < comps.length; i++) {
-            Button button = comps[i] instanceof Button ? (Button) comps[i]
-                    : null;
-            if (button == null) {
-                continue;
-            }
+		for (Component comp : comps) {
+			Button button = comp instanceof Button ? (Button) comp
+					: null;
+			if (button == null) {
+				continue;
+			}
 
-            ButtonModel bm = button.getModel();
-            if (bm instanceof ViewButtonModel) {
-                ((ViewButtonModel) bm).setViewId(viewId);
-            }
-        }
+			ButtonModel bm = button.getModel();
+			if (bm instanceof ViewButtonModel) {
+				((ViewButtonModel) bm).setViewId(viewId);
+			}
+		}
     }
 
     public View getView() {

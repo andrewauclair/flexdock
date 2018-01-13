@@ -25,7 +25,6 @@ import org.flexdock.view.View;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -35,14 +34,10 @@ public class BasicDockbarTest {
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch(Exception e) {
+		}
+		catch (Exception ignored) {
         }
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+		SwingUtilities.invokeLater(BasicDockbarTest::createAndShowGUI);
     }
 
     private static void createAndShowGUI() {
@@ -75,13 +70,10 @@ public class BasicDockbarTest {
     }
 
     private static ActionListener createMinimizeAction(final int edge) {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                View view = createView();
-                DockingManager.setMinimized(view, true, edge);
-            }
-        };
+		return e -> {
+			View view = createView();
+			DockingManager.setMinimized(view, true, edge);
+		};
     }
 
     private static int viewCount = 0;

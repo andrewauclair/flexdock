@@ -92,7 +92,7 @@ public interface DockableFactory {
 		 * @return {@code null}.
 		 */
 		@Override
-		public Component getDockableComponent(String dockableId) {
+		public <T extends Component & DockingStub> T getDockableComponent(String dockableId) {
 			return null;
 		}
 	}

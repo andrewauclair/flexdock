@@ -47,21 +47,19 @@ public class LayoutSerializer implements ISerializer {
 
         Dockable[] dockables = layout.getDockables();
         ISerializer dockingStateSerializer = SerializerRegistry.getSerializer(DockingState.class);
-        for (int i = 0; i < dockables.length; i++) {
-            Dockable dockable = dockables[i];
-            DockingState dockingState = layout.getDockingState(dockable);
-            Element dockingStateElement = dockingStateSerializer.serialize(document, dockingState);
-            layoutElement.appendChild(dockingStateElement);
-        }
+		for (Dockable dockable : dockables) {
+			DockingState dockingState = layout.getDockingState(dockable);
+			Element dockingStateElement = dockingStateSerializer.serialize(document, dockingState);
+			layoutElement.appendChild(dockingStateElement);
+		}
 
         ISerializer floatingGroupSerializer = SerializerRegistry.getSerializer(FloatingGroup.class);
         String[] floatingGroupIds = layout.getFloatingGroupIds();
-        for (int i = 0; i < floatingGroupIds.length; i++) {
-            String floatingGroupId = floatingGroupIds[i];
-            FloatingGroup floatingGroup = layout.getGroup(floatingGroupId);
-            Element floatingGroupElement = floatingGroupSerializer.serialize(document, floatingGroup);
-            layoutElement.appendChild(floatingGroupElement);
-        }
+		for (String floatingGroupId : floatingGroupIds) {
+			FloatingGroup floatingGroup = layout.getGroup(floatingGroupId);
+			Element floatingGroupElement = floatingGroupSerializer.serialize(document, floatingGroup);
+			layoutElement.appendChild(floatingGroupElement);
+		}
 
         LayoutNode layoutNode = layout.getRestorationLayout();
         //TODO should we nest restoration layout in Restoration node?

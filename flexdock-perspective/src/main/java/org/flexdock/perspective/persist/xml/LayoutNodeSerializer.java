@@ -47,13 +47,14 @@ public class LayoutNodeSerializer implements ISerializer {
 
     @Override
     public Object deserialize(Element element) {
-        if (element.getTagName().equals(PersistenceConstants.DOCKING_PORT_NODE_ELEMENT_NAME)) {
-            return SerializerRegistry.getSerializer(DockingPortNode.class).deserialize(element);
-        } else if (element.getTagName().equals(PersistenceConstants.SPLIT_NODE_ELEMENT_NAME)) {
-            return SerializerRegistry.getSerializer(SplitNode.class).deserialize(element);
-        } else if (element.getTagName().equals(PersistenceConstants.DOCKABLE_NODE_ELEMENT_NAME)) {
-            return SerializerRegistry.getSerializer(DockableNode.class).deserialize(element);
-        }
+		switch (element.getTagName()) {
+			case PersistenceConstants.DOCKING_PORT_NODE_ELEMENT_NAME:
+				return SerializerRegistry.getSerializer(DockingPortNode.class).deserialize(element);
+			case PersistenceConstants.SPLIT_NODE_ELEMENT_NAME:
+				return SerializerRegistry.getSerializer(SplitNode.class).deserialize(element);
+			case PersistenceConstants.DOCKABLE_NODE_ELEMENT_NAME:
+				return SerializerRegistry.getSerializer(DockableNode.class).deserialize(element);
+		}
 
         throw new RuntimeException("Incorrect element: "+element);
     }

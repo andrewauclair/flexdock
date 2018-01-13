@@ -45,14 +45,13 @@ public class DockingPath implements Cloneable, Serializable {
 	
 	private transient String stringForm;
 	private String rootPortId;
-	private ArrayList nodes; // contains SplitNode objects
+	private final ArrayList<SplitNode> nodes = new ArrayList<>(); // contains SplitNode objects
 	private String siblingId;
 	private boolean tabbed;
-	
+
 	public DockingPath() {
-		nodes = new ArrayList();
 	}
-	
+
 	public static DockingPath create(String dockableId) {
 		Dockable dockable = findDockable(dockableId);
 		return create(dockable);
@@ -172,7 +171,6 @@ public class DockingPath implements Cloneable, Serializable {
 	private DockingPath(Dockable dockable) {
 		siblingId = findSiblingId(dockable);
 		tabbed = dockable.getComponent().getParent() instanceof JTabbedPane;
-		nodes = new ArrayList();
 	}
 	
 	public boolean isTabbed() {
@@ -194,17 +192,12 @@ public class DockingPath implements Cloneable, Serializable {
 	private DockingPath(String parent, boolean tabs, ArrayList nodeList) {
 		siblingId = parent;
 		tabbed = tabs;
-		nodes = nodeList;
 	}
 	
 	public List getNodes() {
 		return nodes;
 	}
-	
-	public DockingPort getRootPort() {
-		return DockingManager.getDockingPort(rootPortId);
-	}
-	
+
 	public String getRootPortId() {
 		return this.rootPortId;
 	}
@@ -241,8 +234,7 @@ public class DockingPath implements Cloneable, Serializable {
 	public String toString() {
 		if (stringForm == null) {
 			StringBuffer sb = new StringBuffer("/RootPort[id=").append(rootPortId).append("]");
-			for (Iterator it = nodes.iterator(); it.hasNext(); ) {
-				SplitNode node = (SplitNode) it.next();
+			for (SplitNode node : nodes) {
 				sb.append("/").append(node.toString());
 			}
 			sb.append("/Dockable");
@@ -277,11 +269,10 @@ public class DockingPath implements Cloneable, Serializable {
 		}
 		
 		DockingPort port = rootPort;
-		for (Iterator it = nodes.iterator(); it.hasNext(); ) {
-			SplitNode node = (SplitNode) it.next();
+		for (SplitNode node : nodes) {
 			Component comp = port.getDockedComponent();
 			region = getRegion(node, comp);
-			
+
 			JSplitPane splitPane = comp instanceof JSplitPane ? (JSplitPane) comp : null;
 			// path was broken.  we have no SplitPane, or the SplitPane doesn't
 			// match the orientation of the current node, meaning the path was
@@ -289,11 +280,11 @@ public class DockingPath implements Cloneable, Serializable {
 			if (splitPane == null || splitPane.getOrientation() != node.getOrientation()) {
 				return dockBrokenPath(dockable, port, region, node);
 			}
-			
+
 			// assume there is a transient sub-dockingPort in the split pane
 			comp = node.getRegion() == SwingConstants.LEFT || node.getRegion() == SwingConstants.TOP ? splitPane.getLeftComponent() : splitPane.getRightComponent();
 			port = (DockingPort) comp;
-			
+
 			// move on to the next node
 		}
 		
@@ -398,7 +389,7 @@ public class DockingPath implements Cloneable, Serializable {
 	}
 	
 	private SplitNode getLastNode() {
-		return nodes.isEmpty() ? null : (SplitNode) nodes.get(nodes.size() - 1);
+		return nodes.isEmpty() ? null : nodes.get(nodes.size() - 1);
 	}
 	
 	private boolean dock(Dockable dockable, DockingPort port, String region, SplitNode ctrlNode) {
@@ -409,13 +400,8 @@ public class DockingPath implements Cloneable, Serializable {
 		
 		final float percent = ctrlNode.getPercentage();
 		final Component docked = dockable.getComponent();
-		
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				resizeSplitPane(docked, percent);
-			}
-		});
+
+		EventQueue.invokeLater(() -> resizeSplitPane(docked, percent));
 		return ret;
 	}
 	
@@ -449,7 +435,7 @@ public class DockingPath implements Cloneable, Serializable {
 	}
 	
 	public SplitNode getNode(int indx) {
-		return indx < 0 || indx >= getDepth() ? null : (SplitNode) nodes.get(indx);
+		return indx < 0 || indx >= getDepth() ? null : nodes.get(indx);
 	}
 	
 	@Override
@@ -457,8 +443,7 @@ public class DockingPath implements Cloneable, Serializable {
 		ArrayList nodeList = null;
 		if (nodes != null) {
 			nodeList = new ArrayList(nodes.size());
-			for (Iterator it = nodes.iterator(); it.hasNext(); ) {
-				SplitNode node = (SplitNode) it.next();
+			for (SplitNode node : nodes) {
 				nodeList.add(node.clone());
 			}
 		}

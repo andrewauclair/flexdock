@@ -19,29 +19,16 @@
  */
 package org.flexdock.demos.maximizing;
 
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JToolBar;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
+import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.util.SwingUtility;
 
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
+import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
 
 public class MaximizationDemo {
 
@@ -106,13 +93,10 @@ public class MaximizationDemo {
         SimpleInternalFrame sif = new SimpleInternalFrame(title, toolbar, label);
         final Dockable dockable = new DockableSimpleInternalFrame(sif);
 
-        maxButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println("Calling DockingManager to maximize: " + dockable);
-                DockingManager.toggleMaximized(dockable);
-            }
-        });
+		maxButton.addActionListener(e -> {
+			//System.out.println("Calling DockingManager to maximize: " + dockable);
+			DockingManager.toggleMaximized(dockable);
+		});
 
         return dockable;
     }

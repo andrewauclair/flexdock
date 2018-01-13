@@ -18,30 +18,7 @@
  */
 package org.flexdock.perspective.persist.xml;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.flexdock.docking.state.DockingPath;
-import org.flexdock.docking.state.DockingState;
-import org.flexdock.docking.state.FloatingGroup;
-import org.flexdock.docking.state.LayoutNode;
-import org.flexdock.docking.state.PersistenceException;
+import org.flexdock.docking.state.*;
 import org.flexdock.docking.state.tree.DockableNode;
 import org.flexdock.docking.state.tree.DockingPortNode;
 import org.flexdock.docking.state.tree.SplitNode;
@@ -57,6 +34,21 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
 /**
  * Created on 2005-06-03
  *
@@ -69,7 +61,7 @@ public class XMLPersister implements Persister {
      * {@inheritDoc}
      */
     @Override
-    public boolean store(OutputStream os, PerspectiveModel perspectiveModel) throws IOException, PersistenceException {
+	public boolean store(OutputStream os, PerspectiveModel perspectiveModel) throws PersistenceException {
         DocumentBuilder documentBuilder = createDocumentBuilder();
         Document document = documentBuilder.newDocument();
 
@@ -81,7 +73,7 @@ public class XMLPersister implements Persister {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         // the indent-number attribute causes an IllegalArgumentException under 1.4
         if(Utilities.JAVA_1_5) {
-            transformerFactory.setAttribute("indent-number", new Integer(4));
+			transformerFactory.setAttribute("indent-number", 4);
         }
 
         try {
@@ -94,9 +86,8 @@ public class XMLPersister implements Persister {
             StreamResult result = new StreamResult(new OutputStreamWriter(os));
 
             transformer.transform(source, result);
-        } catch (TransformerConfigurationException ex) {
-            throw new PersistenceException("Unable to serialize perspectiveModel", ex);
-        } catch (TransformerException ex) {
+		}
+		catch (TransformerException ex) {
             throw new PersistenceException("Unable to serialize perspectiveModel", ex);
         }
 

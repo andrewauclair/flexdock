@@ -19,19 +19,14 @@
  */
 package org.flexdock.plaf.mappings;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
-
-
-
 import org.flexdock.plaf.Configurator;
 import org.flexdock.plaf.XMLConstants;
 import org.w3c.dom.Element;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Christopher Butler
@@ -77,16 +72,16 @@ public class PlafMappingFactory implements XMLConstants {
         HashMap elements = Configurator.getNamedElementsByTagName(PLAF_KEY);
         HashMap mappings = new HashMap(elements.size());
 
-        for(Iterator it=elements.keySet().iterator(); it.hasNext();) {
-            String key = (String)it.next();
-            Element elem = (Element)elements.get(key);
+		for (Object o : elements.keySet()) {
+			String key = (String) o;
+			Element elem = (Element) elements.get(key);
 
-            String name = elem.getAttribute(NAME_KEY);
-            String ref = elem.getAttribute(REFERENCE_KEY);
-            String resolver = elem.getAttribute(HANDLER_KEY);
-            Object value = createPlafMapping(ref, resolver);
-            mappings.put(name, value);
-        }
+			String name = elem.getAttribute(NAME_KEY);
+			String ref = elem.getAttribute(REFERENCE_KEY);
+			String resolver = elem.getAttribute(HANDLER_KEY);
+			Object value = createPlafMapping(ref, resolver);
+			mappings.put(name, value);
+		}
         return mappings;
     }
 

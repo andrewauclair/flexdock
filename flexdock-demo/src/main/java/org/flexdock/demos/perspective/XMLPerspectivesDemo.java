@@ -24,7 +24,7 @@ import org.flexdock.docking.DockableFactory;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.drag.effects.EffectsManager;
-import org.flexdock.docking.drag.preview.GhostPreview;
+import org.flexdock.docking.drag.preview.AlphaPreview;
 import org.flexdock.docking.state.PersistenceException;
 import org.flexdock.perspective.LayoutSequence;
 import org.flexdock.perspective.Perspective;
@@ -120,8 +120,6 @@ public class XMLPerspectivesDemo extends JFrame {
         JMenu perspectiveMenu = new JMenu("Perspective");
         //pobieramy perspektywe nr 1
         perspectiveMenu.add(new OpenPerspectiveAction(P1));
-//                perspectiveMenu.add(new OpenPerspectiveAction(P2));
-//                perspectiveMenu.add(new OpenPerspectiveAction(P3));
 
         menuBar.add(showViewMenu);
         menuBar.add(perspectiveMenu);
@@ -133,13 +131,11 @@ public class XMLPerspectivesDemo extends JFrame {
         // setup the DockingManager to work with our application
         DockingManager.setDockableFactory(new ViewFactory());
         DockingManager.setFloatingEnabled(true);
-        EffectsManager.setPreview(new GhostPreview());
+		EffectsManager.setPreview(new AlphaPreview());
 
         // configure the perspective manager
         PerspectiveManager.setFactory(new DemoPerspectiveFactory());
         PerspectiveManager.setRestoreFloatingOnLoad(true);
-        PerspectiveManager mgr = PerspectiveManager.getInstance();
-        //mgr.setCurrentPerspective(P1, true);
 
         // load any previously persisted layouts
         PersistenceHandler persister = new FilePersistenceHandler(new File(FilePersistenceHandler.DEFAULT_PERSPECTIVE_DIR, PERSPECTIVE_FILE), XMLPersister.newDefaultInstance());

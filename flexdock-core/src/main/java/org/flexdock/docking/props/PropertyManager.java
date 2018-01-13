@@ -28,8 +28,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Christopher Butler
@@ -78,8 +80,8 @@ public class PropertyManager {
 	private static void linkPropertySet(Dockable dockable, DockablePropertySet propertySet) {
 		dockable.putClientProperty(DOCKABLE_PROPERTIES_KEY, propertySet);
 		PropertyChangeListener[] listeners = PropertyChangeListenerFactory.getListeners();
-		for (int i = 0; i < listeners.length; i++) {
-			propertySet.addPropertyChangeListener(listeners[i]);
+		for (PropertyChangeListener listener : listeners) {
+			propertySet.addPropertyChangeListener(listener);
 		}
 	}
 
@@ -178,15 +180,15 @@ public class PropertyManager {
 		try {
 			// get the constructor with the Dockable 'dockable' parameter
 			Constructor[] constructors = c.getConstructors();
-			for (int i = 0; i < constructors.length; i++) {
-				Class[] paramTypes = constructors[i].getParameterTypes();
+			for (Constructor constructor : constructors) {
+				Class[] paramTypes = constructor.getParameterTypes();
 				if (paramTypes.length != 1) {
 					continue;
 				}
 
 				Class param = paramTypes[0];
 				if (Dockable.class.isAssignableFrom(param)) {
-					return (DockablePropertySet) constructors[i].newInstance(new Object[]{d});
+					return (DockablePropertySet) constructor.newInstance(new Object[]{d});
 				}
 
 			}
@@ -211,8 +213,7 @@ public class PropertyManager {
 			return null;
 		}
 
-		for (Iterator it = maps.iterator(); it.hasNext(); ) {
-			Object map = it.next();
+		for (Object map : maps) {
 			Object value = getProperty(key, map);
 			if (value != null) {
 				return value;

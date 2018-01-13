@@ -21,7 +21,6 @@ package org.flexdock.docking.props;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -44,8 +43,8 @@ public abstract class PropertyChangeListenerFactory {
 
 	public static PropertyChangeListener[] getListeners() {
 		ArrayList list = new ArrayList(FACTORIES.size());
-		for (Iterator it = FACTORIES.iterator(); it.hasNext(); ) {
-			PropertyChangeListenerFactory factory = (PropertyChangeListenerFactory) it.next();
+		for (Object FACTORY : FACTORIES) {
+			PropertyChangeListenerFactory factory = (PropertyChangeListenerFactory) FACTORY;
 			PropertyChangeListener listener = factory.getListener();
 			if (listener != null) {
 				list.add(listener);

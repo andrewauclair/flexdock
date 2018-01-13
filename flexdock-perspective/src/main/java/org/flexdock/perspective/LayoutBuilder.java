@@ -19,11 +19,6 @@
  */
 package org.flexdock.perspective;
 
-import java.awt.Component;
-
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
@@ -34,6 +29,9 @@ import org.flexdock.docking.state.tree.DockableNode;
 import org.flexdock.docking.state.tree.DockingPortNode;
 import org.flexdock.docking.state.tree.SplitNode;
 import org.flexdock.util.SwingUtility;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -115,9 +113,9 @@ public class LayoutBuilder {
             link(node, childNode);
         } else if (child instanceof JTabbedPane) {
             LayoutNode[] children = createLayout((JTabbedPane)child);
-            for(int i=0; i<children.length; i++) {
-                link(node, children[i]);
-            }
+			for (LayoutNode aChildren : children) {
+				link(node, aChildren);
+			}
         } else {
             Dockable dockable = DockingManager.getDockable(child);
             LayoutNode childNode = createLayout(dockable);

@@ -220,8 +220,8 @@ public class ActiveDockableTracker {
 
 	public boolean containsPropertyChangeListener(PropertyChangeListener listener) {
 		PropertyChangeListener[] listeners = getPropertyChangeListeners();
-		for (int i = 0; i < listeners.length; i++) {
-			if (listeners[i] == listener) {
+		for (PropertyChangeListener listener1 : listeners) {
+			if (listener1 == listener) {
 				return true;
 			}
 		}

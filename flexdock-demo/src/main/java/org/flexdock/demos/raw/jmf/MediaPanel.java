@@ -32,6 +32,7 @@ import java.util.HashMap;
 
 
 /**
+ * @deprecated Removing MediaPanel because it serves no use to me.
  * @author Christopher Butler
  */
 public class MediaPanel extends JPanel implements DockingStub {
@@ -90,7 +91,7 @@ public class MediaPanel extends JPanel implements DockingStub {
         }
     }
 
-    private static HashMap jarUrlToTempFileCache = new HashMap();
+	private static final HashMap<URL, File> jarUrlToTempFileCache = new HashMap<>();
 
     /**
      * JMF doesn't realize a player/viewer for URLs pointing to resources inside jars.
@@ -110,7 +111,7 @@ public class MediaPanel extends JPanel implements DockingStub {
 
         File f;
         synchronized (jarUrlToTempFileCache) {
-            f = (File) jarUrlToTempFileCache.get(url);
+			f = jarUrlToTempFileCache.get(url);
             if (f != null && f.exists() && f.isFile() && f.canRead()) {
                 return f.toURL();
             }
@@ -133,7 +134,7 @@ public class MediaPanel extends JPanel implements DockingStub {
 
             jarUrlToTempFileCache.put(url, f);
         }
-        return f.toURL();
+		return f.toURI().toURL();
     }
 
     @Override

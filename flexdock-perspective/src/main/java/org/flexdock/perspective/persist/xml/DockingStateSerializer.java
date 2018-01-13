@@ -114,17 +114,18 @@ public class DockingStateSerializer implements ISerializer {
     }
 
     private int getRealMinimizeConstraint(String presConstraint) {
-        if (presConstraint.equals("left")) {
-            return SwingConstants.LEFT;
-        } else if (presConstraint.equals("bottom")) {
-            return SwingConstants.BOTTOM;
-        } else if (presConstraint.equals("center")) {
-            return SwingConstants.CENTER;
-        } else if (presConstraint.equals("right")) {
-            return SwingConstants.RIGHT;
-        } else if (presConstraint.equals("top")) {
-            return SwingConstants.TOP;
-        }
+		switch (presConstraint) {
+			case "left":
+				return SwingConstants.LEFT;
+			case "bottom":
+				return SwingConstants.BOTTOM;
+			case "center":
+				return SwingConstants.CENTER;
+			case "right":
+				return SwingConstants.RIGHT;
+			case "top":
+				return SwingConstants.TOP;
+		}
 
         throw new RuntimeException("Minimization conversion error!");
     }

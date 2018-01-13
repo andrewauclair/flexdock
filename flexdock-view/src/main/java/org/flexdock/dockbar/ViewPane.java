@@ -66,11 +66,11 @@ public class ViewPane extends JPanel {
     public void updateContents() {
         // remove the currently docked component
         Component[] children = getComponents();
-        for(int i=0; i<children.length; i++) {
-            if(children[i]!=dragEdge) {
-                remove(children[i]);
-            }
-        }
+		for (Component aChildren : children) {
+			if (aChildren != dragEdge) {
+				remove(aChildren);
+			}
+		}
 
         // add the new component
         Dockable d = manager.getActiveDockable();

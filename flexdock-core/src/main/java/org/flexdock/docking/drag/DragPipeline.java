@@ -34,7 +34,7 @@ public class DragPipeline {
 
 	private GlassPaneMonitor paneMonitor;
 	private RootWindow[] windows;
-	private HashMap rootWindowsByBounds;
+	private HashMap<Rectangle, RootWindow> rootWindowsByBounds;
 	private DragGlasspane currentGlasspane;
 	private DragGlasspane newGlassPane;
 	private Rectangle[] windowBounds;
@@ -86,7 +86,7 @@ public class DragPipeline {
                 .toArray(RootWindow[]::new);
 
 		windowBounds = new Rectangle[windows.length];
-		rootWindowsByBounds = new HashMap();
+		rootWindowsByBounds = new HashMap<>();
 
 		for (int i = 0; i < windows.length; i++) {
             RootWindow window = windows[i];
@@ -296,7 +296,7 @@ public class DragPipeline {
 		Point screenLoc = dragToken.getCurrentMouse(true);
 		for (Rectangle windowBound : windowBounds) {
 			if (windowBound.contains(screenLoc)) {
-				return (RootWindow) rootWindowsByBounds.get(windowBound);
+				return rootWindowsByBounds.get(windowBound);
 			}
 		}
 		return null;

@@ -19,19 +19,11 @@
  */
 package org.flexdock.plaf;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.Action;
-import javax.swing.Icon;
+import javax.swing.*;
 import javax.swing.border.Border;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 
 
@@ -41,18 +33,14 @@ import javax.swing.border.Border;
  */
 public class PropertySet {
 
-    private HashMap properties;
+	private HashMap<String, Object> properties;
     private String name;
 
     public PropertySet() {
-        properties = new HashMap();
+		properties = new HashMap<>();
     }
 
-    public PropertySet(int size) {
-        properties = new HashMap(size);
-    }
-
-    public void setAll(PropertySet set) {
+	public void setAll(PropertySet set) {
         if(set!=null) {
             properties.putAll(set.properties);
         }
@@ -76,12 +64,7 @@ public class PropertySet {
         return property instanceof Font? (Font)property: null;
     }
 
-    public Image getImage(String key) {
-        Object property = getProperty(key);
-        return property instanceof Image? (Image)property: null;
-    }
-
-    public Icon getIcon(String key) {
+	public Icon getIcon(String key) {
         Object property = getProperty(key);
         return property instanceof Icon? (Icon)property: null;
     }
@@ -128,27 +111,14 @@ public class PropertySet {
         }
     }
 
-    public Integer getInteger(String key) {
-        String string = getString(key);
-        if(string==null) {
-            return null;
-        }
-
-        try {
-            return new Integer(string);
-        } catch(NumberFormatException e) {
-            return null;
-        }
-    }
-
-    public boolean getBoolean( String key) {
+	public boolean getBoolean(String key) {
         String string = getString(key);
         if(string==null) {
             return false;
         }
 
         try {
-            return Boolean.valueOf( string).booleanValue();
+			return Boolean.valueOf(string);
         } catch(NumberFormatException e) {
             System.err.println("Exception: " +e.getMessage());
             e.printStackTrace();
@@ -156,7 +126,7 @@ public class PropertySet {
         }
     }
 
-    public Iterator keys() {
+	public Iterator<String> keys() {
         return properties.keySet().iterator();
     }
     /**
@@ -172,25 +142,21 @@ public class PropertySet {
         this.name = name;
     }
 
-    public int size() {
+	private int size() {
         return properties.size();
     }
 
-    public List getNumericKeys() {
-        return getNumericKeys(false);
-    }
-
-    public List getNumericKeys(boolean sort) {
-        ArrayList list = new ArrayList(size());
-        for(Iterator it=properties.keySet().iterator(); it.hasNext();) {
-            String key = (String)it.next();
-            if(isNumeric(key)) {
-                list.add(key);
-            }
-        }
+	public List<String> getNumericKeys(boolean sort) {
+		ArrayList<String> list = new ArrayList<>(size());
+		for (Object o : properties.keySet()) {
+			String key = (String) o;
+			if (isNumeric(key)) {
+				list.add(key);
+			}
+		}
 
         if(sort) {
-            Collections.sort(list, new NumericStringSort());
+			list.sort(Comparator.comparingInt(Integer::parseInt));
         }
 
         return list;
@@ -205,12 +171,12 @@ public class PropertySet {
         }
     }
 
-    public Class toClass(String key) throws ClassNotFoundException {
+	public Class<?> toClass(String key) throws ClassNotFoundException {
         String type = getString(key);
         return resolveClass(type);
     }
 
-    protected Class resolveClass(String className) throws ClassNotFoundException {
+	protected Class<?> resolveClass(String className) throws ClassNotFoundException {
         if(className==null) {
             return null;
         }
@@ -243,15 +209,5 @@ public class PropertySet {
     @Override
     public String toString() {
         return "PropertySet[name=\"" + name + "\"; hashmap=" + properties + "]";
-    }
-
-    private static class NumericStringSort implements Comparator {
-
-        @Override
-        public int compare(Object o1, Object o2) {
-            int i1 = Integer.parseInt((String)o1);
-            int i2 = Integer.parseInt((String)o2);
-            return i1-i2;
-        }
     }
 }

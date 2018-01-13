@@ -29,7 +29,6 @@ import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -39,10 +38,8 @@ import java.util.WeakHashMap;
  */
 public class DockingPortTracker implements HierarchyListener {
 	private static final DockingPortTracker SINGLETON = new DockingPortTracker();
-	private static final WeakHashMap TRACKERS_BY_WINDOW = new WeakHashMap();
-	private static final WeakHashMap DOCKING_PORTS = new WeakHashMap();
-	private static final Object NULL = new Object();
-
+	private static final WeakHashMap<RootWindow, RootDockingPortInfo> TRACKERS_BY_WINDOW = new WeakHashMap<>();
+	private static final WeakHashMap<DockingPort, Object> DOCKING_PORTS = new WeakHashMap<>();
 
 	public static HierarchyListener getInstance() {
 		return SINGLETON;
@@ -62,12 +59,12 @@ public class DockingPortTracker implements HierarchyListener {
 		return getRootDockingPortInfo(window);
 	}
 
-	public static RootDockingPortInfo getRootDockingPortInfo(RootWindow window) {
+	private static RootDockingPortInfo getRootDockingPortInfo(RootWindow window) {
 		if (window == null) {
 			return null;
 		}
 
-		RootDockingPortInfo info = (RootDockingPortInfo) TRACKERS_BY_WINDOW.get(window);
+		RootDockingPortInfo info = TRACKERS_BY_WINDOW.get(window);
 		if (info == null) {
 			synchronized (TRACKERS_BY_WINDOW) {
 				info = new RootDockingPortInfo(window);
@@ -83,8 +80,7 @@ public class DockingPortTracker implements HierarchyListener {
 		}
 
 		synchronized (TRACKERS_BY_WINDOW) {
-			for (Iterator it = TRACKERS_BY_WINDOW.values().iterator(); it.hasNext(); ) {
-				RootDockingPortInfo info = (RootDockingPortInfo) it.next();
+			for (RootDockingPortInfo info : TRACKERS_BY_WINDOW.values()) {
 				DockingPort port = info.getPort(portId);
 				if (port != null) {
 					return port;
@@ -100,8 +96,7 @@ public class DockingPortTracker implements HierarchyListener {
 		}
 
 		synchronized (TRACKERS_BY_WINDOW) {
-			for (Iterator it = TRACKERS_BY_WINDOW.values().iterator(); it.hasNext(); ) {
-				RootDockingPortInfo info = (RootDockingPortInfo) it.next();
+			for (RootDockingPortInfo info : TRACKERS_BY_WINDOW.values()) {
 				if (info.contains(port)) {
 					return info;
 				}
@@ -139,7 +134,7 @@ public class DockingPortTracker implements HierarchyListener {
 	}
 
 
-	public static DockingPort findByWindow(RootWindow window) {
+	private static DockingPort findByWindow(RootWindow window) {
 		RootDockingPortInfo info = getRootDockingPortInfo(window);
 		if (info == null) {
 			return null;
@@ -155,7 +150,7 @@ public class DockingPortTracker implements HierarchyListener {
 		}
 
 		synchronized (DOCKING_PORTS) {
-			DOCKING_PORTS.put(port, NULL);
+			DOCKING_PORTS.put(port, new Object());
 		}
 
 		RootDockingPortInfo info = findInfoByPort(port);
@@ -167,10 +162,7 @@ public class DockingPortTracker implements HierarchyListener {
 
 
 	private boolean isParentChange(HierarchyEvent evt) {
-		if (evt.getID() != HierarchyEvent.HIERARCHY_CHANGED || evt.getChangeFlags() != HierarchyEvent.PARENT_CHANGED) {
-			return false;
-		}
-		return true;
+		return evt.getID() == HierarchyEvent.HIERARCHY_CHANGED && evt.getChangeFlags() == HierarchyEvent.PARENT_CHANGED;
 	}
 
 	private boolean isRemoval(HierarchyEvent evt) {
@@ -213,43 +205,40 @@ public class DockingPortTracker implements HierarchyListener {
 		}
 	}
 
-	public void dockingPortAdded(RootWindow window, DockingPort port) {
+	private void dockingPortAdded(RootWindow window, DockingPort port) {
 		RootDockingPortInfo info = getRootDockingPortInfo(window);
 		if (info != null) {
 			info.add(port);
 		}
 	}
 
-	public void dockingPortRemoved(RootWindow window, DockingPort port) {
+	private void dockingPortRemoved(RootWindow window, DockingPort port) {
 		RootDockingPortInfo info = getRootDockingPortInfo(window);
 		if (info != null) {
 			info.remove(port);
 		}
 	}
 
-	public static Set getDockingWindows() {
+	public static Set<RootWindow> getDockingWindows() {
 		synchronized (TRACKERS_BY_WINDOW) {
-			return new HashSet(TRACKERS_BY_WINDOW.keySet());
+			return new HashSet<>(TRACKERS_BY_WINDOW.keySet());
 		}
 	}
 
-	public static Set getDockingPorts() {
-		Set globalSet = new HashSet();
+	private static Set<DockingPort> getDockingPorts() {
+		Set<DockingPort> globalSet;
 		synchronized (DOCKING_PORTS) {
-			for (Iterator it = DOCKING_PORTS.keySet().iterator(); it.hasNext(); ) {
-				Object obj = it.next();
-				globalSet.add(obj);
-			}
+			globalSet = new HashSet<>(DOCKING_PORTS.keySet());
 		}
 		return globalSet;
 	}
 
-	public static Set getRootDockingPorts() {
-		HashSet rootSet = new HashSet();
-		Set globalSet = getDockingPorts();
+	public static Set<DockingPort> getRootDockingPorts() {
+		HashSet<DockingPort> rootSet = new HashSet<>();
+		Set<DockingPort> globalSet = getDockingPorts();
 
-		for (Iterator it = globalSet.iterator(); it.hasNext(); ) {
-			DockingPort port = (DockingPort) it.next();
+		for (Object aGlobalSet : globalSet) {
+			DockingPort port = (DockingPort) aGlobalSet;
 			if (port.isRoot()) {
 				rootSet.add(port);
 			}

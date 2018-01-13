@@ -241,7 +241,7 @@ public class Layout implements Cloneable, FloatManager, Serializable {
         EventManager.dispatch(evt);
     }
 
-    private void restoreDeferredMinimizedDockables(final ArrayList deferred) {
+	private void restoreDeferredMinimizedDockables(final ArrayList<Dockable> deferred) {
         if (deferred == null || deferred.isEmpty()) {
             return;
         }
@@ -250,7 +250,7 @@ public class Layout implements Cloneable, FloatManager, Serializable {
     }
 
 
-    private void restoreMinimizedDockables(ArrayList dockables) {
+	private void restoreMinimizedDockables(ArrayList<Dockable> dockables) {
         if (SwingUtility.getActiveWindow() == null) {
             restoreDeferredMinimizedDockables(dockables);
             return;
@@ -300,7 +300,7 @@ public class Layout implements Cloneable, FloatManager, Serializable {
     @Override
     public Object clone() {
         synchronized (this) {
-            ArrayList listeners = (ArrayList) getLayoutListeners().clone();
+			ArrayList<LayoutListener> listeners = (ArrayList<LayoutListener>) getLayoutListeners().clone();
             HashMap infoMap = (HashMap) dockingInfo.clone();
             for (String key : dockingInfo.keySet()) {
                 DockingState info = getDockingState(key);

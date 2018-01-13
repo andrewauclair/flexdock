@@ -47,7 +47,7 @@ public interface BorderManager {
 	 *
 	 * @param port the {@code DockingPort} whose layout borders are to be managed
 	 */
-	public void managePortNullChild(DockingPort port);
+	void managePortNullChild(DockingPort port);
 
 	/**
 	 * Callback method allowing for customized behavior when the
@@ -58,7 +58,7 @@ public interface BorderManager {
 	 *
 	 * @param port the {@code DockingPort} whose layout borders are to be managed
 	 */
-	public void managePortSimpleChild(DockingPort port);
+	void managePortSimpleChild(DockingPort port);
 
 	/**
 	 * Callback method allowing for customized behavior when the
@@ -68,7 +68,7 @@ public interface BorderManager {
 	 *
 	 * @param port the {@code DockingPort} whose layout borders are to be managed
 	 */
-	public void managePortSplitChild(DockingPort port);
+	void managePortSplitChild(DockingPort port);
 
 	/**
 	 * Callback method allowing for customized behavior when the
@@ -79,5 +79,5 @@ public interface BorderManager {
 	 *
 	 * @param port the {@code DockingPort} whose layout borders are to be managed
 	 */
-	public void managePortTabbedChild(DockingPort port);
+	void managePortTabbedChild(DockingPort port);
 }

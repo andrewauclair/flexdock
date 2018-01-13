@@ -97,7 +97,7 @@ public class DockingManager {
 			DefaultDockingStrategy.class, new DefaultDockingStrategy());
 
 	// Map(DockingPort -> MaximizedState)
-	private static final Map MAXIMIZED_STATES_BY_ROOT_PORT = new HashMap();
+	private static final Map<DockingPort, MaximizedState> MAXIMIZED_STATES_BY_ROOT_PORT = new HashMap<>();
 
 	private static Object persistentIdLock = new Object();
 
@@ -1228,14 +1228,8 @@ public class DockingManager {
 		try {
 			return restoreLayout(false);
 		}
-		catch (IOException e) {
+		catch (IOException | PersistenceException e) {
 			// shouldn't happen since we're not intending to load from storage
-			System.err.println("Exception: " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
-		catch (PersistenceException e) {
-			// TODO Auto-generated catch block
 			System.err.println("Exception: " + e.getMessage());
 			e.printStackTrace();
 			return false;
@@ -2576,6 +2570,6 @@ public class DockingManager {
 	}
 
 	private static MaximizedState getMaximizedState(DockingPort rootPort) {
-		return (MaximizedState) MAXIMIZED_STATES_BY_ROOT_PORT.get(rootPort);
+		return MAXIMIZED_STATES_BY_ROOT_PORT.get(rootPort);
 	}
 }

@@ -25,37 +25,34 @@ import org.flexdock.util.RootWindow;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * @author Christopher Butler
  */
 public class RootDockingPortInfo {
-	private WeakReference windowRef;
-	private ArrayList rootPorts;
-	private HashMap portsById;
+	private WeakReference<RootWindow> windowRef;
+	private final ArrayList<DockingPort> rootPorts = new ArrayList<>();
+	private final HashMap<String, DockingPort> portsById = new HashMap<>();
 	private String mainPortId;
 
-	public RootDockingPortInfo(RootWindow window) {
-		windowRef = new WeakReference(window);
-		rootPorts = new ArrayList(2);
-		portsById = new HashMap(2);
+	RootDockingPortInfo(RootWindow window) {
+		windowRef = new WeakReference<>(window);
 	}
 
 	public RootWindow getWindow() {
-		return (RootWindow) windowRef.get();
+		return windowRef.get();
 	}
 
 	private boolean containsPortId(DockingPort port) {
-		return port == null ? false : contains(port.getPersistentId());
+		return port != null && contains(port.getPersistentId());
 	}
 
 	public boolean contains(String portId) {
-		return portId == null ? false : portsById.containsKey(portId);
+		return portId != null && portsById.containsKey(portId);
 	}
 
 	public boolean contains(DockingPort port) {
-		return port == null ? false : portsById.containsValue(port);
+		return port != null && portsById.containsValue(port);
 	}
 
 	public synchronized void add(DockingPort port) {
@@ -75,9 +72,8 @@ public class RootDockingPortInfo {
 		String key = port.getPersistentId();
 		if (!contains(key)) {
 			key = null;
-			for (Iterator it = portsById.keySet().iterator(); it.hasNext(); ) {
-				String tmpKey = (String) it.next();
-				DockingPort tmp = (DockingPort) portsById.get(tmpKey);
+			for (String tmpKey : portsById.keySet()) {
+				DockingPort tmp = portsById.get(tmpKey);
 				if (tmp == port) {
 					key = tmpKey;
 					break;
@@ -91,16 +87,16 @@ public class RootDockingPortInfo {
 		rootPorts.remove(port);
 	}
 
-	public int getPortCount() {
+	private int getPortCount() {
 		return rootPorts.size();
 	}
 
 	public DockingPort getPort(int indx) {
-		return indx < getPortCount() ? (DockingPort) rootPorts.get(indx) : null;
+		return indx < getPortCount() ? rootPorts.get(indx) : null;
 	}
 
 	public DockingPort getPort(String portId) {
-		return (DockingPort) portsById.get(portId);
+		return portsById.get(portId);
 	}
 
 	public void setMainPort(String portId) {

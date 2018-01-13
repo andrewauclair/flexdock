@@ -37,7 +37,6 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -100,29 +99,34 @@ public class XMLDebugger {
 
 
         Field[] fields = getFields(obj);
-        for(int i=0; i<fields.length; i++) {
-            String modifiers = Modifier.toString(fields[i].getModifiers());
-            if(modifiers.indexOf("static")!=-1 || modifiers.indexOf("transient")!=-1) {
-                continue;
-            }
+		for (Field field : fields) {
+			String modifiers = Modifier.toString(field.getModifiers());
+			if (modifiers.contains("static") || modifiers.contains("transient")) {
+				continue;
+			}
 
-            Object fieldValue = getValue(fields[i], obj);
-            String fieldName = fields[i].getName();
+			Object fieldValue = getValue(field, obj);
+			String fieldName = field.getName();
 
-            if(fieldValue==null) {
-                objElem.setAttribute(fieldName, "null");
-            } else if(isBasic(fieldValue)) {
-                objElem.setAttribute(fieldName, fieldValue.toString());
-            } else if(fieldValue instanceof Collection) {
-                buildXML((Collection)fieldValue, document, objElem, fieldName);
-            } else if(fieldValue instanceof Object[]) {
-                buildXML((Object[])fieldValue, document, objElem, fieldName);
-            } else if(fieldValue instanceof Map) {
-                buildXML((Map)fieldValue, document, objElem, fieldName);
-            } else {
-                buildXML(fieldValue, document, objElem);
-            }
-        }
+			if (fieldValue == null) {
+				objElem.setAttribute(fieldName, "null");
+			}
+			else if (isBasic(fieldValue)) {
+				objElem.setAttribute(fieldName, fieldValue.toString());
+			}
+			else if (fieldValue instanceof Collection) {
+				buildXML((Collection) fieldValue, document, objElem, fieldName);
+			}
+			else if (fieldValue instanceof Object[]) {
+				buildXML((Object[]) fieldValue, document, objElem, fieldName);
+			}
+			else if (fieldValue instanceof Map) {
+				buildXML((Map) fieldValue, document, objElem, fieldName);
+			}
+			else {
+				buildXML(fieldValue, document, objElem);
+			}
+		}
         try {
             parentElem.appendChild(objElem);
         } catch(NullPointerException e) {
@@ -137,10 +141,9 @@ public class XMLDebugger {
         Element objElem = document.createElement(fieldName);
         objElem.setAttribute("type", "collection");
 
-        for(Iterator it=collection.iterator(); it.hasNext();) {
-            Object obj = it.next();
-            buildXML(obj, document, objElem);
-        }
+		for (Object obj : collection) {
+			buildXML(obj, document, objElem);
+		}
 
         parentElem.appendChild(objElem);
     }
@@ -149,12 +152,11 @@ public class XMLDebugger {
         Element objElem = document.createElement(fieldName);
         objElem.setAttribute("type", "map");
 
-        for(Iterator it=map.keySet().iterator(); it.hasNext();) {
-            Object key = it.next();
-            Object value = map.get(key);
-            Object obj = new MapEntry(key, value);
-            buildXML(obj, document, objElem);
-        }
+		for (Object key : map.keySet()) {
+			Object value = map.get(key);
+			Object obj = new MapEntry(key, value);
+			buildXML(obj, document, objElem);
+		}
 
         parentElem.appendChild(objElem);
     }
@@ -163,9 +165,9 @@ public class XMLDebugger {
         Element objElem = document.createElement(fieldName);
         objElem.setAttribute("type", "array");
 
-        for(int i=0; i<objects.length; i++) {
-            buildXML(objects[i], document, objElem);
-        }
+		for (Object object : objects) {
+			buildXML(object, document, objElem);
+		}
 
         parentElem.appendChild(objElem);
     }

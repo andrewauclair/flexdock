@@ -26,7 +26,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**
@@ -75,13 +74,13 @@ public class Dockbar extends JPanel {
             return null;
         }
 
-        for (Iterator docks = mDocks.iterator(); docks.hasNext();) {
-            DockbarLabel label = (DockbarLabel) docks.next();
+		for (Object mDock : mDocks) {
+			DockbarLabel label = (DockbarLabel) mDock;
 
-            if (label.getDockable() == dockable) {
-                return label;
-            }
-        } // for
+			if (label.getDockable() == dockable) {
+				return label;
+			}
+		} // for
 
         return null;
     }

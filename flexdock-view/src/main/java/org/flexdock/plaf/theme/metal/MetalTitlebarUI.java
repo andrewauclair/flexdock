@@ -19,17 +19,13 @@
  */
 package org.flexdock.plaf.theme.metal;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
-
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
 import org.flexdock.plaf.theme.TitlebarUI;
 import org.flexdock.view.Button;
 import org.flexdock.view.Titlebar;
+
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Claudio Romano
@@ -66,15 +62,15 @@ public class MetalTitlebarUI extends TitlebarUI {
     protected int getPainterWidth(Graphics g, Titlebar titlebar) {
         int buttonWidth = 0;
         Component[] c = titlebar.getComponents();
-        for (int i = 0; i < c.length; i++) {
-            if (!(c[i] instanceof Button)) {
-                continue;
-            }
+		for (Component aC : c) {
+			if (!(aC instanceof Button)) {
+				continue;
+			}
 
-            Button b = (Button) c[i];
-            buttonWidth = b.getHeight();
-            break;
-        }
+			Button b = (Button) aC;
+			buttonWidth = b.getHeight();
+			break;
+		}
 
         int paintY = (getButtonMargin() + buttonWidth) * 2;
         paintY += 5;

@@ -30,10 +30,10 @@ import java.util.HashSet;
  */
 @SuppressWarnings(value = {"serial"})
 public class RootDockablePropertySet extends BasicDockablePropertySet {
-	private static final Float DEFAULT_REGION_INSETS = new Float(RegionChecker.DEFAULT_REGION_SIZE);
-	private static final Float DEFAULT_SIBLING_INSETS = new Float(DockingManager.getDefaultSiblingSize());
-	public static final Float DEFAULT_DRAG_THRESHOLD = new Float(4);
-	public static final Float DEFAULT_PREVIEW_SIZE = new Float(0.3);
+	private static final Float DEFAULT_REGION_INSETS = RegionChecker.DEFAULT_REGION_SIZE;
+	private static final Float DEFAULT_SIBLING_INSETS = DockingManager.getDefaultSiblingSize();
+	public static final Float DEFAULT_DRAG_THRESHOLD = 4f;
+	public static final Float DEFAULT_PREVIEW_SIZE = 0.3f;
 
 	private HashSet constraints;
 

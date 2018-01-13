@@ -24,7 +24,7 @@ package org.flexdock.event;
  * @author Christopher Butler
  */
 public interface RegistrationListener {
-	public void registered(RegistrationEvent evt);
+	void registered(RegistrationEvent evt);
 
-	public void unregistered(RegistrationEvent evt);
+	void unregistered(RegistrationEvent evt);
 }

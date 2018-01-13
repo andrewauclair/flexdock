@@ -19,16 +19,16 @@
  */
 package org.flexdock.plaf.resources.paint;
 
-import java.awt.Graphics;
-
-import javax.swing.JComponent;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Claudio Romano
  */
 public interface Painter {
-    public void paint(Graphics g, int width, int height, boolean active, JComponent titlebar);
+	void paint(Graphics g, int width, int height, boolean active, JComponent titlebar);
 
-    public PainterResource getPainterResource();
-    public void setPainterResource(PainterResource painterResource);
+	PainterResource getPainterResource();
+
+	void setPainterResource(PainterResource painterResource);
 }

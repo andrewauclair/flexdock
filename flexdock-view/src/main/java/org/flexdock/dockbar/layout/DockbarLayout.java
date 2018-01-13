@@ -30,7 +30,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -142,16 +141,16 @@ public class DockbarLayout {
 		add(guideSet, getCurrentEdgeGuide(SwingConstants.RIGHT));
 		add(guideSet, getCurrentEdgeGuide(SwingConstants.BOTTOM));
 
-        for(Iterator it=borderSet.iterator(); it.hasNext();) {
-            InsetBorder border = (InsetBorder)it.next();
-            changed = border.setEmptyInsets(emptyInsets) || changed;
-        }
+		for (Object aBorderSet : borderSet) {
+			InsetBorder border = (InsetBorder) aBorderSet;
+			changed = border.setEmptyInsets(emptyInsets) || changed;
+		}
 
         if(changed) {
-            for(Iterator it=guideSet.iterator(); it.hasNext();) {
-                JComponent guide = (JComponent)it.next();
-                guide.revalidate();
-            }
+			for (Object aGuideSet : guideSet) {
+				JComponent guide = (JComponent) aGuideSet;
+				guide.revalidate();
+			}
         }
     }
 

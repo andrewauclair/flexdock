@@ -19,14 +19,14 @@
  */
 package org.flexdock.plaf.icons;
 
+import org.flexdock.plaf.Configurator;
+import org.flexdock.plaf.PropertySet;
+import org.flexdock.plaf.XMLConstants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-
-import org.flexdock.plaf.Configurator;
-import org.flexdock.plaf.PropertySet;
-import org.flexdock.plaf.XMLConstants;
 
 /**
  * @author Christopher Butler
@@ -101,11 +101,11 @@ public class IconResourceFactory implements XMLConstants {
 
     private static void cacheResources(IconMap map) {
         if(map!=null) {
-            for(Iterator it=map.keySet().iterator(); it.hasNext();) {
-                String key = (String)it.next();
-                IconResource resource = map.getIcons(key);
-                cacheResource(key, resource);
-            }
+			for (Object o : map.keySet()) {
+				String key = (String) o;
+				IconResource resource = map.getIcons(key);
+				cacheResource(key, resource);
+			}
         }
     }
     private static void cacheResource(String name, IconResource icons) {
@@ -178,14 +178,14 @@ public class IconResourceFactory implements XMLConstants {
         HashMap resourceMap = loadIconResources(realNames);
 
         // now loop through and cache
-        for(int i=0; i<fakeNames.length; i++) {
-            String realName = iconMapProperties.getString(fakeNames[i]);
-            IconResource iconResource = (IconResource)resourceMap.get(realName);
-            // cache the resource for future use
-            cacheResource(realName, iconResource);
-            // add to the immediate icon map
-            iconMap.addIcons(fakeNames[i], iconResource);
-        }
+		for (String fakeName : fakeNames) {
+			String realName = iconMapProperties.getString(fakeName);
+			IconResource iconResource = (IconResource) resourceMap.get(realName);
+			// cache the resource for future use
+			cacheResource(realName, iconResource);
+			// add to the immediate icon map
+			iconMap.addIcons(fakeName, iconResource);
+		}
         return iconMap;
     }
 
@@ -195,10 +195,10 @@ public class IconResourceFactory implements XMLConstants {
         PropertySet[] iconResources = Configurator.getProperties(iconNames, ICON_RESOURCE_KEY);
         HashMap map = new HashMap(iconResources.length);
 
-        for(int i=0; i<iconResources.length; i++) {
-            IconResource resource = createResource(iconResources[i]);
-            map.put(iconResources[i].getName(), resource);
-        }
+		for (PropertySet iconResource : iconResources) {
+			IconResource resource = createResource(iconResource);
+			map.put(iconResource.getName(), resource);
+		}
         return map;
     }
 }

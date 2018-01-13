@@ -18,14 +18,14 @@
  */
 package org.flexdock.perspective.persist.xml;
 
-import java.util.ArrayList;
-
 import org.flexdock.perspective.Perspective;
 import org.flexdock.perspective.persist.PerspectiveModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.ArrayList;
 
 /**
  * Created on 2005-06-03
@@ -46,9 +46,7 @@ public class PerspectiveModelSerializer implements ISerializer {
 
         ISerializer perspectiveSerializer = SerializerRegistry.getSerializer(Perspective.class);
 
-        Perspective[] perspectives = perspectiveModel.getPerspectives();
-        for (int i = 0; i < perspectives.length; i++) {
-            Perspective perspective = perspectives[i];
+		for (Perspective perspective : perspectiveModel.getPerspectives()) {
             Element perspectiveElement = perspectiveSerializer.serialize(document, perspective);
             perspectiveModelElement.appendChild(perspectiveElement);
         }
@@ -63,7 +61,7 @@ public class PerspectiveModelSerializer implements ISerializer {
 
         NodeList perspectivesList = element.getElementsByTagName(PersistenceConstants.PERSPECTIVE_ELEMENT_NAME);
         ISerializer perspectiveSerializer = SerializerRegistry.getSerializer(Perspective.class);
-        ArrayList perspectives = new ArrayList();
+		ArrayList<Perspective> perspectives = new ArrayList<>();
         for (int i=0; i<perspectivesList.getLength(); i++) {
             Node node = perspectivesList.item(i);
             if (node instanceof Element) {
@@ -73,10 +71,8 @@ public class PerspectiveModelSerializer implements ISerializer {
             }
         }
 
-        Perspective[] perspectivesArray = (Perspective[]) perspectives.toArray(new Perspective[perspectives.size()]);
-        PerspectiveModel perspectiveModel = new PerspectiveModel(defaultPerspectiveId, currentPerspectiveId, perspectivesArray);
-
-        return perspectiveModel;
+		Perspective[] perspectivesArray = perspectives.toArray(new Perspective[perspectives.size()]);
+		return new PerspectiveModel(defaultPerspectiveId, currentPerspectiveId, perspectivesArray);
     }
 
 }

@@ -18,13 +18,13 @@
  */
 package org.flexdock.perspective.persist;
 
+import org.flexdock.docking.state.PersistenceException;
+import org.flexdock.perspective.persist.xml.XMLPersister;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import org.flexdock.docking.state.PersistenceException;
-import org.flexdock.perspective.persist.xml.XMLPersister;
 
 /**
  * Created on 2005-06-03
@@ -35,10 +35,10 @@ import org.flexdock.perspective.persist.xml.XMLPersister;
 public class FilePersistenceHandler implements PersistenceHandler {
     public static final File DEFAULT_PERSPECTIVE_DIR = new File(System.getProperty("user.home") + "/flexdock/perspectives");
 
-    protected File defaultPerspectiveFile;
-    protected Persister persister = null;
+	private File defaultPerspectiveFile;
+	private Persister persister = null;
 
-    public FilePersistenceHandler(String absolutePath) {
+	private FilePersistenceHandler(String absolutePath) {
         this(new File(absolutePath), null);
     }
 
@@ -73,12 +73,9 @@ public class FilePersistenceHandler implements PersistenceHandler {
 
 //        XMLDebugger.println(perspectiveModel);
 
-        FileOutputStream fos = new FileOutputStream(file);
-        try {
-            return this.persister.store(fos, perspectiveModel);
-        } finally {
-            fos.close();
-        }
+		try (FileOutputStream fos = new FileOutputStream(file)) {
+			return this.persister.store(fos, perspectiveModel);
+		}
     }
 
     /**
@@ -91,21 +88,12 @@ public class FilePersistenceHandler implements PersistenceHandler {
             return null;
         }
 
-        FileInputStream fis = new FileInputStream(file);
-
-        try {
-            PerspectiveModel perspectiveModel = this.persister.load(fis);
-
-//            LayoutNode node = perspectiveModel.getPerspectives()[1].getLayout().getRestorationLayout();
-//            XMLDebugger.println(node);
-
-            return perspectiveModel;
-        } finally {
-            fis.close();
-        }
+		try (FileInputStream fis = new FileInputStream(file)) {
+			return this.persister.load(fis);
+		}
     }
 
-    protected void validatePerspectiveFile(File file) throws IOException {
+	private void validatePerspectiveFile(File file) throws IOException {
         File dir = file.getParentFile();
         if(!dir.exists()) {
             dir.mkdirs();
@@ -117,7 +105,7 @@ public class FilePersistenceHandler implements PersistenceHandler {
     }
 
 
-    public File getPerspectiveFile(String persistenceKey) {
+	private File getPerspectiveFile(String persistenceKey) {
         if(persistenceKey==null) {
             return defaultPerspectiveFile;
         }
