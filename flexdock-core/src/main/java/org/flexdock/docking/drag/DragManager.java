@@ -103,7 +103,33 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 
         if (pipeline == null || !pipeline.isOpen()) {
             if (passedDragThreshold(evt)) {
-
+                SwingUtilities.invokeLater(() -> openPipeline(evt));
+//                Rectangle bounds = dockable.getComponent().getBounds();
+//                Point out = new Point();
+//                SwingUtilities.convertPointToScreen(out, dockable.getComponent());
+//
+//                bounds.x = out.x;
+//                bounds.y = (int) (out.y - (evt.getY() * 2.7));
+//
+//                DockingManager.getFloatManager().floatDockable(dockable, dockable.getComponent(), bounds);
+//
+//                try {
+//                    Robot robot = new Robot();
+//                    robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+//                } catch (AWTException e1) {
+//                    e1.printStackTrace();
+//                }
+//
+//                SwingUtilities.invokeLater(() -> {
+//                    try {
+//                        Robot robot = new Robot();
+//                        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+//
+//                        SwingUtilities.invokeLater(() -> openPipeline(evt));
+//                    } catch (AWTException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                });
 //                if (!DockingUtility.isFloating(dockable)) {
 //
 //                    // TODO Currently this method always refloats the dockable, making it impossible to dock anything
@@ -115,7 +141,7 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
 //                }
 //                else {
 //                    System.out.println("Floating");
-                SwingUtilities.invokeLater(() -> openPipeline(evt));
+
 //                }
             }
         } else {
