@@ -19,15 +19,13 @@
  */
 package org.flexdock.view.actions;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.ButtonModel;
-
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.state.DockingState;
-import org.flexdock.view.Button;
 import org.flexdock.view.View;
 import org.flexdock.view.model.ViewButtonModel;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 /**
  * @author Christopher Butler
@@ -35,21 +33,18 @@ import org.flexdock.view.model.ViewButtonModel;
  */
 public class DefaultPinAction extends ViewAction {
 
-    public DefaultPinAction() {
+	// TODO Needs to be public because of the Utilities.createInstance code
+	public DefaultPinAction() {
 
-    }
+	}
 
     @Override
     public void actionPerformed(View view, ActionEvent evt) {
-        boolean minimize = view.isMinimized()? false: true;
+		boolean minimize = !view.isMinimized();
         DockingManager.setMinimized(view, minimize);
     }
 
-    public void updateState(View view, DockingState info, Button button) {
-        button.getModel().setSelected(info.isMinimized());
-    }
-
-    @Override
+	@Override
     public ButtonModel createButtonModel() {
         return new PinButtonModel();
     }

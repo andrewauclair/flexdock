@@ -34,7 +34,7 @@ public class DockingEventHandler extends EventHandler {
 
 	public static DockingListener[] getDockingListeners(Dockable dockable) {
 		Vector<DockingListener> list = getDockingListenersList(dockable);
-		return list == null ? null : (DockingListener[]) list.toArray(new DockingListener[0]);
+		return list == null ? null : list.toArray(new DockingListener[0]);
 	}
 
 	public static void addDockingListener(Dockable dockable, DockingListener listener) {

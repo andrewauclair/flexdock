@@ -95,7 +95,7 @@ public class ResourceManager {
 			try {
 				File file = new File(uri);
 				if (file.exists()) {
-					url = file.toURL();
+					url = file.toURI().toURL();
 				}
 			}
 			catch (MalformedURLException e) {

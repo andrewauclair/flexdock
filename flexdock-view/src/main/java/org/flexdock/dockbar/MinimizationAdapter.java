@@ -19,10 +19,10 @@
  */
 package org.flexdock.dockbar;
 
-import java.awt.Component;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.state.MinimizationManager;
+
+import java.awt.*;
 
 /**
  * @author Christopher Butler
@@ -41,7 +41,7 @@ public class MinimizationAdapter implements MinimizationManager {
     @Override
     public boolean close(Dockable dockable) {
         DockbarManager mgr = DockbarManager.getCurrent(dockable);
-        return mgr==null? false: mgr.remove(dockable);
+		return mgr != null && mgr.remove(dockable);
     }
 
     @Override

@@ -48,16 +48,16 @@
 	<xs:element name="DockingState">
 	    <xs:complexType>
 			<xs:sequence>
-				<xs:element ref="Point" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="Point" minOccurs="0"/>
 				<xs:element ref="SplitNode" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="dockableId" type="xs:string" use="required"/>
 			<xs:attribute name="dockingRegion" type="dockingRegionType" use="required"/>
 			<xs:attribute name="state" type="stateType" use="required"/>
-			<xs:attribute name="relativeParentId" type="xs:string" use="optional"/>
-			<xs:attribute name="splitRatio" type="xs:float" use="optional"/>
-			<xs:attribute name="floatingGroupName" type="xs:string" use="optional"/>
-			<xs:attribute name="minimizeConstraint" type="minimizeConstraintType" use="optional"/>
+            <xs:attribute name="relativeParentId" type="xs:string"/>
+            <xs:attribute name="splitRatio" type="xs:float"/>
+            <xs:attribute name="floatingGroupName" type="xs:string"/>
+            <xs:attribute name="minimizeConstraint" type="minimizeConstraintType"/>
 	    </xs:complexType>
 	</xs:element>
 
@@ -71,11 +71,11 @@
 	<xs:element name="DockingPath">
 	    <xs:complexType>
 			<xs:sequence>
-				<xs:element ref="SplitNode" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="SplitNode" minOccurs="0"/>
 			</xs:sequence>
-			<xs:attribute name="isTabbed" type="xs:boolean" use="optional"/>
+            <xs:attribute name="isTabbed" type="xs:boolean"/>
 			<xs:attribute name="rootPortId" type="xs:string" use="required"/>
-			<xs:attribute name="siblingId" type="xs:string" use="optional"/>
+            <xs:attribute name="siblingId" type="xs:string"/>
 	    </xs:complexType>
 	</xs:element>
 
@@ -85,11 +85,11 @@
 				<xs:element ref="DockingPortNode" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="DockableNode" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
-			<xs:attribute name="siblingId" type="xs:string" use="optional"/>
+            <xs:attribute name="siblingId" type="xs:string"/>
 			<xs:attribute name="orientation" type="orientationType" use="required"/>
 			<xs:attribute name="percentage" type="xs:float" use="required"/>
 			<xs:attribute name="region" type="regionType" use="required"/>
-			<xs:attribute name="dockingRegion" type="dockingRegionType" use="optional"/>
+            <xs:attribute name="dockingRegion" type="dockingRegionType"/>
 	    </xs:complexType>
 	</xs:element>
 
@@ -132,11 +132,11 @@
 	<xs:element name="PerspectiveModel">
         <xs:complexType>
 			<xs:sequence>
-	            <xs:element name="Perspective" minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="Perspective" maxOccurs="unbounded">
 	       			<xs:complexType>
 						<xs:sequence>
-							<xs:element name="Layout" minOccurs="1" maxOccurs="1">
-									<xs:element ref="DockingState" minOccurs="0" maxOccurs="unbounded"/>
+                            <xs:element name="Layout">
+                                <xs:element ref="DockingState" minOccurs="0" maxOccurs="unbounded"/>
 									<xs:element ref="FloatingGroup" minOccurs="0" maxOccurs="unbounded"/>
 								    <xsd:choice>
 										<xs:element ref="SplitNode"/>
@@ -144,7 +144,7 @@
 										<xs:element ref="DockableNode"/>
 								    </xsd:choice>
 				            </xs:element>
-							<xs:element name="LayoutSequence" minOccurs="0" maxOccurs="1">
+                            <xs:element name="LayoutSequence" minOccurs="0">
 								<xs:sequence>
 									<xs:element ref="DockingState" minOccurs="0" maxOccurs="unbounded"/>
 								</xs:sequence>

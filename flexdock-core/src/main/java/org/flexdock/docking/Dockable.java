@@ -67,8 +67,8 @@ public interface Dockable extends DockingListener, DockingMonitor {
 	 * reference.
 	 *
 	 * @return the component wrapped by this dockable.
-	 * @deprecated Being replaced with {@code getDockingStub}
 	 */
+	// TODO Maybe replace this with getDockingStub below
 	Component getComponent();
 
 	//<T extends Component & DockingStub> T getDockingStub();

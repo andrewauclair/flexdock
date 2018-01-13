@@ -55,11 +55,8 @@ public class DockingPortNode extends DockingNode {
 
 	public boolean isSplit() {
 		int cnt = getChildCount();
-		if (cnt != 1) {
-			return false;
-		}
+		return cnt == 1 && getChildAt(0) instanceof SplitNode;
 
-		return getChildAt(0) instanceof SplitNode;
 	}
 
 	@Override

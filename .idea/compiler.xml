@@ -8,7 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="flexdock-core" />
         <module name="flexdock-demo" />
-        <module name="flexdock-drag" />
         <module name="flexdock-perspective" />
         <module name="flexdock-view" />
       </profile>

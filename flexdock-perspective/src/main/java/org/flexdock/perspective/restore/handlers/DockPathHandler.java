@@ -18,11 +18,11 @@
  */
 package org.flexdock.perspective.restore.handlers;
 
-import java.util.Map;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.state.DockingPath;
 import org.flexdock.docking.state.DockingState;
+
+import java.util.Map;
 
 /**
  * Created on 2005-04-15
@@ -35,12 +35,9 @@ public class DockPathHandler implements RestorationHandler {
 
     @Override
     public boolean restore(Dockable dockable, DockingState dockingState, Map context) {
-        DockingPath dockingPath = dockingState.getPath();
-        if (dockingPath == null) {
-            return false;
-        }
+		DockingPath dockingPath = dockingState.getPath();
+		return dockingPath != null && dockingPath.restore(dockable);
 
-        return dockingPath.restore(dockable);
-    }
+	}
 
 }

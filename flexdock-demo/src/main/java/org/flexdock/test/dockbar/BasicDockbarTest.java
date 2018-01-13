@@ -41,10 +41,9 @@ public class BasicDockbarTest {
     }
 
     private static void createAndShowGUI() {
-        View view = createView();
-        //Create and set up the window.
+		//Create and set up the window.
         JFrame frame = new JFrame("Basic Dockbar Test");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
         //Grab the contentpane and add elements

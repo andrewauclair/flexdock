@@ -218,7 +218,7 @@ public class DockbarManager {
 	}
 	
 	public RootWindow getWindow() {
-		return (RootWindow) windowRef.get();
+		return windowRef.get();
 	}
 	
 	
@@ -421,8 +421,8 @@ public class DockbarManager {
 		if (dockable == null || contains(dockable)) {
 			return;
 		}
-		
-		Integer edge = (Integer) dockables.get(dockable.getPersistentId());
+
+		Integer edge = dockables.get(dockable.getPersistentId());
 		if (edge != null) {
 			install(dockable, edge);
 		}

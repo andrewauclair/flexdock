@@ -8,6 +8,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: net.sf.squirrel-sql.thirdparty-non-maven:skinlf:6.7" level="project" />
   </component>
 </module>

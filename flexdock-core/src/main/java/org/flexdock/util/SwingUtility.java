@@ -163,8 +163,8 @@ public class SwingUtility {
 		RootWindow rootWin = RootWindow.getRootContainer(c);
 		return rootWin == null ? null : rootWin.getContentPane();
 	}
-	
-	public static void setPlaf(Class lookAndFeelClass) {
+
+	public static void setPlaf(Class<?> lookAndFeelClass) {
 		String className = lookAndFeelClass == null ? null : lookAndFeelClass.getName();
 		setPlaf(className);
 	}

@@ -93,8 +93,8 @@ public class NestedComponents {
 	 * @return a new {@code NestedComponents} instance based upon the specified
 	 * parameters.
 	 */
-	public static NestedComponents find(Component searchSrc, Class childClass,
-										Class parentClass) {
+	public static NestedComponents find(Component searchSrc, Class<?> childClass,
+										Class<?> parentClass) {
 		if (searchSrc == null || childClass == null || parentClass == null) {
 			return null;
 		}

@@ -103,7 +103,7 @@ public class ActivationListener {
             }
         } else {
             if(!isOverDockbars(mousePoint)) {
-                manager.setActiveDockable((String)null);
+				manager.setActiveDockable(null);
             }
         }
     }
@@ -149,7 +149,7 @@ public class ActivationListener {
 
             if(isEnabled() && !Utilities.isChanged(dockableId, manager.getActiveDockableId()) &&
                     !isViewpaneLocked()) {
-                manager.setActiveDockable((String)null);
+				manager.setActiveDockable(null);
             }
         }
 

@@ -291,34 +291,27 @@ public class Layout implements Cloneable, FloatManager, Serializable {
         }
     }
 
-    public void show(Dockable dockable, DockingPort dockingPort) {
-        if (!isMaintained(dockable) || DockingManager.isDocked(dockable)) {
-            return;
-        }
-    }
-
-    @Override
+	@Override
     public Object clone() {
         synchronized (this) {
-			ArrayList<LayoutListener> listeners = (ArrayList<LayoutListener>) getLayoutListeners().clone();
-            HashMap infoMap = (HashMap) dockingInfo.clone();
+			ArrayList<LayoutListener> listeners = new ArrayList<>(getLayoutListeners());
+			HashMap<String, DockingState> infoMap = new HashMap<>(dockingInfo);
             for (String key : dockingInfo.keySet()) {
                 DockingState info = getDockingState(key);
-                infoMap.put(key, info.clone());
+				infoMap.put(key, (DockingState) info.clone());
             }
 
-            Hashtable floatTable = (Hashtable) floatingGroups.clone();
+			Hashtable<String, FloatingGroup> floatTable = new Hashtable<>(floatingGroups);
             for (String key : floatingGroups.keySet()) {
                 FloatingGroup group = floatingGroups.get(key);
-                floatTable.put(key, group.clone());
+				floatTable.put(key, (FloatingGroup) group.clone());
             }
 
             // note, we're using a shallow copy of the listener list.
             // it's okay that we share listener references, since we want the
             // cloned Layout to have the same listeners.
             Layout clone = new Layout(infoMap, listeners, floatTable);
-            LayoutNode restoreNode = restorationLayout == null ? null : (LayoutNode) restorationLayout.clone();
-            clone.restorationLayout = restoreNode;
+			clone.restorationLayout = restorationLayout == null ? null : (LayoutNode) restorationLayout.clone();
             return clone;
         }
 
@@ -347,11 +340,9 @@ public class Layout implements Cloneable, FloatManager, Serializable {
 
         // create the frame
         DockingFrame frame = getDockingFrame(dockable, frameOwner);
-        if (screenBounds != null) {
-            frame.setBounds(screenBounds);
-        }
+		frame.setBounds(screenBounds);
 
-        // undock the current Dockable instance from it's current parent container
+		// undock the current Dockable instance from it's current parent container
         DockingManager.undock(dockable);
 
         // add to the floating frame

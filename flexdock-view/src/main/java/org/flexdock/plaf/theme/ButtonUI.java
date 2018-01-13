@@ -19,43 +19,37 @@
  */
 package org.flexdock.plaf.theme;
 
-import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicButtonListener;
-import javax.swing.plaf.basic.BasicButtonUI;
-
 import org.flexdock.plaf.IFlexViewComponentUI;
 import org.flexdock.plaf.PropertySet;
 import org.flexdock.plaf.icons.IconResource;
 import org.flexdock.view.Button;
 import org.flexdock.view.Titlebar;
 
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicButtonListener;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 /**
  * @author Christopher Butler
  */
 public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
-    public static final String BORDER = "border";
-    public static final String BORDER_HOVER = "border.hover";
-    public static final String BORDER_ACTIVE = "border.active";
-    public static final String BORDER_ACTIVE_HOVER = "border.active.hover";
-    public static final String BORDER_PRESSED = "border.pressed";
+	private static final String BORDER = "border";
+	private static final String BORDER_HOVER = "border.hover";
+	private static final String BORDER_ACTIVE = "border.active";
+	private static final String BORDER_ACTIVE_HOVER = "border.active.hover";
+	private static final String BORDER_PRESSED = "border.pressed";
 
-    protected PropertySet creationParameters;
-    protected Border borderDefault;
-    protected Border borderDefaultHover;
-    protected Border borderActive;
-    protected Border borderActiveHover;
-    protected Border borderPressed;
+	private PropertySet creationParameters;
+	private Border borderDefault;
+	private Border borderDefaultHover;
+	private Border borderActive;
+	private Border borderActiveHover;
+	private Border borderPressed;
 
     @Override
     public void paint(Graphics g, JComponent c) {
@@ -72,7 +66,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         paintBorder(g, b);
     }
 
-    protected void paintBackground(Graphics g, AbstractButton b, boolean active, boolean hover, boolean pressed) {
+	private void paintBackground(Graphics g, AbstractButton b, boolean active, boolean hover, boolean pressed) {
         // do nothing
     }
 
@@ -83,7 +77,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         }
     }
 
-    protected Border getBorder(AbstractButton button) {
+	private Border getBorder(AbstractButton button) {
         if(isPressed(button)) {
             return getPressedBorder(button);
         }
@@ -96,7 +90,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         return getDefaultBorder(button, active);
     }
 
-    protected Border getPressedBorder(AbstractButton button) {
+	private Border getPressedBorder(AbstractButton button) {
         Border border = borderPressed;
         if(border==null) {
             border = getHoverBorder(button, true);
@@ -104,7 +98,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         return border;
     }
 
-    protected Border getHoverBorder(AbstractButton button, boolean active) {
+	private Border getHoverBorder(AbstractButton button, boolean active) {
         Border border = active? borderActiveHover: borderDefaultHover;
         if(border==null) {
             border = getDefaultBorder(button, active);
@@ -112,14 +106,11 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         return border;
     }
 
-    protected Border getDefaultBorder(AbstractButton button, boolean active) {
+	private Border getDefaultBorder(AbstractButton button, boolean active) {
         return active? borderActive: borderDefault;
     }
 
-
-
-
-    protected void paintIcon(Graphics g, AbstractButton b) {
+	private void paintIcon(Graphics g, AbstractButton b) {
         Icon icon = getIcon(b);
         if(icon==null) {
             return;
@@ -133,7 +124,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         icon.paintIcon(b, g, x, y);
     }
 
-    protected Icon getIcon(AbstractButton button) {
+	private Icon getIcon(AbstractButton button) {
         boolean active = isParentActive(button);
 
         if(!button.isEnabled() || !button.getModel().isEnabled()) {
@@ -151,7 +142,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         return getDefaultIcon(button, active);
     }
 
-    protected Icon getDisabledIcon(AbstractButton button, boolean active) {
+	private Icon getDisabledIcon(AbstractButton button, boolean active) {
         Icon icon = button.getDisabledIcon();
         if(icon==null) {
             icon = getActionIcon(button, false, active, false);
@@ -162,7 +153,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         return icon;
     }
 
-    protected Icon getPressedIcon(AbstractButton button) {
+	private Icon getPressedIcon(AbstractButton button) {
         Icon icon = button.getPressedIcon();
         if(icon==null) {
             icon = getActionIcon(button, true, true, true);
@@ -173,7 +164,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         return icon;
     }
 
-    protected Icon getHoverIcon(AbstractButton button, boolean active) {
+	private Icon getHoverIcon(AbstractButton button, boolean active) {
         Icon icon = button.getRolloverIcon();
         if(icon==null) {
             icon = getActionIcon(button, false, active, true);
@@ -184,7 +175,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         return icon;
     }
 
-    protected Icon getDefaultIcon(AbstractButton button, boolean active) {
+	private Icon getDefaultIcon(AbstractButton button, boolean active) {
         Icon icon = button.getIcon();
         if(icon==null) {
             icon = getActionIcon(button, false, active, false);
@@ -192,7 +183,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         return icon;
     }
 
-    protected Icon getActionIcon(AbstractButton button, boolean pressed, boolean active, boolean hover) {
+	private Icon getActionIcon(AbstractButton button, boolean pressed, boolean active, boolean hover) {
         Action action = button.getAction();
         IconResource resource = action==null? null: (IconResource)action.getValue(ICON_RESOURCE);
         if(resource==null) {
@@ -258,14 +249,14 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         return icon;
     }
 
-    protected boolean isPressed(AbstractButton button) {
+	private boolean isPressed(AbstractButton button) {
         ButtonModel model = button.getModel();
         return model.isArmed() && model.isPressed();
     }
 
-    protected boolean isParentActive(AbstractButton button) {
+	private boolean isParentActive(AbstractButton button) {
         Container parent = button.getParent();
-        return parent instanceof Titlebar? ((Titlebar)parent).isActive(): false;
+		return parent instanceof Titlebar && ((Titlebar) parent).isActive();
     }
 
 
@@ -285,8 +276,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
 
     @Override
     public void uninstallUI(JComponent c) {
-        AbstractButton button = (AbstractButton)c;
-        super.uninstallUI(c);
+		super.uninstallUI(c);
     }
 
     @Override
@@ -300,7 +290,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
     }
 
     protected static class ButtonListener extends BasicButtonListener {
-        protected ButtonListener(AbstractButton b) {
+		ButtonListener(AbstractButton b) {
             super(b);
         }
         @Override
@@ -311,23 +301,23 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         }
     }
 
-    public void setBorderActive(Border borderActive) {
+	private void setBorderActive(Border borderActive) {
         this.borderActive = borderActive;
     }
 
-    public void setBorderActiveHover(Border borderActiveHover) {
+	private void setBorderActiveHover(Border borderActiveHover) {
         this.borderActiveHover = borderActiveHover;
     }
 
-    public void setBorderDefault(Border borderDefault) {
+	private void setBorderDefault(Border borderDefault) {
         this.borderDefault = borderDefault;
     }
 
-    public void setBorderDefaultHover(Border borderDefaultHover) {
+	private void setBorderDefaultHover(Border borderDefaultHover) {
         this.borderDefaultHover = borderDefaultHover;
     }
 
-    public void setBorderPressed(Border borderPressed) {
+	private void setBorderPressed(Border borderPressed) {
         this.borderPressed = borderPressed;
     }
 
@@ -373,7 +363,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
             return;
         }
 
-        IconResource resource = action==null? null: (IconResource)action.getValue(ICON_RESOURCE);
+		IconResource resource = (IconResource) action.getValue(ICON_RESOURCE);
         if(resource==null) {
             return;
         }

@@ -19,13 +19,12 @@
  */
 package org.flexdock.dockbar.activation;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
-
 import org.flexdock.dockbar.DockbarManager;
 import org.flexdock.dockbar.ViewPane;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Christopher Butler
@@ -41,7 +40,7 @@ public class Animation implements Runnable, ActionListener {
     private int frameCount;
     private boolean hiding;
     private Runnable next;
-    private Object lock;
+	private final Object lock;
 
     public Animation(DockbarManager mgr, boolean hide) {
         dockManager = mgr;

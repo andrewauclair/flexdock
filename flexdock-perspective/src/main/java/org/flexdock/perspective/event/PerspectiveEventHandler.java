@@ -67,7 +67,7 @@ public class PerspectiveEventHandler extends EventHandler {
 	
 	public PerspectiveListener[] getListeners() {
 		synchronized (globalListeners) {
-			return (PerspectiveListener[]) globalListeners.toArray(new PerspectiveListener[0]);
+			return globalListeners.toArray(new PerspectiveListener[0]);
 		}
 	}
 }

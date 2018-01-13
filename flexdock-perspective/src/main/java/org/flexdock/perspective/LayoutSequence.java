@@ -27,7 +27,6 @@ import org.flexdock.util.DockingUtility;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.flexdock.docking.DockingConstants.CENTER_REGION;
@@ -43,14 +42,8 @@ public class LayoutSequence implements Cloneable, Serializable {
         this(new ArrayList<>());
     }
 
-    public LayoutSequence(DockingState[] dockingStates) {
-        this(dockingStates == null
-                ? new ArrayList()
-                : Arrays.asList(dockingStates));
-    }
-
-    private LayoutSequence(List<DockingState> list) {
-        sequence = list;
+	public LayoutSequence(List<DockingState> list) {
+		sequence = new ArrayList<>(list);
     }
 
     public void add(Dockable dockable) {
@@ -129,16 +122,12 @@ public class LayoutSequence implements Cloneable, Serializable {
         PerspectiveManager.updateDockingStates(dockables);
     }
 
-    public List getDockingStates() {
+	public List<DockingState> getDockingStates() {
         return getSequenceClone();
     }
 
     private ArrayList<DockingState> getSequenceClone() {
-        ArrayList<DockingState> list = new ArrayList<>(sequence.size());
-        for (DockingState info : sequence) {
-            list.add((DockingState) info.clone());
-        }
-        return list;
+		return new ArrayList<>(sequence);
     }
 
     @Override

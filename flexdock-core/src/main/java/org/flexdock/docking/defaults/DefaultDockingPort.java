@@ -255,7 +255,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
 	private Timer timer;
 
-	private Object lock = new Object();
+	private final Object lock = new Object();
 
 	static {
 		// setup PropertyChangeListenerFactory to respond to

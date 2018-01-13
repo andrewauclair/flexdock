@@ -171,7 +171,7 @@ public class Perspective implements Cloneable, Serializable {
 	public Object clone() {
 		Perspective clone = new Perspective(this.persistentId, this.perspectiveName);
 		clone.layout = (Layout) this.layout.clone();
-		clone.initalSequence = this.initalSequence == null ? null : (LayoutSequence) this.initalSequence.clone();
+		clone.initalSequence = this.initalSequence == null ? null : new LayoutSequence(this.initalSequence.getDockingStates());
 		return clone;
 	}
 }

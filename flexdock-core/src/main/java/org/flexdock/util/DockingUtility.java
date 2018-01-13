@@ -318,11 +318,8 @@ public class DockingUtility {
 		if (EAST_REGION.equals(region)) {
 			return SOUTH_REGION.equals(otherRegion);
 		}
-		if (WEST_REGION.equals(region)) {
-			return NORTH_REGION.equals(otherRegion);
-		}
+		return WEST_REGION.equals(region) && NORTH_REGION.equals(otherRegion);
 
-		return false;
 	}
 
 	/**

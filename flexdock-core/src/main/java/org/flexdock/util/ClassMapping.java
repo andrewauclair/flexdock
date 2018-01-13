@@ -85,7 +85,7 @@ public class ClassMapping {
 
     private final WeakHashMap<Class<?>, Object> instances = new WeakHashMap<>(4);
 
-    private Class defaultClass;
+	private Class<?> defaultClass;
 
     private Object defaultInstance;
 
@@ -100,7 +100,7 @@ public class ClassMapping {
      * @param defaultClass    the default class used by this {@code ClassMapping}
      * @param defaultInstance the default object instance used by this {@code ClassMapping}
      */
-    public ClassMapping(Class defaultClass, Object defaultInstance) {
+	public ClassMapping(Class<?> defaultClass, Object defaultInstance) {
         this.defaultClass = defaultClass;
         this.defaultInstance = defaultInstance;
     }
@@ -122,7 +122,7 @@ public class ClassMapping {
      * @see #getClassMapping(Class)
      * @see #removeClassMapping(Class)
      */
-    public void addClassMapping(Class key, Class value) {
+	public void addClassMapping(Class<?> key, Class<?> value) {
         addClassMapping(key, value, null);
     }
 
@@ -193,12 +193,12 @@ public class ClassMapping {
      * @see #addClassMapping(Class, Class, Object)
      * @see #getClassInstance(Class)
      */
-    public Class removeClassMapping(Class key) {
+	public Class<?> removeClassMapping(Class<?> key) {
         if (key == null) {
             return null;
         }
 
-        Class c;
+		Class<?> c;
         synchronized (classes) {
             c = classes.remove(key);
         }
@@ -227,15 +227,15 @@ public class ClassMapping {
      * @see #addClassMapping(Class, Class)
      * @see #removeClassMapping(Class)
      */
-    public Class getClassMapping(Class key) {
+	public Class<?> getClassMapping(Class<?> key) {
         if (key == null) {
             return defaultClass;
         }
 
-        Class value = null;
+		Class<?> value = null;
 
         synchronized (classes) {
-            for (Class c = key; c != null && value == null; c = c
+			for (Class<?> c = key; c != null && value == null; c = c
                     .getSuperclass()) {
                 value = classes.get(c);
             }
@@ -261,7 +261,7 @@ public class ClassMapping {
      * @see #addClassMapping(Class, Class, Object)
      * @see #removeClassMapping(Class)
      */
-    public Object getClassInstance(Class key) {
+	public Object getClassInstance(Class<?> key) {
         if (key == null) {
             return defaultInstance;
         }
@@ -269,7 +269,7 @@ public class ClassMapping {
         Object value = null;
 
         synchronized (instances) {
-            for (Class c = key; c != null && value == null; c = c
+			for (Class<?> c = key; c != null && value == null; c = c
                     .getSuperclass()) {
                 value = instances.get(c);
             }

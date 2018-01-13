@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/flexdock.iml" filepath="$PROJECT_DIR$/flexdock.iml" />
       <module fileurl="file://$PROJECT_DIR$/flexdock-core/flexdock-core.iml" filepath="$PROJECT_DIR$/flexdock-core/flexdock-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/flexdock-demo/flexdock-demo.iml" filepath="$PROJECT_DIR$/flexdock-demo/flexdock-demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/flexdock-drag/flexdock-drag.iml" filepath="$PROJECT_DIR$/flexdock-drag/flexdock-drag.iml" />
       <module fileurl="file://$PROJECT_DIR$/flexdock-perspective/flexdock-perspective.iml" filepath="$PROJECT_DIR$/flexdock-perspective/flexdock-perspective.iml" />
       <module fileurl="file://$PROJECT_DIR$/flexdock-view/flexdock-view.iml" filepath="$PROJECT_DIR$/flexdock-view/flexdock-view.iml" />
     </modules>

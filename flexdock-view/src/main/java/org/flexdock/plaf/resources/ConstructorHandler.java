@@ -62,7 +62,7 @@ public class ConstructorHandler extends ResourceHandler {
         return arguments;
     }
 
-    private Object toObject(String data, Class type) {
+	private Object toObject(String data, Class<?> type) {
         if(type==int.class) {
             return new Integer(data);
         }
@@ -70,7 +70,7 @@ public class ConstructorHandler extends ResourceHandler {
             return new Long(data);
         }
         if(type==boolean.class) {
-            return new Boolean(data);
+			return Boolean.valueOf(data);
         }
         if(type==float.class) {
             return new Float(data);

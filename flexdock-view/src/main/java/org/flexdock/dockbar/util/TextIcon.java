@@ -120,16 +120,9 @@ public class TextIcon implements Icon, PropertyChangeListener {
     }
 
     private boolean isChanged(Object oldValue, Object newValue) {
-        if(oldValue==newValue) {
-            return false;
-        }
+		return oldValue != newValue && (oldValue == null || newValue == null || !oldValue.equals(newValue));
 
-        if(oldValue==null || newValue==null) {
-            return true;
-        }
-
-        return !oldValue.equals(newValue);
-    }
+	}
 
     // implement PropertyChangeListener
 

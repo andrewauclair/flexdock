@@ -99,7 +99,7 @@ public class DockingManager {
 	// Map(DockingPort -> MaximizedState)
 	private static final Map<DockingPort, MaximizedState> MAXIMIZED_STATES_BY_ROOT_PORT = new HashMap<>();
 
-	private static Object persistentIdLock = new Object();
+	private static final Object persistentIdLock = new Object();
 
 	private String defaultLayoutManagerClass;
 
@@ -1194,11 +1194,8 @@ public class DockingManager {
 	private static boolean loadLayoutModel(boolean restore) throws IOException,
 			PersistenceException {
 		LayoutManager mgr = getLayoutManager();
-		if (mgr == null) {
-			return false;
-		}
+		return mgr != null && (restore ? restoreLayout(true) : mgr.load());
 
-		return restore ? restoreLayout(true) : mgr.load();
 	}
 
 	/**
@@ -2414,11 +2411,8 @@ public class DockingManager {
 		}
 
 		DockingStrategy strategy = findDockingStrategy(dockable);
-		if (strategy != null) {
-			return strategy.undock(dockable);
-		}
+		return strategy != null && strategy.undock(dockable);
 
-		return false; // TODO think of changing it to runtime exception I
 		// don't see a situation when there would be no default docker.
 	}
 

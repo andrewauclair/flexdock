@@ -79,7 +79,7 @@ public class SplitNode extends DockingNode {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer("SplitNode[");
+		StringBuilder sb = new StringBuilder("SplitNode[");
 		sb.append("orient=").append(getOrientationDesc()).append("; ");
 		sb.append("region=").append(getRegionDesc()).append("; ");
 		sb.append("percent=").append(percentage).append("%;");
