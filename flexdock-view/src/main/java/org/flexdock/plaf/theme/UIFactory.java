@@ -41,8 +41,6 @@ public class UIFactory {
 	public static final String TITLEBAR_KEY = "titlebar-ui";
 	public static final String BUTTON_KEY = "button-ui";
 	private static final HashMap<String, IFlexViewComponentUI> VIEW_UI_CACHE = new HashMap<>();
-	private static final HashMap<String, IFlexViewComponentUI> TITLEBAR_UI_CACHE = new HashMap<>();
-	private static final HashMap<String, IFlexViewComponentUI> BUTTON_UI_CACHE = new HashMap<>();
 	private static final HashMap<String, Theme> THEME_UI_CACHE = new HashMap<>();
 
 	private static ViewUI getViewUI(String name) {
@@ -52,23 +50,6 @@ public class UIFactory {
 	private static ViewUI getViewUI(Properties p) {
 		return (ViewUI) getUI(p, VIEW_UI_CACHE, VIEW_KEY, ViewUI.class);
 	}
-
-	private static TitlebarUI getTitlebarUI(String name) {
-		return (TitlebarUI) getUI(name, TITLEBAR_UI_CACHE, TITLEBAR_KEY, TitlebarUI.class);
-	}
-
-	private static TitlebarUI getTitlebarUI(Properties p) {
-		return (TitlebarUI) getUI(p, TITLEBAR_UI_CACHE, TITLEBAR_KEY, TitlebarUI.class);
-	}
-
-	private static ButtonUI getButtonUI(String name) {
-		return (ButtonUI) getUI(name, BUTTON_UI_CACHE, BUTTON_KEY, ButtonUI.class);
-	}
-
-	private static ButtonUI getButtonUI(Properties p) {
-		return (ButtonUI) getUI(p, BUTTON_UI_CACHE, BUTTON_KEY, ButtonUI.class);
-	}
-
 
 	public static Theme getTheme(String name) {
 		if (Configurator.isNull(name)) {
@@ -189,12 +170,8 @@ public class UIFactory {
 		theme.setDescription(desc);
 
 		ViewUI viewUI = Configurator.isNull(view) ? getViewUI(DEFAULT) : getViewUI(view);
-		TitlebarUI titlebarUI = viewUI == null ? getTitlebarUI(DEFAULT) : getTitlebarUI(viewUI.getPreferredTitlebarUI());
-		ButtonUI buttonUI = titlebarUI == null ? getButtonUI(DEFAULT) : getButtonUI(titlebarUI.getPreferredButtonUI());
 
 		theme.setViewUI(viewUI);
-		theme.setTitlebarUI(titlebarUI);
-		theme.setButtonUI(buttonUI);
 
 		return theme;
 	}
@@ -214,34 +191,10 @@ public class UIFactory {
 			view = getViewUI(DEFAULT);
 		}
 
-		TitlebarUI titlebar = getTitlebarUI(p);
-		if (titlebar == null) {
-			titlebar = getTitlebarUI(view.getPreferredTitlebarUI());
-		}
-		if (titlebar == null && base != null) {
-			titlebar = base.getTitlebarUI();
-		}
-		if (titlebar == null) {
-			titlebar = getTitlebarUI(DEFAULT);
-		}
-
-		ButtonUI button = getButtonUI(p);
-		if (button == null) {
-			button = getButtonUI(titlebar.getPreferredButtonUI());
-		}
-		if (button == null && base != null) {
-			button = base.getButtonUI();
-		}
-		if (button == null) {
-			button = getButtonUI(DEFAULT);
-		}
-
 		Theme theme = new Theme();
 		theme.setName(p.getProperty(NAME_KEY, "custom"));
 		theme.setDescription(p.getProperty(DESC_KEY, "Custom Theme"));
 		theme.setViewUI(view);
-		theme.setTitlebarUI(titlebar);
-		theme.setButtonUI(button);
 		return theme;
 	}
 }

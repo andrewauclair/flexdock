@@ -27,7 +27,6 @@ public class Theme {
     private String description;
 
     private ViewUI viewUI;
-    private TitlebarUI titlebarUI;
     private ButtonUI buttonUI;
 
     public ButtonUI getButtonUI() {
@@ -36,14 +35,6 @@ public class Theme {
 
     public void setButtonUI(ButtonUI buttonUI) {
         this.buttonUI = buttonUI;
-    }
-
-    public TitlebarUI getTitlebarUI() {
-        return titlebarUI;
-    }
-
-    public void setTitlebarUI(TitlebarUI titlebarUI) {
-        this.titlebarUI = titlebarUI;
     }
 
     public ViewUI getViewUI() {

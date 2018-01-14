@@ -244,7 +244,6 @@ public class ViewTest {
                 }
             };
 
-
             panel.add(view);
             panel.add(vView);
             panel.add(titlebar);
@@ -257,7 +256,6 @@ public class ViewTest {
 
         public void update(Theme theme) {
             vView.setText(theme.getViewUI().getCreationParameters().getName());
-            vTitlebar.setText(theme.getTitlebarUI().getCreationParameters().getName());
             vButton.setText(theme.getButtonUI().getCreationParameters().getName());
         }
     }

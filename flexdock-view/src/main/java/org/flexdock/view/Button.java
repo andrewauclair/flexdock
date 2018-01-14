@@ -19,22 +19,19 @@
  */
 package org.flexdock.view;
 
-import javax.swing.Action;
-import javax.swing.ButtonModel;
-import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
-
 import org.flexdock.plaf.PlafManager;
 import org.flexdock.view.model.ViewButtonModel;
+
+import javax.swing.*;
 
 /**
  * @author Christopher Butler
  */
 public class Button extends JToggleButton {
 
-    public static final String UI_CLASS_ID = "Flexdock.titlebar.button";
+	private static final String UI_CLASS_ID = "Flexdock.titlebar.button";
 
-    public Button(Action action) {
+	Button(Action action) {
         setAction(action);
         setModel(new ViewButtonModel());
     }

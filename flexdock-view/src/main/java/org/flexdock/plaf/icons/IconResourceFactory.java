@@ -33,29 +33,29 @@ import java.util.Iterator;
  *
  */
 public class IconResourceFactory implements XMLConstants {
-    public static final String ICON_RESOURCE_KEY = "icon-resource";
+	private static final String ICON_RESOURCE_KEY = "icon-resource";
     public static final String ICON_MAP_KEY = "icon-map";
 
-    public static final String ACTION_KEY = "action";
+	private static final String ACTION_KEY = "action";
 
-    public static final String DEFAULT = "default";
-    public static final String DISABLED = "disabled";
-    public static final String HOVER = "hover";
-    public static final String ACTIVE = "active";
-    public static final String ACTIVE_HOVER = "active.hover";
-    public static final String ACTIVE_DISABLED = "active.disabled";
-    public static final String PRESSED = "pressed";
+	private static final String DEFAULT = "default";
+	private static final String DISABLED = "disabled";
+	private static final String HOVER = "hover";
+	private static final String ACTIVE = "active";
+	private static final String ACTIVE_HOVER = "active.hover";
+	private static final String ACTIVE_DISABLED = "active.disabled";
+	private static final String PRESSED = "pressed";
 
-    public static final String DEFAULT_SELECTED = "default.selected";
-    public static final String HOVER_SELECTED = "hover.selected";
-    public static final String DISABLED_SELECTED = "disabled.selected";
-    public static final String ACTIVE_SELECTED = "active.selected";
-    public static final String ACTIVE_SELECTED_HOVER = "active.armed.selected";
-    public static final String ACTIVE_DISABLED_SELECTED = "active.disabled.selected";
-    public static final String PRESSED_SELECTED = "pressed.selected";
+	private static final String DEFAULT_SELECTED = "default.selected";
+	private static final String HOVER_SELECTED = "hover.selected";
+	private static final String DISABLED_SELECTED = "disabled.selected";
+	private static final String ACTIVE_SELECTED = "active.selected";
+	private static final String ACTIVE_SELECTED_HOVER = "active.armed.selected";
+	private static final String ACTIVE_DISABLED_SELECTED = "active.disabled.selected";
+	private static final String PRESSED_SELECTED = "pressed.selected";
 
-    public static final String TOOLTIP = "tooltip";
-    public static final String TOOLTIP_SELECTED = "tooltip.selected";
+	private static final String TOOLTIP = "tooltip";
+	private static final String TOOLTIP_SELECTED = "tooltip.selected";
 
     private static final HashMap RESOURCE_CACHE = new HashMap();
     private static final HashMap RESOURCE_MAP_CACHE = new HashMap();

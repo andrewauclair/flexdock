@@ -28,6 +28,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 /**
+ * @deprecated Removing TitlebarUI classes
  * @author Claudio Romano
  */
 public class MetalTitlebarUI extends TitlebarUI {

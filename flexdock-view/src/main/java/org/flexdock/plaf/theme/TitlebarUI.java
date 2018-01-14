@@ -35,6 +35,7 @@ import javax.swing.plaf.UIResource;
 import java.awt.*;
 
 /**
+ * @deprecated Removing TitlebarUI classes
  * @author Christopher Butler
  */
 public class TitlebarUI extends FlexViewComponentUI {
