@@ -40,10 +40,10 @@ public class UIFactory {
 	public static final String VIEW_KEY = "view-ui";
 	public static final String TITLEBAR_KEY = "titlebar-ui";
 	public static final String BUTTON_KEY = "button-ui";
-	private static final HashMap VIEW_UI_CACHE = new HashMap();
-	private static final HashMap TITLEBAR_UI_CACHE = new HashMap();
-	private static final HashMap BUTTON_UI_CACHE = new HashMap();
-	private static final HashMap THEME_UI_CACHE = new HashMap();
+	private static final HashMap<String, IFlexViewComponentUI> VIEW_UI_CACHE = new HashMap<>();
+	private static final HashMap<String, IFlexViewComponentUI> TITLEBAR_UI_CACHE = new HashMap<>();
+	private static final HashMap<String, IFlexViewComponentUI> BUTTON_UI_CACHE = new HashMap<>();
+	private static final HashMap<String, Theme> THEME_UI_CACHE = new HashMap<>();
 
 	private static ViewUI getViewUI(String name) {
 		return (ViewUI) getUI(name, VIEW_UI_CACHE, VIEW_KEY, ViewUI.class);
@@ -75,7 +75,7 @@ public class UIFactory {
 			return null;
 		}
 
-		Theme theme = (Theme) THEME_UI_CACHE.get(name);
+		Theme theme = THEME_UI_CACHE.get(name);
 		if (theme == null) {
 			theme = loadTheme(name);
 			if (theme != null) {
@@ -87,7 +87,7 @@ public class UIFactory {
 		return theme;
 	}
 
-	private static IFlexViewComponentUI getUI(Properties p, HashMap cache, String tagName, Class<?> rootClass) {
+	private static IFlexViewComponentUI getUI(Properties p, HashMap<String, IFlexViewComponentUI> cache, String tagName, Class<?> rootClass) {
 		if (p == null || !p.containsKey(tagName)) {
 			return null;
 		}
@@ -96,27 +96,29 @@ public class UIFactory {
 		return getUI(name, cache, tagName, rootClass);
 	}
 
-	private static IFlexViewComponentUI getUI(String name, HashMap cache, String tagName, Class<?> rootClass) {
+	private static synchronized IFlexViewComponentUI getUI(String name, HashMap<String, IFlexViewComponentUI> cache, String tagName, Class<?> rootClass) {
 		if (Configurator.isNull(name)) {
 			return null;
 		}
 
-		IFlexViewComponentUI ui = (IFlexViewComponentUI) cache.get(name);
+		IFlexViewComponentUI ui = cache.get(name);
 		if (ui == null) {
 			ui = loadUI(name, tagName, rootClass);
 			if (ui != null) {
-				synchronized (cache) {
-					cache.put(name, ui);
-				}
+				cache.put(name, ui);
 			}
 		}
 		return ui;
 	}
 
-	private static IFlexViewComponentUI loadUI(String name, String tagName, Class rootClass) {
+	private static IFlexViewComponentUI loadUI(String name, String tagName, Class<?> rootClass) {
 		PropertySet properties = Configurator.getProperties(name, tagName);
+		if (properties == null) {
+			return null;
+		}
+
 		String classname = properties.getString(CLASSNAME_KEY);
-		Class implClass = loadUIClass(classname, rootClass);
+		Class<?> implClass = loadUIClass(classname, rootClass);
 
 		try {
 			IFlexViewComponentUI ui = (IFlexViewComponentUI) implClass.newInstance();
@@ -152,15 +154,15 @@ public class UIFactory {
 	}
 
 	private static Theme loadTheme(String themeName) {
-		HashMap map = Configurator.getNamedElementsByTagName(THEME_KEY);
+		HashMap<String, Element> map = Configurator.getNamedElementsByTagName(THEME_KEY);
 		if (map == null) {
 			return null;
 		}
 		return loadTheme(themeName, map);
 	}
 
-	private static Theme loadTheme(String themeName, HashMap cache) {
-		Element themeElem = (Element) cache.get(themeName);
+	private static Theme loadTheme(String themeName, HashMap<String, Element> cache) {
+		Element themeElem = cache.get(themeName);
 		if (themeElem == null) {
 			return null;
 		}
@@ -205,7 +207,7 @@ public class UIFactory {
 		Theme base = getTheme(PlafManager.getSystemThemeName());
 
 		ViewUI view = getViewUI(p);
-		if (view == null) {
+		if (view == null && base != null) {
 			view = base.getViewUI();
 		}
 		if (view == null) {
@@ -216,7 +218,7 @@ public class UIFactory {
 		if (titlebar == null) {
 			titlebar = getTitlebarUI(view.getPreferredTitlebarUI());
 		}
-		if (titlebar == null) {
+		if (titlebar == null && base != null) {
 			titlebar = base.getTitlebarUI();
 		}
 		if (titlebar == null) {
@@ -227,7 +229,7 @@ public class UIFactory {
 		if (button == null) {
 			button = getButtonUI(titlebar.getPreferredButtonUI());
 		}
-		if (button == null) {
+		if (button == null && base != null) {
 			button = base.getButtonUI();
 		}
 		if (button == null) {
