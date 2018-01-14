@@ -108,7 +108,7 @@ public class TextIcon implements Icon, PropertyChangeListener {
         }
     }
 
-    public static int getValidRotation(int rotation) {
+	private static int getValidRotation(int rotation) {
         switch(rotation) {
             case ROTATE_LEFT:
                 return ROTATE_LEFT;

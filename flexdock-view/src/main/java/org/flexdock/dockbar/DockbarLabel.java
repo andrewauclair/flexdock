@@ -52,20 +52,26 @@ public class DockbarLabel extends JLabel implements MouseListener {
 
 
     private static Insets[] createInsets() {
-        Insets[] insets = new Insets[5];
-        return insets;
+		Insets[] insets = new Insets[5];
+		insets[SwingUtilities.CENTER] = new Insets(1, 1, 1, 1);
+		insets[SwingUtilities.LEFT] = new Insets(1, 1, 2, 1);
+		insets[SwingUtilities.RIGHT] = new Insets(1, 1, 2, 1);
+		insets[SwingUtilities.TOP] = new Insets(1, 1, 1, 2);
+		insets[SwingUtilities.BOTTOM] = new Insets(1, 1, 1, 2);
+		return insets;
     }
 
     private static int[] createRotations() {
-        int[] rotations = new int[5];
-        return rotations;
+		int[] rotations = new int[5];
+		rotations[SwingUtilities.CENTER] = TextIcon.ROTATE_NONE;
+		rotations[SwingUtilities.LEFT] = TextIcon.ROTATE_LEFT;
+		rotations[SwingUtilities.RIGHT] = TextIcon.ROTATE_RIGHT;
+		rotations[SwingUtilities.TOP] = TextIcon.ROTATE_NONE;
+		rotations[SwingUtilities.BOTTOM] = TextIcon.ROTATE_NONE;
+		return rotations;
     }
 
-    public DockbarLabel(String dockableId) {
-        this(dockableId, DockbarManager.DEFAULT_EDGE);
-    }
-
-    public DockbarLabel(String dockableId, int defaultOrientation) {
+	DockbarLabel(String dockableId, int defaultOrientation) {
         dockingId = dockableId;
 
         mDefaultOrientation = Dockbar.getValidOrientation(defaultOrientation);
@@ -127,7 +133,7 @@ public class DockbarLabel extends JLabel implements MouseListener {
 
     // protected
 
-    protected void activate(boolean lock) {
+	private void activate(boolean lock) {
         Dockbar dockbar = (Dockbar)SwingUtilities.getAncestorOfClass(Dockbar.class, this);
         if(dockbar!=null) {
             dockbar.activate(dockingId, lock);
@@ -135,19 +141,7 @@ public class DockbarLabel extends JLabel implements MouseListener {
         }
     }
 
-    // private
-
-    private void setSelected(boolean selected) {
-        if (mSelected != selected) {
-            mSelected = selected;
-
-            updateBorder();
-
-            repaint();
-        } // if
-    }
-
-    @Override
+	@Override
     protected void validateTree() {
         updateBorderInsets();
         updateIcon();
@@ -223,7 +217,7 @@ public class DockbarLabel extends JLabel implements MouseListener {
         return DockingManager.getDockable(dockingId);
     }
 
-    public int getOrientation() {
+	private int getOrientation() {
         Container cnt = getParent();
         if(cnt instanceof Dockbar) {
             return ((Dockbar)cnt).getOrientation();

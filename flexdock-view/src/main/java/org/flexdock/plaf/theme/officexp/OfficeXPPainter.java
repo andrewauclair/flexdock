@@ -19,23 +19,18 @@
  */
 package org.flexdock.plaf.theme.officexp;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import javax.swing.JComponent;
-
 import org.flexdock.plaf.resources.paint.DefaultPainter;
 import org.flexdock.util.SwingUtility;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Claudio Romano
  */
 public class OfficeXPPainter extends DefaultPainter {
-    public static final String GRADIENT_COLOR = "gradient.color";
-    public static final String GRADIENT_COLOR_ACTIVE = "gradient.color.active";
-
+	private static final String GRADIENT_COLOR = "gradient.color";
+	private static final String GRADIENT_COLOR_ACTIVE = "gradient.color.active";
 
     @Override
     public void paint(Graphics g, int width, int height, boolean active, JComponent titlebar) {
@@ -57,7 +52,7 @@ public class OfficeXPPainter extends DefaultPainter {
 
     }
 
-    protected Color getGradientColor(boolean active) {
+	private Color getGradientColor(boolean active) {
         Color color = active ? painterResource.getColor( GRADIENT_COLOR_ACTIVE) : painterResource.getColor( GRADIENT_COLOR);
         return color == null ? SwingUtility.darker(getBackgroundColor( active), 0.75) : color;
     }

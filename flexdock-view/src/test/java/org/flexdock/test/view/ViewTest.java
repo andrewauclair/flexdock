@@ -5,6 +5,7 @@ package org.flexdock.test.view;
 
 import org.flexdock.plaf.Configurator;
 import org.flexdock.plaf.PlafManager;
+import org.flexdock.plaf.XMLConstants;
 import org.flexdock.plaf.theme.Theme;
 import org.flexdock.plaf.theme.UIFactory;
 import org.flexdock.util.SwingUtility;
@@ -151,7 +152,7 @@ public class ViewTest {
         HashMap elements = Configurator.getNamedElementsByTagName(tagName);
         for (Object o : Objects.requireNonNull(elements).keySet()) {
             Element elem = (Element) elements.get(o);
-            tagNames.add(elem.getAttribute(Configurator.NAME_KEY));
+			tagNames.add(elem.getAttribute(XMLConstants.NAME_KEY));
         }
 
         return tagNames.toArray();

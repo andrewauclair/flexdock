@@ -20,6 +20,8 @@
 package org.flexdock.view;
 
 import org.flexdock.plaf.theme.TitlebarUI;
+import org.flexdock.view.actions.DefaultCloseAction;
+import org.flexdock.view.actions.DefaultPinAction;
 import org.flexdock.view.actions.ViewAction;
 import org.flexdock.view.model.ViewButtonModel;
 
@@ -94,47 +96,42 @@ public class Titlebar extends JPanel {
     }
 
     public synchronized void addAction(String actionName) {
-
-		JButton button = new JButton(actionName);
-		add(button);
-
-
-        if (actionName == null || !(ui instanceof TitlebarUI)) {
-            return;
-        }
-
-        TitlebarUI tbarUI = (TitlebarUI) ui;
-		Action action = TitlebarUI.getAction(actionName);
-        addAction(action);
+		if (actionName.equals("close")) {
+			addAction(new DefaultCloseAction());
+		}
+		else if (actionName.equals("pin")) {
+			addAction(new DefaultPinAction());
+		}
     }
 
     public synchronized void addAction(Action action) {
-        if (action == null) {
-            return;
-        }
-
-        String key = getKey(action);
-        if (key == null) {
-            throw new IllegalArgumentException(
-                    "Cannot add an Action that has no Name associated with it.");
-        }
-
-        // don't add the same action more than once
-        if (hasAction(key)) {
-            return;
-        }
-
-        // create the button
-        Button button = createActionButton(action);
-        // cache the button
-        actionButtons.put(key, button);
-        // add the button to the container
-        add(button);
-
-        // add the action to our list
-        actionList.add(action);
-        regenerateButtonList();
-        updateButtonModels();
+		JButton button = new JButton(action);
+		add(button);
+//        if (action == null) {
+//            return;
+//        }
+//
+//        String key = "action";//getKey(action);
+//        if (key == null) {
+//            throw new IllegalArgumentException("Cannot add an Action that has no Name associated with it.");
+//        }
+//
+//        // don't add the same action more than once
+//        if (hasAction(key)) {
+//            return;
+//        }
+//
+//        // create the button
+//        Button button = createActionButton(action);
+//        // cache the button
+//        actionButtons.put(key, button);
+//        // add the button to the container
+//        add(button);
+//
+//        // add the action to our list
+//        actionList.add(action);
+//        regenerateButtonList();
+//        updateButtonModels();
     }
 
     private void regenerateButtonList() {

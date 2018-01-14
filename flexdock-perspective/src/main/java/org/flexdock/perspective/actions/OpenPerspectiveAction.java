@@ -19,41 +19,39 @@
  */
 package org.flexdock.perspective.actions;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-
 import com.sun.istack.internal.NotNull;
 import org.flexdock.perspective.Perspective;
 import org.flexdock.perspective.PerspectiveManager;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 /**
  * @author Christopher Butler
  */
 public class OpenPerspectiveAction extends AbstractAction {
-    private String perspective;
+	private String perspective;
 
-    public OpenPerspectiveAction(@NotNull String perspectiveId) {
-        if (perspectiveId == null) {
-            throw new IllegalArgumentException("perspectiveId cannot be null");
-        }
-        this.perspective = perspectiveId;
+	public OpenPerspectiveAction(@NotNull String perspectiveId) {
+		if (perspectiveId == null) {
+			throw new IllegalArgumentException("perspectiveId cannot be null");
+		}
+		this.perspective = perspectiveId;
 
-        Perspective perspective = getPerspective();
-        if(perspective!=null) {
-            putValue(Action.NAME, perspective.getName());
-        }
-    }
+		Perspective perspective = getPerspective();
+		if (perspective != null) {
+			putValue(Action.NAME, perspective.getName());
+		}
+	}
 
-    public Perspective getPerspective() {
-        return PerspectiveManager.getInstance().getPerspective(this.perspective);
-    }
+	public Perspective getPerspective() {
+		return PerspectiveManager.getInstance().getPerspective(this.perspective);
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (this.perspective != null) {
-            PerspectiveManager.getInstance().loadPerspective(this.perspective);
-        }
-    }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (this.perspective != null) {
+			PerspectiveManager.getInstance().loadPerspective(this.perspective);
+		}
+	}
 }

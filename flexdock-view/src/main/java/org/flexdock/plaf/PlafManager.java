@@ -61,28 +61,7 @@ public class PlafManager {
         return PlafMappingFactory.getInstalledPlafReference();
     }
 
-    public static void installSystemTheme() {
-        setPreferredTheme(getSystemThemeName());
-    }
-
-    public static void setPreferredTheme(Properties p) {
-        String themeName = p == null ? null : p.getProperty(XMLConstants.NAME_KEY);
-        if (themeName == null) {
-            throw new IllegalArgumentException(
-                    "Unable to find property 'name' in the supplied data set.");
-        }
-
-        Theme theme = addCustomTheme(themeName, p);
-        if (theme != null) {
-            setPreferredTheme(themeName, true);
-        }
-    }
-
-    public static void setPreferredTheme(String themeName) {
-        setPreferredTheme(themeName, false);
-    }
-
-    public static void setPreferredTheme(String themeName, boolean reload) {
+	public static void setPreferredTheme(String themeName, boolean reload) {
         String oldPref = (String) UI_DEFAULTS.get(PREFERRED_THEME_KEY);
 
         if (Configurator.isNull(themeName)) {
@@ -103,7 +82,7 @@ public class PlafManager {
         }
     }
 
-    public static void installPreferredTheme(boolean update) {
+	private static void installPreferredTheme(boolean update) {
         Theme theme = getPreferredTheme();
 
         UI_DEFAULTS.clear();
@@ -119,7 +98,7 @@ public class PlafManager {
         }
     }
 
-    public static void installPreferredTheme() {
+	static void installPreferredTheme() {
         installPreferredTheme(true);
     }
 
@@ -141,16 +120,12 @@ public class PlafManager {
         return theme;
     }
 
-    public static Theme addCustomTheme(String themeName, Properties p) {
-        return loadCustomTheme(themeName, p, false);
-    }
-
-    public static Theme setCustomTheme(String themeName, Properties p) {
+	public static Theme setCustomTheme(String themeName, Properties p) {
         return loadCustomTheme(themeName, p, true);
     }
 
-    public static Theme loadCustomTheme(String themeName, Properties p,
-                                        boolean exclusive) {
+	private static Theme loadCustomTheme(String themeName, Properties p,
+										 boolean exclusive) {
         if (Configurator.isNull(themeName) || p == null) {
             return null;
         }
@@ -166,11 +141,7 @@ public class PlafManager {
         return theme;
     }
 
-    public static Theme removeCustomTheme(String themeName) {
-        return Configurator.isNull(themeName) ? null : (Theme) CUSTOM_THEMES.remove(themeName);
-    }
-
-    private static void setProperty(Object key, Object value) {
+	private static void setProperty(Object key, Object value) {
         if (key != null && value != null) {
             UI_DEFAULTS.put(key, value);
         }
@@ -190,13 +161,7 @@ public class PlafManager {
      * @see UIManager#getUI
      */
     public static ComponentUI getUI(JComponent target) {
-        ComponentUI ui = /*UIManager.getUI(target);
-
-        if (ui == null) {
-        ui = */(ComponentUI) UI_DEFAULTS.get(target.getClass());
-        //        }
-
-        return ui;
+		return (ComponentUI) UI_DEFAULTS.get(target.getClass());
     }
 
     private static class UiUpdater implements PropertyChangeListener {

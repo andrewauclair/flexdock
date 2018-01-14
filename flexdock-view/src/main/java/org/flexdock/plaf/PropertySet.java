@@ -162,14 +162,15 @@ public class PropertySet {
         return list;
     }
 
-    private boolean isNumeric(String string) {
-        try {
-            Integer.parseInt(string);
-            return true;
-        } catch(NumberFormatException e) {
-            return false;
-        }
-    }
+	// TODO Is there a better way to check if a string is an integer?
+	private boolean isNumeric(String string) {
+		try {
+			Integer.parseInt(string);
+			return true;
+		} catch(NumberFormatException e) {
+			return false;
+		}
+	}
 
 	public Class<?> toClass(String key) throws ClassNotFoundException {
         String type = getString(key);

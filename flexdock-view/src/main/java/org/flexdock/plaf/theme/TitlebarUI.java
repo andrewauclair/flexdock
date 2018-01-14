@@ -39,35 +39,35 @@ import java.awt.*;
  */
 public class TitlebarUI extends FlexViewComponentUI {
 
-    public static final String DEFAULT_HEIGHT = "default.height";
-    public static final String FONT = "font";
-    public static final String FONT_COLOR = "font.color";
-    public static final String FONT_COLOR_ACTIVE = "font.color.active";
-    public static final String BACKGROUND_COLOR = "bgcolor";
-    public static final String BACKGROUND_COLOR_ACTIVE = "bgcolor.active";
-    public static final String BORDER = "border";
-    public static final String BORDER_ACTIVE = "border.active";
-    public static final String PAINTER = "painter";
-    public static final String INSETS = "insets";
+	private static final String DEFAULT_HEIGHT = "default.height";
+	private static final String FONT = "font";
+	private static final String FONT_COLOR = "font.color";
+	private static final String FONT_COLOR_ACTIVE = "font.color.active";
+	private static final String BACKGROUND_COLOR = "bgcolor";
+	private static final String BACKGROUND_COLOR_ACTIVE = "bgcolor.active";
+	private static final String BORDER = "border";
+	private static final String BORDER_ACTIVE = "border.active";
+	private static final String PAINTER = "painter";
+	private static final String INSETS = "insets";
     private static final String BUTTON_MARGIN = "button.margin";
-    public static final String ICON_INSETS = "icon.insets";
-    public static final String ANTIALIASING = "antialiasing";
-    public static final int MINIMUM_HEIGHT = 12;
+	private static final String ICON_INSETS = "icon.insets";
+	private static final String ANTIALIASING = "antialiasing";
+	private static final int MINIMUM_HEIGHT = 12;
 
-    protected Font font;
-    protected Color activeFont;
-    protected Color inactiveFont;
-    protected Color activeBackground;
-    protected Color inactiveBackground;
-    protected Border activeBorder;
-    protected Border inactiveBorder;
-	protected static IconMap defaultIcons;
+	private Font font;
+	private Color activeFont;
+	private Color inactiveFont;
+	private Color activeBackground;
+	private Color inactiveBackground;
+	private Border activeBorder;
+	private Border inactiveBorder;
+	private IconMap defaultIcons;
     protected Painter painter;
     protected Insets insets;
-    protected int buttonMargin;
-    protected Insets iconInsets;
-    protected Object antialiasing;
-    protected int defaultHeight = MINIMUM_HEIGHT;
+	private int buttonMargin;
+	private Insets iconInsets;
+	private Object antialiasing;
+	private int defaultHeight = MINIMUM_HEIGHT;
 
 
     @Override
@@ -120,7 +120,7 @@ public class TitlebarUI extends FlexViewComponentUI {
                                      - paintInsets.bottom - paintInsets.top));
     }
 
-    protected void paintTitle(Graphics g, Titlebar titlebar) {
+	private void paintTitle(Graphics g, Titlebar titlebar) {
         if (titlebar.getText() == null) {
             return;
         }
@@ -157,7 +157,7 @@ public class TitlebarUI extends FlexViewComponentUI {
         return 5;
     }
 
-    protected void paintIcon(Graphics g, Titlebar titlebar) {
+	private void paintIcon(Graphics g, Titlebar titlebar) {
         if (titlebar.getIcon() == null) {
             return;
         }
@@ -187,11 +187,11 @@ public class TitlebarUI extends FlexViewComponentUI {
         return r;
     }
 
-    protected int getLeftIconMargin() {
+	private int getLeftIconMargin() {
         return getIconInsets() == null ? 2 : getIconInsets().right;
     }
 
-    protected int getRightIconMargin() {
+	private int getRightIconMargin() {
         return getIconInsets() == null ? 2 : getIconInsets().right;
     }
 
@@ -254,7 +254,7 @@ public class TitlebarUI extends FlexViewComponentUI {
 		}
     }
 
-    protected Color getFontColor(boolean active) {
+	private Color getFontColor(boolean active) {
         Color c = active ? activeFont : inactiveFont;
         return c == null ? inactiveFont : c;
     }
@@ -264,7 +264,7 @@ public class TitlebarUI extends FlexViewComponentUI {
         return color == null ? inactiveBackground : color;
     }
 
-    protected Border getBorder(Titlebar titlebar) {
+	private Border getBorder(Titlebar titlebar) {
         boolean active = titlebar.isActive();
         return active ? activeBorder : inactiveBorder;
     }
@@ -273,7 +273,7 @@ public class TitlebarUI extends FlexViewComponentUI {
         return defaultHeight;
     }
 
-    public void setDefaultHeight(int defaultHeight) {
+	private void setDefaultHeight(int defaultHeight) {
         defaultHeight = Math.max(defaultHeight, MINIMUM_HEIGHT);
         this.defaultHeight = defaultHeight;
     }
@@ -293,7 +293,7 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param activeBackground
      *            The activeBackground to set.
      */
-    public void setActiveBackground(Color activeBackground) {
+	private void setActiveBackground(Color activeBackground) {
         this.activeBackground = activeBackground;
     }
 
@@ -308,7 +308,7 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param activeFont
      *            The activeFont to set.
      */
-    public void setActiveFont(Color activeFont) {
+	private void setActiveFont(Color activeFont) {
         this.activeFont = activeFont;
     }
 
@@ -323,7 +323,7 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param inactiveBackground
      *            The inactiveBackground to set.
      */
-    public void setInactiveBackground(Color inactiveBackground) {
+	private void setInactiveBackground(Color inactiveBackground) {
         this.inactiveBackground = inactiveBackground;
     }
 
@@ -338,14 +338,14 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param inactiveFont
      *            The inactiveFont to set.
      */
-    public void setInactiveFont(Color inactiveFont) {
+	private void setInactiveFont(Color inactiveFont) {
         this.inactiveFont = inactiveFont;
     }
 
     /**
      * @return Returns the font.
      */
-    public Font getFont() {
+	protected Font getFont() {
         return font;
     }
 
@@ -353,7 +353,7 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param font
      *            The font to set.
      */
-    public void setFont(Font font) {
+	private void setFont(Font font) {
         this.font = font;
     }
 
@@ -361,25 +361,25 @@ public class TitlebarUI extends FlexViewComponentUI {
         return defaultIcons;
     }
 
-    public void setDefaultIcons(IconMap defaultIcons) {
-		TitlebarUI.defaultIcons = defaultIcons;
+	private void setDefaultIcons(IconMap defaultIcons) {
+		this.defaultIcons = defaultIcons;
     }
 
-    public void setDefaultIcons(String iconMapName) {
+	private void setDefaultIcons(String iconMapName) {
         IconMap map = IconResourceFactory.getIconMap(iconMapName);
         setDefaultIcons(map);
     }
 
-    public IconResource getIcons(Action action) {
+	private IconResource getIcons(Action action) {
         String key = action == null ? null : (String) action.getValue(Action.NAME);
         return getIcons(key);
     }
 
-	public static IconResource getIcons(String key) {
+	private IconResource getIcons(String key) {
         return defaultIcons == null ? null : defaultIcons.getIcons(key);
     }
 
-	public static Action getAction(String actionKey) {
+	public Action getAction(String actionKey) {
         IconResource resource = getIcons(actionKey);
         Action action = resource==null? null: resource.getAction();
         if(action!=null) {
@@ -399,7 +399,7 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param inactiveBorder
      *            The inactiveBorder to set.
      */
-    public void setInactiveBorder(Border inactiveBorder) {
+	private void setInactiveBorder(Border inactiveBorder) {
         this.inactiveBorder = inactiveBorder;
     }
 
@@ -414,14 +414,14 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param activeBorder
      *            The activeBorder to set.
      */
-    public void setActiveBorder(Border activeBorder) {
+	private void setActiveBorder(Border activeBorder) {
         this.activeBorder = activeBorder;
     }
 
     /**
      * @return Returns the iconInsets.
      */
-    public Insets getIconInsets() {
+	private Insets getIconInsets() {
         return iconInsets;
     }
 
@@ -429,14 +429,14 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param iconInsets
      *            The iconInsets to set.
      */
-    public void setIconInsets(Insets iconInsets) {
+	private void setIconInsets(Insets iconInsets) {
         this.iconInsets = iconInsets;
     }
 
     /**
      * @return Returns the buttonMargin.
      */
-    public int getButtonMargin() {
+	protected int getButtonMargin() {
         return buttonMargin;
     }
 
@@ -444,7 +444,7 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param buttonMargin
      *            The buttonMargin to set.
      */
-    public void setButtonMargin(int buttonMargin) {
+	private void setButtonMargin(int buttonMargin) {
         this.buttonMargin = buttonMargin;
     }
 
@@ -459,7 +459,7 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param painter
      *            The painter to set.
      */
-    public void setPainter(Painter painter) {
+	private void setPainter(Painter painter) {
         this.painter = painter;
     }
 
@@ -489,7 +489,7 @@ public class TitlebarUI extends FlexViewComponentUI {
      * @param antialias
      *            The antialias to set.
      */
-    public void setAntialiasing(boolean antialias) {
+	private void setAntialiasing(boolean antialias) {
         antialiasing = antialias ? RenderingHints.VALUE_ANTIALIAS_ON :
                        RenderingHints.VALUE_ANTIALIAS_OFF;
     }

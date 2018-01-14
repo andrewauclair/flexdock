@@ -53,7 +53,7 @@ import java.util.WeakHashMap;
 public class DockbarManager {
 	private static final WeakHashMap<RootWindow, DockbarManager> MANAGERS_BY_WINDOW = new WeakHashMap<>();
 	private static final Integer DOCKBAR_LAYER = JLayeredPane.PALETTE_LAYER - 5;
-	public static final int DEFAULT_EDGE = SwingConstants.LEFT;
+	private static final int DEFAULT_EDGE = SwingConstants.LEFT;
 	
 	private static String dockbarManagerClassName;
 	
@@ -137,7 +137,7 @@ public class DockbarManager {
 		DockbarManager mgr;
 		try {
 			Class<?> clazz = Class.forName(dockbarManagerClassName);
-			Constructor constructor = clazz.getConstructor(RootWindow.class);
+			Constructor<?> constructor = clazz.getConstructor(RootWindow.class);
 			mgr = (DockbarManager) constructor.newInstance(new Object[]{window});
 		}
 		catch (Exception e) {
