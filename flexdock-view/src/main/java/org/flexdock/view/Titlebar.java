@@ -38,9 +38,9 @@ public class Titlebar extends JPanel {
 
     private String titleText;
 
-    private List actionList;
+	private List<Action> actionList;
 
-    private HashMap actionButtons;
+	private HashMap<String, Button> actionButtons;
 
     private View parentView;
     private JLabel titleLabel;
@@ -62,6 +62,7 @@ public class Titlebar extends JPanel {
     // title color 183, 201, 217
 
     public Titlebar(String title, Action[] actions) {
+		super(new FlowLayout());
         titleLabel = new JLabel();
         add(titleLabel);
         setText(title);
@@ -82,8 +83,8 @@ public class Titlebar extends JPanel {
     protected void setActions(Action[] actions) {
         if (actions == null) {
             actions = new Action[0];
-            actionList = new ArrayList(3);
-            actionButtons = new HashMap(3);
+			actionList = new ArrayList<>(3);
+			actionButtons = new HashMap<>(3);
         }
 
         removeAllActions();
@@ -93,12 +94,17 @@ public class Titlebar extends JPanel {
     }
 
     public synchronized void addAction(String actionName) {
+
+		JButton button = new JButton(actionName);
+		add(button);
+
+
         if (actionName == null || !(ui instanceof TitlebarUI)) {
             return;
         }
 
         TitlebarUI tbarUI = (TitlebarUI) ui;
-        Action action = tbarUI.getAction(actionName);
+		Action action = TitlebarUI.getAction(actionName);
         addAction(action);
     }
 
@@ -134,7 +140,7 @@ public class Titlebar extends JPanel {
     private void regenerateButtonList() {
         Button[] list = new Button[actionList.size()];
         for (int i = 0; i < list.length; i++) {
-            Action action = (Action) actionList.get(i);
+			Action action = actionList.get(i);
             String key = getKey(action);
             list[i] = getButton(key);
         }
@@ -160,11 +166,11 @@ public class Titlebar extends JPanel {
     }
 
     public Action[] getActions() {
-        return (Action[]) actionList.toArray(new Action[0]);
+		return actionList.toArray(new Action[0]);
     }
 
     private Button getButton(String key) {
-        return (Button) actionButtons.get(key);
+		return actionButtons.get(key);
     }
 
     public AbstractButton getActionButton(String actionName) {
@@ -214,7 +220,7 @@ public class Titlebar extends JPanel {
         }
 
         while (actionList.size() > 0) {
-            Action action = (Action) actionList.get(0);
+			Action action = actionList.get(0);
             String key = getKey(action);
             // Remove button associated with this action.
             Button button = getButton(key);

@@ -412,9 +412,9 @@ public class View extends JComponent implements Dockable {
 
     private void setTitlebar(Titlebar titlebar) {
 		if (titlebar != null && titlebar == contentPane) {
-			throw new IllegalArgumentException(
-					"Cannot use the same component as both content pane and titlebar.");
+			throw new IllegalArgumentException("Cannot use the same component as both content pane and titlebar.");
 		}
+
 		if (titlepane != null) {
 			remove(titlepane);
 			titlepane.setView(null);
@@ -422,7 +422,9 @@ public class View extends JComponent implements Dockable {
 			frameDragSources.remove(titlepane);
 			DockingManager.removeDragListeners(titlepane);
 		}
+
 		titlepane = titlebar;
+
 		if (titlepane != null) {
 			boolean checkingEnabled = isContentPaneCheckingEnabled();
 			try {
@@ -456,7 +458,6 @@ public class View extends JComponent implements Dockable {
 			frameDragSources.add(titlepane);
 			DockingManager.updateDragListeners(this);
 		}
-		
 	}
 	
 	private Component getTitlePane() {

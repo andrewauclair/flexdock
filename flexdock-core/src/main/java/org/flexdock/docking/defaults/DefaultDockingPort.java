@@ -304,11 +304,6 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
 		//configure the default border manager
 		setBorderManager(createBorderManager());
-
-		Color debugColor = nextColor;
-        nextColor = new Color(nextColor.getRed() + 10, nextColor.getGreen(), nextColor.getBlue());
-
-        setBackground(debugColor);
 	}
 
 	private LayoutManager createLayout() {

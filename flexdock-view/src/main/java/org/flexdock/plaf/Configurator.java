@@ -31,7 +31,7 @@ import java.util.HashMap;
 /**
  * @author Christopher Butler
  */
-public final class Configurator implements XMLConstants {
+public final class Configurator {
 	private static final String DEFAULT_PREFS_URI = "org/flexdock/plaf/flexdock-themes-default.xml";
 	private static final String PREFS_URI = "flexdock-themes.xml";
 
@@ -72,15 +72,15 @@ public final class Configurator implements XMLConstants {
 
 		for (int i = 0; i < elements.getLength(); i++) {
 			Element elem = (Element) elements.item(i);
-			String key = elem.getAttribute(NAME_KEY);
-			boolean inherit = "true".equals(elem.getAttribute(INHERITS_KEY));
+			String key = elem.getAttribute(XMLConstants.NAME_KEY);
+			boolean inherit = "true".equals(elem.getAttribute(XMLConstants.INHERITS_KEY));
 			if (!isNull(key)) {
 
 				if (inherit) {
 					// mark as overridden, so we don't overwrite it in the cache
 					Element oldValue = cache.get(key);
 					if (oldValue != null) {
-						cache.put(OVERRIDDEN_KEY + key, oldValue);
+						cache.put(XMLConstants.OVERRIDDEN_KEY + key, oldValue);
 					}
 				}
 				cache.put(key, elem);
@@ -132,15 +132,15 @@ public final class Configurator implements XMLConstants {
 		set.setName(elemName);
 
 		// load all the parent properties first, so we can add/overwrite our own later
-		String parentName = elem.getAttribute(EXTENDS_KEY);
+		String parentName = elem.getAttribute(XMLConstants.EXTENDS_KEY);
 		PropertySet parent = isNull(parentName) ? null : getProperties(parentName, cache);
 		if (parent != null) {
 			set.setAll(parent);
 		}
 
 		// check to see if we're supposed to inherit from an overridden element
-		if ("true".equalsIgnoreCase(elem.getAttribute(INHERITS_KEY))) {
-			PropertySet overridden = getProperties(OVERRIDDEN_KEY + elemName, cache);
+		if ("true".equalsIgnoreCase(elem.getAttribute(XMLConstants.INHERITS_KEY))) {
+			PropertySet overridden = getProperties(XMLConstants.OVERRIDDEN_KEY + elemName, cache);
 			if (overridden != null) {
 				set.setAll(overridden);
 			}
@@ -149,14 +149,14 @@ public final class Configurator implements XMLConstants {
 		// get the default handler name
 		String propertyHandlerName = getPropertyHandlerName(elem);
 
-		NodeList list = elem.getElementsByTagName(PROPERTY_KEY);
+		NodeList list = elem.getElementsByTagName(XMLConstants.PROPERTY_KEY);
 		int len = list.getLength();
 		for (int i = 0; i < len; i++) {
 			elem = (Element) list.item(i);
-			String key = elem.getAttribute(NAME_KEY);
+			String key = elem.getAttribute(XMLConstants.NAME_KEY);
 			if (!isNull(key)) {
-				String value = elem.getAttribute(VALUE_KEY);
-				String handler = elem.getAttribute(HANDLER_KEY);
+				String value = elem.getAttribute(XMLConstants.VALUE_KEY);
+				String handler = elem.getAttribute(XMLConstants.HANDLER_KEY);
 				Object resource = getResource(value, handler, propertyHandlerName);
 				if (resource != null) {
 					set.setProperty(key, resource);
@@ -167,7 +167,7 @@ public final class Configurator implements XMLConstants {
 	}
 
 	private static String getPropertyHandlerName(Element elem) {
-		String handlerName = elem.getAttribute(PROP_HANDLER_KEY);
+		String handlerName = elem.getAttribute(XMLConstants.PROP_HANDLER_KEY);
 		if (isNull(handlerName)) {
 			handlerName = ResourceHandlerFactory.getPropertyHandler(elem.getTagName());
 		}

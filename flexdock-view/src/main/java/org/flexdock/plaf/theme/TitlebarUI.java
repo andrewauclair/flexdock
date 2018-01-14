@@ -61,7 +61,7 @@ public class TitlebarUI extends FlexViewComponentUI {
     protected Color inactiveBackground;
     protected Border activeBorder;
     protected Border inactiveBorder;
-    protected IconMap defaultIcons;
+	protected static IconMap defaultIcons;
     protected Painter painter;
     protected Insets insets;
     protected int buttonMargin;
@@ -362,7 +362,7 @@ public class TitlebarUI extends FlexViewComponentUI {
     }
 
     public void setDefaultIcons(IconMap defaultIcons) {
-        this.defaultIcons = defaultIcons;
+		TitlebarUI.defaultIcons = defaultIcons;
     }
 
     public void setDefaultIcons(String iconMapName) {
@@ -375,11 +375,11 @@ public class TitlebarUI extends FlexViewComponentUI {
         return getIcons(key);
     }
 
-    public IconResource getIcons(String key) {
+	public static IconResource getIcons(String key) {
         return defaultIcons == null ? null : defaultIcons.getIcons(key);
     }
 
-    public Action getAction(String actionKey) {
+	public static Action getAction(String actionKey) {
         IconResource resource = getIcons(actionKey);
         Action action = resource==null? null: resource.getAction();
         if(action!=null) {
