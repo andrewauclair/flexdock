@@ -37,7 +37,7 @@ import static org.flexdock.docking.DockingConstants.CENTER_REGION;
  */
 public class Viewport extends DefaultDockingPort {
 
-    protected HashSet blockedRegions;
+	private final HashSet<String> blockedRegions;
 
     static {
         DockingManager.setDockingStrategy(Viewport.class, View.VIEW_DOCKING_STRATEGY);
@@ -45,13 +45,13 @@ public class Viewport extends DefaultDockingPort {
 
     public Viewport() {
         super();
-        blockedRegions = new HashSet(5);
+		blockedRegions = new HashSet<>(5);
         setBorderManager(new StandardBorderManager());
     }
 
     public Viewport(String portId) {
         super(portId);
-        blockedRegions = new HashSet(5);
+		blockedRegions = new HashSet<>(5);
         setBorderManager(new StandardBorderManager());
     }
 
@@ -93,7 +93,7 @@ public class Viewport extends DefaultDockingPort {
 
         // otherwise, only allow docking in the CENTER if the dockable
         // doesn't mind
-        return !dockable.getDockingProperties().isTerritoryBlocked(region).booleanValue();
+		return !dockable.getDockingProperties().isTerritoryBlocked(region);
     }
 
     public boolean dock(Dockable dockable) {
@@ -107,12 +107,12 @@ public class Viewport extends DefaultDockingPort {
         return pane;
     }
 
-    public Set getViewset() {
+	public Set<Dockable> getViewset() {
         // return ALL views, recursing to maximum depth
         return getDockableSet(-1, 0, View.class);
     }
 
-    public Set getViewset(int depth) {
+	public Set<Dockable> getViewset(int depth) {
         // return all views, including subviews up to the specified depth
         return getDockableSet(depth, 0, View.class);
     }
