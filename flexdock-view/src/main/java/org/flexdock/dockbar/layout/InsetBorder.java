@@ -34,7 +34,7 @@ public class InsetBorder extends CompoundEmptyBorder {
     private boolean rightEdge;
     private boolean bottomEdge;
 
-    protected InsetBorder(Border outer, Border inner, boolean emptyInner) {
+	private InsetBorder(Border outer, Border inner, boolean emptyInner) {
         super(outer, inner, emptyInner);
     }
 
@@ -70,37 +70,37 @@ public class InsetBorder extends CompoundEmptyBorder {
     /**
      * @return Returns the bottomEdge.
      */
-    public boolean isBottomEdge() {
+	private boolean isBottomEdge() {
         return bottomEdge;
     }
     /**
      * @param bottomEdge The bottomEdge to set.
      */
-    public void setBottomEdge(boolean bottomEdge) {
+	private void setBottomEdge(boolean bottomEdge) {
         this.bottomEdge = bottomEdge;
     }
     /**
      * @return Returns the leftEdge.
      */
-    public boolean isLeftEdge() {
+	private boolean isLeftEdge() {
         return leftEdge;
     }
     /**
      * @param leftEdge The leftEdge to set.
      */
-    public void setLeftEdge(boolean leftEdge) {
+	private void setLeftEdge(boolean leftEdge) {
         this.leftEdge = leftEdge;
     }
     /**
      * @return Returns the rightEdge.
      */
-    public boolean isRightEdge() {
+	private boolean isRightEdge() {
         return rightEdge;
     }
     /**
      * @param rightEdge The rightEdge to set.
      */
-    public void setRightEdge(boolean rightEdge) {
+	private void setRightEdge(boolean rightEdge) {
         this.rightEdge = rightEdge;
     }
 

@@ -88,7 +88,7 @@ public class MaximizationDemo {
 
     private static Dockable createFramePanel(String title) {
         JLabel label = new JLabel("Content of " + title);
-        JButton maxButton = createButton(createIcon("maximize.gif"));
+		JButton maxButton = createButton(new ImageIcon(createImageImpl("maximize.gif")));
         JToolBar toolbar = createPortletToolbar(maxButton);
         SimpleInternalFrame sif = new SimpleInternalFrame(title, toolbar, label);
         final Dockable dockable = new DockableSimpleInternalFrame(sif);
@@ -116,11 +116,7 @@ public class MaximizationDemo {
         return toolbar;
     }
 
-    private static Icon createIcon(String icon) {
-        return new ImageIcon(createImageImpl(icon));
-    }
-
-    private static Image createImageImpl(String resourceName) {
+	private static Image createImageImpl(String resourceName) {
         URL iconURL = MaximizationDemo.class.getResource(resourceName);
         if (iconURL == null) {
             throw new RuntimeException("Could not find: " + resourceName);

@@ -19,7 +19,6 @@
         <module>flexdock-demo</module>
         <module>flexdock-view</module>
         <module>flexdock-perspective</module>
-        <module>flexdock-drag</module>
     </modules>
 
     <name>${project.artifactId}</name>

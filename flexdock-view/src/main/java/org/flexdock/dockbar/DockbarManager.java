@@ -593,7 +593,8 @@ public class DockbarManager {
 			EventManager.dispatch(evt);
 		}
 	}
-	
+
+	// TODO I don't want these to animate, they should just snap out
 	private void startAnimation(final Dockable oldDockable, final Dockable newDockable, final String newDockableId, final int newEdge) {
 		Animation deactivation = oldDockable == null ? null : new Animation(this, true);
 		Runnable updater1 = () -> {

@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * TODO I would like to replace this with a vertical/horizontal flow layout with JXLabels
  * @author Christopher Butler
  */
 public class DockbarLayout {
@@ -85,7 +86,7 @@ public class DockbarLayout {
             return 0;
         }
 
-        Rectangle rect = DockbarLayoutManager.getManager().getViewArea(manager, dockable);
+		Rectangle rect = DockbarLayoutManager.getManager().getViewArea(manager);
         DockablePropertySet props = dockable.getDockingProperties();
 
         // determine what percentage of the viewable area we want the viewpane to take up
@@ -111,7 +112,7 @@ public class DockbarLayout {
             viewpaneSize = getDesiredViewpaneSize();
         }
 
-        Rectangle rect = DockbarLayoutManager.getManager().getViewArea(manager, dockable);
+		Rectangle rect = DockbarLayoutManager.getManager().getViewArea(manager);
 		if (edge == SwingConstants.LEFT || edge == SwingConstants.RIGHT) {
 			if (edge == SwingConstants.RIGHT) {
                 rect.x = rect.x + rect.width - viewpaneSize;

@@ -89,7 +89,7 @@ public class ResizeListener extends MouseAdapter implements MouseMotionListener 
     private void handleResizeEvent(MouseEvent me) {
         ViewPane viewPane = manager.getViewPane();
         Point p = SwingUtilities.convertPoint((Component)me.getSource(), me.getPoint(), viewPane.getParent());
-        Rectangle viewArea = DockbarLayoutManager.getManager().getViewArea(manager, dockable);
+		Rectangle viewArea = DockbarLayoutManager.getManager().getViewArea(manager);
 
         p.x = Math.max(p.x, 0);
         p.x = Math.min(p.x, viewArea.width);

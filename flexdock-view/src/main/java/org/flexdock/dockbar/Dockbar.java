@@ -24,7 +24,6 @@ import org.flexdock.plaf.common.border.SlideoutBorder;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -32,116 +31,116 @@ import java.util.ArrayList;
  * @author Christopher Butler
  */
 public class Dockbar extends JPanel {
-    protected int orientation;
-    protected DockbarManager manager;
-    protected ArrayList mDocks = new ArrayList();
+	int orientation;
+	protected DockbarManager manager;
+	ArrayList<DockbarLabel> mDocks = new ArrayList<>();
 
-    static {
-        // make sure DockbarLabel is initialized
-        Class c = DockbarLabel.class;
-    }
+	static {
+		// make sure DockbarLabel is initialized
+		Class<?> c = DockbarLabel.class;
+	}
 
-    public static int getValidOrientation(int orient) {
-        switch (orient) {
-		case SwingConstants.LEFT:
-			return SwingConstants.LEFT;
-		case SwingConstants.RIGHT:
-			return SwingConstants.RIGHT;
-		case SwingConstants.BOTTOM:
-			return SwingConstants.BOTTOM;
-            default:
+	public static int getValidOrientation(int orient) {
+		switch (orient) {
+			case SwingConstants.LEFT:
 				return SwingConstants.LEFT;
-        }
-    }
+			case SwingConstants.RIGHT:
+				return SwingConstants.RIGHT;
+			case SwingConstants.BOTTOM:
+				return SwingConstants.BOTTOM;
+			default:
+				return SwingConstants.LEFT;
+		}
+	}
 
-    public Dockbar(DockbarManager manager, int orientation) {
-        this.manager = manager;
-        setBorder(new SlideoutBorder());
-        setOrientation(orientation);
-    }
+	Dockbar(DockbarManager manager, int orientation) {
+		this.manager = manager;
+		setBorder(new SlideoutBorder());
+		setOrientation(orientation);
+	}
 
-    void undock(Dockable dockable) {
-        DockbarLabel label = getLabel(dockable);
+	void undock(Dockable dockable) {
+		DockbarLabel label = getLabel(dockable);
 
-        remove(label);
-        mDocks.remove(label);
-        getParent().validate();
-        repaint();
-    }
+		remove(label);
+		mDocks.remove(label);
+		getParent().validate();
+		repaint();
+	}
 
-    public DockbarLabel getLabel(Dockable dockable) {
-        if(dockable==null) {
-            return null;
-        }
+	public DockbarLabel getLabel(Dockable dockable) {
+		if (dockable == null) {
+			return null;
+		}
 
-		for (Object mDock : mDocks) {
-			DockbarLabel label = (DockbarLabel) mDock;
-
-			if (label.getDockable() == dockable) {
-				return label;
+		for (DockbarLabel mDock : mDocks) {
+			if (mDock.getDockable() == dockable) {
+				return mDock;
 			}
 		} // for
 
-        return null;
-    }
+		return null;
+	}
 
-    public boolean contains(Dockable dockable) {
-        return getLabel(dockable)!=null;
-    }
+	public boolean contains(Dockable dockable) {
+		return getLabel(dockable) != null;
+	}
 
-    public void dock(Dockable dockable) {
-        if(dockable==null) {
-            return;
-        }
+	public void dock(Dockable dockable) {
+		if (dockable == null) {
+			return;
+		}
 
-        DockbarLabel currentLabel = getLabel(dockable);
-        if (currentLabel!=null) {
-            currentLabel.setActive(false);
-            return;
-        }
+		DockbarLabel currentLabel = getLabel(dockable);
+		if (currentLabel != null) {
+			currentLabel.setActive(false);
+			return;
+		}
 
-        DockbarLabel newLabel = new DockbarLabel(dockable.getPersistentId(), getOrientation());
-        add(newLabel);
-        mDocks.add(newLabel);
+		DockbarLabel newLabel = new DockbarLabel(dockable.getPersistentId(), getOrientation());
+		add(newLabel);
+//		add(label);
+//        mDocks.add(label);
+		mDocks.add(newLabel);
 
-        getParent().validate();
-        repaint();
-    }
+//		getParent().validate();
+//		repaint();
+	}
 
-    public int getOrientation() {
-        return orientation;
-    }
+	public int getOrientation() {
+		return orientation;
+	}
 
-    private void setOrientation(int orientation) {
-        orientation = getValidOrientation(orientation);
-        this.orientation = orientation;
+	private void setOrientation(int orientation) {
+		orientation = getValidOrientation(orientation);
+		this.orientation = orientation;
 
-        Border border = getBorder();
-        if(border instanceof SlideoutBorder) {
-            ((SlideoutBorder)border).setOrientation(orientation);
-        }
-	
+		Border border = getBorder();
+		if (border instanceof SlideoutBorder) {
+			((SlideoutBorder) border).setOrientation(orientation);
+		}
+
 		int boxConstraint = orientation == SwingConstants.TOP ||
 				orientation == SwingConstants.BOTTOM ? BoxLayout.LINE_AXIS : BoxLayout.PAGE_AXIS;
-        setLayout(new BoxLayout(this, boxConstraint));
-    }
+		setLayout(new BoxLayout(this, boxConstraint));
+	}
 
-    @Override
-    public Dimension getPreferredSize() {
-        if(mDocks.isEmpty()) {
-            return new Dimension(0,0);
-        }
+//    @Override
+//    public Dimension getPreferredSize() {
+//        if(mDocks.isEmpty()) {
+//            return new Dimension(0,0);
+//        }
+//
+//        DockbarLabel label = (DockbarLabel)getComponent(0);
+//        return label.getPreferredSize();
+//    }
 
-        DockbarLabel label = (DockbarLabel)getComponent(0);
-        return label.getPreferredSize();
-    }
-
-    void activate(String dockableId, boolean lock) {
-        if(manager!=null) {
-            manager.setActiveDockable(dockableId);
-            if(lock) {
-                manager.getActivationListener().lockViewpane();
-            }
-        }
-    }
+	void activate(String dockableId, boolean lock) {
+		if (manager != null) {
+			manager.setActiveDockable(dockableId);
+			if (lock) {
+				manager.getActivationListener().lockViewpane();
+			}
+		}
+	}
 }

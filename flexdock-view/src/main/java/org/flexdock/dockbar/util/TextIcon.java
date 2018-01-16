@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
+ * @deprecated Will be deleted when DockbarLabel is replaced with SwingX
  * @author Andreas Ernst
  * @author Christopher Butler
  */

@@ -23,6 +23,7 @@ import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.plaf.common.border.RoundedLineBorder;
+import org.jdesktop.swingx.JXLabel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -36,22 +37,22 @@ import java.awt.event.MouseListener;
  * @author Andreas Ernst
  * @author Christopher Butler
  */
-public class DockbarLabel extends JLabel implements MouseListener {
-    private static final Insets[] INSETS = createInsets();
-    private static final int[] ROTATIONS = createRotations();
+public class DockbarLabel extends JXLabel implements MouseListener {
+	private static final Insets[] INSETS = createInsets();
+	private static final int[] ROTATIONS = createRotations();
 
-    // instance data
-    private String dockingId;
+	// instance data
+	private String dockingId;
 
-    private boolean mSelected = false;
-//        private boolean mDragging = false;
-    private RoundedLineBorder mBorder;
-    private boolean mInPaint = false;
-    private boolean mActive = false;
-    private int mDefaultOrientation;
+	private boolean mSelected = false;
+	//        private boolean mDragging = false;
+	private RoundedLineBorder mBorder;
+	private boolean mInPaint = false;
+	private boolean mActive = false;
+	private int mDefaultOrientation;
 
 
-    private static Insets[] createInsets() {
+	private static Insets[] createInsets() {
 		Insets[] insets = new Insets[5];
 		insets[SwingUtilities.CENTER] = new Insets(1, 1, 1, 1);
 		insets[SwingUtilities.LEFT] = new Insets(1, 1, 2, 1);
@@ -59,9 +60,9 @@ public class DockbarLabel extends JLabel implements MouseListener {
 		insets[SwingUtilities.TOP] = new Insets(1, 1, 1, 2);
 		insets[SwingUtilities.BOTTOM] = new Insets(1, 1, 1, 2);
 		return insets;
-    }
+	}
 
-    private static int[] createRotations() {
+	private static int[] createRotations() {
 		int[] rotations = new int[5];
 		rotations[SwingUtilities.CENTER] = TextIcon.ROTATE_NONE;
 		rotations[SwingUtilities.LEFT] = TextIcon.ROTATE_LEFT;
@@ -69,209 +70,125 @@ public class DockbarLabel extends JLabel implements MouseListener {
 		rotations[SwingUtilities.TOP] = TextIcon.ROTATE_NONE;
 		rotations[SwingUtilities.BOTTOM] = TextIcon.ROTATE_NONE;
 		return rotations;
-    }
+	}
 
 	DockbarLabel(String dockableId, int defaultOrientation) {
-        dockingId = dockableId;
+		dockingId = dockableId;
 
-        mDefaultOrientation = Dockbar.getValidOrientation(defaultOrientation);
-        mBorder = new RoundedLineBorder(Color.lightGray, 3);
-        setBorder(new CompoundBorder(new EmptyBorder(new Insets(1, 1, 1, 1)), mBorder));
+		mDefaultOrientation = Dockbar.getValidOrientation(defaultOrientation);
+		mBorder = new RoundedLineBorder(Color.lightGray, 3);
+		setBorder(new CompoundBorder(new EmptyBorder(new Insets(1, 1, 1, 1)), mBorder));
 
-        addMouseListener(this);
+		addMouseListener(this);
 
-        TextIcon icon = new TextIcon(this, 2, 1);
-        setIcon(icon);
-        updateIcon();
-        icon.validate();
-    }
+		TextIcon icon = new TextIcon(this, 2, 1);
+		setIcon(icon);
+		updateIcon();
+		icon.validate();
 
-    // stuff
 
-    @Override
-    public Border getBorder() {
-        return mInPaint ? null : super.getBorder();
-    }
+	}
 
-    // override
-
-    @Override
-    public void paintComponent(Graphics g) {
-        mInPaint = false;
-
-        paintBorder(g);
-
-        mInPaint = true;
-
-        super.paintComponent(g);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        mInPaint = true;
-
-//                updateView();
-
-        super.paint(g); // will call paintComponent, paintBorder
-
-        mInPaint = false;
-    }
-
-    public void setActive(boolean active) {
-        if (mActive != active) {
-            mActive = active;
-
-            updateBorder();
-
-            repaint();
-        } // if
-    }
-
-    private void updateBorder() {
-        mBorder.setFilled(mSelected || mActive);
-    }
-
-    // protected
-
-	private void activate(boolean lock) {
-        Dockbar dockbar = (Dockbar)SwingUtilities.getAncestorOfClass(Dockbar.class, this);
-        if(dockbar!=null) {
-            dockbar.activate(dockingId, lock);
-
-        }
-    }
+	// stuff
 
 	@Override
-    protected void validateTree() {
-        updateBorderInsets();
-        updateIcon();
-        super.validateTree();
-    }
+	public Border getBorder() {
+		return mInPaint ? null : super.getBorder();
+	}
 
-    private void updateIcon() {
-        Object obj = getIcon();
-        if(!(obj instanceof TextIcon)) {
-            return;
-        }
+	public void setActive(boolean active) {
+		if (mActive != active) {
+			mActive = active;
 
-        Dockable d = getDockable();
-        DockablePropertySet p = d==null? null: d.getDockingProperties();
-        if(p==null) {
-            return;
-        }
+			updateBorder();
 
-        int orientation = getOrientation();
-        int rotation = ROTATIONS[orientation];
-        Icon dockIcon = p.getDockbarIcon();
-        if(dockIcon==null) {
-            dockIcon = p.getTabIcon();
-        }
-        String text = p.getDockableDesc();
+			//repaint();
+		} // if
+	}
 
-        TextIcon icon = (TextIcon)obj;
-        icon.setIcon(dockIcon);
-        icon.setText(text);
-        icon.setRotation(rotation);
-    }
+	private void updateBorder() {
+		mBorder.setFilled(mSelected || mActive);
+	}
 
-    @Override
-    public void setIcon(Icon icon) {
-        Icon currIcon = getIcon();
-        if(currIcon instanceof TextIcon) {
-            ((TextIcon)currIcon).setIcon(icon);
-        } else {
-            super.setIcon(icon);
-        }
-        revalidate();
-    }
+	// protected
 
-    @Override
-    public void setText(String text) {
-        Icon currIcon = getIcon();
-        if(currIcon instanceof TextIcon) {
-            ((TextIcon)currIcon).setText(text);
-        } else {
-            super.setText(text);
-        }
-        revalidate();
-    }
+	private void activate(boolean lock) {
+		Dockbar dockbar = (Dockbar) SwingUtilities.getAncestorOfClass(Dockbar.class, this);
+		if (dockbar != null) {
+			dockbar.activate(dockingId, lock);
+		}
+	}
 
+	private void updateIcon() {
+		Object obj = getIcon();
+		if (!(obj instanceof TextIcon)) {
+			return;
+		}
 
-    private void updateBorderInsets() {
-        Border border = super.getBorder();
-        border = border instanceof CompoundBorder? ((CompoundBorder)border).getOutsideBorder(): null;
-        EmptyBorder insetBorder = border instanceof EmptyBorder? (EmptyBorder)border: null;
+		Dockable d = getDockable();
+		DockablePropertySet p = d == null ? null : d.getDockingProperties();
+		if (p == null) {
+			return;
+		}
 
-        if(insetBorder!=null) {
-            int orientation = getOrientation();
-            Insets insets = INSETS[orientation];
-            Insets borderInsets = insetBorder.getBorderInsets();
-            borderInsets.top = insets.top;
-            borderInsets.left = insets.left;
-            borderInsets.bottom = insets.bottom;
-            borderInsets.right = insets.right;
-        }
-    }
+		int orientation = getOrientation();
+		int rotation = ROTATIONS[orientation];
+		Icon dockIcon = p.getDockbarIcon();
+		if (dockIcon == null) {
+			dockIcon = p.getTabIcon();
+		}
 
-    public Dockable getDockable() {
-        return DockingManager.getDockable(dockingId);
-    }
+		TextIcon icon = (TextIcon) obj;
+		icon.setIcon(dockIcon);
+		icon.setText("old icon");
+		icon.setRotation(rotation);
+
+		setText(p.getDockableDesc());
+
+		if (orientation == TextIcon.ROTATE_LEFT) {
+			setTextRotation(3 * Math.PI / 2);
+		}
+		else if (orientation == TextIcon.ROTATE_RIGHT) {
+			setTextRotation(Math.PI / 2);
+		}
+	}
+
+	public Dockable getDockable() {
+		return DockingManager.getDockable(dockingId);
+	}
 
 	private int getOrientation() {
-        Container cnt = getParent();
-        if(cnt instanceof Dockbar) {
-            return ((Dockbar)cnt).getOrientation();
-        }
-        return mDefaultOrientation;
-    }
+		Container cnt = getParent();
+		if (cnt instanceof Dockbar) {
+			return ((Dockbar) cnt).getOrientation();
+		}
+		return mDefaultOrientation;
+	}
 
-    @Override
-    public Dimension getPreferredSize() {
-        Icon  tmp = getIcon();
-        if(!(tmp instanceof TextIcon)) {
-            return super.getPreferredSize();
-        }
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
 
-        Insets insets = getInsets();
-        TextIcon icon = (TextIcon)tmp;
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
 
-        int w = insets.left + icon.getIconWidth() + insets.right;
-        int h = insets.top + icon.getIconHeight() + insets.bottom;
-        return new Dimension(w, h);
-    }
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getButton() != MouseEvent.BUTTON1) {
+			return;
+		}
 
-    // override MouseListener
+		activate(true);
+	}
 
-    @Override
-    public void mousePressed(MouseEvent e) {
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		activate(false);
+	}
 
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if(e.getButton() != MouseEvent.BUTTON1) {
-            return;
-        }
-
-        activate(true);
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        activate(false);
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-
-
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
 }
 

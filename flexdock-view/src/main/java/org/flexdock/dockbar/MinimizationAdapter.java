@@ -35,7 +35,7 @@ public class MinimizationAdapter implements MinimizationManager {
 
     private static void init() {
         // make sure DockbarManager is initialized
-        Class c = DockbarManager.class;
+		Class<?> c = DockbarManager.class;
     }
 
     @Override

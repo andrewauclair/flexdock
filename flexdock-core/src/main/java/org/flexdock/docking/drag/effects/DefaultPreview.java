@@ -32,6 +32,7 @@ import java.util.Map;
 import static org.flexdock.docking.DockingConstants.*;
 
 /**
+ * TODO I want to merge this with the AlphaPreview because that is going to be the one and only preview.
  * @author Christopher Butler
  */
 public abstract class DefaultPreview implements DragPreview {

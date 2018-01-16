@@ -11,6 +11,7 @@ import org.flexdock.plaf.theme.UIFactory;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
+import org.jdesktop.swingx.JXLabel;
 import org.w3c.dom.Element;
 
 import javax.swing.*;
@@ -70,7 +71,7 @@ public class ViewTest {
 
     private View buildView(String id, String name, JComponent component) {
         View view = new View(id, name);
-        view.setIcon("org/flexdock/demos/view/titlebar/msvs001.png");
+		// view.setIcon("/org/flexdock/demos/view/titlebar/msvs001.png");
         view.addAction(new EmptyAction(CLOSE_ACTION));
         view.addAction(new EmptyAction(PIN_ACTION));
         view.setContentPane(component);
@@ -101,6 +102,11 @@ public class ViewTest {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(new JButton(new ChangePlafAction()));
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
+
+		JXLabel label = new JXLabel("JXLabel");
+		label.setTextRotation(Math.PI / 2);
+
+		contentPane.add(label, BorderLayout.NORTH);
 
         return contentPane;
     }
