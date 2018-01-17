@@ -20,11 +20,8 @@
 package org.flexdock.view.actions;
 
 import org.flexdock.docking.DockingManager;
-import org.flexdock.docking.state.DockingState;
 import org.flexdock.view.View;
-import org.flexdock.view.model.ViewButtonModel;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -43,21 +40,4 @@ public class DefaultPinAction extends ViewAction {
 		boolean minimize = !view.isMinimized();
         DockingManager.setMinimized(view, minimize);
     }
-
-	@Override
-    public ButtonModel createButtonModel() {
-        return new PinButtonModel();
-    }
-
-    private static class PinButtonModel extends ViewButtonModel {
-        @Override
-        public boolean isSelected() {
-            DockingState info = getDockingState();
-            if(info==null) {
-                return super.isSelected();
-            }
-            return info.isMinimized();
-        }
-    }
-
 }

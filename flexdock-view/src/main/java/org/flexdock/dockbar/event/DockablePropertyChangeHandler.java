@@ -19,11 +19,6 @@
  */
 package org.flexdock.dockbar.event;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.Icon;
-
 import org.flexdock.dockbar.Dockbar;
 import org.flexdock.dockbar.DockbarLabel;
 import org.flexdock.dockbar.DockbarManager;
@@ -32,12 +27,16 @@ import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.docking.props.PropertyChangeListenerFactory;
 import org.flexdock.util.DockingUtility;
 
+import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 /**
  * @author Christopher Butler
  *
  */
 public class DockablePropertyChangeHandler implements PropertyChangeListener {
-    public static final DockablePropertyChangeHandler DEFAULT_INSTANCE = new DockablePropertyChangeHandler();
+	static final DockablePropertyChangeHandler DEFAULT_INSTANCE = new DockablePropertyChangeHandler();
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

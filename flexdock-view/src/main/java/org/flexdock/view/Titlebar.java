@@ -21,7 +21,6 @@ package org.flexdock.view;
 
 import org.flexdock.view.actions.DefaultCloseAction;
 import org.flexdock.view.actions.DefaultPinAction;
-import org.flexdock.view.model.ViewButtonModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -246,9 +245,6 @@ public class Titlebar extends JPanel {
 			}
 
 			ButtonModel bm = button.getModel();
-			if (bm instanceof ViewButtonModel) {
-				((ViewButtonModel) bm).setViewId(viewId);
-			}
 		}
 	}
 

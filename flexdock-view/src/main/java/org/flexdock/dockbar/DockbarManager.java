@@ -654,5 +654,4 @@ public class DockbarManager {
 	public DockbarLayout getLayout() {
 		return dockbarLayout;
 	}
-	
 }

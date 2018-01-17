@@ -20,7 +20,6 @@
 package org.flexdock.view;
 
 import org.flexdock.plaf.PlafManager;
-import org.flexdock.view.model.ViewButtonModel;
 
 import javax.swing.*;
 
@@ -33,7 +32,6 @@ public class Button extends JToggleButton {
 
 	Button(Action action) {
         setAction(action);
-        setModel(new ViewButtonModel());
     }
 
     @Override

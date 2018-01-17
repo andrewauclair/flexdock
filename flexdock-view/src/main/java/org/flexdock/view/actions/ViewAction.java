@@ -19,14 +19,11 @@
  */
 package org.flexdock.view.actions;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.ButtonModel;
-import javax.swing.SwingUtilities;
-
 import org.flexdock.view.View;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 /**
  * @author Christopher Butler
@@ -37,9 +34,9 @@ public abstract class ViewAction extends AbstractAction {
      */
     public static final ViewAction EMPTY_ACTION = createDefault();
 
-    protected String viewId;
+	private String viewId;
 
-    protected View getView(ActionEvent evt) {
+	private View getView(ActionEvent evt) {
         View view = viewId == null ? null : View.getInstance(viewId);
         if (view == null) {
             Component c = (Component) evt.getSource();
@@ -65,15 +62,11 @@ public abstract class ViewAction extends AbstractAction {
         };
     }
 
-    public ButtonModel createButtonModel() {
-        return null;
-    }
-
-    public String getViewId() {
+	public String getViewId() {
         return viewId;
     }
 
-    public void setViewId(String viewId) {
+	void setViewId(String viewId) {
         this.viewId = viewId;
     }
 

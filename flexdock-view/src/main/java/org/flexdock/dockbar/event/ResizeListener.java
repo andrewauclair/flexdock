@@ -112,5 +112,4 @@ public class ResizeListener extends MouseAdapter implements MouseMotionListener 
         props.setPreviewSize(percent);
         manager.revalidate();
     }
-
 }

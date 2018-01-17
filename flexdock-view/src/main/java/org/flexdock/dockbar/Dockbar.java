@@ -99,12 +99,7 @@ public class Dockbar extends JPanel {
 
 		DockbarLabel newLabel = new DockbarLabel(dockable.getPersistentId(), getOrientation());
 		add(newLabel);
-//		add(label);
-//        mDocks.add(label);
 		mDocks.add(newLabel);
-
-//		getParent().validate();
-//		repaint();
 	}
 
 	public int getOrientation() {
@@ -124,16 +119,6 @@ public class Dockbar extends JPanel {
 				orientation == SwingConstants.BOTTOM ? BoxLayout.LINE_AXIS : BoxLayout.PAGE_AXIS;
 		setLayout(new BoxLayout(this, boxConstraint));
 	}
-
-//    @Override
-//    public Dimension getPreferredSize() {
-//        if(mDocks.isEmpty()) {
-//            return new Dimension(0,0);
-//        }
-//
-//        DockbarLabel label = (DockbarLabel)getComponent(0);
-//        return label.getPreferredSize();
-//    }
 
 	void activate(String dockableId, boolean lock) {
 		if (manager != null) {

@@ -42,7 +42,7 @@ public class ActivationListener {
         setEnabled(true);
     }
 
-    public boolean isEnabled() {
+	private boolean isEnabled() {
         return enabled;
     }
 
@@ -50,7 +50,7 @@ public class ActivationListener {
         return manager.isActive() && !manager.isAnimating() && !manager.isDragging();
     }
 
-    public void setEnabled(boolean enabled) {
+	private void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -58,7 +58,7 @@ public class ActivationListener {
         return isEnabled() && isActive();
     }
 
-    public boolean isViewpaneLocked() {
+	private boolean isViewpaneLocked() {
         return manager.getViewPane().isLocked();
     }
 

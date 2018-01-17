@@ -29,43 +29,45 @@ import java.awt.*;
  */
 public class MinimizationAdapter implements MinimizationManager {
 
-    static {
-        init();
-    }
+	static {
+		init();
+	}
 
-    private static void init() {
-        // make sure DockbarManager is initialized
+	private static void init() {
+		// make sure DockbarManager is initialized
 		Class<?> c = DockbarManager.class;
-    }
+	}
 
-    @Override
-    public boolean close(Dockable dockable) {
-        DockbarManager mgr = DockbarManager.getCurrent(dockable);
+	@Override
+	public boolean close(Dockable dockable) {
+		DockbarManager mgr = DockbarManager.getCurrent(dockable);
 		return mgr != null && mgr.remove(dockable);
-    }
+	}
 
-    @Override
-    public void preview(Dockable dockable, boolean locked) {
-        DockbarManager.activate(dockable, true);
-    }
+	@Override
+	public void preview(Dockable dockable, boolean locked) {
+		DockbarManager.activate(dockable, true);
+	}
 
-    @Override
-    public void setMinimized(Dockable dockable, boolean minimizing, Component window, int edge) {
-        DockbarManager mgr = DockbarManager.getInstance(window);
-        if(mgr==null) {
-            return;
-        }
+	@Override
+	public void setMinimized(Dockable dockable, boolean minimizing, Component window, int edge) {
+		DockbarManager mgr = DockbarManager.getInstance(window);
+		if (mgr == null) {
+			return;
+		}
 
-        if(minimizing) {
-            // if minimizing, send to the dockbar
-            if(edge==MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT) {
-                mgr.minimize(dockable);
-            } else {
-                mgr.minimize(dockable, edge);
-            }
-        } else {
-            // otherwise, restore from the dockbar
-            mgr.restore(dockable);
-        }
-    }
+		if (minimizing) {
+			// if minimizing, send to the dockbar
+			if (edge == MinimizationManager.UNSPECIFIED_LAYOUT_CONSTRAINT) {
+				mgr.minimize(dockable);
+			}
+			else {
+				mgr.minimize(dockable, edge);
+			}
+		}
+		else {
+			// otherwise, restore from the dockbar
+			mgr.restore(dockable);
+		}
+	}
 }
