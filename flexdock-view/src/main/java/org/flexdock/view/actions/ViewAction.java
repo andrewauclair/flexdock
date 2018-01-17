@@ -61,13 +61,4 @@ public abstract class ViewAction extends AbstractAction {
             }
         };
     }
-
-	public String getViewId() {
-        return viewId;
-    }
-
-	void setViewId(String viewId) {
-        this.viewId = viewId;
-    }
-
 }

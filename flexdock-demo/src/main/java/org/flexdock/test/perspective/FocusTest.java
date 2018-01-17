@@ -39,7 +39,6 @@ import org.flexdock.util.ResourceManager;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
-import org.flexdock.view.actions.DefaultDisplayAction;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -57,32 +56,32 @@ import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
  * @version $Id: FocusTest.java,v 1.1 2007-03-18 23:54:15 kschaefe Exp $
  */
 public class FocusTest extends JFrame {
-	
+
 	private static final String PERSPECTIVE_FILE = "PerspectiveDemo.data";
 	private static final String MAIN_VIEW = "main.view";
 	private static final String BIRD_VIEW = "bird.view";
 	private static final String MESSAGE_VIEW = "message.log";
 	private static final String PROBLEM_VIEW = "problem";
 	private static final String CONSOLE_VIEW = "console";
-	
+
 	private static final String P1 = "p1";
 	private static final String P2 = "p2";
 	private static final String P3 = "p3";
-	
+
 	static {
 		EffectsManager.setPreview(new AlphaPreview(Color.black, new Color(119, 173, 255), 0.25f));
 	}
-	
+
 	public static void main(String[] args) {
 		setSystemLookAndFeel();
-		
+
 		// setup the flexdock configuration
 		configureDocking();
-		
+
 		// create and show the GUI
 		EventQueue.invokeLater(FocusTest::runGUI);
 	}
-	
+
 	private static void runGUI() {
 		// create out application frame
 		FocusTest flexDockDemo = new FocusTest();
@@ -94,126 +93,131 @@ public class FocusTest extends JFrame {
 		// now show the frame
 		flexDockDemo.setVisible(true);
 	}
-	
-	
+
+
 	private FocusTest() {
 		super("FlexDock Demo");
 		setContentPane(createContentPane());
 		setJMenuBar(createApplicationMenuBar());
 	}
-	
+
 	private JPanel createContentPane() {
 		JPanel contentPane = new JPanel(new BorderLayout());
 		contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		
+
 		//tworzymy glowny view port do dokowania
 		Viewport viewport = new Viewport();
 //        Border outerBorder = BorderFactory.createEmptyBorder(0,0,5,5);
 //        Border innerBorder = new ShadowBorder();
 //        viewport.setBorderManager(new StandardBorderManager(BorderFactory.createCompoundBorder(outerBorder, innerBorder)));
-		
+
 		viewport.setBorderManager(new StandardBorderManager(new ShadowBorder()));
 //        viewport.setBorder(new EmptyBorder(10, 10, 10, 10));
-		
+
 		//rejestrujemy glowny view port
-		
+
 		contentPane.add(viewport, BorderLayout.CENTER);
 		return contentPane;
 	}
-	
+
 	private JMenuBar createApplicationMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-		
+
 		JMenu showViewMenu = new JMenu("Show View");
-		
-		showViewMenu.add(new DefaultDisplayAction(BIRD_VIEW));
-		showViewMenu.add(new DefaultDisplayAction(MESSAGE_VIEW));
-		showViewMenu.add(new DefaultDisplayAction(PROBLEM_VIEW));
-		showViewMenu.add(new DefaultDisplayAction(CONSOLE_VIEW));
-        showViewMenu.add(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame();
-                frame.setTitle("Preview");
 
-                JPanel panel = new JPanel();
-                frame.add(panel, BorderLayout.CENTER);
-                panel.setBackground(new Color(119, 173, 255));
+		JMenuItem bird = new JMenuItem(View.getInstance(BIRD_VIEW).getTitle());
+		showViewMenu.add(bird);
+		JMenuItem msg = new JMenuItem(View.getInstance(MESSAGE_VIEW).getTitle());
+		showViewMenu.add(msg);
+		JMenuItem problem = new JMenuItem(View.getInstance(PROBLEM_VIEW).getTitle());
+		showViewMenu.add(problem);
+		JMenuItem console = new JMenuItem(View.getInstance(CONSOLE_VIEW).getTitle());
+		showViewMenu.add(console);
 
-                panel.setBackground(new Color(0, 97, 255));
+		showViewMenu.add(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame frame = new JFrame();
+				frame.setTitle("Preview");
 
-                Color bgColor = new Color(100, 154, 255);
-                panel.setBackground(bgColor);
+				JPanel panel = new JPanel();
+				frame.add(panel, BorderLayout.CENTER);
+				panel.setBackground(new Color(119, 173, 255));
 
-                panel.setBorder(BorderFactory.createLineBorder(new Color(94, 94, 94)));
+				panel.setBackground(new Color(0, 97, 255));
 
-                Color color = Color.gray;
-                panel.setBorder(BorderFactory.createLineBorder(color));
-                frame.setType(Type.UTILITY);
-                frame.setUndecorated(true);
-                frame.setAlwaysOnTop(true);
+				Color bgColor = new Color(100, 154, 255);
+				panel.setBackground(bgColor);
 
-                frame.setLocation(600, 400);
-                frame.setSize(200, 200);
+				panel.setBorder(BorderFactory.createLineBorder(new Color(94, 94, 94)));
 
-                frame.setOpacity(0.5f);
-                frame.setVisible(true);
-            }
-        });
-        showViewMenu.add(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame();
-                frame.setTitle("Preview");
+				Color color = Color.gray;
+				panel.setBorder(BorderFactory.createLineBorder(color));
+				frame.setType(Type.UTILITY);
+				frame.setUndecorated(true);
+				frame.setAlwaysOnTop(true);
 
-                JPanel panel = new JPanel();
-                frame.add(panel, BorderLayout.CENTER);
-                panel.setBackground(new Color(119, 173, 255));
+				frame.setLocation(600, 400);
+				frame.setSize(200, 200);
 
-                panel.setBackground(new Color(0, 97, 255));
+				frame.setOpacity(0.5f);
+				frame.setVisible(true);
+			}
+		});
+		showViewMenu.add(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame frame = new JFrame();
+				frame.setTitle("Preview");
 
-                Color bgColor = new Color(100, 154, 255);
-                panel.setBackground(Color.RED);
+				JPanel panel = new JPanel();
+				frame.add(panel, BorderLayout.CENTER);
+				panel.setBackground(new Color(119, 173, 255));
 
-                panel.setBorder(BorderFactory.createLineBorder(new Color(94, 94, 94)));
+				panel.setBackground(new Color(0, 97, 255));
 
-                Color color = Color.gray;
-                panel.setBorder(BorderFactory.createLineBorder(color));
-                frame.setType(Type.UTILITY);
-                frame.setUndecorated(true);
-                frame.setAlwaysOnTop(true);
+				Color bgColor = new Color(100, 154, 255);
+				panel.setBackground(Color.RED);
 
-                frame.setLocation(500, 400);
-                frame.setSize(200, 200);
+				panel.setBorder(BorderFactory.createLineBorder(new Color(94, 94, 94)));
 
-                frame.setOpacity(0.5f);
-                frame.setVisible(true);
-            }
-        });
+				Color color = Color.gray;
+				panel.setBorder(BorderFactory.createLineBorder(color));
+				frame.setType(Type.UTILITY);
+				frame.setUndecorated(true);
+				frame.setAlwaysOnTop(true);
+
+				frame.setLocation(500, 400);
+				frame.setSize(200, 200);
+
+				frame.setOpacity(0.5f);
+				frame.setVisible(true);
+			}
+		});
 
 		JMenu perspectiveMenu = new JMenu("Perspective");
 		//pobieramy perspektywe nr 1
 		perspectiveMenu.add(new OpenPerspectiveAction(P1));
 		perspectiveMenu.add(new OpenPerspectiveAction(P2));
 		perspectiveMenu.add(new OpenPerspectiveAction(P3));
-		
+
 		menuBar.add(showViewMenu);
 		menuBar.add(perspectiveMenu);
-		
+
 		return menuBar;
 	}
-	
+
 	private static void configureDocking() {
 		// setup the DockingManager to work with our application
 		DockingManager.setDockableFactory(new ViewFactory());
 		DockingManager.setFloatingEnabled(true);
-		
+
 		// configure the perspective manager
 		PerspectiveManager.setFactory(new DemoPerspectiveFactory());
 		PerspectiveManager.setRestoreFloatingOnLoad(true);
 		PerspectiveManager mgr = PerspectiveManager.getInstance();
 		mgr.setCurrentPerspective(P3, true);
-		
+
 		// load any previously persisted layouts
 		PersistenceHandler persister = FilePersistenceHandler.createDefault(PERSPECTIVE_FILE);
 		PerspectiveManager.setPersistenceHandler(persister);
@@ -226,9 +230,9 @@ public class FocusTest extends JFrame {
 		// remember to store on shutdown
 		DockingManager.setAutoPersist(true);
 	}
-	
+
 	private static class DemoPerspectiveFactory implements PerspectiveFactory {
-		
+
 		@Override
 		public Perspective getPerspective(String persistentId) {
 			if (P1.equals(persistentId)) {
@@ -242,44 +246,44 @@ public class FocusTest extends JFrame {
 			}
 			return null;
 		}
-		
+
 		private Perspective createPerspective1() {
 			Perspective perspective = new Perspective(P1, "Perspective1");
 			LayoutSequence sequence = perspective.getInitialSequence(true);
-			
+
 			sequence.add(MAIN_VIEW);
 			sequence.add(BIRD_VIEW, MAIN_VIEW, EAST_REGION, .3f);
 			sequence.add(MESSAGE_VIEW, MAIN_VIEW, WEST_REGION, .3f);
 			sequence.add(PROBLEM_VIEW, MESSAGE_VIEW);
 			sequence.add(CONSOLE_VIEW, MESSAGE_VIEW);
-			
+
 			return perspective;
 		}
-		
+
 		private Perspective createPerspective2() {
 			Perspective perspective = new Perspective(P2, "Perspective2");
 			LayoutSequence sequence = perspective.getInitialSequence(true);
-			
+
 			sequence.add(MAIN_VIEW);
 			sequence.add(BIRD_VIEW, MAIN_VIEW, WEST_REGION, .3f);
 			sequence.add(MESSAGE_VIEW, BIRD_VIEW, SOUTH_REGION, .5f);
 			sequence.add(PROBLEM_VIEW, MESSAGE_VIEW);
 			sequence.add(CONSOLE_VIEW, MESSAGE_VIEW, EAST_REGION, .5f);
-			
+
 			return perspective;
 		}
-		
+
 		private Perspective createPerspective3() {
 			Perspective perspective = new Perspective(P3, "Perspective3");
 			LayoutSequence sequence = perspective.getInitialSequence(true);
 			sequence.add(MAIN_VIEW);
-			
+
 			return perspective;
 		}
 	}
-	
+
 	private static class ViewFactory extends DockableFactory.Stub {
-		
+
 		@Override
 		public Component getDockableComponent(String dockableId) {
 			if (MAIN_VIEW.equals(dockableId)) {
@@ -299,49 +303,49 @@ public class FocusTest extends JFrame {
 			}
 			return null;
 		}
-		
+
 		private View createView(String id, String text, String iconName) {
 			View view = new View(id, text);
 			//Dodajemy akcje close to tego view
 			view.addAction(DockingConstants.CLOSE_ACTION);
 			view.addAction(DockingConstants.PIN_ACTION);
-			
+
 			JPanel panel = new JPanel();
 			panel.setBorder(new LineBorder(Color.GRAY, 1));
-			
+
 			JTextField textField = new JTextField(text);
 			textField.setPreferredSize(new Dimension(100, 20));
 			panel.add(textField);
 			view.setContentPane(panel);
-			
+
 			Icon icon = ResourceManager.createIcon("org/flexdock/demos/view/" + iconName);
 			view.setTabIcon(icon);
-			
+
 			view.add(new JButton("Button 1"));
 			view.add(new JButton("Button 2"));
-			
+
 			return view;
 		}
-		
+
 		private static View createMainView() {
-			
+
 			JTabbedPane tabbedPane = new JTabbedPane();
 			tabbedPane.addTab("Sample1", new JTextArea("Sample1"));
 			tabbedPane.addTab("Sample2", new JTextArea("Sample2"));
 			tabbedPane.addTab("Sample3", new JTextArea("Sample3"));
-			
+
 			//to view nie bedzie mialo tytulu, wiec przekazujemy null
 			View mainView = new View(MAIN_VIEW, null, null);
-			
+
 			//blokujemy mozliwosc dokowania do tego view w regionie CENTER
 			mainView.setTerritoryBlocked(CENTER_REGION, true);
 			//wylaczamy pasek tytulowy
 			mainView.removeTitlebar();
 			//ustawiamy komponent GUI, ktory chcemy aby byl wyswietalny w tym view
 			mainView.setContentPane(new JScrollPane(tabbedPane));
-			
+
 			return mainView;
 		}
 	}
-	
+
 }

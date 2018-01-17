@@ -37,7 +37,6 @@ import org.flexdock.perspective.persist.xml.XMLPersister;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
-import org.flexdock.view.actions.DefaultDisplayAction;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -55,127 +54,132 @@ import static org.flexdock.docking.DockingConstants.*;
  */
 public class XMLPerspectivesDemo extends JFrame {
 
-    private static final String PERSPECTIVE_FILE = "PerspectiveDemo.xml";
+	private static final String PERSPECTIVE_FILE = "PerspectiveDemo.xml";
 
-    private static final String MAIN_VIEW = "main.view";
-    private static final String BIRD_VIEW = "bird.view";
-    private static final String MESSAGE_VIEW = "message.log";
-    private static final String PROBLEM_VIEW = "problem";
-    private static final String CONSOLE_VIEW = "console";
+	private static final String MAIN_VIEW = "main.view";
+	private static final String BIRD_VIEW = "bird.view";
+	private static final String MESSAGE_VIEW = "message.log";
+	private static final String PROBLEM_VIEW = "problem";
+	private static final String CONSOLE_VIEW = "console";
 
-    private static final String P1 = "p1";
-    //private static final String P2 = "p2";
-    //private static final String P3 = "p3";
+	private static final String P1 = "p1";
+	//private static final String P2 = "p2";
+	//private static final String P3 = "p3";
 
-    public static void main(String[] args) {
-        SwingUtility.setPlaf(UIManager.getSystemLookAndFeelClassName());
+	public static void main(String[] args) {
+		SwingUtility.setPlaf(UIManager.getSystemLookAndFeelClassName());
 
-        // setup the flexdock configuration
-        configureDocking();
+		// setup the flexdock configuration
+		configureDocking();
 
-        // create and show the GUI
-        EventQueue.invokeLater(XMLPerspectivesDemo::runGUI);
-    }
+		// create and show the GUI
+		EventQueue.invokeLater(XMLPerspectivesDemo::runGUI);
+	}
 
-    private static void runGUI() {
-        // create out application frame
-        XMLPerspectivesDemo flexDockDemo = new XMLPerspectivesDemo();
-        flexDockDemo.setSize(800, 600);
-        SwingUtility.centerOnScreen(flexDockDemo);
-        DemoUtility.setCloseOperation(flexDockDemo);
-        // load the current layout state into the application frame
-        DockingManager.restoreLayout();
-        // now show the frame
-        flexDockDemo.setVisible(true);
-    }
+	private static void runGUI() {
+		// create out application frame
+		XMLPerspectivesDemo flexDockDemo = new XMLPerspectivesDemo();
+		flexDockDemo.setSize(800, 600);
+		SwingUtility.centerOnScreen(flexDockDemo);
+		DemoUtility.setCloseOperation(flexDockDemo);
+		// load the current layout state into the application frame
+		DockingManager.restoreLayout();
+		// now show the frame
+		flexDockDemo.setVisible(true);
+	}
 
-    private XMLPerspectivesDemo() {
-        super("FlexDock Demo");
-        setContentPane(createContentPane());
-        setJMenuBar(createApplicationMenuBar());
-    }
+	private XMLPerspectivesDemo() {
+		super("FlexDock Demo");
+		setContentPane(createContentPane());
+		setJMenuBar(createApplicationMenuBar());
+	}
 
-    private JPanel createContentPane() {
-        JPanel contentPane = new JPanel(new BorderLayout());
-        contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+	private JPanel createContentPane() {
+		JPanel contentPane = new JPanel(new BorderLayout());
+		contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        //tworzymy glowny view port do dokowania
-        Viewport viewport = new Viewport();
-        //rejestrujemy glowny view port
+		//tworzymy glowny view port do dokowania
+		Viewport viewport = new Viewport();
+		//rejestrujemy glowny view port
 
-        contentPane.add(viewport, BorderLayout.CENTER);
-        return contentPane;
-    }
+		contentPane.add(viewport, BorderLayout.CENTER);
+		return contentPane;
+	}
 
-    private JMenuBar createApplicationMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
+	private JMenuBar createApplicationMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
 
-        JMenu showViewMenu = new JMenu("Show View");
+		JMenu showViewMenu = new JMenu("Show View");
 
-        showViewMenu.add(new DefaultDisplayAction(BIRD_VIEW));
-        showViewMenu.add(new DefaultDisplayAction(MESSAGE_VIEW));
-        showViewMenu.add(new DefaultDisplayAction(PROBLEM_VIEW));
-        showViewMenu.add(new DefaultDisplayAction(CONSOLE_VIEW));
+		JMenuItem bird = new JMenuItem(View.getInstance(BIRD_VIEW).getTitle());
+		showViewMenu.add(bird);
+		JMenuItem msg = new JMenuItem(View.getInstance(MESSAGE_VIEW).getTitle());
+		showViewMenu.add(msg);
+		JMenuItem problem = new JMenuItem(View.getInstance(PROBLEM_VIEW).getTitle());
+		showViewMenu.add(problem);
+		JMenuItem console = new JMenuItem(View.getInstance(CONSOLE_VIEW).getTitle());
+		showViewMenu.add(console);
 
-        JMenu perspectiveMenu = new JMenu("Perspective");
-        //pobieramy perspektywe nr 1
-        perspectiveMenu.add(new OpenPerspectiveAction(P1));
+		JMenu perspectiveMenu = new JMenu("Perspective");
+		//pobieramy perspektywe nr 1
+		perspectiveMenu.add(new OpenPerspectiveAction(P1));
 
-        menuBar.add(showViewMenu);
-        menuBar.add(perspectiveMenu);
+		menuBar.add(showViewMenu);
+		menuBar.add(perspectiveMenu);
 
-        return menuBar;
-    }
+		return menuBar;
+	}
 
-    private static void configureDocking() {
-        // setup the DockingManager to work with our application
-        DockingManager.setDockableFactory(new ViewFactory());
-        DockingManager.setFloatingEnabled(true);
+	private static void configureDocking() {
+		// setup the DockingManager to work with our application
+		DockingManager.setDockableFactory(new ViewFactory());
+		DockingManager.setFloatingEnabled(true);
 		EffectsManager.setPreview(new AlphaPreview());
 
-        // configure the perspective manager
-        PerspectiveManager.setFactory(new DemoPerspectiveFactory());
-        PerspectiveManager.setRestoreFloatingOnLoad(true);
+		// configure the perspective manager
+		PerspectiveManager.setFactory(new DemoPerspectiveFactory());
+		PerspectiveManager.setRestoreFloatingOnLoad(true);
 
-        // load any previously persisted layouts
-        PersistenceHandler persister = new FilePersistenceHandler(new File(FilePersistenceHandler.DEFAULT_PERSPECTIVE_DIR, PERSPECTIVE_FILE), XMLPersister.newDefaultInstance());
-        PerspectiveManager.setPersistenceHandler(persister);
-        try {
-            DockingManager.loadLayoutModel();
-        } catch(IOException | PersistenceException ex) {
-            ex.printStackTrace();
-        }
-        // remember to store on shutdown
-        DockingManager.setAutoPersist(true);
-    }
+		// load any previously persisted layouts
+		PersistenceHandler persister = new FilePersistenceHandler(new File(FilePersistenceHandler.DEFAULT_PERSPECTIVE_DIR, PERSPECTIVE_FILE), XMLPersister.newDefaultInstance());
+		PerspectiveManager.setPersistenceHandler(persister);
+		try {
+			DockingManager.loadLayoutModel();
+		}
+		catch (IOException | PersistenceException ex) {
+			ex.printStackTrace();
+		}
+		// remember to store on shutdown
+		DockingManager.setAutoPersist(true);
+	}
 
-    private static class DemoPerspectiveFactory implements PerspectiveFactory {
+	private static class DemoPerspectiveFactory implements PerspectiveFactory {
 
-        @Override
-        public Perspective getPerspective(String persistentId) {
-            if(P1.equals(persistentId)) {
-                return createPerspective1();
-            }
+		@Override
+		public Perspective getPerspective(String persistentId) {
+			if (P1.equals(persistentId)) {
+				return createPerspective1();
+			}
 
 //                        if(P2.equals(persistentId))
 //                                return createPerspective2();
 //                        if(P3.equals(persistentId))
 //                                return createPerspective3();
-            return null;
-        }
+			return null;
+		}
 
-        private Perspective createPerspective1() {
-            Perspective perspective = new Perspective(P1, "Perspective1");
-            LayoutSequence sequence = perspective.getInitialSequence(true);
+		private Perspective createPerspective1() {
+			Perspective perspective = new Perspective(P1, "Perspective1");
+			LayoutSequence sequence = perspective.getInitialSequence(true);
 
-            sequence.add("main.view");
-            sequence.add(BIRD_VIEW, "main.view", EAST_REGION, .3f);
-            sequence.add(MESSAGE_VIEW, "main.view", WEST_REGION, .3f);
-            sequence.add(PROBLEM_VIEW, MESSAGE_VIEW);
-            sequence.add(CONSOLE_VIEW, MESSAGE_VIEW);
+			sequence.add("main.view");
+			sequence.add(BIRD_VIEW, "main.view", EAST_REGION, .3f);
+			sequence.add(MESSAGE_VIEW, "main.view", WEST_REGION, .3f);
+			sequence.add(PROBLEM_VIEW, MESSAGE_VIEW);
+			sequence.add(CONSOLE_VIEW, MESSAGE_VIEW);
 
-            return perspective;
-        }
+			return perspective;
+		}
 
 //                private Perspective createPerspective2() {
 //                        Perspective perspective = new Perspective(P2, "Perspective2");
@@ -196,66 +200,66 @@ public class XMLPerspectivesDemo extends JFrame {
 //                        sequence.add("main.view");
 //                        return perspective;
 //                }
-    }
+	}
 
-    private static class ViewFactory extends DockableFactory.Stub {
+	private static class ViewFactory extends DockableFactory.Stub {
 
-        @Override
-        public Component getDockableComponent(String dockableId) {
-            if(MAIN_VIEW.equals(dockableId)) {
-                return createMainView();
-            }
-            if(BIRD_VIEW.equals(dockableId)) {
-                return createView(BIRD_VIEW, "Bird View");
-            }
-            if(MESSAGE_VIEW.equals(dockableId)) {
-                return createView(MESSAGE_VIEW, "Message Log");
-            }
-            if(PROBLEM_VIEW.equals(dockableId)) {
-                return createView(PROBLEM_VIEW, "Problems");
-            }
-            if(CONSOLE_VIEW.equals(dockableId)) {
-                return createView(CONSOLE_VIEW, "Console");
-            }
-            return null;
-        }
+		@Override
+		public Component getDockableComponent(String dockableId) {
+			if (MAIN_VIEW.equals(dockableId)) {
+				return createMainView();
+			}
+			if (BIRD_VIEW.equals(dockableId)) {
+				return createView(BIRD_VIEW, "Bird View");
+			}
+			if (MESSAGE_VIEW.equals(dockableId)) {
+				return createView(MESSAGE_VIEW, "Message Log");
+			}
+			if (PROBLEM_VIEW.equals(dockableId)) {
+				return createView(PROBLEM_VIEW, "Problems");
+			}
+			if (CONSOLE_VIEW.equals(dockableId)) {
+				return createView(CONSOLE_VIEW, "Console");
+			}
+			return null;
+		}
 
-        private View createView(String id, String text) {
-            View view = new View(id, text);
-            //Dodajemy akcje close to tego view
-            view.addAction(DockingConstants.CLOSE_ACTION);
-            view.addAction(DockingConstants.PIN_ACTION);
+		private View createView(String id, String text) {
+			View view = new View(id, text);
+			//Dodajemy akcje close to tego view
+			view.addAction(DockingConstants.CLOSE_ACTION);
+			view.addAction(DockingConstants.PIN_ACTION);
 
-            JPanel panel = new JPanel();
-            panel.setBorder(new LineBorder(Color.GRAY, 1));
+			JPanel panel = new JPanel();
+			panel.setBorder(new LineBorder(Color.GRAY, 1));
 
-            JTextField textField = new JTextField(text);
-            textField.setPreferredSize(new Dimension(100, 20));
-            panel.add(textField);
-            view.setContentPane(panel);
+			JTextField textField = new JTextField(text);
+			textField.setPreferredSize(new Dimension(100, 20));
+			panel.add(textField);
+			view.setContentPane(panel);
 
-            return view;
-        }
+			return view;
+		}
 
-        private static View createMainView() {
+		private static View createMainView() {
 
-            JTabbedPane tabbedPane = new JTabbedPane();
-            tabbedPane.addTab("Sample1", new JTextArea("Sample1"));
-            tabbedPane.addTab("Sample2", new JTextArea("Sample2"));
-            tabbedPane.addTab("Sample3", new JTextArea("Sample3"));
+			JTabbedPane tabbedPane = new JTabbedPane();
+			tabbedPane.addTab("Sample1", new JTextArea("Sample1"));
+			tabbedPane.addTab("Sample2", new JTextArea("Sample2"));
+			tabbedPane.addTab("Sample3", new JTextArea("Sample3"));
 
-            //to view nie bedzie mialo tytulu, wiec przekazujemy null
-            View mainView = new View(MAIN_VIEW, null, null);
+			//to view nie bedzie mialo tytulu, wiec przekazujemy null
+			View mainView = new View(MAIN_VIEW, null, null);
 
-            //blokujemy mozliwosc dokowania do tego view w regionie CENTER
-            mainView.setTerritoryBlocked(CENTER_REGION, true);
-            //wylaczamy pasek tytulowy
-            mainView.removeTitlebar();
-            //ustawiamy komponent GUI, ktory chcemy aby byl wyswietalny w tym view
-            mainView.setContentPane(new JScrollPane(tabbedPane));
+			//blokujemy mozliwosc dokowania do tego view w regionie CENTER
+			mainView.setTerritoryBlocked(CENTER_REGION, true);
+			//wylaczamy pasek tytulowy
+			mainView.removeTitlebar();
+			//ustawiamy komponent GUI, ktory chcemy aby byl wyswietalny w tym view
+			mainView.setContentPane(new JScrollPane(tabbedPane));
 
-            return mainView;
-        }
-    }
+			return mainView;
+		}
+	}
 
 }
