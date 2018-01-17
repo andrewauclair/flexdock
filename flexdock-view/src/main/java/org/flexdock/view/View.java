@@ -334,7 +334,7 @@ public class View extends JComponent implements Dockable {
 	
 	public void addAction(String action) {
 		if (titlepane != null) {
-			titlepane.addAction(action);
+			titlepane.addAction(action, this);
 		}
 	}
 	

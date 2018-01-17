@@ -19,8 +19,7 @@
  */
 package org.flexdock.view;
 
-import org.flexdock.view.actions.DefaultCloseAction;
-import org.flexdock.view.actions.DefaultPinAction;
+import org.flexdock.docking.DockingManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -92,23 +91,23 @@ public class Titlebar extends JPanel {
 		}
 	}
 
-	public synchronized void addAction(String actionName) {
+	public synchronized void addAction(String actionName, View view) {
 		if (actionName.equals("close")) {
-			JButton button = new JButton(new DefaultCloseAction());
+			JButton button = new JButton();
+			button.addActionListener(e -> DockingManager.close(view));
 			button.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/close_default.png")));
 			add(button);
 		}
 		else if (actionName.equals("pin")) {
-			JButton button = new JButton(new DefaultPinAction());
+			JButton button = new JButton();
+			button.addActionListener(e -> DockingManager.setMinimized(view, !view.isMinimized()));
 			button.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/pin_default.png")));
 			add(button);
 		}
 	}
 
 	public synchronized void addAction(Action action) {
-		JButton button = new JButton(action);
-
-		add(button);
+		add(new JButton(action));
 	}
 
 	private void regenerateButtonList() {
@@ -185,7 +184,6 @@ public class Titlebar extends JPanel {
 		Action action = getAction(key);
 		actionList.remove(action);
 		regenerateButtonList();
-		updateButtonModels();
 	}
 
 	protected synchronized void removeAllActions() {
@@ -230,22 +228,6 @@ public class Titlebar extends JPanel {
 
 	private void setParentView(View view) {
 		parentView = view;
-		updateButtonModels();
-	}
-
-	private void updateButtonModels() {
-		String viewId = parentView == null ? null : parentView
-				.getPersistentId();
-		Component[] comps = getComponents();
-		for (Component comp : comps) {
-			Button button = comp instanceof Button ? (Button) comp
-					: null;
-			if (button == null) {
-				continue;
-			}
-
-			ButtonModel bm = button.getModel();
-		}
 	}
 
 	public View getView() {

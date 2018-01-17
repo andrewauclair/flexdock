@@ -84,16 +84,6 @@
 			<property name="border.active.hover" value="#808080" handler="rounded-border" />
 			<property name="border.pressed" value="#0C0C0C" handler="rounded-border" />
 		</button-ui>
-		
-		<icon-resource name="default.close">
-			<property name="action" value="org.flexdock.view.actions.DefaultCloseAction" handler="action" />
-			<property name="tooltip" value="Close" handler="string" />
-		</icon-resource>
-		<icon-resource name="default.pin">
-			<property name="action" value="org.flexdock.view.actions.DefaultPinAction" handler="action" />
-			<property name="tooltip" value="Unpin" handler="string" />
-			<property name="tooltip.selected" value="Pin" handler="string" />
-		</icon-resource>
 	</theme>
 
 	<!-- Begin Windows Classic -->
