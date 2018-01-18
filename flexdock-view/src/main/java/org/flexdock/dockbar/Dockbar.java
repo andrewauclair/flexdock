@@ -24,6 +24,7 @@ import org.flexdock.plaf.common.border.SlideoutBorder;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -98,6 +99,8 @@ public class Dockbar extends JPanel {
 		}
 
 		DockbarLabel newLabel = new DockbarLabel(dockable.getPersistentId(), getOrientation());
+
+		LayoutManager layout = getLayout();
 		add(newLabel);
 		mDocks.add(newLabel);
 	}
@@ -118,6 +121,7 @@ public class Dockbar extends JPanel {
 		int boxConstraint = orientation == SwingConstants.TOP ||
 				orientation == SwingConstants.BOTTOM ? BoxLayout.LINE_AXIS : BoxLayout.PAGE_AXIS;
 		setLayout(new BoxLayout(this, boxConstraint));
+//		setLayout(new FlowLayout)
 	}
 
 	void activate(String dockableId, boolean lock) {

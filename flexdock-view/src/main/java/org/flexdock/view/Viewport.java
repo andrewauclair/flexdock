@@ -28,7 +28,6 @@ import org.flexdock.docking.defaults.StandardBorderManager;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
-import java.util.Set;
 
 import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
@@ -39,86 +38,77 @@ public class Viewport extends DefaultDockingPort {
 
 	private final HashSet<String> blockedRegions;
 
-    static {
-        DockingManager.setDockingStrategy(Viewport.class, View.VIEW_DOCKING_STRATEGY);
-    }
+	static {
+		DockingManager.setDockingStrategy(Viewport.class, View.VIEW_DOCKING_STRATEGY);
+	}
 
-    public Viewport() {
-        super();
+	public Viewport() {
+		super();
 		blockedRegions = new HashSet<>(5);
-        setBorderManager(new StandardBorderManager());
-    }
+		setBorderManager(new StandardBorderManager());
+	}
 
-    public Viewport(String portId) {
-        super(portId);
+	public Viewport(String portId) {
+		super(portId);
 		blockedRegions = new HashSet<>(5);
-        setBorderManager(new StandardBorderManager());
-    }
+		setBorderManager(new StandardBorderManager());
+	}
 
-    public void setRegionBlocked(String region, boolean isBlocked) {
-        if (isValidDockingRegion(region)) {
-            if (isBlocked) {
-                blockedRegions.add(region);
-            } else {
-                blockedRegions.remove(region);
-            }
-        }
-    }
+	public void setRegionBlocked(String region, boolean isBlocked) {
+		if (isValidDockingRegion(region)) {
+			if (isBlocked) {
+				blockedRegions.add(region);
+			}
+			else {
+				blockedRegions.remove(region);
+			}
+		}
+	}
 
-    @Override
-    public boolean isDockingAllowed(Component comp, String region) {
-        // if we're already blocked, then no need to interrogate
-        // the components in this dockingport
-        boolean blocked = !super.isDockingAllowed(comp, region);
-        if (blocked) {
-            return false;
-        }
+	@Override
+	public boolean isDockingAllowed(Component comp, String region) {
+		// if we're already blocked, then no need to interrogate
+		// the components in this dockingport
+		boolean blocked = !super.isDockingAllowed(comp, region);
+		if (blocked) {
+			return false;
+		}
 
-        // check to see if the region itself has been blocked for some reason
-        if (blockedRegions.contains(region)) {
-            return false;
-        }
+		// check to see if the region itself has been blocked for some reason
+		if (blockedRegions.contains(region)) {
+			return false;
+		}
 
-        // by default, allow docking in non-CENTER regions
-        if (!CENTER_REGION.equals(region)) {
-            return true;
-        }
+		// by default, allow docking in non-CENTER regions
+		if (!CENTER_REGION.equals(region)) {
+			return true;
+		}
 
-        // allow docking in the CENTER if there's nothing already there,
-        // or if there's no Dockable associated with the component there
-        Dockable dockable = getCenterDockable();
-        if (dockable == null) {
-            return true;
-        }
+		// allow docking in the CENTER if there's nothing already there,
+		// or if there's no Dockable associated with the component there
+		Dockable dockable = getCenterDockable();
+		if (dockable == null) {
+			return true;
+		}
 
-        // otherwise, only allow docking in the CENTER if the dockable
-        // doesn't mind
+		// otherwise, only allow docking in the CENTER if the dockable
+		// doesn't mind
 		return !dockable.getDockingProperties().isTerritoryBlocked(region);
-    }
+	}
 
-    public boolean dock(Dockable dockable) {
-        return dock(dockable, CENTER_REGION);
-    }
+	public boolean dock(Dockable dockable) {
+		return dock(dockable, CENTER_REGION);
+	}
 
-    @Override
-    protected JTabbedPane createTabbedPane() {
-        JTabbedPane pane = super.createTabbedPane();
-        pane.addChangeListener(ActiveDockableListener.getInstance());
-        return pane;
-    }
+	@Override
+	protected JTabbedPane createTabbedPane() {
+		JTabbedPane pane = super.createTabbedPane();
+		pane.addChangeListener(ActiveDockableListener.getInstance());
+		return pane;
+	}
 
-	public Set<Dockable> getViewset() {
-        // return ALL views, recursing to maximum depth
-        return getDockableSet(-1, 0, View.class);
-    }
-
-	public Set<Dockable> getViewset(int depth) {
-        // return all views, including subviews up to the specified depth
-        return getDockableSet(depth, 0, View.class);
-    }
-
-    @Override
-    protected String paramString() {
-        return "id=" + getPersistentId() + "," + super.paramString();
-    }
+	@Override
+	protected String paramString() {
+		return "id=" + getPersistentId() + "," + super.paramString();
+	}
 }

@@ -35,15 +35,6 @@ public class Button extends JToggleButton {
     }
 
     @Override
-    public void setModel(ButtonModel newModel) {
-        ButtonModel oldModel = getModel();
-        if(newModel!=null && oldModel!=null) {
-            newModel.setSelected(oldModel.isSelected());
-        }
-        super.setModel(newModel);
-    }
-
-    @Override
     public void updateUI() {
         setUI(PlafManager.getUI(this));
     }
