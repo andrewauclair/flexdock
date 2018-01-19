@@ -260,8 +260,6 @@ public class View extends JComponent implements Dockable {
 		}
 		setTabText(tabText);
 		
-		addHierarchyListener(e -> clearButtonRollovers());
-		
 		updateUI();
 		
 		DockingManager.registerDockable(this);
@@ -661,26 +659,10 @@ public class View extends JComponent implements Dockable {
 	
 	@Override
 	public void undockingComplete(DockingEvent evt) {
-		clearButtonRollovers();
 	}
 	
 	@Override
 	public void undockingStarted(DockingEvent evt) {
-	}
-	
-	private void clearButtonRollovers() {
-		if (titlepane == null) {
-			return;
-		}
-		
-		Component[] comps = titlepane.getComponents();
-		for (Component comp : comps) {
-			Button button = comp instanceof Button ? (Button) comp
-					: null;
-			if (button != null) {
-				button.getModel().setRollover(false);
-			}
-		}
 	}
 	
 	private void setActionBlocked(String actionName, boolean blocked) {

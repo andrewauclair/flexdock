@@ -82,9 +82,9 @@ public class DockbarLabel extends JXLabel implements MouseListener {
 		addMouseListener(this);
 
 		TextIcon icon = new TextIcon(this, 2, 1);
-//		setIcon(icon);
+		setIcon(icon);
 		updateIcon();
-//		icon.validate();
+		icon.validate();
 
 
 	}
@@ -119,6 +119,11 @@ public class DockbarLabel extends JXLabel implements MouseListener {
 		}
 	}
 
+	@Override
+	public Dimension getMinimumSize() {
+		return getPreferredSize();
+	}
+
 	private void updateIcon() {
 		Object obj = getIcon();
 		if (!(obj instanceof TextIcon)) {
@@ -138,10 +143,10 @@ public class DockbarLabel extends JXLabel implements MouseListener {
 			dockIcon = p.getTabIcon();
 		}
 
-//		TextIcon icon = (TextIcon) obj;
-//		icon.setIcon(dockIcon);
-//		icon.setText("old icon");
-//		icon.setRotation(rotation);
+		TextIcon icon = (TextIcon) obj;
+		icon.setIcon(dockIcon);
+		icon.setText("old icon");
+		icon.setRotation(rotation);
 
 		setText(p.getDockableDesc());
 
