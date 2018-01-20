@@ -143,14 +143,14 @@ public class SwingUtility {
 		if (x < 0) {
 			x = 0;
 		}
-		else if (x + w > screenSize.getWidth()) {
+		else if ((double) (x + w) > screenSize.getWidth()) {
 			x = ((int) screenSize.getWidth()) - w;
 		}
 		
 		if (y < 0) {
 			y = 0;
 		}
-		else if (y + h > screenSize.getHeight()) {
+		else if ((double) (y + h) > screenSize.getHeight()) {
 			y = ((int) screenSize.getHeight()) - h;
 		}
 		
@@ -255,12 +255,13 @@ public class SwingUtility {
 	}
 
 
-	public static Component getNearestFocusableComponent(Component c, Container desiredRoot) {
-		if (c == null) {
-			c = desiredRoot;
+	public static Component getNearestFocusableComponent(Component componentToCheck, Container desiredRoot) {
+		Component component = componentToCheck;
+		if (component == null) {
+			component = desiredRoot;
 		}
-		if (c == null) {
-			c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
+		if (component == null) {
+			component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
 		}
 		
 		boolean cachedFocusCycleRoot = false;
@@ -273,19 +274,19 @@ public class SwingUtility {
 		}
 		
 		Container focusRoot;
-		if (c instanceof Container) {
-			Container cnt = (Container) c;
+		if (component instanceof Container) {
+			Container cnt = (Container) component;
 			focusRoot = cnt.isFocusCycleRoot(cnt) ? cnt : cnt.getFocusCycleRootAncestor();
 		}
 		else {
-			focusRoot = c.getFocusCycleRootAncestor();
+			focusRoot = component.getFocusCycleRootAncestor();
 		}
 		
 		Component focuser = null;
 		if (focusRoot != null) {
-			//zw, remarked - selected component should become focused
+			//zw, remarked - selected componentToCheck should become focused
 			//focuser = focusRoot.getFocusTraversalPolicy().getLastComponent(focusRoot);
-			focuser = c; //zw, added - selected component should become focused
+			focuser = component; //zw, added - selected componentToCheck should become focused
 		}
 		
 		// restore the desiredRoot to its previous state
@@ -329,8 +330,8 @@ public class SwingUtility {
 		if (blue > 0 && blue < i) {
 			blue = i;
 		}
-		
-		return new Color(Math.min((int) (red / factor), 255), Math.min((int) (green / factor), 255), Math.min((int) (blue / factor), 255));
+
+		return new Color(Math.min((int) ((double) red / factor), 255), Math.min((int) ((double) green / factor), 255), Math.min((int) ((double) blue / factor), 255));
 	}
 	
 	/**
@@ -341,7 +342,7 @@ public class SwingUtility {
 	 * <br>author Cyril Gambis  - [Mar 17, 2005]
 	 */
 	public static Color darker(Color color, double factor) {
-		return new Color(Math.max((int) (color.getRed() * factor), 0), Math.max((int) (color.getGreen() * factor), 0), Math.max((int) (color.getBlue() * factor), 0));
+		return new Color(Math.max((int) ((double) color.getRed() * factor), 0), Math.max((int) ((double) color.getGreen() * factor), 0), Math.max((int) ((double) color.getBlue() * factor), 0));
 	}
 	
 	/**
@@ -368,12 +369,12 @@ public class SwingUtility {
 	
 	public static float getDividerProportion(JSplitPane splitPane) {
 		if (splitPane == null) {
-			return 0;
+			return (float) 0;
 		}
 		
 		int size = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? splitPane.getWidth() : splitPane.getHeight();
 		int divLoc = splitPane.getDividerLocation();
-		return size == 0 ? 0 : divLoc / ((float) size - splitPane.getDividerSize());
+		return size == 0 ? (float) 0 : (float) divLoc / ((float) size - (float) splitPane.getDividerSize());
 	}
 	
 	public static Component getOtherComponent(JSplitPane split, Component current) {
@@ -449,9 +450,8 @@ public class SwingUtility {
 		if (split == null) {
 			return;
 		}
-		
-		proportion = Math.max(0f, proportion);
-		final float percent = Math.min(1f, proportion);
+
+		final float percent = Math.min(1.0f, Math.max(0.0f, proportion));
 		int size = getSplitPaneSize(split);
 		
 		if (split.isVisible() && size > 0 && EventQueue.isDispatchThread()) {

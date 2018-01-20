@@ -36,12 +36,12 @@ import java.util.Map;
 /**
  * @author Christopher Butler
  */
-public class PropertyManager {
+public final class PropertyManager {
 
-	public static final String DOCKABLE_PROPERTIES_KEY = DockablePropertySet.class.getName();
-	public static final String DOCKINGPORT_PROPERTIES_KEY = DockingPortPropertySet.class.getName();
+	private static final String DOCKABLE_PROPERTIES_KEY = DockablePropertySet.class.getName();
+	private static final String DOCKINGPORT_PROPERTIES_KEY = DockingPortPropertySet.class.getName();
 	private static final ClassMapping DOCKABLE_PROPS_MAPPING = new ClassMapping(ScopedDockablePropertySet.class, null);
-	private static final HashMap DOCKABLE_CLIENT_PROPERTIES = new HashMap();
+	private static final HashMap<Object, Object> DOCKABLE_CLIENT_PROPERTIES = new HashMap<>();
 
 	public static DockingPortPropertySet getDockingPortRoot() {
 		return ScopedDockingPortPropertySet.ROOT_PROPS;
