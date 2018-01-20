@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.flexdock.dockbar.layout;
+package org.flexdock.view.dockbar.layout;
 
 import org.flexdock.plaf.common.border.CompoundEmptyBorder;
 

@@ -17,13 +17,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.flexdock.dockbar.activation;
+package org.flexdock.view.dockbar.activation;
 
-import org.flexdock.dockbar.event.DockbarEvent;
-import org.flexdock.dockbar.event.DockbarListener;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.activation.ActiveDockableTracker;
 import org.flexdock.util.DockingUtility;
+import org.flexdock.view.dockbar.event.DockbarEvent;
+import org.flexdock.view.dockbar.event.DockbarListener;
 
 /**
  * @author Christopher Butler

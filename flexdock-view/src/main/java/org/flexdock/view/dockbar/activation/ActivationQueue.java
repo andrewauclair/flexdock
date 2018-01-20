@@ -17,11 +17,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.flexdock.dockbar.activation;
-
-import org.flexdock.dockbar.DockbarManager;
+package org.flexdock.view.dockbar.activation;
 
 
+import org.flexdock.view.dockbar.DockbarManager;
 
 /**
  * @author Christopher Butler

@@ -16,13 +16,13 @@ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIG
 HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.flexdock.dockbar;
+package org.flexdock.view.dockbar;
 
-import org.flexdock.dockbar.util.TextIcon;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.plaf.common.border.RoundedLineBorder;
+import org.flexdock.view.dockbar.util.TextIcon;
 import org.jdesktop.swingx.JXLabel;
 
 import javax.swing.*;
@@ -44,10 +44,8 @@ public class DockbarLabel extends JXLabel implements MouseListener {
 	// instance data
 	private String dockingId;
 
-	private boolean mSelected = false;
 	//        private boolean mDragging = false;
 	private RoundedLineBorder mBorder;
-	private boolean mInPaint = false;
 	private boolean mActive = false;
 	private int mDefaultOrientation;
 
@@ -93,6 +91,7 @@ public class DockbarLabel extends JXLabel implements MouseListener {
 
 	@Override
 	public Border getBorder() {
+		boolean mInPaint = false;
 		return mInPaint ? null : super.getBorder();
 	}
 
@@ -107,7 +106,7 @@ public class DockbarLabel extends JXLabel implements MouseListener {
 	}
 
 	private void updateBorder() {
-		mBorder.setFilled(mSelected || mActive);
+		mBorder.setFilled(mActive);
 	}
 
 	// protected

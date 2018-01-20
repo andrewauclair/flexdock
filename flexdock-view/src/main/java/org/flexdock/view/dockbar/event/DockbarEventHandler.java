@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.flexdock.dockbar.event;
+package org.flexdock.view.dockbar.event;
 
 import org.flexdock.event.Event;
 import org.flexdock.event.EventHandler;

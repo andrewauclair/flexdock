@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.flexdock.dockbar.event;
+package org.flexdock.view.dockbar.event;
 
 import java.util.EventListener;
 
@@ -26,32 +26,40 @@ import java.util.EventListener;
  */
 public interface DockbarListener extends EventListener {
 
-    //comment public is redundant in interfaces since all of the methods are by default public
+	//comment public is redundant in interfaces since all of the methods are by default public
 
-    void dockableExpanded(DockbarEvent evt);
-    void dockableLocked(DockbarEvent evt);
-    void dockableCollapsed(DockbarEvent evt);
+	void dockableExpanded(DockbarEvent evt);
 
-    void minimizeStarted(DockbarEvent evt);
-    void minimizeCompleted(DockbarEvent evt);
+	void dockableLocked(DockbarEvent evt);
+
+	void dockableCollapsed(DockbarEvent evt);
+
+	void minimizeStarted(DockbarEvent evt);
+
+	void minimizeCompleted(DockbarEvent evt);
 
 	class Stub implements DockbarListener {
 
-        @Override
-        public void dockableExpanded(DockbarEvent evt) {}
+		@Override
+		public void dockableExpanded(DockbarEvent evt) {
+		}
 
-        @Override
-        public void dockableLocked(DockbarEvent evt) {}
+		@Override
+		public void dockableLocked(DockbarEvent evt) {
+		}
 
-        @Override
-        public void dockableCollapsed(DockbarEvent evt) {}
+		@Override
+		public void dockableCollapsed(DockbarEvent evt) {
+		}
 
-        @Override
-        public void minimizeStarted(DockbarEvent evt) {}
+		@Override
+		public void minimizeStarted(DockbarEvent evt) {
+		}
 
-        @Override
-        public void minimizeCompleted(DockbarEvent evt) {}
+		@Override
+		public void minimizeCompleted(DockbarEvent evt) {
+		}
 
-    }
+	}
 
 }

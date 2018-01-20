@@ -17,11 +17,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.flexdock.dockbar.event;
+package org.flexdock.view.dockbar.event;
 
-import org.flexdock.dockbar.DockbarManager;
-import org.flexdock.dockbar.ViewPane;
 import org.flexdock.util.SwingUtility;
+import org.flexdock.view.dockbar.DockbarManager;
+import org.flexdock.view.dockbar.ViewPane;
 
 import javax.swing.*;
 import java.awt.*;

@@ -17,15 +17,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.flexdock.dockbar.event;
+package org.flexdock.view.dockbar.event;
 
-import org.flexdock.dockbar.DockbarManager;
-import org.flexdock.dockbar.ViewPane;
-import org.flexdock.dockbar.layout.DockbarLayout;
-import org.flexdock.dockbar.layout.DockbarLayoutManager;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.util.RootWindow;
+import org.flexdock.view.dockbar.DockbarManager;
+import org.flexdock.view.dockbar.ViewPane;
+import org.flexdock.view.dockbar.layout.DockbarLayout;
+import org.flexdock.view.dockbar.layout.DockbarLayoutManager;
 
 import javax.swing.*;
 import java.awt.*;

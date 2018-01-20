@@ -17,13 +17,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.flexdock.dockbar;
+package org.flexdock.view.dockbar;
 
-import org.flexdock.dockbar.activation.ActivationQueue;
-import org.flexdock.dockbar.activation.ActiveDockableHandler;
-import org.flexdock.dockbar.activation.Animation;
-import org.flexdock.dockbar.event.*;
-import org.flexdock.dockbar.layout.DockbarLayout;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.floating.frames.DockingFrame;
@@ -35,6 +30,11 @@ import org.flexdock.event.EventManager;
 import org.flexdock.perspective.RestorationManager;
 import org.flexdock.util.RootWindow;
 import org.flexdock.util.Utilities;
+import org.flexdock.view.dockbar.activation.ActivationQueue;
+import org.flexdock.view.dockbar.activation.ActiveDockableHandler;
+import org.flexdock.view.dockbar.activation.Animation;
+import org.flexdock.view.dockbar.event.*;
+import org.flexdock.view.dockbar.layout.DockbarLayout;
 
 import javax.swing.*;
 import java.awt.*;
