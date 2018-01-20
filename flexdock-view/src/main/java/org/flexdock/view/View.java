@@ -233,7 +233,7 @@ public class View extends JComponent implements Dockable {
 		this(persistentId, title, title);
 	}
 
-	public View(String persistentId, String title, String tabText) {
+	private View(String persistentId, String title, String tabText) {
 		if (persistentId == null) {
 			throw new IllegalArgumentException(
 					"The 'persistentId' parameter cannot be null.");

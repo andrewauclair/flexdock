@@ -262,8 +262,7 @@ public class PerspectivesDemo extends JFrame {
 			tabbedPane.addTab("Sample2", new JTextArea("Sample2"));
 			tabbedPane.addTab("Sample3", new JTextArea("Sample3"));
 
-			// Pass an empty string to not display a titlebar
-			View mainView = new View(MAIN_VIEW, "", "");
+			View mainView = new View(MAIN_VIEW, "");
 
 			//blokujemy mozliwosc dokowania do tego view w regionie CENTER
 			mainView.setTerritoryBlocked(CENTER_REGION, true);

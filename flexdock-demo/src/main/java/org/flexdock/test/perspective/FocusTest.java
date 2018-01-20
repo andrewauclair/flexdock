@@ -330,8 +330,7 @@ public class FocusTest extends JFrame {
 			tabbedPane.addTab("Sample2", new JTextArea("Sample2"));
 			tabbedPane.addTab("Sample3", new JTextArea("Sample3"));
 
-			//to view nie bedzie mialo tytulu, wiec przekazujemy null
-			View mainView = new View(MAIN_VIEW, "", "");
+			View mainView = new View(MAIN_VIEW, "");
 
 			//blokujemy mozliwosc dokowania do tego view w regionie CENTER
 			mainView.setTerritoryBlocked(CENTER_REGION, true);
