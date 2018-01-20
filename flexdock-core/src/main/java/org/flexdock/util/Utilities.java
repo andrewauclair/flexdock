@@ -19,6 +19,7 @@
  */
 package org.flexdock.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -141,9 +142,9 @@ public class Utilities {
         }
 
         try {
-            Class<?> c = Class.forName(className);
-            Method m = c.getMethod("getInstance");
-            return m.invoke(null);
+            Class<?> clazz = Class.forName(className);
+            Method method = clazz.getMethod("getInstance");
+            return method.invoke(null);
         } catch (Throwable e) {
             return createInstance(className, failSilent);
         }
@@ -297,19 +298,19 @@ public class Utilities {
         }
 
         try {
-            Class<?> c = Class.forName(className);
-            if (superType != null && !superType.isAssignableFrom(c)) {
-                throw new ClassCastException("'" + c.getName()
-                        + "' is not a type of " + superType + ".");
+            Class<?> clazz = Class.forName(className);
+            if (superType != null && !superType.isAssignableFrom(clazz)) {
+                throw new ClassCastException('\'' + clazz.getName()
+                        + "' is not a type of " + superType + '.');
             }
-            return c.newInstance();
+            return clazz.getConstructor().newInstance();
         } catch (Throwable e) {
             if (!failSilent) {
                 e.printStackTrace();
             }
             return null;
         }
-    }
+	}
 
     /**
      * Checks for equality between the two specified {@code Objects}. If both

@@ -44,16 +44,16 @@ public class RootWindow {
 
 	private HashMap<Object, Object> clientProperties;
 
-	private static Component getRoot(Component c) {
-		if (c == null) {
+	private static Component getRoot(Component component) {
+		if (component == null) {
 			return null;
 		}
 
-		if (isValidRootContainer(c)) {
-			return c;
+		if (isValidRootContainer(component)) {
+			return component;
 		}
 
-		Container parent = c.getParent();
+		Container parent = component.getParent();
 		while (parent != null && !isValidRootContainer(parent)) {
 			parent = parent.getParent();
 		}
@@ -63,14 +63,14 @@ public class RootWindow {
 
 	/**
 	 * Traverses the container hierarchy to locate the root container and
-	 * returns corresponding {@code RootSwingContainer}. If {@code c} is
+	 * returns corresponding {@code RootSwingContainer}. If {@code component} is
 	 * {@code null}, a {@code null} reference is returned.
 	 *
-	 * @param c the container whose root we wish to find
+	 * @param component the container whose root we wish to find
 	 * @return the enclosing {@code RootSwingcontainer}
 	 */
-	public static RootWindow getRootContainer(Component c) {
-		Component root = getRoot(c);
+	public static RootWindow getRootContainer(Component component) {
+		Component root = getRoot(component);
 		if (!isValidRootContainer(root)) {
 			return null;
 		}
@@ -88,12 +88,12 @@ public class RootWindow {
 	 * Indicates whether the supplied {@code Component} is, in fact, a root
 	 * Swing container.
 	 *
-	 * @param c the {@code Component} we wish to check
+	 * @param component the {@code Component} we wish to check
 	 */
-	public static boolean isValidRootContainer(Component c) {
-		return c != null
-				&& (c instanceof JFrame || c instanceof JApplet
-				|| c instanceof JWindow || c instanceof JDialog);
+	public static boolean isValidRootContainer(Component component) {
+		return component != null
+				&& (component instanceof JFrame || component instanceof JApplet
+				|| component instanceof JWindow || component instanceof JDialog);
 	}
 
 	public static RootWindow[] getVisibleWindows() {
@@ -137,13 +137,13 @@ public class RootWindow {
 	 * @return the {@code contentPane} property
 	 */
 	public Container getContentPane() {
-		Container c = null;
+		Container container = null;
 
 		if (getRootContainer() instanceof RootPaneContainer) {
-			c = ((RootPaneContainer) getRootContainer()).getContentPane();
+			container = ((RootPaneContainer) getRootContainer()).getContentPane();
 		}
 
-		return c;
+		return container;
 	}
 
 	/**
@@ -152,13 +152,13 @@ public class RootWindow {
 	 * @return the {@code glassPane} property
 	 */
 	public Component getGlassPane() {
-		Component c = null;
+		Component component = null;
 
 		if (getRootContainer() instanceof RootPaneContainer) {
-			c = ((RootPaneContainer) getRootContainer()).getGlassPane();
+			component = ((RootPaneContainer) getRootContainer()).getGlassPane();
 		}
 
-		return c;
+		return component;
 	}
 
 	/**

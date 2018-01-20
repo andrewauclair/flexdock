@@ -74,8 +74,8 @@ public class PointHandler implements RestorationHandler {
             return null;
         }
 
-        float percentX = dockingState.getCenterX()/100f;
-        float percentY = dockingState.getCenterY()/100f;
+        float percentX = dockingState.getCenterX()/ 100.0f;
+        float percentY = dockingState.getCenterY()/ 100.0f;
 
         Point dropPoint = new Point();
         dropPoint.x = Math.round(contentPane.getWidth() * percentX);

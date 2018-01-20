@@ -184,9 +184,9 @@ public class ResourceManager {
 	 */
 	public static Cursor createCursor(URL imageURL, Point hotPoint, String name) {
 		Image image = createImage(imageURL);
-		Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(image,
+		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(image,
 				hotPoint, name);
-		return c;
+		return cursor;
 	}
 
 	/**
@@ -207,9 +207,9 @@ public class ResourceManager {
 	 */
 	public static Cursor createCursor(String url, Point hotPoint, String name) {
 		Image image = createImage(url);
-		Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(image,
+		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(image,
 				hotPoint, name);
-		return c;
+		return cursor;
 	}
 
 	/**

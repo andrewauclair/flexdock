@@ -35,7 +35,7 @@ public class TextIcon implements Icon, PropertyChangeListener {
     public static final int ROTATE_LEFT    = 0x02;
     public static final int ROTATE_RIGHT   = 0x04;
 
-    private static final double NINETY_DEGREES = Math.toRadians(90.0);
+    private static final double NINETY_DEGREES = 1.5707963267948966;
 
     // instance data
 

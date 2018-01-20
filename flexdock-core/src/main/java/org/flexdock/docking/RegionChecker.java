@@ -56,32 +56,32 @@ public interface RegionChecker {
 	/**
 	 * Default maximum region size.
 	 */
-	float MAX_REGION_SIZE = .5F;
+	float MAX_REGION_SIZE = 0.5F;
 
 	/**
 	 * Default minimum region size.
 	 */
-	float MIN_REGION_SIZE = .0F;
+	float MIN_REGION_SIZE = 0.0F;
 
 	/**
 	 * Default maximum sibling size.
 	 */
-	float MAX_SIBILNG_SIZE = 1F;
+	float MAX_SIBILNG_SIZE = 1.0F;
 
 	/**
 	 * Default minimum sibling size.
 	 */
-	float MIN_SIBILNG_SIZE = .0F;
+	float MIN_SIBILNG_SIZE = 0.0F;
 
 	/**
 	 * Default region size.
 	 */
-	float DEFAULT_REGION_SIZE = .25F;
+	float DEFAULT_REGION_SIZE = 0.25F;
 
 	/**
 	 * Default sibling size.
 	 */
-	float DEFAULT_SIBLING_SIZE = .5F;
+	float DEFAULT_SIBLING_SIZE = 0.5F;
 
 	/**
 	 * A key to find a system property that will override the default sibling

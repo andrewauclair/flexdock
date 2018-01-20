@@ -44,7 +44,7 @@ public class DockingSplitPane extends JSplitPane {
 	
 	private boolean controllerInTopLeft;
 	
-	private double initialDividerRatio = .5;
+	private double initialDividerRatio = 0.5;
 	
 	private double percent = -1;
 	
@@ -142,7 +142,7 @@ public class DockingSplitPane extends JSplitPane {
 			// we have more space than necessary; resize to give each at least
 			// preferred size
 			if (extraSpace >= 0) {
-				setDividerLocation(i.top + topH + ((int) (extraSpace * getResizeWeight() + .5)));
+				setDividerLocation(i.top + topH + ((int) (extraSpace * getResizeWeight() + 0.5)));
 			}
 			
 			// TODO implement shrinking excess space to ensure that one has
@@ -157,7 +157,7 @@ public class DockingSplitPane extends JSplitPane {
 			// we have more space than necessary; resize to give each at least
 			// preferred size
 			if (extraSpace >= 0) {
-				setDividerLocation(i.left + leftH + ((int) (extraSpace * getResizeWeight() + .5)));
+				setDividerLocation(i.left + leftH + ((int) (extraSpace * getResizeWeight() + 0.5)));
 			}
 			
 			// TODO implement shrinking excess space to ensure that one has preferred and nothing more

@@ -68,10 +68,10 @@ public class ComplexDockbarTest extends JFrame {
         View view4 = createView("message.log", "Message Log");
 
         viewport.dock(startPage);
-        startPage.dock(view1, WEST_REGION, .3f);
-        startPage.dock(view2, SOUTH_REGION, .3f);
-        startPage.dock(view4, EAST_REGION, .3f);
-        view1.dock(view3, SOUTH_REGION, .3f);
+        startPage.dock(view1, WEST_REGION, 0.3f);
+        startPage.dock(view2, SOUTH_REGION, 0.3f);
+        startPage.dock(view4, EAST_REGION, 0.3f);
+        view1.dock(view3, SOUTH_REGION, 0.3f);
 
         return p;
     }

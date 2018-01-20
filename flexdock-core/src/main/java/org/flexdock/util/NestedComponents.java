@@ -101,27 +101,27 @@ public class NestedComponents {
 
 		NestedComponents nest = new NestedComponents(searchSrc, null, null);
 
-		Component c = searchSrc;
-		while (c != null && !(c instanceof JRootPane)) {
-			if (nest.child == null && isInstanceOf(c, childClass)) {
-				nest.child = c;
+		Component component = searchSrc;
+		while (component != null && !(component instanceof JRootPane)) {
+			if (nest.child == null && isInstanceOf(component, childClass)) {
+				nest.child = component;
 			}
-			else if (isParentContainer(c, parentClass)) {
-				nest.parent = c;
+			else if (isParentContainer(component, parentClass)) {
+				nest.parent = component;
 				break;
 			}
-			c = c.getParent();
+			component = component.getParent();
 		}
 
 		return nest;
 	}
 
-    private static boolean isParentContainer(Component c, Class<?> parentClass) {
+    private static boolean isParentContainer(Component component, Class<?> parentClass) {
 		if (parentClass == RootWindow.class) {
-			return RootWindow.isValidRootContainer(c);
+			return RootWindow.isValidRootContainer(component);
 		}
 		else {
-			return parentClass.isAssignableFrom(c.getClass());
+			return parentClass.isAssignableFrom(component.getClass());
 		}
 	}
 

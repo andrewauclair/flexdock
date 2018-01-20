@@ -46,7 +46,7 @@ public class Animation implements Runnable, ActionListener {
     public Animation(DockbarManager mgr, boolean hide) {
         dockManager = mgr;
         timer = new Timer(ANIMATION_INTERVAL, this);
-        frameDelta = (100f/getTotalFrameCount())/100f;
+        frameDelta = (100.0f /getTotalFrameCount())/ 100.0f;
         hiding = hide;
         lock = new Object();
     }

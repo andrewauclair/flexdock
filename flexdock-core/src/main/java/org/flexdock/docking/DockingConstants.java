@@ -30,7 +30,7 @@ public interface DockingConstants {
 	 * Used when a sibling does not specify a size preference when docking
 	 * relative to another dockable.
 	 */
-	float UNSPECIFIED_SIBLING_PREF = -1F;
+	float UNSPECIFIED_SIBLING_PREF = -1.0F;
 	
 	/**
 	 * A constant for "initializing" an {@code int} to a safe (ie unusable
@@ -43,7 +43,7 @@ public interface DockingConstants {
 	 * value).
 	 */
 	// TODO should this be Float.NaN?
-	float UNINITIALIZED_RATIO = -1F;
+	float UNINITIALIZED_RATIO = -1.0F;
 	
 	String PERMANENT_FOCUS_OWNER = "permanentFocusOwner";
 	

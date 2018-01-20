@@ -1114,7 +1114,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		}
 
 		// set the split in the middle
-		double ratio = .5;
+		double ratio = 0.5;
 
 		if (docked instanceof Dockable
 				&& newDockedContent instanceof DockingSplitPane) {
@@ -1143,7 +1143,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		SwingUtility.putClientProperty((Component) oldContent,
 				DefaultDockingStrategy.PREFERRED_PROPORTION, (float) proportion);
 		SwingUtility.putClientProperty((Component) newContent,
-				DefaultDockingStrategy.PREFERRED_PROPORTION, (float) (1f - proportion));
+				DefaultDockingStrategy.PREFERRED_PROPORTION, (float) (1.0f - proportion));
 
 		return true;
 	}

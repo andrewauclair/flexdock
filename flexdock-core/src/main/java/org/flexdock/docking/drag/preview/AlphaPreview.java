@@ -50,7 +50,7 @@ public class AlphaPreview extends DefaultPreview {
 	
 	private void setAlpha(float alpha) {
 		alpha = Math.max(0, alpha);
-		alpha = Math.min(alpha, 1f);
+		alpha = Math.min(alpha, 1.0f);
 		previewAlpha = alpha;
 	}
 	

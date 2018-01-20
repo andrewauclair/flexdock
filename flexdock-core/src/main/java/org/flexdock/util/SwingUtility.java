@@ -143,14 +143,14 @@ public class SwingUtility {
 		if (x < 0) {
 			x = 0;
 		}
-		else if ((double) (x + w) > screenSize.getWidth()) {
+		else if ((x + w) > screenSize.getWidth()) {
 			x = ((int) screenSize.getWidth()) - w;
 		}
 		
 		if (y < 0) {
 			y = 0;
 		}
-		else if ((double) (y + h) > screenSize.getHeight()) {
+		else if ((y + h) > screenSize.getHeight()) {
 			y = ((int) screenSize.getHeight()) - h;
 		}
 		
@@ -159,8 +159,8 @@ public class SwingUtility {
 		window.setBounds(x, y, w, h);
 	}
 	
-	public static Container getContentPane(Component c) {
-		RootWindow rootWin = RootWindow.getRootContainer(c);
+	public static Container getContentPane(Component component) {
+		RootWindow rootWin = RootWindow.getRootContainer(component);
 		return rootWin == null ? null : rootWin.getContentPane();
 	}
 
@@ -235,14 +235,14 @@ public class SwingUtility {
 		}
 	}
 	
-	public static void focus(final Component c) {
-		RootWindow window = RootWindow.getRootContainer(c);
+	public static void focus(final Component component) {
+		RootWindow window = RootWindow.getRootContainer(component);
 		if (window == null) {
 			return;
 		}
 		
 		Component root = window.getRootContainer();
-		Component comp = c;
+		Component comp = component;
 		for (Component parent = comp.getParent(); parent != root; parent = comp.getParent()) {
 			if (parent instanceof JTabbedPane) {
 				((JTabbedPane) parent).setSelectedComponent(comp);
@@ -251,7 +251,7 @@ public class SwingUtility {
 		}
 		
 		
-		EventQueue.invokeLater(c::requestFocus);
+		EventQueue.invokeLater(component::requestFocus);
 	}
 
 
@@ -296,8 +296,8 @@ public class SwingUtility {
 		return focuser;
 	}
 	
-	public static void activateWindow(Component c) {
-		RootWindow window = RootWindow.getRootContainer(c);
+	public static void activateWindow(Component component) {
+		RootWindow window = RootWindow.getRootContainer(component);
 		if (window != null && !window.isActive()) {
 			window.toFront();
 		}
@@ -331,7 +331,7 @@ public class SwingUtility {
 			blue = i;
 		}
 
-		return new Color(Math.min((int) ((double) red / factor), 255), Math.min((int) ((double) green / factor), 255), Math.min((int) ((double) blue / factor), 255));
+		return new Color(Math.min((int) (red / factor), 255), Math.min((int) (green / factor), 255), Math.min((int) (blue / factor), 255));
 	}
 	
 	/**
@@ -342,7 +342,7 @@ public class SwingUtility {
 	 * <br>author Cyril Gambis  - [Mar 17, 2005]
 	 */
 	public static Color darker(Color color, double factor) {
-		return new Color(Math.max((int) ((double) color.getRed() * factor), 0), Math.max((int) ((double) color.getGreen() * factor), 0), Math.max((int) ((double) color.getBlue() * factor), 0));
+		return new Color(Math.max((int) (color.getRed() * factor), 0), Math.max((int) (color.getGreen() * factor), 0), Math.max((int) (color.getBlue() * factor), 0));
 	}
 	
 	/**
@@ -369,12 +369,12 @@ public class SwingUtility {
 	
 	public static float getDividerProportion(JSplitPane splitPane) {
 		if (splitPane == null) {
-			return (float) 0;
+			return 0;
 		}
 		
 		int size = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? splitPane.getWidth() : splitPane.getHeight();
 		int divLoc = splitPane.getDividerLocation();
-		return size == 0 ? (float) 0 : (float) divLoc / ((float) size - (float) splitPane.getDividerSize());
+		return size == 0 ? 0 : divLoc / ((float) size - splitPane.getDividerSize());
 	}
 	
 	public static Component getOtherComponent(JSplitPane split, Component current) {
@@ -389,23 +389,23 @@ public class SwingUtility {
 		return other;
 	}
 	
-	public static void putClientProperty(Component c, Object key, Object value) {
-		if (c instanceof JComponent) {
-			((JComponent) c).putClientProperty(key, value);
+	public static void putClientProperty(Component component, Object key, Object value) {
+		if (component instanceof JComponent) {
+			((JComponent) component).putClientProperty(key, value);
 		}
 	}
 	
 	
-	public static Object getClientProperty(Component c, Object key) {
-		if (c instanceof JComponent) {
-			return ((JComponent) c).getClientProperty(key);
+	public static Object getClientProperty(Component component, Object key) {
+		if (component instanceof JComponent) {
+			return ((JComponent) component).getClientProperty(key);
 		}
 		return null;
 	}
 	
-	public static void removeClientProperty(Component c, Object key) {
-		if (c instanceof JComponent) {
-			((JComponent) c).putClientProperty(key, null);
+	public static void removeClientProperty(Component component, Object key) {
+		if (component instanceof JComponent) {
+			((JComponent) component).putClientProperty(key, null);
 		}
 	}
 	

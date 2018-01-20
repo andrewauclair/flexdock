@@ -198,16 +198,16 @@ public class ClassMapping {
             return null;
         }
 
-		Class<?> c;
+		Class<?> clazz;
         synchronized (classes) {
-            c = classes.remove(key);
+            clazz = classes.remove(key);
         }
 
         synchronized (instances) {
             instances.remove(key);
         }
 
-        return c;
+        return clazz;
     }
 
     /**
@@ -235,9 +235,9 @@ public class ClassMapping {
 		Class<?> value = null;
 
         synchronized (classes) {
-			for (Class<?> c = key; c != null && value == null; c = c
+			for (Class<?> clazz = key; clazz != null && value == null; clazz = clazz
                     .getSuperclass()) {
-                value = classes.get(c);
+                value = classes.get(clazz);
             }
         }
 
@@ -269,9 +269,9 @@ public class ClassMapping {
         Object value = null;
 
         synchronized (instances) {
-			for (Class<?> c = key; c != null && value == null; c = c
+			for (Class<?> clazz = key; clazz != null && value == null; clazz = clazz
                     .getSuperclass()) {
-                value = instances.get(c);
+                value = instances.get(clazz);
             }
         }
 

@@ -110,22 +110,6 @@ public class PropertySet {
 		}
 	}
 
-	public boolean getBoolean(String key) {
-		String string = getString(key);
-		if (string == null) {
-			return false;
-		}
-
-		try {
-			return Boolean.valueOf(string);
-		}
-		catch (NumberFormatException e) {
-			System.err.println("Exception: " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
-	}
-
 	public Iterator<String> keys() {
 		return properties.keySet().iterator();
 	}
@@ -164,15 +148,8 @@ public class PropertySet {
 		return list;
 	}
 
-	// TODO Is there a better way to check if a string is an integer?
-	private boolean isNumeric(String string) {
-		try {
-			Integer.parseInt(string);
-			return true;
-		}
-		catch (NumberFormatException e) {
-			return false;
-		}
+	private boolean isNumeric(String str) {
+		return str.matches("-?\\d+(\\.\\d+)?");
 	}
 
 	public Class<?> toClass(String key) throws ClassNotFoundException {

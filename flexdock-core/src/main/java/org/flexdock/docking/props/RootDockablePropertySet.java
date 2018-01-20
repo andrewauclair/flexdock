@@ -32,7 +32,7 @@ import java.util.HashSet;
 public class RootDockablePropertySet extends BasicDockablePropertySet {
 	private static final Float DEFAULT_REGION_INSETS = RegionChecker.DEFAULT_REGION_SIZE;
 	private static final Float DEFAULT_SIBLING_INSETS = DockingManager.getDefaultSiblingSize();
-	private static final Float DEFAULT_DRAG_THRESHOLD = 4f;
+	private static final Float DEFAULT_DRAG_THRESHOLD = 4.0f;
 	private static final Float DEFAULT_PREVIEW_SIZE = 0.3f;
 
 	private HashSet constraints;

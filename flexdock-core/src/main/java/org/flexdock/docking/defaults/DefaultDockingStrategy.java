@@ -823,7 +823,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 	 */
 	@Override
 	public JSplitPane createSplitPane(DockingPort base, String region) {
-		return createSplitPane(base, region, -1f);
+		return createSplitPane(base, region, -1.0f);
 	}
 
 	private JSplitPane createSplitPaneImpl(DockingPort base, String region) {
@@ -958,7 +958,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 			RegionChecker rc = port.getDockingProperties().getRegionChecker();
 			float prefSize = rc.getSiblingSize(dockable.getComponent(),
 					getCreationRegion(splitPane));
-			return isElderTopLeft(splitPane) ? 1f - prefSize : prefSize;
+			return isElderTopLeft(splitPane) ? 1.0f - prefSize : prefSize;
 			// return prefSize;
 		}
 

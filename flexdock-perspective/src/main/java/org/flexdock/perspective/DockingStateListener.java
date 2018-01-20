@@ -140,8 +140,8 @@ public class DockingStateListener extends DockingListener.Stub {
         p = SwingUtilities.convertPoint(comp, p, contentPane);
 
         // now, convert to a proportional location on the rootPane
-        float x = p.x/(float)contentPane.getWidth() * 100f;
-        float y = p.y/(float)contentPane.getHeight() * 100f;
+        float x = p.x/(float)contentPane.getWidth() * 100.0f;
+        float y = p.y/(float)contentPane.getHeight() * 100.0f;
         p.x = Math.round(x);
         p.y = Math.round(y);
 
