@@ -84,28 +84,36 @@ public interface DockingConstants {
 	/**
 	 * The central region. The regional equivalent for SwingConstants.CENTER
 	 */
-	String CENTER_REGION = "CENTER";
+	String CENTER_REGION = Region.CENTER.toString();//"CENTER";
 	
 	/**
 	 * The east region. The regional equivalent for SwingConstants.RIGHT
 	 */
-	String EAST_REGION = "EAST";
+	String EAST_REGION = Region.EAST.toString();//"EAST";
 	
 	/**
 	 * The north region. The regional equivalent for SwingConstants.TOP
 	 */
-	String NORTH_REGION = "NORTH";
+	String NORTH_REGION = Region.NORTH.toString();//"NORTH";
 	
 	/**
 	 * The south region. The regional equivalent for SwingConstants.BOTTOM
 	 */
-	String SOUTH_REGION = "SOUTH";
+	String SOUTH_REGION = Region.SOUTH.toString();//"SOUTH";
 	
 	/**
 	 * The west region. The regional equivalent for SwingConstants.LEFT
 	 */
-	String WEST_REGION = "WEST";
-	
+	String WEST_REGION = Region.WEST.toString();//"WEST";
+
+	enum Region {
+		CENTER,
+		EAST,
+		NORTH,
+		SOUTH,
+		WEST
+	}
+
 	/**
 	 * An unknown region. This constant is typically used to initialize regions.
 	 */

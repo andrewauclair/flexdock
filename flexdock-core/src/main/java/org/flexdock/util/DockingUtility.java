@@ -195,7 +195,7 @@ public class DockingUtility {
 	 *
 	 * @param splitPane the {@code JSplitPane} whose orientation is to be used as a
 	 *                  target axis
-	 * @param region    the docking region to translate to the target axis
+	 * @param originalRegion    the docking region to translate to the target axis
 	 * @return the specified {@code region's} cross-axis equivalent region in
 	 * accordance with the orientation used by the specified
 	 * {@code JSplitPane}.

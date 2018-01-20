@@ -322,28 +322,28 @@ public class View extends JComponent implements Dockable {
 	/**
 	 * Sets the content pane for this view.
 	 *
-	 * @param c the container to use as the content pane.
-	 * @throws IllegalArgumentException if {@code c} is {@code null} or if {@code c} is the
+	 * @param container the container to use as the content pane.
+	 * @throws IllegalArgumentException if {@code container} is {@code null} or if {@code container} is the
 	 *                                  {@code titlepane}.
 	 * @see #titlepane
 	 */
-	public void setContentPane(Container c) throws IllegalArgumentException {
-		if (c == null) {
+	public void setContentPane(Container container) throws IllegalArgumentException {
+		if (container == null) {
 			throw new IllegalArgumentException(
 					"Unable to set a null content pane.");
 		}
-		if (c == titlepane) {
+		if (container == titlepane) {
 			throw new IllegalArgumentException(
-					"Cannot use the same component as both content pane and titlebar.");
+					"Cannot use the same container as both content pane and titlebar.");
 		}
 
 		if (contentPane != null) {
 			remove(contentPane);
 		}
-		contentPane = c;
-		boolean checkingEnabled = isContentPaneCheckingEnabled();
+		contentPane = container;
+		boolean checkingEnabled = contentPaneCheckingEnabled;
 		try {
-			setContentPaneCheckingEnabled(false);
+			this.contentPaneCheckingEnabled = false;
 			GridBagConstraints gbc = new GridBagConstraints();
 
 			gbc.weightx = 1;
