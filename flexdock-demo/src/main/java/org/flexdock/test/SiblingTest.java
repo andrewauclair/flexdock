@@ -136,9 +136,9 @@ public class SiblingTest extends JFrame {
 		SiblingTestPanel panel = (SiblingTestPanel) getSiblingTestDialog().getContentPane();
 		panel.sync();
 	}
-	
-	
-	private class SiblingTestPanel extends JPanel {
+
+
+	private static class SiblingTestPanel extends JPanel {
 		private JComboBox<String> dockableList;
 		private JComboBox<String> regionList;
 		private JLabel siblingLabel;

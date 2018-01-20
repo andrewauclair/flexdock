@@ -41,7 +41,7 @@ public class TabbedPaneDemo extends JPanel {
         titlebar = createTitlebar(" " + title);
         add(titlebar);
         setBorder(new LineBorder(Color.black));
-        dockableImpl = new DockableImpl();
+		dockableImpl = new DockableImpl(this);
     }
 
     private JLabel createTitlebar(String title) {
@@ -66,19 +66,22 @@ public class TabbedPaneDemo extends JPanel {
         return dockableImpl;
     }
 
-    private class DockableImpl extends AbstractDockable {
-        private DockableImpl() {
-            super("dockable." + getTitle());
-            // the titlebar will the the 'hot' component that initiates dragging
-            getDragSources().add(titlebar);
-            setTabText(getTitle());
-        }
+	private static class DockableImpl extends AbstractDockable {
+		private final TabbedPaneDemo demo;
 
-        @Override
-        public Component getComponent() {
-            return TabbedPaneDemo.this;
-        }
-    }
+		private DockableImpl(TabbedPaneDemo demo) {
+			super("dockable." + demo.getTitle());
+			this.demo = demo;
+			// the titlebar will the the 'hot' component that initiates dragging
+			getDragSources().add(demo.titlebar);
+			setTabText(demo.getTitle());
+		}
+
+		@Override
+		public Component getComponent() {
+			return demo;
+		}
+	}
 
 
 

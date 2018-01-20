@@ -51,8 +51,8 @@ public class SimpleDemo extends JFrame {
 		p.add(createDockingPort(), BorderLayout.CENTER);
 		return p;
 	}
-	
-	private class Panel extends JPanel implements DockingStub {
+
+	private static class Panel extends JPanel implements DockingStub {
 		private String id;
 		private String tabText;
 		

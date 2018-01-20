@@ -400,8 +400,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	}
 
 	private static float checkBounds(float val, float max, float min) {
-		val = Math.min(val, max);
-		return Math.max(val, min);
+		return Math.max(Math.min(val, max), min);
 	}
 
 	/**

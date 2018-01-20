@@ -270,7 +270,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         button.setBorder(null);
 
         // add the toggle listener
-        button.addItemListener(new ToggleListener());
+		button.addItemListener(new ToggleListener(this));
         updateTooltip(button);
     }
 
@@ -340,7 +340,13 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
         setBorderPressed(creationParameters.getBorder(BORDER_PRESSED));
     }
 
-    private class ToggleListener implements ItemListener {
+	private static class ToggleListener implements ItemListener {
+		private final ButtonUI ui;
+
+		ToggleListener(ButtonUI ui) {
+			this.ui = ui;
+		}
+
         @Override
         public void itemStateChanged(ItemEvent e) {
             if(e.getStateChange()!=ItemEvent.SELECTED && e.getStateChange()!=ItemEvent.DESELECTED) {
@@ -348,7 +354,7 @@ public class ButtonUI extends BasicButtonUI implements IFlexViewComponentUI {
             }
 
             Button button = (Button)e.getSource();
-            updateTooltip(button);
+			ui.updateTooltip(button);
         }
     }
 

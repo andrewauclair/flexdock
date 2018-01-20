@@ -120,7 +120,7 @@ public class ViewRestorationTest extends JFrame {
         return showViewAction;
     }
 
-    private class ShowViewAction extends AbstractAction {
+	private static class ShowViewAction extends AbstractAction {
 
         private String commonView;
 

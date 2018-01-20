@@ -486,8 +486,7 @@ public class DockingUtility {
 			return;
 		}
 
-		size = DefaultRegionChecker.validateSiblingSize(size);
-		src.getDockingProperties().setSiblingSize(region, size);
+		src.getDockingProperties().setSiblingSize(region, DefaultRegionChecker.validateSiblingSize(size));
 	}
 
 	/**

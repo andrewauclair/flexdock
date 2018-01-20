@@ -44,7 +44,7 @@ public class DragPipeline {
 	private DragOperation dragToken;
 
 	DragPipeline() {
-		paneMonitor = new GlassPaneMonitor();
+		paneMonitor = new GlassPaneMonitor(this);
 	}
 
 	public boolean isOpen() {
@@ -225,9 +225,15 @@ public class DragPipeline {
 	}
 
 
-	private class GlassPaneMonitor extends MouseAdapter {
+	private static class GlassPaneMonitor extends MouseAdapter {
+		private final DragPipeline pipeline;
+
+		GlassPaneMonitor(DragPipeline pipeline) {
+			this.pipeline = pipeline;
+		}
+
 		@Override
-		public void mouseEntered(MouseEvent me) {
+		public final void mouseEntered(MouseEvent e) {
 			// TODO If position is within the preview frame then ignore this entered event
 //            System.out.println("mouseEntered: " + me.getComponent().getName());
 //		    // TODO Make sure this isn't the preview
@@ -239,9 +245,9 @@ public class DragPipeline {
 //                    return;
 //                }
 //            }
-			Object obj = me.getSource();
+			Object obj = e.getSource();
 			if (obj instanceof DragGlasspane) {
-				setCurrentGlassPane((DragGlasspane) obj);
+				pipeline.setCurrentGlassPane((DragGlasspane) obj);
 			}
 		}
 
@@ -258,7 +264,7 @@ public class DragPipeline {
 //			        return;
 //                }
 //            }
-			setCurrentGlassPane(null);
+			pipeline.setCurrentGlassPane(null);
 		}
 	}
 

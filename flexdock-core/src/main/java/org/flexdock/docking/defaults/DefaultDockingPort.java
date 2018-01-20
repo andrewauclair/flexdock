@@ -121,7 +121,12 @@ import static org.flexdock.docking.DockingConstants.*;
  * @author Christopher Butler
  */
 public class DefaultDockingPort extends JPanel implements DockingPort {
-	protected class PortLayout implements LayoutManager2, Serializable {
+	protected static class PortLayout implements LayoutManager2, Serializable {
+		private final DefaultDockingPort port;
+
+		PortLayout(DefaultDockingPort port) {
+			this.port = port;
+		}
 		/**
 		 * Returns the amount of space the layout would like to have.
 		 *
@@ -131,10 +136,10 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		@Override
 		public Dimension preferredLayoutSize(Container parent) {
 			Dimension dimension;
-			Insets i = getInsets();
+			Insets i = port.getInsets();
 
-			if (dockedComponent != null) {
-				dimension = dockedComponent.getPreferredSize();
+			if (port.dockedComponent != null) {
+				dimension = port.dockedComponent.getPreferredSize();
 			}
 			else {
 				dimension = parent.getSize();
@@ -153,10 +158,10 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		@Override
 		public Dimension minimumLayoutSize(Container parent) {
 			Dimension dimension;
-			Insets i = getInsets();
+			Insets i = port.getInsets();
 
-			if (dockedComponent != null) {
-				dimension = dockedComponent.getMinimumSize();
+			if (port.dockedComponent != null) {
+				dimension = port.dockedComponent.getMinimumSize();
 			}
 			else {
 				dimension = parent.getSize();
@@ -175,10 +180,10 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		@Override
 		public Dimension maximumLayoutSize(Container target) {
 			Dimension dimension;
-			Insets i = getInsets();
+			Insets i = port.getInsets();
 
-			if (dockedComponent != null) {
-				dimension = dockedComponent.getMaximumSize();
+			if (port.dockedComponent != null) {
+				dimension = port.dockedComponent.getMaximumSize();
 			}
 			else {
 				// This is silly, but should stop an overflow error
@@ -198,13 +203,13 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		 */
 		@Override
 		public void layoutContainer(Container parent) {
-			Rectangle b = getBounds();
-			Insets i = getInsets();
+			Rectangle b = port.getBounds();
+			Insets i = port.getInsets();
 			int w = b.width - i.right - i.left;
 			int h = b.height - i.top - i.bottom;
 
-			if (dockedComponent != null) {
-				dockedComponent.setBounds(i.left, i.top, w, h);
+			if (port.dockedComponent != null) {
+				port.dockedComponent.setBounds(i.left, i.top, w, h);
 			}
 		}
 
@@ -307,7 +312,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
 	private LayoutManager createLayout() {
-		return new PortLayout();
+		return new PortLayout(this);
 	}
 
 	/**
@@ -540,12 +545,12 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		}
 
 		RegionChecker regionChecker = getRegionChecker();
-		Dockable d = getDockableAt(location);
+		Dockable dockable = getDockableAt(location);
 		Component regionTest = this;
 
-		if (d != null) {
-			regionTest = d.getComponent();
-			location = SwingUtilities.convertPoint(this, location, regionTest);
+		if (dockable != null) {
+			regionTest = dockable.getComponent();
+			return regionChecker.getRegion(regionTest, SwingUtilities.convertPoint(this, location, regionTest));
 		}
 
 		return regionChecker.getRegion(regionTest, location);
@@ -940,7 +945,8 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 * @see DockingStrategy#getDividerProportion(DockingPort, JSplitPane)
 	 */
 	@Override
-	public boolean dock(Dockable dockable, String region) {
+	public boolean dock(Dockable dockable, String inputRegion) {
+		String region = inputRegion;
 		if (dockable == null) {
 			return false;
 		}
@@ -1217,9 +1223,11 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	@Override
 	public void setPersistentId(String id) {
 		if (id == null) {
-			id = UUID.randomUUID().toString();
+			persistentId = UUID.randomUUID().toString();
 		}
-		persistentId = id;
+		else {
+			persistentId = id;
+		}
 		DockingPortTracker.updateIndex(this);
 	}
 

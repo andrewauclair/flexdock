@@ -64,7 +64,13 @@ import static org.flexdock.docking.DockingConstants.CENTER_REGION;
  * @see javax.swing.JRootPane
  */
 public class View extends JComponent implements Dockable {
-	protected class ViewLayout implements LayoutManager2, Serializable {
+	protected static class ViewLayout implements LayoutManager2, Serializable {
+		private final View view;
+
+		ViewLayout(View view) {
+			this.view = view;
+		}
+
 		/**
 		 * Returns the amount of space the layout would like to have.
 		 *
@@ -74,16 +80,16 @@ public class View extends JComponent implements Dockable {
 		@Override
 		public Dimension preferredLayoutSize(Container parent) {
 			Dimension rd, tpd;
-			Insets i = getInsets();
+			Insets i = view.getInsets();
 
-			if (contentPane != null) {
-				rd = contentPane.getPreferredSize();
+			if (view.contentPane != null) {
+				rd = view.contentPane.getPreferredSize();
 			}
 			else {
 				rd = parent.getSize();
 			}
-			if (titlepane != null && titlepane.isVisible()) {
-				tpd = titlepane.getPreferredSize();
+			if (view.titlepane != null && view.titlepane.isVisible()) {
+				tpd = view.titlepane.getPreferredSize();
 			}
 			else {
 				tpd = new Dimension(0, 0);
@@ -101,15 +107,15 @@ public class View extends JComponent implements Dockable {
 		@Override
 		public Dimension minimumLayoutSize(Container parent) {
 			Dimension rd, tpd;
-			Insets i = getInsets();
-			if (contentPane != null) {
-				rd = contentPane.getMinimumSize();
+			Insets i = view.getInsets();
+			if (view.contentPane != null) {
+				rd = view.contentPane.getMinimumSize();
 			}
 			else {
 				rd = parent.getSize();
 			}
-			if (titlepane != null && titlepane.isVisible()) {
-				tpd = titlepane.getMinimumSize();
+			if (view.titlepane != null && view.titlepane.isVisible()) {
+				tpd = view.titlepane.getMinimumSize();
 			}
 			else {
 				tpd = new Dimension(0, 0);
@@ -127,15 +133,15 @@ public class View extends JComponent implements Dockable {
 		@Override
 		public Dimension maximumLayoutSize(Container target) {
 			Dimension rd, tpd;
-			Insets i = getInsets();
-			if (titlepane != null && titlepane.isVisible()) {
-				tpd = titlepane.getMaximumSize();
+			Insets i = view.getInsets();
+			if (view.titlepane != null && view.titlepane.isVisible()) {
+				tpd = view.titlepane.getMaximumSize();
 			}
 			else {
 				tpd = new Dimension(0, 0);
 			}
-			if (contentPane != null) {
-				rd = contentPane.getMaximumSize();
+			if (view.contentPane != null) {
+				rd = view.contentPane.getMaximumSize();
 			}
 			else {
 				// This is silly, but should stop an overflow error
@@ -155,18 +161,18 @@ public class View extends JComponent implements Dockable {
 		@Override
 		public void layoutContainer(Container parent) {
 			Rectangle b = parent.getBounds();
-			Insets i = getInsets();
+			Insets i = view.getInsets();
 			int contentY = 0;
 			int w = b.width - i.right - i.left;
 			int h = b.height - i.top - i.bottom;
 
-			if (titlepane != null && titlepane.isVisible()) {
-				Dimension mbd = titlepane.getPreferredSize();
-				titlepane.setBounds(0, 0, w, mbd.height);
+			if (view.titlepane != null && view.titlepane.isVisible()) {
+				Dimension mbd = view.titlepane.getPreferredSize();
+				view.titlepane.setBounds(0, 0, w, mbd.height);
 				contentY += mbd.height;
 			}
-			if (contentPane != null) {
-				contentPane.setBounds(0, contentY, w, h - contentY);
+			if (view.contentPane != null) {
+				view.contentPane.setBounds(0, contentY, w, h - contentY);
 			}
 		}
 

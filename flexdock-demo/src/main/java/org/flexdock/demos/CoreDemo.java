@@ -18,14 +18,14 @@ import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
  * @author Andrew Auclair
  */
 public class CoreDemo extends JFrame {
-	public class ToolWindow extends DockingPanel {
+	public static class ToolWindow extends DockingPanel {
 		
 		ToolWindow(String name) {
 			super(name);
 		}
 	}
-	
-	public class DockingPanel extends JPanel implements DockingStub {
+
+	public static class DockingPanel extends JPanel implements DockingStub {
         private JPanel title;
 		private final String name;
 		

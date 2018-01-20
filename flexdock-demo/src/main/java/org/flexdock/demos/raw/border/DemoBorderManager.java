@@ -19,19 +19,16 @@
  */
 package org.flexdock.demos.raw.border;
 
-import java.awt.Component;
+import org.flexdock.docking.DockingPort;
+import org.flexdock.docking.defaults.BorderManager;
+import org.flexdock.docking.defaults.DefaultDockingPort;
 
-import javax.swing.JComponent;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
-
-import org.flexdock.docking.DockingPort;
-import org.flexdock.docking.defaults.BorderManager;
-import org.flexdock.docking.defaults.DefaultDockingPort;
+import java.awt.*;
 
 public class DemoBorderManager implements BorderManager {
     private Border dummyBorder;
@@ -121,13 +118,13 @@ public class DemoBorderManager implements BorderManager {
 
     // pulls the title out of a DockablePanel to create a titled border.
     // returns the dummy border if a DockablePanel isn't found
-    private Border getDesiredBorder(Component cmp) {
-        if (cmp instanceof DefaultDockingPort) {
-            cmp = ((DockingPort) cmp).getDockedComponent();
+	private Border getDesiredBorder(Component component) {
+		if (component instanceof DefaultDockingPort) {
+			component = ((DockingPort) component).getDockedComponent();
         }
 
-        if (cmp instanceof DockablePanel) {
-            String title = ((DockablePanel) cmp).getDockable().getDockingProperties().getDockableDesc();
+		if (component instanceof DockablePanel) {
+			String title = ((DockablePanel) component).getDockable().getDockingProperties().getDockableDesc();
             return new TitledBorder(title);
         }
         return dummyBorder;

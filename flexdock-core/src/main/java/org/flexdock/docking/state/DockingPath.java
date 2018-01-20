@@ -311,11 +311,12 @@ public class DockingPath implements Cloneable, Serializable {
 		String embedId = embedded.getPersistentId();
 		SplitNode lastNode = getLastNode();
 		if (embedId.equals(lastNode.getSiblingId())) {
-			region = getRegion(lastNode, current);
-			ctrlNode = lastNode;
+			return dock(dockable, port, getRegion(lastNode, current), lastNode);
 		}
-		
-		return dock(dockable, port, region, ctrlNode);
+		else {
+
+			return dock(dockable, port, region, ctrlNode);
+		}
 	}
 	
 	private boolean dockFullPath(Dockable dockable, DockingPort port, String region) {
@@ -338,7 +339,7 @@ public class DockingPath implements Cloneable, Serializable {
 			}
 			DockingPort superPort = (DockingPort) SwingUtilities.getAncestorOfClass(DockingPort.class, (Component) port);
 			if (superPort != null) {
-				port = superPort;
+				return dock(dockable, superPort, region, getLastNode());
 			}
 			return dock(dockable, port, region, getLastNode());
 		}

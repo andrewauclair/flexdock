@@ -128,7 +128,7 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 *
 	 * @return the region containing the specified {@code Point}.
 	 */
-	String getRegion(Point p);
+	String getRegion(Point location);
 
 	/**
 	 * Returns the value of the property with the specified key. Only properties

@@ -40,7 +40,7 @@ public class CompoundDemo extends JPanel {
         titlebar = createTitlebar(" " + title);
         add(titlebar);
         setBorder(new LineBorder(Color.black));
-        dockableImpl = new DockableImpl();
+		dockableImpl = new DockableImpl(this);
     }
 
     private JLabel createTitlebar(String title) {
@@ -66,20 +66,22 @@ public class CompoundDemo extends JPanel {
         return dockableImpl;
     }
 
-    private class DockableImpl extends AbstractDockable {
+	private static class DockableImpl extends AbstractDockable {
+		private final CompoundDemo demo;
 
-        private DockableImpl() {
-            super("dockable." + getTitle());
-            // the titlebar will the the 'hot' component that initiates dragging
-            getDragSources().add(titlebar);
-            setTabText(getTitle());
-        }
+		private DockableImpl(CompoundDemo demo) {
+			super("dockable." + demo.getTitle());
+			this.demo = demo;
+			// the titlebar will the the 'hot' component that initiates dragging
+			getDragSources().add(demo.titlebar);
+			setTabText(demo.getTitle());
+		}
 
-        @Override
-        public Component getComponent() {
-            return CompoundDemo.this;
-        }
-    }
+		@Override
+		public Component getComponent() {
+			return demo;
+		}
+	}
 
     private static JPanel createContentPane() {
         JPanel p = new JPanel(new BorderLayout(5, 5));

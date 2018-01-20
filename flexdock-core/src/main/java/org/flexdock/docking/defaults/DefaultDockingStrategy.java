@@ -179,8 +179,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		if (sibling == null) {
 			DockingPort superPort = DockingManager
 					.getDockingPort((Component) port);
-			self = port.getDockedComponent();
-			return findDockable(superPort, self, region, startRegion);
+			return findDockable(superPort, port.getDockedComponent(), region, startRegion);
 		}
 
 		return DockingManager.getDockable(sibling);
@@ -518,11 +517,13 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		if (contentPaneLocation != null && contentPane != null) {
 			results.dropTarget = DockingUtility.findDockingPort(contentPane,
 					contentPaneLocation);
-			target = results.dropTarget;
+			SwingUtility.revalidate((Component) results.dropTarget);
+		}
+		else {
+			SwingUtility.revalidate((Component) target);
 		}
 
 		results.success = target.dock(dockable, region);
-		SwingUtility.revalidate((Component) target);
 		return results;
 	}
 

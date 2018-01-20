@@ -90,7 +90,7 @@ public class ActivationListener {
 
         mouseOver = false;
         if(!isOverDockbars(mousePoint)) {
-            deactivator = new Deactivator(manager.getActiveDockableId());
+			deactivator = new Deactivator(this, manager.getActiveDockableId());
             deactivator.setEnabled(true);
             deactivator.start();
         }
@@ -121,11 +121,14 @@ public class ActivationListener {
         EventManager.dispatch(evt);
     }
 
-    private class Deactivator extends Thread {
+	private static class Deactivator extends Thread {
+		private final ActivationListener listener;
+
         private String dockableId;
         private boolean enabled;
 
-        private Deactivator(String id) {
+		private Deactivator(ActivationListener listener, String id) {
+			this.listener = listener;
             dockableId = id;
             enabled = true;
         }
@@ -147,9 +150,9 @@ public class ActivationListener {
                 e.printStackTrace();
             }
 
-            if(isEnabled() && !Utilities.isChanged(dockableId, manager.getActiveDockableId()) &&
-                    !isViewpaneLocked()) {
-				manager.setActiveDockable(null);
+			if (isEnabled() && !Utilities.isChanged(dockableId, listener.manager.getActiveDockableId()) &&
+					!listener.isViewpaneLocked()) {
+				listener.manager.setActiveDockable(null);
             }
         }
 

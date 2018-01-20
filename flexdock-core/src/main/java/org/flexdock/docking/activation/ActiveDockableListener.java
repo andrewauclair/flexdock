@@ -132,13 +132,15 @@ public class ActiveDockableListener implements PropertyChangeListener, ChangeLis
 		}
 
 		if (newVal instanceof JTabbedPane) {
-			newVal = ((JTabbedPane) newVal).getSelectedComponent();
+			activateComponent(((JTabbedPane) newVal).getSelectedComponent());
 		}
-		activateComponent(newVal);
+		else {
+			activateComponent(newVal);
+		}
 	}
 
-	private void activateComponent(Component c) {
-		Dockable dockable = DockingUtility.getAncestorDockable(c);
+	private void activateComponent(Component component) {
+		Dockable dockable = DockingUtility.getAncestorDockable(component);
 		if (dockable == null) {
 			return;
 		}

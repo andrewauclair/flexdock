@@ -40,7 +40,7 @@ public class SplitPaneDemo extends JPanel {
         titlebar = createTitlebar(" " + title);
         add(titlebar);
         setBorder(new LineBorder(Color.black));
-        dockableImpl = new DockableImpl();
+		dockableImpl = new DockableImpl(this);
     }
 
     private JLabel createTitlebar(String title) {
@@ -65,17 +65,20 @@ public class SplitPaneDemo extends JPanel {
         return dockableImpl;
     }
 
-    private class DockableImpl extends AbstractDockable {
-        private DockableImpl() {
-            super("dockable." + getTitle());
+	private static class DockableImpl extends AbstractDockable {
+		private final SplitPaneDemo demo;
+
+		private DockableImpl(SplitPaneDemo demo) {
+			super("dockable." + demo.getTitle());
+			this.demo = demo;
             // the titlebar will the the 'hot' component that initiates dragging
-            getDragSources().add(titlebar);
-            setTabText(getTitle());
+			getDragSources().add(demo.titlebar);
+			setTabText(demo.getTitle());
         }
 
         @Override
         public Component getComponent() {
-            return SplitPaneDemo.this;
+			return demo;
         }
     }
 

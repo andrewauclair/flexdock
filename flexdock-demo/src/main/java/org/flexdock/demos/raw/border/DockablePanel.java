@@ -19,16 +19,13 @@
  */
 package org.flexdock.demos.raw.border;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.defaults.AbstractDockable;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
 
 public class DockablePanel extends JPanel {
     private String title;
@@ -43,7 +40,7 @@ public class DockablePanel extends JPanel {
         add(dragInit, BorderLayout.EAST);
         setBorder(new TitledBorder(title));
         setTitle(title);
-        dockableImpl = new DockableImpl();
+		dockableImpl = new DockableImpl(this);
         DockingManager.registerDockable(dockableImpl);
     }
 
@@ -59,17 +56,20 @@ public class DockablePanel extends JPanel {
         return title==null? null: title.trim();
     }
 
-    private class DockableImpl extends AbstractDockable {
-        private DockableImpl() {
-            super("dockable." + getTitle());
+	private static class DockableImpl extends AbstractDockable {
+		private final DockablePanel panel;
+
+		private DockableImpl(DockablePanel panel) {
+			super("dockable." + panel.getTitle());
+			this.panel = panel;
             // the titlebar will the the 'hot' component that initiates dragging
-            getDragSources().add(dragInit);
-            setTabText(getTitle());
+			getDragSources().add(panel.dragInit);
+			setTabText(panel.getTitle());
         }
 
         @Override
         public Component getComponent() {
-            return DockablePanel.this;
+			return panel;
         }
     }
 }

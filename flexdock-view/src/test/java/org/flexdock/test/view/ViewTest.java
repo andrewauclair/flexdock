@@ -97,7 +97,7 @@ public class ViewTest {
         contentPane.add(buildLists(), BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(new JButton(new ChangePlafAction()));
+		buttonPanel.add(new JButton(new ChangePlafAction(this)));
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
 
 		JXLabel label = new JXLabel("JXLabel");
@@ -161,33 +161,35 @@ public class ViewTest {
         return tagNames.toArray();
     }
 
-    private class ChangePlafAction extends AbstractAction {
+	private static class ChangePlafAction extends AbstractAction {
+		private final ViewTest test;
 
-        ChangePlafAction() {
+		ChangePlafAction(ViewTest test) {
+			this.test = test;
             putValue(Action.NAME, "Apply custom theme");
         }
 
         @Override
-        public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent e) {
             Properties p = new Properties();
-            if (viewUIList.getSelectedValue() != null) {
-                p.setProperty(UIFactory.VIEW_KEY, viewUIList.getSelectedValue().toString());
+			if (test.viewUIList.getSelectedValue() != null) {
+				p.setProperty(UIFactory.VIEW_KEY, test.viewUIList.getSelectedValue().toString());
             }
-            if (titlebarUIList.getSelectedValue() != null) {
-                p.setProperty(UIFactory.TITLEBAR_KEY, titlebarUIList.getSelectedValue().toString());
+			if (test.titlebarUIList.getSelectedValue() != null) {
+				p.setProperty(UIFactory.TITLEBAR_KEY, test.titlebarUIList.getSelectedValue().toString());
             }
-            if (buttonUIList.getSelectedValue() != null) {
-                p.setProperty(UIFactory.BUTTON_KEY, buttonUIList.getSelectedValue().toString());
+			if (test.buttonUIList.getSelectedValue() != null) {
+				p.setProperty(UIFactory.BUTTON_KEY, test.buttonUIList.getSelectedValue().toString());
             }
 
             Theme theme = PlafManager.setCustomTheme("custom.theme", p);
             PlafManager.setPreferredTheme("custom.theme", true);
-            themeInfo.update(theme);
+			test.themeInfo.update(theme);
         }
 
     }
 
-    private class ChangeLookAndFeelAction extends AbstractAction {
+	private static class ChangeLookAndFeelAction extends AbstractAction {
 
         private LookAndFeelInfo lfInfo;
 
