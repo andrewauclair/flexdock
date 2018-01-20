@@ -80,19 +80,19 @@ public class DragPipeline {
 		// turn the current drag operation on
 		setCurrentDragOperation(operation);
 
-        // TODO We want to ignore the preview here
-        windows = Arrays.stream(RootWindow.getVisibleWindows())
-                .filter(p -> p.getBounds().width != 200 && p.getBounds().height != 200)
-                .toArray(RootWindow[]::new);
+		// TODO We want to ignore the preview here
+		windows = Arrays.stream(RootWindow.getVisibleWindows())
+				.filter(p -> p.getBounds().width != 200 && p.getBounds().height != 200)
+				.toArray(RootWindow[]::new);
 
 		windowBounds = new Rectangle[windows.length];
 		rootWindowsByBounds = new HashMap<>();
 
 		for (int i = 0; i < windows.length; i++) {
-            RootWindow window = windows[i];
-            applyGlassPane(window, createGlassPane());
-            windowBounds[i] = window.getBounds();
-            rootWindowsByBounds.put(windowBounds[i], window);
+			RootWindow window = windows[i];
+			applyGlassPane(window, createGlassPane());
+			windowBounds[i] = window.getBounds();
+			rootWindowsByBounds.put(windowBounds[i], window);
 		}
 
 		operation.start();
@@ -112,7 +112,6 @@ public class DragPipeline {
 		pane.setVisible(true);
 	}
 
-
 	public void close() {
 		if (!open) {
 			return;
@@ -124,7 +123,7 @@ public class DragPipeline {
 				DragGlasspane pane = (DragGlasspane) cmp;
 				pane.setVisible(false);
 				cmp = pane.getCachedGlassPane();
-//                                pane.dispose();
+
 				windows[i].setGlassPane(cmp);
 				windows[i] = null;
 			}
@@ -136,7 +135,7 @@ public class DragPipeline {
 		setCurrentDragOperation(null);
 		open = false;
 	}
-	
+
 	public void processDragEvent(MouseEvent me, Point dragOffset) {
 		if (!open) {
 			return;
@@ -146,10 +145,10 @@ public class DragPipeline {
 			processDragEventImpl(me, dragOffset);
 			return;
 		}
-		
+
 		EventQueue.invokeLater(() -> processDragEventImpl(me, dragOffset));
 	}
-	
+
 	private void processDragEventImpl(MouseEvent me, Point dragOffset) {
 
 		dragToken.updateMouse(me, dragOffset);
@@ -229,7 +228,7 @@ public class DragPipeline {
 	private class GlassPaneMonitor extends MouseAdapter {
 		@Override
 		public void mouseEntered(MouseEvent me) {
-            // TODO If position is within the preview frame then ignore this entered event
+			// TODO If position is within the preview frame then ignore this entered event
 //            System.out.println("mouseEntered: " + me.getComponent().getName());
 //		    // TODO Make sure this isn't the preview
 //
@@ -248,7 +247,7 @@ public class DragPipeline {
 
 		@Override
 		public void mouseExited(MouseEvent me) {
-            // TODO If position is within the preview frame, then ignore this exited event
+			// TODO If position is within the preview frame, then ignore this exited event
 //		    System.out.println("mouseExited: " + me.getComponent().getName());
 //
 //		    // TODO Make sure this isn't the preview
@@ -259,7 +258,7 @@ public class DragPipeline {
 //			        return;
 //                }
 //            }
-            setCurrentGlassPane(null);
+			setCurrentGlassPane(null);
 		}
 	}
 
@@ -276,7 +275,7 @@ public class DragPipeline {
 		DockingPort srcPort = operation == null ? current.getSourcePort() : operation.getSourcePort();
 		DragManager.setCurrentDragOperation(operation);
 		if (srcPort instanceof Component) {
-            // TODO Why is this forcing a repaint?
+			// TODO Why is this forcing a repaint?
 			SwingUtility.repaint((Component) srcPort);
 		}
 	}

@@ -246,7 +246,9 @@ public class View extends JComponent implements Dockable {
 		dockingListeners = new ArrayList<>(1);
 		
 		setContentPane(createContentPane());
-		setTitlebar(createTitlebar());
+		if (title != null) {
+			setTitlebar(createTitlebar());
+		}
 		setLayout(createLayout());
 		setContentPaneCheckingEnabled(true);
 		
@@ -360,7 +362,6 @@ public class View extends JComponent implements Dockable {
 	 * @throws IllegalArgumentException if {@code c} is {@code null} or if {@code c} is the
 	 *                                  {@code titlepane}.
 	 * @see #titlepane
-	 * @see #getTitlePane()
 	 */
 	public void setContentPane(Container c) throws IllegalArgumentException {
 		if (c == null) {
@@ -423,7 +424,7 @@ public class View extends JComponent implements Dockable {
 
 		titlepane = titlebar;
 
-		if (titlepane != null) {
+		//if (titlepane != null) {
 			boolean checkingEnabled = isContentPaneCheckingEnabled();
 			try {
 				setContentPaneCheckingEnabled(false);
@@ -455,13 +456,9 @@ public class View extends JComponent implements Dockable {
 			dragSources.add(titlepane);
 			frameDragSources.add(titlepane);
 			DockingManager.updateDragListeners(this);
-		}
+		//}
 	}
-	
-	private Component getTitlePane() {
-		return titlepane;
-	}
-	
+
 	public void setTitle(String title) {
 		if (titlepane != null) {
 			titlepane.setText(title);

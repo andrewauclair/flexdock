@@ -43,7 +43,9 @@ public class Titlebar extends JPanel {
 	private View parentView;
 	private JLabel titleLabel;
 
-	public Titlebar() {
+	private JPanel actionPanel;
+
+	Titlebar() {
 		this(null, null);
 	}
 
@@ -59,12 +61,25 @@ public class Titlebar extends JPanel {
 	// close button border 4, 4, 4, 4
 	// title color 183, 201, 217
 
-	public Titlebar(String title, Action[] actions) {
-		super(new FlowLayout());
+	private Titlebar(String title, Action[] actions) {
+		super(new GridBagLayout());
 		titleLabel = new JLabel();
-		add(titleLabel);
+		actionPanel = new JPanel(new FlowLayout());
+
+		actionPanel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.weightx = 1.0;
+		add(titleLabel, gbc);
+
+		gbc.anchor = GridBagConstraints.EAST;
+		add(actionPanel, gbc);
+
 		setText(title);
 		setActions(actions);
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		actionPanel.setBackground(new Color(119, 173, 255));
 	}
 
 	/**
@@ -78,7 +93,7 @@ public class Titlebar extends JPanel {
 		titleLabel.setText(titleText);
 	}
 
-	protected void setActions(Action[] actions) {
+	private void setActions(Action[] actions) {
 		if (actions == null) {
 			actions = new Action[0];
 			actionList = new ArrayList<>(3);
@@ -92,18 +107,32 @@ public class Titlebar extends JPanel {
 	}
 
 	public synchronized void addAction(String actionName, View view) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.NORTHEAST;
+		gbc.weightx = 1.0;
+
+		JButton button = new JButton();
+//		button.setContentAreaFilled(false);
+//		button.setBorder(null);
+		button.setBorderPainted(false);
+
+		button.setFocusable(false);
+		button.setFocusPainted(false);
+
+		button.setRolloverEnabled(true);
+
+		button.setMargin(new Insets(0, 0, 0, 0));
+
 		if (actionName.equals("close")) {
-			JButton button = new JButton();
 			button.addActionListener(e -> DockingManager.close(view));
 			button.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/close_default.png")));
-			add(button);
 		}
 		else if (actionName.equals("pin")) {
-			JButton button = new JButton();
 			button.addActionListener(e -> DockingManager.setMinimized(view, !view.isMinimized()));
 			button.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/pin_default.png")));
-			add(button);
 		}
+
+		actionPanel.add(button, gbc);
 	}
 
 	public synchronized void addAction(Action action) {
@@ -178,7 +207,7 @@ public class Titlebar extends JPanel {
 
 		// Remove button associated with this action.
 		Button button = getButton(key);
-		remove(button);
+		actionPanel.remove(button);
 		actionButtons.remove(key);
 		// remove the action
 		Action action = getAction(key);

@@ -123,6 +123,11 @@ public class PerspectivesDemo extends JFrame {
 		JMenuItem console = new JMenuItem(View.getInstance(CONSOLE_VIEW).getTitle());
 		showViewMenu.add(console);
 
+		bird.addActionListener(e -> DockingManager.display(View.getInstance(BIRD_VIEW)));
+		msg.addActionListener(e -> DockingManager.display(View.getInstance(MESSAGE_VIEW)));
+		problem.addActionListener(e -> DockingManager.display(View.getInstance(PROBLEM_VIEW)));
+		console.addActionListener(e -> DockingManager.display(View.getInstance(CONSOLE_VIEW)));
+
 		JMenu perspectiveMenu = new JMenu("Perspective");
 		//pobieramy perspektywe nr 1
 		perspectiveMenu.add(new OpenPerspectiveAction(P1));
@@ -235,8 +240,8 @@ public class PerspectivesDemo extends JFrame {
 		private View createView(String id, String text, String iconName) {
 			View view = new View(id, text);
 			//Dodajemy akcje close to tego view
-			view.addAction(DockingConstants.CLOSE_ACTION);
 			view.addAction(DockingConstants.PIN_ACTION);
+			view.addAction(DockingConstants.CLOSE_ACTION);
 
 			JPanel panel = new JPanel();
 			panel.setBorder(new LineBorder(Color.GRAY, 1));
