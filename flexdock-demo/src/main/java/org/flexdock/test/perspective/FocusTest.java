@@ -21,7 +21,6 @@ package org.flexdock.test.perspective;
 
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.DockableFactory;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.defaults.StandardBorderManager;
 import org.flexdock.docking.drag.effects.EffectsManager;
@@ -306,9 +305,6 @@ public class FocusTest extends JFrame {
 
 		private View createView(String id, String text, String iconName) {
 			View view = new View(id, text);
-			//Dodajemy akcje close to tego view
-			view.addAction(DockingConstants.CLOSE_ACTION);
-			view.addAction(DockingConstants.PIN_ACTION);
 
 			JPanel panel = new JPanel();
 			panel.setBorder(new LineBorder(Color.GRAY, 1));

@@ -320,10 +320,7 @@ public class View extends JComponent implements Dockable {
 		}
 	}
 
-	public void addAction(String action) {
-		if (titlepane != null) {
-			titlepane.addAction(action, this);
-		}
+	private void addAction(String action) {
 	}
 
 	public void removeActions() {

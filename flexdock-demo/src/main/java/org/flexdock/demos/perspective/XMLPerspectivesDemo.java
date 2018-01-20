@@ -21,7 +21,6 @@ package org.flexdock.demos.perspective;
 
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.DockableFactory;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.drag.effects.EffectsManager;
 import org.flexdock.docking.drag.preview.AlphaPreview;
@@ -226,9 +225,6 @@ public class XMLPerspectivesDemo extends JFrame {
 
 		private View createView(String id, String text) {
 			View view = new View(id, text);
-			//Dodajemy akcje close to tego view
-			view.addAction(DockingConstants.CLOSE_ACTION);
-			view.addAction(DockingConstants.PIN_ACTION);
 
 			JPanel panel = new JPanel();
 			panel.setBorder(new LineBorder(Color.GRAY, 1));

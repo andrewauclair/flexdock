@@ -20,7 +20,6 @@
 package org.flexdock.test.perspective;
 
 import org.flexdock.demos.util.VSNetStartPage;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
@@ -87,7 +86,7 @@ public class ViewRestorationTest extends JFrame {
 
     private View createView(String id, String text) {
         View view = new View(id, text);
-        view.addAction(DockingConstants.CLOSE_ACTION);
+		view.getTitlebar().hidePin();
 
         JPanel p = new JPanel();
         p.setBorder(new LineBorder(Color.GRAY, 1));

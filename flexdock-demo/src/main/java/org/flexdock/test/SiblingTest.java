@@ -86,9 +86,7 @@ public class SiblingTest extends JFrame {
 	
 	private View createView(String id, String text) {
 		View view = new View(id, text);
-		view.addAction(CLOSE_ACTION);
-		view.addAction(PIN_ACTION);
-		
+
 		JPanel p = new JPanel();
 		//                p.setBackground(Color.WHITE);
 		p.setBorder(new LineBorder(Color.GRAY, 1));

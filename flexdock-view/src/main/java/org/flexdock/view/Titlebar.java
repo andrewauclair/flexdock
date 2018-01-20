@@ -23,7 +23,6 @@ import org.flexdock.docking.DockingManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,8 +32,6 @@ import java.util.List;
 public class Titlebar extends JPanel {
 
 	private Icon titleIcon;
-
-	private String titleText;
 
 	private List<Action> actionList;
 
@@ -64,8 +61,11 @@ public class Titlebar extends JPanel {
 		gbc.anchor = GridBagConstraints.EAST;
 		add(actionPanel, gbc);
 
+		Color bgColor = new Color(183, 201, 217);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		actionPanel.setBackground(new Color(119, 173, 255));
+
+		actionPanel.setBackground(bgColor);
+		setBackground(bgColor);
 
 		gbc.anchor = GridBagConstraints.NORTHEAST;
 		gbc.weightx = 1.0;
@@ -73,14 +73,14 @@ public class Titlebar extends JPanel {
 
 //		closeButton.setContentAreaFilled(false);
 //		closeButton.setBorder(null);
-		closeButton.setBorderPainted(false);
-
-		closeButton.setFocusable(false);
-		closeButton.setFocusPainted(false);
-
-		closeButton.setRolloverEnabled(true);
-
-		closeButton.setMargin(new Insets(0, 0, 0, 0));
+//		closeButton.setBorderPainted(false);
+//
+//		closeButton.setFocusable(false);
+//		closeButton.setFocusPainted(false);
+//
+//		closeButton.setRolloverEnabled(true);
+//
+//		closeButton.setMargin(new Insets(0, 0, 0, 0));
 
 		closeButton.addActionListener(e -> DockingManager.close(view));
 		closeButton.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/close_default.png")));
@@ -95,29 +95,7 @@ public class Titlebar extends JPanel {
 	// close button border 4, 4, 4, 4
 	// title color 183, 201, 217
 
-	/**
-	 * Sets the text for this titlebar to {@code text}.
-	 *
-	 * @param text the text to set.
-	 */
-	private void setText(String text) {
-		titleLabel.setText(text);
-	}
-
-	private void setActions(Action[] actions) {
-		if (actions == null) {
-			actions = new Action[0];
-			actionList = new ArrayList<>(3);
-			actionButtons = new HashMap<>(3);
-		}
-
-		removeAllActions();
-		for (Action action : actions) {
-			addAction(action);
-		}
-	}
-
-	public synchronized void addAction(String actionName, View view) {
+	private synchronized void addAction(String actionName, View view) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.NORTHEAST;
 		gbc.weightx = 1.0;
@@ -199,7 +177,7 @@ public class Titlebar extends JPanel {
 	}
 
 	public String getText() {
-		return titleText;
+		return titleLabel.getText();
 	}
 
 	public void removeAction(Action action) {
