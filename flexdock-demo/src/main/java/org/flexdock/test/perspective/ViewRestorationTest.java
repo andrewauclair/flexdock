@@ -141,9 +141,8 @@ public class ViewRestorationTest extends JFrame {
 
     private View createStartPage() {
         String id = "startPage";
-        View view = new View(id, null, null);
+		View view = new View(id, "", "");
         view.setTerritoryBlocked(CENTER_REGION, true);
-        view.removeTitlebar();
         view.setContentPane(new VSNetStartPage());
         return view;
     }

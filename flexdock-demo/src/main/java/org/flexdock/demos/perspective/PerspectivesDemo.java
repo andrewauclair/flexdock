@@ -21,7 +21,6 @@ package org.flexdock.demos.perspective;
 
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.DockableFactory;
-import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.state.PersistenceException;
 import org.flexdock.perspective.LayoutSequence;
@@ -240,8 +239,8 @@ public class PerspectivesDemo extends JFrame {
 		private View createView(String id, String text, String iconName) {
 			View view = new View(id, text);
 			//Dodajemy akcje close to tego view
-			view.addAction(DockingConstants.PIN_ACTION);
-			view.addAction(DockingConstants.CLOSE_ACTION);
+//			view.addAction(DockingConstants.PIN_ACTION);
+//			view.addAction(DockingConstants.CLOSE_ACTION);
 
 			JPanel panel = new JPanel();
 			panel.setBorder(new LineBorder(Color.GRAY, 1));
@@ -258,19 +257,17 @@ public class PerspectivesDemo extends JFrame {
 		}
 
 		private static View createMainView() {
-
 			JTabbedPane tabbedPane = new JTabbedPane();
 			tabbedPane.addTab("Sample1", new JTextArea("Sample1"));
 			tabbedPane.addTab("Sample2", new JTextArea("Sample2"));
 			tabbedPane.addTab("Sample3", new JTextArea("Sample3"));
 
-			//to view nie bedzie mialo tytulu, wiec przekazujemy null
-			View mainView = new View(MAIN_VIEW, null, null);
+			// Pass an empty string to not display a titlebar
+			View mainView = new View(MAIN_VIEW, "", "");
 
 			//blokujemy mozliwosc dokowania do tego view w regionie CENTER
 			mainView.setTerritoryBlocked(CENTER_REGION, true);
-			//wylaczamy pasek tytulowy
-			mainView.removeTitlebar();
+
 			//ustawiamy komponent GUI, ktory chcemy aby byl wyswietalny w tym view
 			mainView.setContentPane(new JScrollPane(tabbedPane));
 

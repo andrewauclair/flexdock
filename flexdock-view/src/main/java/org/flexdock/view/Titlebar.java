@@ -40,33 +40,21 @@ public class Titlebar extends JPanel {
 
 	private HashMap<String, Button> actionButtons;
 
-	private View parentView;
-	private JLabel titleLabel;
+	private JLabel titleLabel = new JLabel();
 
-	private JPanel actionPanel;
+	private JPanel actionPanel = new JPanel(new FlowLayout());
 
-	Titlebar() {
-		this(null, null);
-	}
+	private View view;
 
-	public Titlebar(String title) {
-		this(title, null);
-	}
+	private JButton closeButton = new JButton();
+	private JButton pinButton = new JButton();
 
-	public Titlebar(Action[] actions) {
-		this(null, actions);
-	}
-
-	// title border 0, 4, 0, 0
-	// close button border 4, 4, 4, 4
-	// title color 183, 201, 217
-
-	private Titlebar(String title, Action[] actions) {
+	Titlebar(View view, String title) {
 		super(new GridBagLayout());
-		titleLabel = new JLabel();
-		actionPanel = new JPanel(new FlowLayout());
+		this.view = view;
 
-		actionPanel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
+		titleLabel.setText(title);
+		titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.WEST;
@@ -76,21 +64,44 @@ public class Titlebar extends JPanel {
 		gbc.anchor = GridBagConstraints.EAST;
 		add(actionPanel, gbc);
 
-		setText(title);
-		setActions(actions);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		actionPanel.setBackground(new Color(119, 173, 255));
+
+		gbc.anchor = GridBagConstraints.NORTHEAST;
+		gbc.weightx = 1.0;
+
+
+//		closeButton.setContentAreaFilled(false);
+//		closeButton.setBorder(null);
+		closeButton.setBorderPainted(false);
+
+		closeButton.setFocusable(false);
+		closeButton.setFocusPainted(false);
+
+		closeButton.setRolloverEnabled(true);
+
+		closeButton.setMargin(new Insets(0, 0, 0, 0));
+
+		closeButton.addActionListener(e -> DockingManager.close(view));
+		closeButton.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/close_default.png")));
+		pinButton.addActionListener(e -> DockingManager.setMinimized(view, !view.isMinimized()));
+		pinButton.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/pin_default.png")));
+
+		actionPanel.add(pinButton, gbc);
+		actionPanel.add(closeButton, gbc);
 	}
 
+	// title border 0, 4, 0, 0
+	// close button border 4, 4, 4, 4
+	// title color 183, 201, 217
+
 	/**
-	 * Sets the text for this titlebar to {@code text} or empty string if text
-	 * is {@code null}.
+	 * Sets the text for this titlebar to {@code text}.
 	 *
 	 * @param text the text to set.
 	 */
-	public void setText(String text) {
-		titleText = text == null ? "" : text;
-		titleLabel.setText(titleText);
+	private void setText(String text) {
+		titleLabel.setText(text);
 	}
 
 	private void setActions(Action[] actions) {
@@ -248,18 +259,26 @@ public class Titlebar extends JPanel {
 	}
 
 	public boolean isActive() {
-		return parentView != null && parentView.isActive();
-	}
-
-	void setView(View view) {
-		setParentView(view);
-	}
-
-	private void setParentView(View view) {
-		parentView = view;
+		return view.isActive();
 	}
 
 	public View getView() {
-		return (View) SwingUtilities.getAncestorOfClass(View.class, this);
+		return view;
+	}
+
+	public void showClose() {
+		closeButton.setVisible(true);
+	}
+
+	public void hideClose() {
+		closeButton.setVisible(false);
+	}
+
+	public void showPin() {
+		pinButton.setVisible(true);
+	}
+
+	public void hidePin() {
+		pinButton.setVisible(false);
 	}
 }

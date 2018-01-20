@@ -249,12 +249,10 @@ public class XMLPerspectivesDemo extends JFrame {
 			tabbedPane.addTab("Sample3", new JTextArea("Sample3"));
 
 			//to view nie bedzie mialo tytulu, wiec przekazujemy null
-			View mainView = new View(MAIN_VIEW, null, null);
+			View mainView = new View(MAIN_VIEW, "", "");
 
 			//blokujemy mozliwosc dokowania do tego view w regionie CENTER
 			mainView.setTerritoryBlocked(CENTER_REGION, true);
-			//wylaczamy pasek tytulowy
-			mainView.removeTitlebar();
 			//ustawiamy komponent GUI, ktory chcemy aby byl wyswietalny w tym view
 			mainView.setContentPane(new JScrollPane(tabbedPane));
 
