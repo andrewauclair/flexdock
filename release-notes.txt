@@ -194,7 +194,7 @@ New Features:
 	
 Deprecated:
 	- the org.flexdock.logging package.  Use the Apache Commons Logging instead.
-	- org.flexdock.util.Utilities.sysTrue(String) method.  Use 
+	- isSystemPropTrue(String) method.  Use
 	  Boolean.getBoolean(String) instead.
 	- org.flexdock.docking.adapter.MappingReader class.  This is an
 	  implementation detail and should be package-private.

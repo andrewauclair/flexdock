@@ -130,17 +130,17 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		 */
 		@Override
 		public Dimension preferredLayoutSize(Container parent) {
-			Dimension dd;
+			Dimension dimension;
 			Insets i = getInsets();
 
 			if (dockedComponent != null) {
-				dd = dockedComponent.getPreferredSize();
+				dimension = dockedComponent.getPreferredSize();
 			}
 			else {
-				dd = parent.getSize();
+				dimension = parent.getSize();
 			}
 
-			return new Dimension(dd.width + i.left + i.right, dd.height + i.top
+			return new Dimension(dimension.width + i.left + i.right, dimension.height + i.top
 					+ i.bottom);
 		}
 
@@ -152,17 +152,17 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		 */
 		@Override
 		public Dimension minimumLayoutSize(Container parent) {
-			Dimension dd;
+			Dimension dimension;
 			Insets i = getInsets();
 
 			if (dockedComponent != null) {
-				dd = dockedComponent.getMinimumSize();
+				dimension = dockedComponent.getMinimumSize();
 			}
 			else {
-				dd = parent.getSize();
+				dimension = parent.getSize();
 			}
 
-			return new Dimension(dd.width + i.left + i.right, dd.height + i.top
+			return new Dimension(dimension.width + i.left + i.right, dimension.height + i.top
 					+ i.bottom);
 		}
 
@@ -174,19 +174,19 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		 */
 		@Override
 		public Dimension maximumLayoutSize(Container target) {
-			Dimension dd;
+			Dimension dimension;
 			Insets i = getInsets();
 
 			if (dockedComponent != null) {
-				dd = dockedComponent.getMaximumSize();
+				dimension = dockedComponent.getMaximumSize();
 			}
 			else {
 				// This is silly, but should stop an overflow error
-				dd = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE - i.top
+				dimension = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE - i.top
 						- i.bottom);
 			}
 
-			return new Dimension(dd.width + i.left + i.right, dd.height + i.top
+			return new Dimension(dimension.width + i.left + i.right, dimension.height + i.top
 					+ i.bottom);
 		}
 
@@ -262,7 +262,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		// DefaultDockingPort-specific
 		// events
 		PropertyChangeListenerFactory
-				.addFactory(new DockablePropertyChangeHandler.Factory());
+				.insertFactory(new DockablePropertyChangeHandler.Factory());
 	}
 
 	/**
@@ -1282,7 +1282,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 * @see DockingPortPropertySet#setSingleTabsAllowed(boolean)
 	 */
 	private boolean isSingleTabAllowed() {
-		return getDockingProperties().isSingleTabsAllowed().booleanValue();
+		return getDockingProperties().isSingleTabsAllowed();
 	}
 
 	/**
@@ -1922,7 +1922,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
 	private int getInitTabPlacement() {
-		return getDockingProperties().getTabPlacement().intValue();
+		return getDockingProperties().getTabPlacement();
 	}
 
 	/**

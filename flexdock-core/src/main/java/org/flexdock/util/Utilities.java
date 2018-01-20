@@ -372,7 +372,7 @@ public class Utilities {
      * @see String#equals(java.lang.Object)
      * @deprecated Use {@link Boolean#getBoolean(String)}.
      */
-    public static boolean sysTrue(String key) {
+    public static boolean isSystemPropTrue(String key) {
         String value = key == null ? null : System.getProperty(key);
         return value != null && "true".equals(value);
     }

@@ -234,9 +234,9 @@ public class DockingPath implements Cloneable, Serializable {
 	@Override
 	public String toString() {
 		if (stringForm == null) {
-			StringBuffer sb = new StringBuffer("/RootPort[id=").append(rootPortId).append("]");
+			StringBuilder sb = new StringBuilder("/RootPort[id=").append(rootPortId).append(']');
 			for (SplitNode node : nodes) {
-				sb.append("/").append(node.toString());
+				sb.append('/').append(node.toString());
 			}
 			sb.append("/Dockable");
 			stringForm = sb.toString();

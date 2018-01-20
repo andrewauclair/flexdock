@@ -39,14 +39,6 @@ import java.util.Set;
  * @author Christopher Butler
  */
 public interface Dockable extends DockingListener, DockingMonitor {
-
-	/**
-	 * A constant property key to signify that a component is dockable.
-	 *
-	 * @deprecated Won't be needed once the adapter classes are removed
-	 */
-	String DOCKABLE_INDICATOR = "Dockable.DOCKABLE_INDICATOR";
-
 	/**
 	 * Returns the value of the property with the specified key. Only properties
 	 * added with {@code putClientProperty} will return a non-{@code null}

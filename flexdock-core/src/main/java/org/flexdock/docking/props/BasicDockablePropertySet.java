@@ -241,8 +241,7 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
     public void setTerritoryBlocked(String region, boolean blocked) {
         String key = getTerritoryBlockedKey(region);
         if (key != null) {
-            Boolean bool = blocked ? Boolean.TRUE : Boolean.FALSE;
-            put(key, bool);
+			put(key, blocked ? Boolean.TRUE : Boolean.FALSE);
         }
     }
 

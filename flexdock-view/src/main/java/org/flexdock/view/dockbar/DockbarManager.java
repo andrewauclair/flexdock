@@ -79,7 +79,7 @@ public class DockbarManager {
 		DockbarTracker.register();
 		
 		// setup to listen for Dockable property change events
-		PropertyChangeListenerFactory.addFactory(new DockablePropertyChangeHandler.Factory());
+		PropertyChangeListenerFactory.insertFactory(new DockablePropertyChangeHandler.Factory());
 		
 		// update behavior of active Dockable changes
 		EventManager.addListener(new ActiveDockableHandler());

@@ -74,30 +74,30 @@ public class SimpleInternalFrame extends JPanel {
     // Instance Creation ****************************************************
     
     /**
-     * Constructs a <code>SimpleInternalFrame</code> with the specified title, tool bar, and content panel.
+     * Constructs a <code>SimpleInternalFrame</code> with the specified title, tool toolBar, and content panel.
      *
      * @param title the initial title
-     * @param bar the initial tool bar
+     * @param toolBar the initial tool toolBar
      * @param content the initial content pane
      */
-    SimpleInternalFrame(String title, JToolBar bar, JComponent content) {
-        this(null, title, bar, content);
+    SimpleInternalFrame(String title, JToolBar toolBar, JComponent content) {
+        this(null, title, toolBar, content);
     }
 
     /**
-     * Constructs a <code>SimpleInternalFrame</code> with the specified icon, title, tool bar, and content
+     * Constructs a <code>SimpleInternalFrame</code> with the specified icon, title, tool toolBar, and content
      * panel.
      *
      * @param icon the initial icon
      * @param title the initial title
-     * @param bar the initial tool bar
+     * @param toolBar the initial tool toolBar
      * @param content the initial content pane
      */
-    private SimpleInternalFrame(Icon icon, String title, JToolBar bar, JComponent content) {
+    private SimpleInternalFrame(Icon icon, String title, JToolBar toolBar, JComponent content) {
         super(new BorderLayout());
         this.isSelected = false;
         this.titleLabel = new JLabel(title, icon, SwingConstants.LEADING);
-        JPanel top = buildHeader(titleLabel, bar);
+        JPanel top = buildHeader(titleLabel, toolBar);
 
         add(top, BorderLayout.NORTH);
         if (content != null) {
@@ -236,14 +236,14 @@ public class SimpleInternalFrame extends JPanel {
     // Building *************************************************************
 
     /**
-     * Creates and answers the header panel, that consists of: an icon, a title label, a tool bar, and a
+     * Creates and answers the header panel, that consists of: an icon, a title label, a tool toolBar, and a
      * gradient background.
      *
      * @param label the label to paint the icon and text
-     * @param bar the panel's tool bar
+     * @param toolBar the panel's tool toolBar
      * @return the panel's built header area
      */
-    private JPanel buildHeader(JLabel label, JToolBar bar) {
+    private JPanel buildHeader(JLabel label, JToolBar toolBar) {
         gradientPanel = new GradientPanel(new BorderLayout(), getHeaderBackground());
         label.setOpaque(false);
 
@@ -252,7 +252,7 @@ public class SimpleInternalFrame extends JPanel {
 
         headerPanel = new JPanel(new BorderLayout());
         headerPanel.add(gradientPanel, BorderLayout.CENTER);
-        setToolBar(bar);
+        setToolBar(toolBar);
         headerPanel.setBorder(new RaisedHeaderBorder());
         headerPanel.setOpaque(false);
         return headerPanel;

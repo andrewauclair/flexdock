@@ -27,9 +27,9 @@ import java.util.Vector;
  * @author Christopher Butler
  */
 public abstract class PropertyChangeListenerFactory {
-	private static final Vector FACTORIES = new Vector();
+	private static final Vector<PropertyChangeListenerFactory> FACTORIES = new Vector<>();
 
-	public static void addFactory(PropertyChangeListenerFactory factory) {
+	public static void insertFactory(PropertyChangeListenerFactory factory) {
 		if (factory != null) {
 			FACTORIES.add(factory);
 		}

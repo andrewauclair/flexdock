@@ -703,15 +703,6 @@ public class DockingUtility {
 			return true;
 		}
 
-		// if the object is a JComponent, but not a Dockable implementation,
-		// then check its
-		// client property indicator
-		if (obj instanceof JComponent) {
-			Component comp = (Component) obj;
-			return SwingUtility.getClientProperty(comp,
-					Dockable.DOCKABLE_INDICATOR) == Boolean.TRUE;
-		}
-
 		// they may have a heavyweight Component that does not directly
 		// implement Dockable.
 		// in this case, Component does not have client properties we can check.

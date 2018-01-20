@@ -691,8 +691,6 @@ public class DockingManager {
 		// flag the component as dockable, in case it doesn't
 		// implement the interface directly
 		Component c = dockable.getComponent();
-		SwingUtility.putClientProperty(c, Dockable.DOCKABLE_INDICATOR,
-				Boolean.TRUE);
 
 		// add drag listeners
 		updateDragListeners(dockable);
@@ -738,7 +736,6 @@ public class DockingManager {
 		// flag the component as dockable, in case it doesn't
 		// implement the interface directly
 		Component c = dockable.getComponent();
-		SwingUtility.removeClientProperty(c, Dockable.DOCKABLE_INDICATOR);
 
 		// remove the drag listeners
 		removeDragListeners(dockable);
@@ -868,10 +865,12 @@ public class DockingManager {
 		synchronized (persistentIdLock) {
 			String pId = desiredId == null ? obj.getClass().getName()
 					: desiredId;
-			StringBuffer baseId = new StringBuffer(pId);
-			for (int i = 1; hasRegisteredDockableId(pId); i++) {
-				baseId.append("_").append(i);
+			StringBuilder baseId = new StringBuilder(pId);
+			int i = 1;
+			while (hasRegisteredDockableId(pId)) {
+				baseId.append('_').append(i);
 				pId = baseId.toString();
+				i++;
 			}
 			return pId;
 		}

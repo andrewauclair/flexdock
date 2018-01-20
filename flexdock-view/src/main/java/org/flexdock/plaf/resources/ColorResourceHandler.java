@@ -40,7 +40,7 @@ public class ColorResourceHandler extends ResourceHandler {
             return null;
         }
 
-        StringBuffer sb = new StringBuffer(6);
+        StringBuilder sb = new StringBuilder(6);
         int len = hexColor.length();
 
         // strip out non-hex characters

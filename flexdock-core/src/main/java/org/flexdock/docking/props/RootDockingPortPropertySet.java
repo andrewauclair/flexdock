@@ -34,11 +34,10 @@ public class RootDockingPortPropertySet extends BasicDockingPortPropertySet {
 	private static final Integer DEFAULT_TAB_PLACEMENT = JTabbedPane.BOTTOM;
 	private static final Float DEFAULT_REGION_INSET = RegionChecker.DEFAULT_REGION_SIZE;
 
-	private HashSet constraints;
+	private final HashSet<Object> constraints = new HashSet<>(5);
 
 	public RootDockingPortPropertySet() {
 		super(5);
-		constraints = new HashSet(5);
 
 		initConstraint(REGION_CHECKER, DEFAULT_REGION_CHECKER);
 		initConstraint(SINGLE_TABS, Boolean.FALSE);

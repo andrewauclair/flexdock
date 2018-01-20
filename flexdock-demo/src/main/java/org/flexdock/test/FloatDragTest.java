@@ -6,6 +6,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+// TODO Why is this in the src/main/java folder and not the test folder?
 public class FloatDragTest {
 
     private static boolean create;

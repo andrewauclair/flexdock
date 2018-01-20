@@ -136,7 +136,7 @@ public class ActiveDockableTracker {
 	static void focusDockable(Component child, final Dockable parentDockable, boolean forceChange) {
 		// if the dockable is already active, then leave it alone.
 		// skip this check if they're trying to force a change
-		if (!forceChange && parentDockable.getDockingProperties().isActive().booleanValue()) {
+		if (!forceChange && parentDockable.getDockingProperties().isActive()) {
 			return;
 		}
 

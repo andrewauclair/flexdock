@@ -102,7 +102,7 @@ public class LookAndFeelSettings {
 	public static int getTabEdgeInset(int tabPlacement) {
 		String plafKey = SINGLETON.getCurrentPlafName();
 		String edgeStr = SINGLETON.getProperty(TAB_EDGE_INSET_KEY, plafKey);
-		Integer edge = getInteger(edgeStr);
+		Integer edge = edgeStr == null ? null : Integer.parseInt(edgeStr);
 
 		if (edge != null && edge > 0) {
 			return edge;
@@ -163,14 +163,4 @@ public class LookAndFeelSettings {
 			return false;
 		}
 	}
-
-	private static Integer getInteger(String string) {
-		try {
-			return string == null ? null : new Integer(string);
-		}
-		catch (Exception e) {
-			return null;
-		}
-	}
-
 }
