@@ -133,7 +133,7 @@ public class DockingManager {
 
 		private synchronized void store() {
 			try {
-				if (isEnabled()) {
+				if (enabled) {
 					storeLayoutModel();
 				}
 			}

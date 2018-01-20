@@ -235,8 +235,7 @@ public class ClassMapping {
 		Class<?> value = null;
 
         synchronized (classes) {
-			for (Class<?> clazz = key; clazz != null && value == null; clazz = clazz
-                    .getSuperclass()) {
+			for (Class<?> clazz = key; clazz != null && value == null; clazz = clazz.getSuperclass()) {
                 value = classes.get(clazz);
             }
         }

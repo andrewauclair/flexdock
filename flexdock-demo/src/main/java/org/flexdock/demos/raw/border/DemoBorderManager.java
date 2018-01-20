@@ -119,12 +119,13 @@ public class DemoBorderManager implements BorderManager {
     // pulls the title out of a DockablePanel to create a titled border.
     // returns the dummy border if a DockablePanel isn't found
 	private Border getDesiredBorder(Component component) {
-		if (component instanceof DefaultDockingPort) {
-			component = ((DockingPort) component).getDockedComponent();
+		Component component1 = component;
+		if (component1 instanceof DefaultDockingPort) {
+			component1 = ((DockingPort) component1).getDockedComponent();
         }
 
-		if (component instanceof DockablePanel) {
-			String title = ((DockablePanel) component).getDockable().getDockingProperties().getDockableDesc();
+		if (component1 instanceof DockablePanel) {
+			String title = ((DockablePanel) component1).getDockable().getDockingProperties().getDockableDesc();
             return new TitledBorder(title);
         }
         return dummyBorder;

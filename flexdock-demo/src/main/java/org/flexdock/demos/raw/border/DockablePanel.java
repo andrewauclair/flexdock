@@ -32,29 +32,26 @@ public class DockablePanel extends JPanel {
     private JPanel dragInit;
     private Dockable dockableImpl;
 
-    public DockablePanel(String title) {
+	DockablePanel(String title) {
         super(new BorderLayout());
         dragInit = new JPanel();
         dragInit.setBackground(getBackground().darker());
         dragInit.setPreferredSize(new Dimension(10, 10));
         add(dragInit, BorderLayout.EAST);
         setBorder(new TitledBorder(title));
-        setTitle(title);
+		this.title = title;
 		dockableImpl = new DockableImpl(this);
         DockingManager.registerDockable(dockableImpl);
     }
 
-    private void setTitle(String title) {
-        this.title = title;
-    }
-
-    Dockable getDockable() {
+	Dockable getDockable() {
         return dockableImpl;
     }
 
-    public String getTitle() {
-        return title==null? null: title.trim();
-    }
+	// TODO Have this return an empty string instead of null, find out where it's called from and if it's checking for null
+	public String getTitle() {
+		return title==null? null: title.trim();
+	}
 
 	private static class DockableImpl extends AbstractDockable {
 		private final DockablePanel panel;

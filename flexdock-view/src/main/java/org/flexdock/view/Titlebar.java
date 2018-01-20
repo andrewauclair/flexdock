@@ -30,9 +30,6 @@ import java.awt.event.MouseEvent;
  * @author Christopher Butler
  */
 public class Titlebar extends JPanel {
-
-	private Icon titleIcon;
-
 	private JLabel titleLabel = new JLabel();
 
 	private View view;
@@ -100,26 +97,8 @@ public class Titlebar extends JPanel {
 	// close button border 4, 4, 4, 4
 	// title color 183, 201, 217
 
-	public Icon getIcon() {
-		return titleIcon;
-	}
-
 	public String getText() {
 		return titleLabel.getText();
-	}
-
-	private String getKey(Action action) {
-		Object obj = action == null ? null : action.getValue(Action.NAME);
-		return obj instanceof String ? (String) obj : null;
-	}
-
-	protected Icon getIcon(Action action) {
-		Object obj = action == null ? null : action.getValue(Action.SMALL_ICON);
-		return obj instanceof Icon ? (Icon) obj : null;
-	}
-
-	public void setIcon(Icon icon) {
-		titleIcon = icon;
 	}
 
 	public boolean isActive() {

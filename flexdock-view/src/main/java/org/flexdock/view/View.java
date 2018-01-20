@@ -27,7 +27,6 @@ import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.docking.props.PropertyManager;
 import org.flexdock.plaf.PlafManager;
 import org.flexdock.util.DockingUtility;
-import org.flexdock.util.ResourceManager;
 import org.flexdock.util.SwingUtility;
 
 import javax.swing.*;
@@ -318,17 +317,6 @@ public class View extends JComponent implements Dockable {
 
 	private ViewProps getViewProperties() {
 		return (ViewProps) getDockingProperties();
-	}
-
-	public void setIcon(Icon icon) {
-		if (titlepane != null) {
-			titlepane.setIcon(icon);
-		}
-	}
-
-	public void setIcon(String imgUri) {
-		Icon icon = imgUri == null ? null : ResourceManager.createIcon(imgUri);
-		setIcon(icon);
 	}
 
 	/**
