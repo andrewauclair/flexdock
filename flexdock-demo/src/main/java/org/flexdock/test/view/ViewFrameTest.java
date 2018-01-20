@@ -30,8 +30,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static org.flexdock.docking.DockingConstants.CLOSE_ACTION;
-import static org.flexdock.docking.DockingConstants.PIN_ACTION;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
@@ -93,8 +91,6 @@ public class ViewFrameTest extends JFrame implements ActionListener {
 
     private View createView(String id, String text) {
         View view = new View(id, text);
-        view.addAction(createAction(CLOSE_ACTION, "Close"));
-        view.addAction(createAction(PIN_ACTION, "Pin"));
 
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);

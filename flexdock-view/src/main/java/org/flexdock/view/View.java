@@ -314,21 +314,6 @@ public class View extends JComponent implements Dockable {
 		return (ViewProps) getDockingProperties();
 	}
 
-	public void addAction(Action action) {
-		if (titlepane != null) {
-			titlepane.addAction(action);
-		}
-	}
-
-	private void addAction(String action) {
-	}
-
-	public void removeActions() {
-		if (titlepane != null) {
-			titlepane.removeAllActions();
-		}
-	}
-
 	public void setIcon(Icon icon) {
 		if (titlepane != null) {
 			titlepane.setIcon(icon);

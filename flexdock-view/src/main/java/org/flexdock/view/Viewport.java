@@ -36,6 +36,7 @@ import static org.flexdock.docking.DockingConstants.CENTER_REGION;
  */
 public class Viewport extends DefaultDockingPort {
 
+	// TODO I would like to build region blocking into the DefaultDockingPort
 	private final HashSet<String> blockedRegions;
 
 	static {

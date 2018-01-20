@@ -19,10 +19,10 @@
  */
 package org.flexdock.dockbar.event;
 
-import java.util.EventListener;
-
 import org.flexdock.event.Event;
 import org.flexdock.event.EventHandler;
+
+import java.util.EventListener;
 
 /**
  * An event handler to match {@code DockbarEvent} types to the appropriate

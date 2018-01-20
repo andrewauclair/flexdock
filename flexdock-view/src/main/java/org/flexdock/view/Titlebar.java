@@ -23,8 +23,8 @@ import org.flexdock.docking.DockingManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.List;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * @author Christopher Butler
@@ -33,13 +33,7 @@ public class Titlebar extends JPanel {
 
 	private Icon titleIcon;
 
-	private List<Action> actionList;
-
-	private HashMap<String, Button> actionButtons;
-
 	private JLabel titleLabel = new JLabel();
-
-	private JPanel actionPanel = new JPanel(new FlowLayout());
 
 	private View view;
 
@@ -59,7 +53,18 @@ public class Titlebar extends JPanel {
 		add(titleLabel, gbc);
 
 		gbc.anchor = GridBagConstraints.EAST;
+		JPanel actionPanel = new JPanel(new FlowLayout());
 		add(actionPanel, gbc);
+
+		// TODO Maximize seems to be broken. When undoing it the mainframe doesn't repaint
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					DockingManager.toggleMaximized(view);
+				}
+			}
+		});
 
 		Color bgColor = new Color(183, 201, 217);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -95,131 +100,12 @@ public class Titlebar extends JPanel {
 	// close button border 4, 4, 4, 4
 	// title color 183, 201, 217
 
-	private synchronized void addAction(String actionName, View view) {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.anchor = GridBagConstraints.NORTHEAST;
-		gbc.weightx = 1.0;
-
-		JButton button = new JButton();
-//		button.setContentAreaFilled(false);
-//		button.setBorder(null);
-		button.setBorderPainted(false);
-
-		button.setFocusable(false);
-		button.setFocusPainted(false);
-
-		button.setRolloverEnabled(true);
-
-		button.setMargin(new Insets(0, 0, 0, 0));
-
-		if (actionName.equals("close")) {
-			button.addActionListener(e -> DockingManager.close(view));
-			button.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/close_default.png")));
-		}
-		else if (actionName.equals("pin")) {
-			button.addActionListener(e -> DockingManager.setMinimized(view, !view.isMinimized()));
-			button.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/pin_default.png")));
-		}
-
-		actionPanel.add(button, gbc);
-	}
-
-	public synchronized void addAction(Action action) {
-		add(new JButton(action));
-	}
-
-	private void regenerateButtonList() {
-		Button[] list = new Button[actionList.size()];
-		for (int i = 0; i < list.length; i++) {
-			Action action = actionList.get(i);
-			String key = getKey(action);
-			list[i] = getButton(key);
-		}
-
-		synchronized (this) {
-			Button[] buttonList = list;
-		}
-	}
-
-	private Action getAction(String key) {
-		if (key == null) {
-			return null;
-		}
-
-		for (Object anActionList : actionList) {
-			Action action = (Action) anActionList;
-			String actionName = (String) action.getValue(Action.NAME);
-			if (key.equals(actionName)) {
-				return action;
-			}
-		}
-		return null;
-	}
-
-	public Action[] getActions() {
-		return actionList.toArray(new Action[0]);
-	}
-
-	private Button getButton(String key) {
-		return actionButtons.get(key);
-	}
-
-	public AbstractButton getActionButton(String actionName) {
-		return getButton(actionName);
-	}
-
-	private boolean hasAction(String key) {
-		return actionButtons.containsKey(key);
-	}
-
 	public Icon getIcon() {
 		return titleIcon;
 	}
 
 	public String getText() {
 		return titleLabel.getText();
-	}
-
-	public void removeAction(Action action) {
-		if (action == null) {
-			return;
-		}
-
-		String key = getKey(action);
-		removeAction(key);
-	}
-
-	private synchronized void removeAction(String key) {
-		if (!hasAction(key)) {
-			return;
-		}
-
-		// Remove button associated with this action.
-		Button button = getButton(key);
-		actionPanel.remove(button);
-		actionButtons.remove(key);
-		// remove the action
-		Action action = getAction(key);
-		actionList.remove(action);
-		regenerateButtonList();
-	}
-
-	protected synchronized void removeAllActions() {
-		if (actionList == null) {
-			return;
-		}
-
-		while (actionList.size() > 0) {
-			Action action = actionList.get(0);
-			String key = getKey(action);
-			// Remove button associated with this action.
-			Button button = getButton(key);
-			remove(button);
-			actionButtons.remove(key);
-			// remove the action
-			actionList.remove(0);
-		}
-		regenerateButtonList();
 	}
 
 	private String getKey(Action action) {

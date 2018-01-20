@@ -123,7 +123,7 @@ public class DockbarManager {
 	/**
 	 * Creates a new DockbarManager instance. In the case that a dockbarManager class name
 	 * has been set the class will be instantiated by reflection. If no classname is set a
-	 * org.flexdock.dockbar.DockbarManager will be created.
+	 * org.flexdock.view.dockbar.DockbarManager will be created.
 	 *
 	 * @param window RootWindow for which the DockbarManager will be created
 	 * @return new DockbarManager instance

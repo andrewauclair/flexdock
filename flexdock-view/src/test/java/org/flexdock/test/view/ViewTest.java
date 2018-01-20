@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 import java.util.List;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.EAST_REGION;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
@@ -71,9 +71,6 @@ public class ViewTest {
 
     private View buildView(String id, String name, JComponent component) {
         View view = new View(id, name);
-		// view.setIcon("/org/flexdock/demos/view/titlebar/msvs001.png");
-        view.addAction(new EmptyAction(CLOSE_ACTION));
-        view.addAction(new EmptyAction(PIN_ACTION));
         view.setContentPane(component);
 
         return view;
