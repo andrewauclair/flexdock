@@ -2077,14 +2077,11 @@ public class DockingManager {
 			return;
 		}
 
-		if (window == null) {
-			window = SwingUtility.getActiveWindow();
-		}
-		if (window == null) {
+		if (window == null && SwingUtility.getActiveWindow() == null) {
 			return;
 		}
 
-		getMinimizeManager().setMinimized(dockable, minimizing, window,
+		getMinimizeManager().setMinimized(dockable, minimizing, window == null ? SwingUtility.getActiveWindow() : window,
 				constraint);
 	}
 
@@ -2476,13 +2473,11 @@ public class DockingManager {
 	}
 
 	public static float getDefaultSiblingSize() {
-		return getDockingManager().defaultSiblingSize;
+		return SINGLETON.defaultSiblingSize;
 	}
 
 	private static void setDefaultSiblingSize(float size) {
-		size = Math.max(size, 0);
-		size = Math.min(size, 1);
-		getDockingManager().defaultSiblingSize = size;
+		SINGLETON.defaultSiblingSize = Math.min(Math.max(size, 0), 1);
 	}
 
 	/**

@@ -140,13 +140,14 @@ public class DockingPath implements Cloneable, Serializable {
 		
 		return new SplitNode(orientation, region, percentage, siblingId);
 	}
-	
-	private static String getSiblingId(Component c) {
-		if (c instanceof DockingPort) {
-			c = ((DockingPort) c).getDockedComponent();
+
+	private static String getSiblingId(Component sibling) {
+		Component component = sibling;
+		if (component instanceof DockingPort) {
+			component = ((DockingPort) component).getDockedComponent();
 		}
-		
-		Dockable dockable = findDockable(c);
+
+		Dockable dockable = findDockable(component);
 		return dockable == null ? null : dockable.getPersistentId();
 	}
 	

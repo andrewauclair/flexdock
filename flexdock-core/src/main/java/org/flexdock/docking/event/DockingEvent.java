@@ -120,9 +120,11 @@ public class DockingEvent extends Event {
 
 	public void setRegion(String region) {
 		if (!DockingManager.isValidDockingRegion(region)) {
-			region = UNKNOWN_REGION;
+			this.region = UNKNOWN_REGION;
 		}
-		this.region = region;
+		else {
+			this.region = region;
+		}
 	}
 
 	public boolean isOverWindow() {

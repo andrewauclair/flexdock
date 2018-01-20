@@ -533,17 +533,18 @@ public class SwingUtility {
 		
 		return next;
 	}
-	
-	private static Component getFirstComponent(Component c, int direction) {
-		while (c instanceof DefaultDockingPort) {
-			c = ((DockingPort) c).getDockedComponent();
-			if (c instanceof DockingSplitPane) {
-				DockingSplitPane pane = (DockingSplitPane) c;
-				c = direction > 0 ? pane.getLeftComponent() : pane.getRightComponent();
+
+	private static Component getFirstComponent(Component parent, int direction) {
+		Component component = parent;
+		while (component instanceof DefaultDockingPort) {
+			component = ((DockingPort) component).getDockedComponent();
+			if (component instanceof DockingSplitPane) {
+				DockingSplitPane pane = (DockingSplitPane) component;
+				component = direction > 0 ? pane.getLeftComponent() : pane.getRightComponent();
 			}
 		}
-		
-		return c;
+
+		return component;
 	}
 
     public static void setSystemLookAndFeel() {

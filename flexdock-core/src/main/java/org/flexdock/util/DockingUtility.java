@@ -203,7 +203,9 @@ public class DockingUtility {
 	 * @see JSplitPane#getOrientation()
 	 * @see #isAxisEquivalent(String, String)
 	 */
-	public static String translateRegionAxis(JSplitPane splitPane, String region) {
+	public static String translateRegionAxis(JSplitPane splitPane, String originalRegion) {
+		String region = originalRegion;
+
 		if (splitPane == null || !DockingManager.isValidDockingRegion(region)) {
 			return null;
 		}

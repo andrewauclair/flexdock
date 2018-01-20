@@ -249,15 +249,12 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
 
     @Override
     public void setDragTheshold(float threshold) {
-        threshold = Math.max(threshold, 0);
-        put(DRAG_THRESHOLD, threshold);
+		put(DRAG_THRESHOLD, Math.max(threshold, 0));
     }
 
     @Override
-    public void setPreviewSize(float previewSize) {
-        previewSize = Math.max(previewSize, 0f);
-        previewSize = Math.min(previewSize, 1f);
-        put(PREVIEW_SIZE, previewSize);
+	public void setPreviewSize(float size) {
+		put(PREVIEW_SIZE, Math.min(Math.max(size, 0.0f), 1.0f));
     }
 
     /**

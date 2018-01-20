@@ -62,10 +62,7 @@ public class DragOperation {
 			throw new IllegalArgumentException("'evt.getSource()' must be an instance of java.awt.Component.");
 		}
 
-		if (dragOrigin == null) {
-			dragOrigin = evt.getPoint();
-		}
-		init(dockable, (Component) evt.getSource(), dragOrigin);
+		init(dockable, (Component) evt.getSource(), dragOrigin == null ? evt.getPoint() : dragOrigin);
 	}
 	
 	private void init(Dockable dockable, Component dragSource, Point currentMouse) {
