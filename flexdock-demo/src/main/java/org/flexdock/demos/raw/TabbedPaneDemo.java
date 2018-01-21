@@ -21,6 +21,7 @@ package org.flexdock.demos.raw;
 
 import org.flexdock.demos.util.DemoUtility;
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.defaults.AbstractDockable;
 import org.flexdock.docking.defaults.DefaultDockingPort;
@@ -28,8 +29,6 @@ import org.flexdock.docking.defaults.DefaultDockingPort;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-
-import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 
 public class TabbedPaneDemo extends JPanel {
@@ -105,7 +104,7 @@ public class TabbedPaneDemo extends JPanel {
         DockingManager.registerDockable(cd.getDockable());
 
         // dock the panel and return the DockingPort
-        port.dock(cd.getDockable(), CENTER_REGION);
+		port.dock(cd.getDockable(), DockingConstants.Region.CENTER.toString());
         return port;
     }
 

@@ -126,7 +126,7 @@ public class SiblingTest extends JFrame {
 		});
 
 		View view = new View(id, "");
-		view.setTerritoryBlocked(CENTER_REGION, true);
+		view.setTerritoryBlocked(Region.CENTER.toString(), true);
 		view.setContentPane(page);
 		
 		return view;

@@ -20,6 +20,7 @@
 package org.flexdock.perspective;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.state.DockingState;
@@ -28,8 +29,6 @@ import org.flexdock.util.DockingUtility;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 /**
  * @author Christopher Butler
@@ -55,11 +54,11 @@ public class LayoutSequence implements Cloneable, Serializable {
     }
 
     public void add(Dockable dockable, Dockable relativeParent) {
-        add(dockable, relativeParent, CENTER_REGION, -1.0f);
+		add(dockable, relativeParent, DockingConstants.Region.CENTER.toString(), -1.0f);
     }
 
     public void add(String dockable, String relativeParent) {
-        add(dockable, relativeParent, CENTER_REGION, -1.0f);
+		add(dockable, relativeParent, DockingConstants.Region.CENTER.toString(), -1.0f);
     }
 
     public void add(Dockable dockable, Dockable relativeParent, String region, float ratio) {

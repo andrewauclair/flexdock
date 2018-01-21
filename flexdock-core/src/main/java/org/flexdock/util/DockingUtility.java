@@ -246,8 +246,8 @@ public class DockingUtility {
 	 */
 	public static String flipRegion(String region) {
 		if (!DockingManager.isValidDockingRegion(region)
-				|| CENTER_REGION.equals(region)) {
-			return CENTER_REGION;
+				|| Region.CENTER.toString().equals(region)) {
+			return Region.CENTER.toString();
 		}
 
 		if (NORTH_REGION.equals(region)) {
@@ -307,7 +307,7 @@ public class DockingUtility {
 			return true;
 		}
 
-		if (CENTER_REGION.equals(region)) {
+		if (Region.CENTER.toString().equals(region)) {
 			return false;
 		}
 
@@ -372,7 +372,7 @@ public class DockingUtility {
 		case SwingConstants.BOTTOM:
 			return SOUTH_REGION;
 		case SwingConstants.CENTER:
-			return CENTER_REGION;
+			return Region.CENTER.toString();
 		default:
 			return UNKNOWN_REGION;
 		}
@@ -481,7 +481,7 @@ public class DockingUtility {
 
 	private static void setSiblingPreference(Dockable src, String region,
 											 float size) {
-		if (size == UNSPECIFIED_SIBLING_PREF || CENTER_REGION.equals(region)
+		if (size == UNSPECIFIED_SIBLING_PREF || Region.CENTER.toString().equals(region)
 				|| !DockingManager.isValidDockingRegion(region)) {
 			return;
 		}

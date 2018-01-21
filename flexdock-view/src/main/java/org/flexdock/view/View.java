@@ -38,8 +38,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.flexdock.docking.DockingConstants.CENTER_REGION;
-
 /**
  * The {@code View} class is slightly incompatible with {@code JComponent}.
  * Similar to JFC/Swing top-level containers, a {@code View} contains only a
@@ -492,7 +490,7 @@ public class View extends JComponent implements Dockable {
 
 	@Override
 	public boolean dock(Dockable dockable) {
-		return dock(dockable, CENTER_REGION);
+		return dock(dockable, DockingConstants.Region.CENTER.toString());
 	}
 
 	@Override

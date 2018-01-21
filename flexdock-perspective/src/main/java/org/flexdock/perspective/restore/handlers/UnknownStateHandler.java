@@ -39,7 +39,7 @@ import static org.flexdock.docking.DockingConstants.*;
 public class UnknownStateHandler implements RestorationHandler {
 
     private static final String[] REGIONS = {
-            CENTER_REGION,
+			Region.CENTER.toString(),
             WEST_REGION,
             EAST_REGION,
             SOUTH_REGION,
@@ -91,7 +91,7 @@ public class UnknownStateHandler implements RestorationHandler {
     private DockingInfo getDeepestWest(DockingPort port) {
         Component comp = port.getDockedComponent();
         if (comp instanceof JTabbedPane) {
-            Dockable d = port.getDockable(CENTER_REGION);
+			Dockable d = port.getDockable(Region.CENTER.toString());
             return new DockingInfo(d, port);
         }
 

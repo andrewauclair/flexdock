@@ -97,7 +97,7 @@ public class DefaultRegionChecker implements RegionChecker {
 		// if our target component is the dockingport, then the dockingport is
 		// currently empty and all points within it are in the CENTER
 		if (comp instanceof DockingPort) {
-			return CENTER_REGION;
+			return Region.CENTER.toString();
 		}
 
 		// start with the north region
@@ -163,7 +163,7 @@ public class DefaultRegionChecker implements RegionChecker {
 		}
 
 		// not in any of the outer regions, so return CENTER.
-		return CENTER_REGION;
+		return Region.CENTER.toString();
 	}
 
 	/**

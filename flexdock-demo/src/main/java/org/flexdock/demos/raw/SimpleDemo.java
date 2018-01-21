@@ -20,14 +20,13 @@
 package org.flexdock.demos.raw;
 
 import org.flexdock.demos.util.DemoUtility;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingStub;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 
 import javax.swing.*;
 import java.awt.*;
-
-import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 public class SimpleDemo extends JFrame {
 	public static void main(String[] args) {
@@ -99,7 +98,7 @@ public class SimpleDemo extends JFrame {
 		DockingManager.registerDockable(p);
 		
 		// dock the panel and return the DockingPort
-		port.dock(p, CENTER_REGION);
+		port.dock(p, DockingConstants.Region.CENTER.toString());
 		return port;
 	}
 	

@@ -20,6 +20,7 @@
 package org.flexdock.docking.state;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.defaults.DockingSplitPane;
@@ -32,8 +33,6 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
 import java.util.List;
-
-import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 /**
  * @author Christopher Butler
@@ -264,7 +263,7 @@ public class DockingPath implements Cloneable, Serializable {
 		}
 		
 		DockingPort rootPort = getRootDockingPort();
-		String region = CENTER_REGION;
+		String region = DockingConstants.Region.CENTER.toString();
 		if (nodes.isEmpty()) {
 			return dockFullPath(dockable, rootPort, region);
 		}
@@ -300,12 +299,12 @@ public class DockingPath implements Cloneable, Serializable {
 		}
 		
 		if (current instanceof JTabbedPane) {
-			return dock(dockable, port, CENTER_REGION, null);
+			return dock(dockable, port, DockingConstants.Region.CENTER.toString(), null);
 		}
 		
 		Dockable embedded = findDockable(current);
 		if (embedded == null || tabbed) {
-			return dock(dockable, port, CENTER_REGION, null);
+			return dock(dockable, port, DockingConstants.Region.CENTER.toString(), null);
 		}
 		
 		String embedId = embedded.getPersistentId();
@@ -327,15 +326,15 @@ public class DockingPath implements Cloneable, Serializable {
 		// first, check to see if we need to use a tabbed layout
 		Component current = port.getDockedComponent();
 		if (current instanceof JTabbedPane) {
-			return dock(dockable, port, CENTER_REGION, null);
+			return dock(dockable, port, DockingConstants.Region.CENTER.toString(), null);
 		}
 		
 		// check to see if we dock outside the current port or outside of it
 		Dockable docked = findDockable(current);
 		if (docked != null) {
 			Component comp = dockable.getComponent();
-			if (port.isDockingAllowed(comp, CENTER_REGION)) {
-				return dock(dockable, port, CENTER_REGION, null);
+			if (port.isDockingAllowed(comp, DockingConstants.Region.CENTER.toString())) {
+				return dock(dockable, port, DockingConstants.Region.CENTER.toString(), null);
 			}
 			DockingPort superPort = (DockingPort) SwingUtilities.getAncestorOfClass(DockingPort.class, (Component) port);
 			if (superPort != null) {
@@ -385,7 +384,7 @@ public class DockingPath implements Cloneable, Serializable {
 	
 	private String getRegion(SplitNode node, Component dockedComponent) {
 		if (dockedComponent == null) {
-			return CENTER_REGION;
+			return DockingConstants.Region.CENTER.toString();
 		}
 		return DockingUtility.getRegion(node.getRegion());
 	}

@@ -20,6 +20,7 @@
 package org.flexdock.docking.floating.frames;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.state.FloatingGroup;
@@ -28,8 +29,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-
-import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 /**
  * @author Andreas Ernst
@@ -71,7 +70,7 @@ public class DockingFrame extends JFrame {
 			return;
 		}
 
-		dockingPort.dock(dockable, CENTER_REGION);
+		dockingPort.dock(dockable, DockingConstants.Region.CENTER.toString());
 	}
 
 	public void destroy() {

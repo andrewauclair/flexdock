@@ -2078,7 +2078,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		}
 	}
 
-	private void reconstruct(SplitNode node) {
+	private static void reconstruct(SplitNode node) {
 		JSplitPane split = node.getSplitPane();
 		Component left = node.getLeftComponent();
 		Component right = node.getRightComponent();

@@ -206,7 +206,7 @@ public class DockingStateListener extends DockingListener.Stub {
     private void setNullRelative(DockingState info) {
         info.setRelativeParentId(null);
         info.setSplitRatio(DockingConstants.UNINITIALIZED);
-        info.setRegion(DockingConstants.CENTER_REGION);
+		info.setRegion(DockingConstants.Region.CENTER.toString());
     }
 
     private DockingState getDockingState(Dockable dockable) {

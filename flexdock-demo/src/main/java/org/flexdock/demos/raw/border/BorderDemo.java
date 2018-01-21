@@ -20,12 +20,12 @@
 package org.flexdock.demos.raw.border;
 
 import org.flexdock.demos.util.DemoUtility;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 public class BorderDemo extends JFrame {
@@ -54,7 +54,7 @@ public class BorderDemo extends JFrame {
         DockablePanel panel = new DockablePanel(desc);
 
         // dock the panel and return the DockingPort
-        port.dock(panel.getDockable(), CENTER_REGION);
+		port.dock(panel.getDockable(), DockingConstants.Region.CENTER.toString());
         return port;
     }
 

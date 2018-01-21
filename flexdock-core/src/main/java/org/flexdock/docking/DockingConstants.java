@@ -80,12 +80,7 @@ public interface DockingConstants {
 	 * @see Dockable#addPropertyChangeListener(java.beans.PropertyChangeListener)
 	 */
 	String REGION = "region";
-	
-	/**
-	 * The central region. The regional equivalent for SwingConstants.CENTER
-	 */
-	String CENTER_REGION = Region.CENTER.toString();//"CENTER";
-	
+
 	/**
 	 * The east region. The regional equivalent for SwingConstants.RIGHT
 	 */

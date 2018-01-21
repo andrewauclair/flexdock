@@ -20,6 +20,7 @@
 package org.flexdock.view;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.activation.ActiveDockableListener;
 import org.flexdock.docking.defaults.DefaultDockingPort;
@@ -28,8 +29,6 @@ import org.flexdock.docking.defaults.StandardBorderManager;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
-
-import static org.flexdock.docking.DockingConstants.CENTER_REGION;
 
 /**
  * @author Christopher Butler
@@ -81,7 +80,7 @@ public class Viewport extends DefaultDockingPort {
 		}
 
 		// by default, allow docking in non-CENTER regions
-		if (!CENTER_REGION.equals(region)) {
+		if (!DockingConstants.Region.CENTER.toString().equals(region)) {
 			return true;
 		}
 
@@ -98,7 +97,7 @@ public class Viewport extends DefaultDockingPort {
 	}
 
 	public boolean dock(Dockable dockable) {
-		return dock(dockable, CENTER_REGION);
+		return dock(dockable, DockingConstants.Region.CENTER.toString());
 	}
 
 	@Override

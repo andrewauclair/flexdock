@@ -126,7 +126,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 	 */
 	public static Dockable getSibling(Dockable dockable, String region) {
 		if (dockable == null || !DockingManager.isValidDockingRegion(region)
-				|| CENTER_REGION.equals(region)) {
+				|| Region.CENTER.toString().equals(region)) {
 			return null;
 		}
 
@@ -237,7 +237,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		}
 
 		if (!(docked instanceof JSplitPane)) {
-			return CENTER_REGION;
+			return Region.CENTER.toString();
 		}
 
 		JSplitPane split = (JSplitPane) docked;
