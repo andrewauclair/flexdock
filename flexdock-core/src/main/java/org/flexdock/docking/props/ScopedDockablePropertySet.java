@@ -100,7 +100,7 @@ public class ScopedDockablePropertySet extends BasicDockablePropertySet implemen
 
 	@Override
 	public Float getRegionInset(String region) {
-		String key = getRegionInsetKey(region);
+		String key = getRegionInsetKey(DockingConstants.Region.valueOf(region));
 		return key == null ? null : (Float) PropertyManager.getProperty(key, this);
 	}
 

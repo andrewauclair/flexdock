@@ -188,18 +188,18 @@ public class DockingStateListener extends DockingListener.Stub {
         }
 
         // if we got here, then we are definitely sharing a split layout with another dockable.
-        String region = DefaultDockingStrategy.findRegion(dockable.getComponent());
+		DockingConstants.Region region = DefaultDockingStrategy.findRegion(dockable.getComponent());
         float ratio = SwingUtility.getDividerProportion(splitPane);
 
         // set the relative docking info
         info.setRelativeParent(sibling);
-        info.setRegion(region);
+		info.setRegion(region.toString());
         info.setSplitRatio(ratio);
 
         // make the sibling aware of us
         info = getDockingState(sibling);
         info.setRelativeParent(dockable);
-        info.setRegion(DockingUtility.flipRegion(region));
+		info.setRegion(DockingUtility.flipRegion(region.toString()));
         info.setSplitRatio(ratio);
     }
 

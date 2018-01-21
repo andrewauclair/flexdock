@@ -39,19 +39,17 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
     private String dockingId;
     private PropertyChangeSupport changeSupport;
 
-    static String getRegionInsetKey(String region) {
-		if (Region.NORTH.toString().equals(region)) {
-            return REGION_SIZE_NORTH;
-        }
-		if (Region.SOUTH.toString().equals(region)) {
-            return REGION_SIZE_SOUTH;
-        }
-		if (Region.EAST.toString().equals(region)) {
-            return REGION_SIZE_EAST;
-        }
-		if (Region.WEST.toString().equals(region)) {
-            return REGION_SIZE_WEST;
-        }
+	static String getRegionInsetKey(Region region) {
+		switch (region) {
+			case NORTH:
+				return REGION_SIZE_NORTH;
+			case SOUTH:
+				return REGION_SIZE_SOUTH;
+			case EAST:
+				return REGION_SIZE_EAST;
+			case WEST:
+				return REGION_SIZE_WEST;
+		}
         return null;
     }
 
@@ -147,7 +145,7 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
 
     @Override
     public Float getRegionInset(String region) {
-        String key = getRegionInsetKey(region);
+		String key = getRegionInsetKey(Region.valueOf(region));
         return key == null ? null : (Float) get(key);
     }
 
@@ -218,7 +216,7 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
 
     @Override
     public void setRegionInset(String region, float inset) {
-        String key = getRegionInsetKey(region);
+		String key = getRegionInsetKey(Region.valueOf(region));
         if (key != null) {
             Float f = inset;
             put(key, f);

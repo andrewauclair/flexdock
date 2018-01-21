@@ -44,6 +44,7 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 * Returns a boolean indicating whether or not docking is allowed within the
 	 * specified region. Used by {@code DockingManager} during drag operations.
 	 */
+	// TODO Replace String with Region
 	boolean isDockingAllowed(Component comp, String region);
 
 	/**
@@ -56,12 +57,14 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 * {@code Dockable's} {@code getDockable()} component is used as the docking
 	 * component.
 	 */
+	// TODO Replace String with Region
 	boolean dock(Dockable dockable, String region);
 
 	/**
 	 * Docks the specified Component in the specified region. Returns
 	 * {@code true} for success and {@code false} for failure.
 	 */
+	// TODO Replace String with Region
 	<T extends Component & DockingStub> boolean dock(T comp, String region);
 
 	/**
@@ -75,6 +78,7 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 * present, this method will return the Dockable in the currently selected
 	 * tab.
 	 */
+	// TODO Replace String with Region
 	Dockable getDockable(String region);
 
 	/**
@@ -83,6 +87,7 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 * present, this method will return the Component in the currently selected
 	 * tab.
 	 */
+	// TODO Replace String with Region
 	Component getComponent(String region);
 
 	/**

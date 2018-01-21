@@ -80,11 +80,11 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		}
 
 		DockingPort port = dockable.getDockingPort();
-		String startRegion = findRegion(dockable.getComponent());
-		String region = DockingUtility.flipRegion(startRegion);
+		Region startRegion = findRegion(dockable.getComponent());
+		String region = DockingUtility.flipRegion(startRegion.toString());
 
 		return findDockable(port, dockable.getComponent(), region,
-				startRegion);
+				startRegion.toString());
 	}
 
 	/**
@@ -132,10 +132,10 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		}
 
 		DockingPort port = dockable.getDockingPort();
-		String startRegion = findRegion(dockable.getComponent());
+		Region startRegion = findRegion(dockable.getComponent());
 
 		return findDockable(port, dockable.getComponent(), region,
-				startRegion);
+				startRegion.toString());
 	}
 
 	private static Dockable findDockable(DockingPort port, Component self,
@@ -217,7 +217,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 	 * @return the region of the current split layout containing the specified
 	 * {@code Dockable}
 	 */
-	public static String findRegion(Component comp) {
+	public static Region findRegion(Component comp) {
 		if (comp == null) {
 			return null;
 		}
@@ -238,16 +238,16 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		}
 
 		if (!(docked instanceof JSplitPane)) {
-			return Region.CENTER.toString();
+			return Region.CENTER;
 		}
 
 		JSplitPane split = (JSplitPane) docked;
 		boolean horiz = split.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
 		Component left = split.getLeftComponent();
 		if (left == port) {
-			return horiz ? Region.WEST.toString() : Region.NORTH.toString();
+			return horiz ? Region.WEST : Region.NORTH;
 		}
-		return horiz ? Region.EAST.toString() : Region.SOUTH.toString();
+		return horiz ? Region.EAST : Region.SOUTH;
 
 	}
 
