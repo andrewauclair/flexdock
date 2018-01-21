@@ -46,7 +46,8 @@ public abstract class DefaultPreview implements DragPreview {
 			return null;
 		}
 
-		if (UNKNOWN_REGION.equals(targetRegion) || !port.isDockingAllowed(dockable, targetRegion.toString())) {
+		// TODO What are we doing about unknown regions now?
+		if (UNKNOWN_REGION.equals(targetRegion) || !port.isDockingAllowed(dockable, targetRegion)) {
 			return null;
 		}
 
@@ -77,7 +78,7 @@ public abstract class DefaultPreview implements DragPreview {
 			regionChecker = new DefaultRegionChecker();
 		}
 
-		Rectangle r = regionChecker.getSiblingBounds(dockable, region.toString());
+		Rectangle r = regionChecker.getSiblingBounds(dockable, region);
 		return createPolyRect(r);
 	}
 

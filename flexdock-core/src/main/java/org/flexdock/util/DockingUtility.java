@@ -203,10 +203,10 @@ public class DockingUtility {
 	 * @see JSplitPane#getOrientation()
 	 * @see #isAxisEquivalent(String, String)
 	 */
-	public static String translateRegionAxis(JSplitPane splitPane, String originalRegion) {
+	public static Region translateRegionAxis(JSplitPane splitPane, String originalRegion) {
 		String region = originalRegion;
 
-		if (splitPane == null || !DockingManager.isValidDockingRegion(region)) {
+		if (splitPane == null || !DockingManager.isValidDockingRegion(Region.valueOf(region))) {
 			return null;
 		}
 
@@ -227,7 +227,7 @@ public class DockingUtility {
 				region = Region.SOUTH.toString();
 			}
 		}
-		return region;
+		return Region.valueOf(region);
 	}
 
 	/**
@@ -244,25 +244,25 @@ public class DockingUtility {
 	 * @return the opposite docking region of the specified {@code region}.
 	 * @see DockingManager#isValidDockingRegion(String)
 	 */
-	public static String flipRegion(String region) {
+	public static Region flipRegion(Region region) {
 		if (!DockingManager.isValidDockingRegion(region)
-				|| Region.CENTER.toString().equals(region)) {
-			return Region.CENTER.toString();
+				|| region == Region.CENTER) {
+			return Region.CENTER;
 		}
 
-		if (Region.NORTH.toString().equals(region)) {
-			return Region.SOUTH.toString();
+		if (region == Region.NORTH) {
+			return Region.SOUTH;
 		}
 
-		if (Region.SOUTH.toString().equals(region)) {
-			return Region.NORTH.toString();
+		if (region == Region.SOUTH) {
+			return Region.NORTH;
 		}
 
-		if (Region.EAST.toString().equals(region)) {
-			return Region.WEST.toString();
+		if (region == Region.EAST) {
+			return Region.WEST;
 		}
 
-		return Region.EAST.toString();
+		return Region.EAST;
 	}
 
 	/**
@@ -297,7 +297,7 @@ public class DockingUtility {
 	 * equivalents, {@code false} otherwise.
 	 * @see DockingManager#isValidDockingRegion(String)
 	 */
-	public static boolean isAxisEquivalent(String region, String otherRegion) {
+	public static boolean isAxisEquivalent(Region region, Region otherRegion) {
 		if (!DockingManager.isValidDockingRegion(region)
 				|| !DockingManager.isValidDockingRegion(otherRegion)) {
 			return false;
@@ -467,7 +467,7 @@ public class DockingUtility {
 	public static boolean dockRelative(Dockable dockable, Dockable parent,
 									   String relativeRegion, float ratio) {
 		if (parent == null || dockable == null
-				|| !DockingManager.isValidDockingRegion(relativeRegion)) {
+				|| !DockingManager.isValidDockingRegion(Region.valueOf(relativeRegion))) {
 			return false;
 		}
 
@@ -482,11 +482,11 @@ public class DockingUtility {
 	private static void setSiblingPreference(Dockable src, String region,
 											 float size) {
 		if (size == UNSPECIFIED_SIBLING_PREF || Region.CENTER.toString().equals(region)
-				|| !DockingManager.isValidDockingRegion(region)) {
+				|| !DockingManager.isValidDockingRegion(Region.valueOf(region))) {
 			return;
 		}
 
-		src.getDockingProperties().setSiblingSize(region, DefaultRegionChecker.validateSiblingSize(size));
+		src.getDockingProperties().setSiblingSize(Region.valueOf(region), DefaultRegionChecker.validateSiblingSize(size));
 	}
 
 	/**

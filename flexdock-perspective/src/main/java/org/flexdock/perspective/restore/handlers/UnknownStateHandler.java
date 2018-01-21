@@ -91,7 +91,7 @@ public class UnknownStateHandler implements RestorationHandler {
     private DockingInfo getDeepestWest(DockingPort port) {
         Component comp = port.getDockedComponent();
         if (comp instanceof JTabbedPane) {
-			Dockable d = port.getDockable(Region.CENTER.toString());
+			Dockable d = port.getDockable(Region.CENTER);
             return new DockingInfo(d, port);
         }
 

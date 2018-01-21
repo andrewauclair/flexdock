@@ -99,20 +99,20 @@ public class ScopedDockablePropertySet extends BasicDockablePropertySet implemen
 	}
 
 	@Override
-	public Float getRegionInset(String region) {
-		String key = getRegionInsetKey(DockingConstants.Region.valueOf(region));
+	public Float getRegionInset(DockingConstants.Region region) {
+		String key = getRegionInsetKey(region);
 		return key == null ? null : (Float) PropertyManager.getProperty(key, this);
 	}
 
 	@Override
-	public Float getSiblingSize(String region) {
+	public Float getSiblingSize(DockingConstants.Region region) {
 		String key = getSiblingSizeKey(region);
 		return key == null ? null : (Float) PropertyManager.getProperty(key, this);
 	}
 
 	@Override
-	public Boolean isTerritoryBlocked(String region) {
-		String key = getTerritoryBlockedKey(DockingConstants.Region.valueOf(region));
+	public Boolean isTerritoryBlocked(DockingConstants.Region region) {
+		String key = getTerritoryBlockedKey(region);
 		return key == null ? null : (Boolean) PropertyManager.getProperty(key, this);
 	}
 

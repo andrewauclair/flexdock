@@ -74,7 +74,7 @@ public interface DockingStrategy {
 	 * @return whether or not the docking operation was successful.
 	 */
 	boolean dock(Dockable dockable, DockingPort dockingPort,
-				 String dockingRegion);
+				 DockingConstants.Region dockingRegion);
 
 	/**
 	 * Attempts to dock the specified {@code Dockable} into the supplied
@@ -93,7 +93,7 @@ public interface DockingStrategy {
 	 * @return whether or not the docking operation was successful.
 	 */
 	boolean dock(Dockable dockable, DockingPort dockingPort,
-				 String dockingRegion, DragOperation operation);
+				 DockingConstants.Region dockingRegion, DragOperation operation);
 
 	/**
 	 * Undocks the specified {@code Dockable} instance from its containing
@@ -132,7 +132,7 @@ public interface DockingStrategy {
 	 * @return a new {@code JSplitPane} suitable for embedding within the base
 	 * {@code DockingPort} parameter.
 	 */
-	JSplitPane createSplitPane(DockingPort base, String region);
+	JSplitPane createSplitPane(DockingPort base, DockingConstants.Region region);
 
 	/**
 	 * Creates and returns a new {@code JSplitPane} instance based upon the
@@ -148,7 +148,7 @@ public interface DockingStrategy {
 	 * @return a new {@code JSplitPane} suitable for embedding within the base
 	 * {@code DockingPort} parameter.
 	 */
-	JSplitPane createSplitPane(DockingPort base, String region, float percent);
+	JSplitPane createSplitPane(DockingPort base, DockingConstants.Region region, float percent);
 
 	/**
 	 * Returns the initial divider location to be used by the specified

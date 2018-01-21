@@ -19,6 +19,7 @@
  */
 package org.flexdock.docking.state.tree;
 
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.DockingStrategy;
 import org.flexdock.docking.state.LayoutNode;
@@ -135,7 +136,7 @@ public class SplitNode extends DockingNode {
 
 		DockingPort superPort = (DockingPort) userObj;
 		DockingStrategy strategy = superPort.getDockingStrategy();
-		return strategy.createSplitPane(superPort, dockingRegion, percentage);
+		return strategy.createSplitPane(superPort, DockingConstants.Region.valueOf(dockingRegion), percentage);
 	}
 
 	public JSplitPane getSplitPane() {

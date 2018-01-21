@@ -102,7 +102,7 @@ public interface RegionChecker {
 	 * @param point     the coordinates whose region is to be determined.
 	 * @return the docking region containing the specified {@code Point}.
 	 */
-	String getRegion(Component component, Point point);
+	DockingConstants.Region getRegion(Component component, Point point);
 
 	/**
 	 * Returns the rectangular bounds within the specified component that
@@ -157,7 +157,7 @@ public interface RegionChecker {
 	 * @return the bounds containing the supplied region of the specified
 	 * {@code Component}.
 	 */
-	Rectangle getRegionBounds(Component component, String region);
+	Rectangle getRegionBounds(Component component, DockingConstants.Region region);
 
 	/**
 	 * Returns a percentage representing the amount of space allotted for the
@@ -175,7 +175,7 @@ public interface RegionChecker {
 	 * @return the percentage of the specified {@code Component} allotted for
 	 * the specified region.
 	 */
-	float getRegionSize(Component component, String region);
+	float getRegionSize(Component component, DockingConstants.Region region);
 
 	/**
 	 * A {@code Rectangle} representing the actual amount of space to allot for
@@ -198,7 +198,7 @@ public interface RegionChecker {
 	 * {@code Components} docked into the specified region of the of the
 	 * specified {@code Component}.
 	 */
-	Rectangle getSiblingBounds(Component component, String region);
+	Rectangle getSiblingBounds(Component component, DockingConstants.Region region);
 
 	/**
 	 * Returns a percentage representing the amount of space allotted for

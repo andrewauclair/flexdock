@@ -100,7 +100,7 @@ public class SplitPaneDemo extends JPanel {
         DockingManager.registerDockable(spd.getDockable());
 
         // dock the panel and return the DockingPort
-		port.dock(spd.getDockable(), DockingConstants.Region.CENTER.toString());
+		port.dock(spd.getDockable(), DockingConstants.Region.CENTER);
         return port;
     }
 

@@ -53,19 +53,17 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
         return null;
     }
 
-    static String getSiblingSizeKey(String region) {
-		if (Region.NORTH.toString().equals(region)) {
-            return SIBLING_SIZE_NORTH;
-        }
-		if (Region.SOUTH.toString().equals(region)) {
-            return SIBLING_SIZE_SOUTH;
-        }
-		if (Region.EAST.toString().equals(region)) {
-            return SIBLING_SIZE_EAST;
-        }
-		if (Region.WEST.toString().equals(region)) {
-            return SIBLING_SIZE_WEST;
-        }
+	static String getSiblingSizeKey(Region region) {
+		switch (region) {
+			case NORTH:
+				return SIBLING_SIZE_NORTH;
+			case SOUTH:
+				return SIBLING_SIZE_SOUTH;
+			case EAST:
+				return SIBLING_SIZE_EAST;
+			case WEST:
+				return SIBLING_SIZE_WEST;
+		}
         return null;
     }
 
@@ -144,20 +142,20 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
 
 
     @Override
-    public Float getRegionInset(String region) {
-		String key = getRegionInsetKey(Region.valueOf(region));
+	public Float getRegionInset(Region region) {
+		String key = getRegionInsetKey(region);
         return key == null ? null : (Float) get(key);
     }
 
     @Override
-    public Float getSiblingSize(String region) {
+	public Float getSiblingSize(Region region) {
         String key = getSiblingSizeKey(region);
         return key == null ? null : (Float) get(key);
     }
 
     @Override
-    public Boolean isTerritoryBlocked(String region) {
-		String key = getTerritoryBlockedKey(Region.valueOf(region));
+	public Boolean isTerritoryBlocked(Region region) {
+		String key = getTerritoryBlockedKey(region);
         return key == null ? null : (Boolean) get(key);
     }
 
@@ -215,8 +213,8 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
     }
 
     @Override
-    public void setRegionInset(String region, float inset) {
-		String key = getRegionInsetKey(Region.valueOf(region));
+	public void setRegionInset(Region region, float inset) {
+		String key = getRegionInsetKey(region);
         if (key != null) {
             Float f = inset;
             put(key, f);
@@ -224,7 +222,7 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
     }
 
     @Override
-    public void setSiblingSize(String region, float size) {
+	public void setSiblingSize(Region region, float size) {
         String key = getSiblingSizeKey(region);
         if (key != null) {
             Float f = size;
@@ -233,8 +231,8 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
     }
 
     @Override
-    public void setTerritoryBlocked(String region, boolean blocked) {
-		String key = getTerritoryBlockedKey(Region.valueOf(region));
+	public void setTerritoryBlocked(Region region, boolean blocked) {
+		String key = getTerritoryBlockedKey(region);
         if (key != null) {
 			put(key, blocked ? Boolean.TRUE : Boolean.FALSE);
         }

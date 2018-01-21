@@ -101,7 +101,7 @@ public class CompoundDemo extends JPanel {
         DockingManager.registerDockable(cd.getDockable());
 
         // dock the panel and return the DockingPort
-		port.dock(cd.getDockable(), DockingConstants.Region.CENTER.toString());
+		port.dock(cd.getDockable(), DockingConstants.Region.CENTER);
         return port;
     }
 

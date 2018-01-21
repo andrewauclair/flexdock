@@ -70,7 +70,7 @@ public class DockingFrame extends JFrame {
 			return;
 		}
 
-		dockingPort.dock(dockable, DockingConstants.Region.CENTER.toString());
+		dockingPort.dock(dockable, DockingConstants.Region.CENTER);
 	}
 
 	public void destroy() {

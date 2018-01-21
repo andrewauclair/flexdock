@@ -332,7 +332,7 @@ public class DockingManager {
 		}
 
 		DockingStrategy strategy = getDockingStrategy(port);
-		return strategy != null && strategy.dock(dockable, port, region);
+		return strategy != null && strategy.dock(dockable, port, Region.valueOf(region));
 	}
 
 	private static <T extends Component & DockingStub> Dockable resolveDockable(T comp) {
@@ -603,10 +603,11 @@ public class DockingManager {
 	 * @return {@code true} if the supplied parameter is a valid docking region;
 	 * {@code false} otherwise.
 	 */
-	public static boolean isValidDockingRegion(String region) {
-		return Region.CENTER.toString().equals(region) || Region.NORTH.toString().equals(region)
-				|| Region.SOUTH.toString().equals(region) || Region.EAST.toString().equals(region)
-				|| Region.WEST.toString().equals(region);
+	// TODO Not sure this makes sense with the Region enum
+	public static boolean isValidDockingRegion(Region region) {
+		return Region.CENTER.toString().equals(region.toString()) || Region.NORTH.toString().equals(region.toString())
+				|| Region.SOUTH.toString().equals(region.toString()) || Region.EAST.toString().equals(region.toString())
+				|| Region.WEST.toString().equals(region.toString());
 	}
 
 	private static void updateDragListeners(Component dragSrc,

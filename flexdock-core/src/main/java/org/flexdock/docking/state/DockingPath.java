@@ -333,7 +333,7 @@ public class DockingPath implements Cloneable, Serializable {
 		Dockable docked = findDockable(current);
 		if (docked != null) {
 			Component comp = dockable.getComponent();
-			if (port.isDockingAllowed(comp, DockingConstants.Region.CENTER.toString())) {
+			if (port.isDockingAllowed(comp, DockingConstants.Region.CENTER)) {
 				return dock(dockable, port, DockingConstants.Region.CENTER.toString(), null);
 			}
 			DockingPort superPort = (DockingPort) SwingUtilities.getAncestorOfClass(DockingPort.class, (Component) port);

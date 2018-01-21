@@ -98,7 +98,7 @@ public class SimpleDemo extends JFrame {
 		DockingManager.registerDockable(p);
 		
 		// dock the panel and return the DockingPort
-		port.dock(p, DockingConstants.Region.CENTER.toString());
+		port.dock(p, DockingConstants.Region.CENTER);
 		return port;
 	}
 	

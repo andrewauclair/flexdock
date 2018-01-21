@@ -27,7 +27,6 @@ import org.flexdock.docking.RegionChecker;
 import java.awt.*;
 
 import static org.flexdock.docking.DockingConstants.Region;
-import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * @author Christopher Butler
@@ -66,7 +65,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * allows for proper determination between "northeast", "northwest",
 	 * "southeast", and "southwest" cases.
 	 *
-	 * @param comp  the {@code Component} whose region is to be examined.
+	 * @param component  the {@code Component} whose region is to be examined.
 	 * @param point the coordinates whose region is to be determined.
 	 * @return the docking region containing the specified {@code Point}.
 	 * @see RegionChecker#getRegion(Component, Point)
@@ -76,95 +75,95 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * @see #getWestRegion(Component)
 	 */
 	@Override
-	public String getRegion(Component comp, Point point) {
-		if (comp == null || point == null) {
-			return UNKNOWN_REGION;
+	public Region getRegion(Component component, Point point) {
+		if (component == null || point == null) {
+			return null;
 		}
 
 		// make sure the point is actually inside of the target dockingport
-		Rectangle targetArea = comp.getBounds();
+		Rectangle targetArea = component.getBounds();
 		// if our target component is the dockingport itself, then getBounds()
 		// would
 		// have returned a target area relative to the dockingport's parent.
 		// reset
 		// relative to the dockingport.
-		if (comp instanceof DockingPort) {
+		if (component instanceof DockingPort) {
 			targetArea.setLocation(0, 0);
 		}
 		if (!targetArea.contains(point)) {
-			return UNKNOWN_REGION;
+			return null;
 		}
 
 		// if our target component is the dockingport, then the dockingport is
 		// currently empty and all points within it are in the CENTER
-		if (comp instanceof DockingPort) {
-			return Region.CENTER.toString();
+		if (component instanceof DockingPort) {
+			return Region.CENTER;
 		}
 
 		// start with the north region
-		Rectangle north = getNorthRegion(comp);
+		Rectangle north = getNorthRegion(component);
 		int rightX = north.x + north.width;
 		if (north.contains(point)) {
 			// check NORTH_WEST
-			Rectangle west = getWestRegion(comp);
+			Rectangle west = getWestRegion(component);
 			if (west.contains(point)) {
 				Polygon westPoly = new Polygon();
 				westPoly.addPoint(0, 0);
 				westPoly.addPoint(0, north.height);
 				westPoly.addPoint(west.width, north.height);
-				return westPoly.contains(point) ? Region.WEST.toString() : Region.NORTH.toString();
+				return westPoly.contains(point) ? Region.WEST : Region.NORTH;
 			}
 			// check NORTH_EAST
-			Rectangle east = getEastRegion(comp);
+			Rectangle east = getEastRegion(component);
 			if (east.contains(point)) {
 				Polygon eastPoly = new Polygon();
 				eastPoly.addPoint(rightX, 0);
 				eastPoly.addPoint(rightX, north.height);
 				eastPoly.addPoint(east.x, north.height);
-				return eastPoly.contains(point) ? Region.EAST.toString() : Region.NORTH.toString();
+				return eastPoly.contains(point) ? Region.EAST : Region.NORTH;
 			}
-			return Region.NORTH.toString();
+			return Region.NORTH;
 		}
 
 		// check with the south region
-		Rectangle south = getSouthRegion(comp);
+		Rectangle south = getSouthRegion(component);
 		int bottomY = south.y + south.height;
 		if (south.contains(point)) {
 			// check SOUTH_WEST
-			Rectangle west = getWestRegion(comp);
+			Rectangle west = getWestRegion(component);
 			if (west.contains(point)) {
 				Polygon westPoly = new Polygon();
 				westPoly.addPoint(0, south.y);
 				westPoly.addPoint(west.width, south.y);
 				westPoly.addPoint(0, bottomY);
-				return westPoly.contains(point) ? Region.WEST.toString() : Region.SOUTH.toString();
+				return westPoly.contains(point) ? Region.WEST : Region.SOUTH;
 			}
 			// check SOUTH_EAST
-			Rectangle east = getEastRegion(comp);
+			Rectangle east = getEastRegion(component);
 			if (east.contains(point)) {
 				Polygon eastPoly = new Polygon();
 				eastPoly.addPoint(east.x, south.y);
 				eastPoly.addPoint(rightX, south.y);
 				eastPoly.addPoint(rightX, bottomY);
-				return eastPoly.contains(point) ? Region.EAST.toString() : Region.SOUTH.toString();
+				return eastPoly.contains(point) ? Region.EAST : Region.SOUTH;
 			}
-			return Region.SOUTH.toString();
+			return Region.SOUTH;
 		}
 
 		// Now check EAST and WEST. We've already checked NORTH and SOUTH, so we
 		// don't have to
 		// check for NE, SE, NW, and SW anymore.
-		Rectangle east = getEastRegion(comp);
+		Rectangle east = getEastRegion(component);
 		if (east.contains(point)) {
-			return Region.EAST.toString();
+			return Region.EAST;
 		}
-		Rectangle west = getWestRegion(comp);
+		Rectangle west = getWestRegion(component);
 		if (west.contains(point)) {
-			return Region.WEST.toString();
+			return Region.WEST;
 		}
 
 		// not in any of the outer regions, so return CENTER.
-		return Region.CENTER.toString();
+		return Region.CENTER;
 	}
 
 	/**
@@ -175,15 +174,15 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * region parameter. If the specified {@code Component} is {@code null},
 	 * then a {@code null} reference is returned.
 	 *
-	 * @param c the {@code Component} whose north region is to be returned.
+	 * @param component the {@code Component} whose north region is to be returned.
 	 * @return the bounds containing the north region of the specified
 	 * {@code Component}.
 	 * @see RegionChecker#getNorthRegion(Component)
-	 * @see #getRegionBounds(Component, String)
+	 * @see #getRegionBounds(Component, Region)
 	 */
 	@Override
-	public Rectangle getNorthRegion(Component c) {
-		return getRegionBounds(c, Region.NORTH.toString());
+	public Rectangle getNorthRegion(Component component) {
+		return getRegionBounds(component, Region.NORTH);
 	}
 
 	/**
@@ -194,15 +193,15 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * region parameter. If the specified {@code Component} is {@code null},
 	 * then a {@code null} reference is returned.
 	 *
-	 * @param c the {@code Component} whose south region is to be returned.
+	 * @param component the {@code Component} whose south region is to be returned.
 	 * @return the bounds containing the north region of the specified
 	 * {@code Component}.
 	 * @see RegionChecker#getSouthRegion(Component)
-	 * @see #getRegionBounds(Component, String)
+	 * @see #getRegionBounds(Component, Region)
 	 */
 	@Override
-	public Rectangle getSouthRegion(Component c) {
-		return getRegionBounds(c, Region.SOUTH.toString());
+	public Rectangle getSouthRegion(Component component) {
+		return getRegionBounds(component, Region.SOUTH);
 	}
 
 	/**
@@ -213,15 +212,15 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * region parameter. If the specified {@code Component} is {@code null},
 	 * then a {@code null} reference is returned.
 	 *
-	 * @param c the {@code Component} whose east region is to be returned.
+	 * @param component the {@code Component} whose east region is to be returned.
 	 * @return the bounds containing the north region of the specified
 	 * {@code Component}.
 	 * @see RegionChecker#getEastRegion(Component)
-	 * @see #getRegionBounds(Component, String)
+	 * @see #getRegionBounds(Component, Region)
 	 */
 	@Override
-	public Rectangle getEastRegion(Component c) {
-		return getRegionBounds(c, Region.EAST.toString());
+	public Rectangle getEastRegion(Component component) {
+		return getRegionBounds(component, Region.EAST);
 	}
 
 	/**
@@ -232,15 +231,15 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * region parameter. If the specified {@code Component} is {@code null},
 	 * then a {@code null} reference is returned.
 	 *
-	 * @param c the {@code Component} whose west region is to be returned.
+	 * @param component the {@code Component} whose west region is to be returned.
 	 * @return the bounds containing the north region of the specified
 	 * {@code Component}.
 	 * @see RegionChecker#getWestRegion(Component)
-	 * @see #getRegionBounds(Component, String)
+	 * @see #getRegionBounds(Component, Region)
 	 */
 	@Override
-	public Rectangle getWestRegion(Component c) {
-		return getRegionBounds(c, Region.WEST.toString());
+	public Rectangle getWestRegion(Component component) {
+		return getRegionBounds(component, Region.WEST);
 	}
 
 	/**
@@ -257,18 +256,18 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * the resulting dimension, spanning the {@code Component} edge for the
 	 * specified region.
 	 *
-	 * @param c      the {@code Component} whose region bounds are to be returned.
+	 * @param component      the {@code Component} whose region bounds are to be returned.
 	 * @param region the specified region that is to be examined.
 	 * @return the bounds containing the supplied region of the specified
 	 * {@code Component}.
-	 * @see RegionChecker#getRegionBounds(Component, String)
-	 * @see #getRegionSize(Component, String)
+	 * @see RegionChecker#getRegionBounds(Component, Region)
+	 * @see #getRegionSize(Component, Region)
 	 */
 	@Override
-	public Rectangle getRegionBounds(Component c, String region) {
-		if (c != null && region != null) {
-			float size = getRegionSize(c, region);
-			return calculateRegionalBounds(c, region, size);
+	public Rectangle getRegionBounds(Component component, Region region) {
+		if (component != null && region != null) {
+			float size = getRegionSize(component, region);
+			return calculateRegionalBounds(component, region, size);
 		}
 		return null;
 	}
@@ -289,39 +288,38 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * the resulting dimension, spanning the {@code Component} edge for the
 	 * specified region.
 	 *
-	 * @param c      the {@code Component} whose sibling bounds are to be returned.
+	 * @param component      the {@code Component} whose sibling bounds are to be returned.
 	 * @param region the specified region that is to be examined.
 	 * @return the bounds representing the allotted sibling area for the
 	 * supplied region of the specified {@code Component}.
-	 * @see RegionChecker#getSiblingBounds(Component, String)
 	 * @see #getSiblingSize(Component, String)
 	 */
 	@Override
-	public Rectangle getSiblingBounds(Component c, String region) {
-		if (c != null && region != null) {
-			float size = getSiblingSize(c, region);
-			return calculateRegionalBounds(c, region, size);
+	public Rectangle getSiblingBounds(Component component, Region region) {
+		if (component != null && region != null) {
+			float size = getSiblingSize(component, region.toString());
+			return calculateRegionalBounds(component, region, size);
 		}
 		return null;
 	}
 
-	private Rectangle calculateRegionalBounds(Component c, String region,
+	private Rectangle calculateRegionalBounds(Component component, Region region,
 											  float size) {
-		if (c == null || region == null) {
+		if (component == null || region == null) {
 			return null;
 		}
 
-		Rectangle bounds = c.getBounds();
+		Rectangle bounds = component.getBounds();
 
-		if (Region.NORTH.toString().equals(region) || Region.SOUTH.toString().equals(region)) {
-			int h = (int) (bounds.height * size);
-			int y = Region.NORTH.toString().equals(region) ? 0 : bounds.height - h;
+		if (region == Region.NORTH || region == Region.SOUTH) {
+			int h = Math.round(bounds.height * size);
+			int y = region == Region.NORTH ? 0 : bounds.height - h;
 			return new Rectangle(0, y, bounds.width, h);
 		}
 
-		if (Region.WEST.toString().equals(region) || Region.EAST.toString().equals(region)) {
-			int w = (int) (bounds.width * size);
-			int x = Region.WEST.toString().equals(region) ? 0 : bounds.width - w;
+		if (region == Region.WEST || region == Region.EAST) {
+			int w = Math.round(bounds.width * size);
+			int x = region == Region.WEST ? 0 : bounds.width - w;
 			return new Rectangle(x, 0, w, bounds.height);
 		}
 		return null;
@@ -344,19 +342,19 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * associated {@code DockingProps} instance, then the default value of
 	 * {@code RegionChecker.DEFAULT_REGION_SIZE} is returned.
 	 *
-	 * @param c      the {@code Component} whose region is to be examined.
+	 * @param component      the {@code Component} whose region is to be examined.
 	 * @param region the specified region that is to be examined.
 	 * @return the percentage of the specified {@code Component} allotted for
 	 * the specified region.
-	 * @see RegionChecker#getRegionSize(Component, String)
+	 * @see RegionChecker#getRegionSize(Component, Region)
 	 * @see DockingManager#getDockable(Component)
-	 * @see #getRegionPreference(Dockable, String)
+	 * @see #getRegionPreference(Dockable, Region)
 	 * @see Dockable#getDockingProperties()
 	 */
 	@Override
-	public float getRegionSize(Component c, String region) {
-		Dockable d = DockingManager.getDockable(c);
-		return getRegionPreference(d, region);
+	public float getRegionSize(Component component, Region region) {
+		Dockable dockable = DockingManager.getDockable(component);
+		return getRegionPreference(dockable, region);
 	}
 
 	/**
@@ -377,7 +375,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * associated {@code DockingProps} instance, then the default value of
 	 * {@code RegionChecker.DEFAULT_SIBLING_SIZE} is returned.
 	 *
-	 * @param c      the {@code Component} whose sibling size is to be examined.
+	 * @param component      the {@code Component} whose sibling size is to be examined.
 	 * @param region the specified region that is to be examined.
 	 * @return the percentage of the specified {@code Component} allotted for
 	 * the siblings within the specified region.
@@ -386,8 +384,8 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * @see Dockable#getDockingProperties()
 	 */
 	@Override
-	public float getSiblingSize(Component c, String region) {
-		Dockable d = DockingManager.getDockable(c);
+	public float getSiblingSize(Component component, String region) {
+		Dockable d = DockingManager.getDockable(component);
 		return getSiblingPreference(d, region);
 	}
 
@@ -451,7 +449,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * retrieved region preference is passed through
 	 * {@code validateRegionSize(float size)} and returned.
 	 *
-	 * @param d      the {@code Dockable} whose region is to be checked
+	 * @param dockable      the {@code Dockable} whose region is to be checked
 	 * @param region the region of the specified {@code Dockable} to be checked
 	 * @return a percentage (0.0F through 1.0F) representing the amount of space
 	 * allotted for the specified region within the specified
@@ -460,8 +458,8 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * @see RegionChecker#DEFAULT_REGION_SIZE
 	 * @see #validateRegionSize(float)
 	 */
-	private static float getRegionPreference(Dockable d, String region) {
-		Float inset = d == null ? null : d.getDockingProperties()
+	private static float getRegionPreference(Dockable dockable, Region region) {
+		Float inset = dockable == null ? null : dockable.getDockingProperties()
 				.getRegionInset(region);
 		return getDockingInset(inset, DEFAULT_REGION_SIZE, MAX_REGION_SIZE,
 				MIN_REGION_SIZE);
@@ -492,7 +490,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 */
 	private static float getSiblingPreference(Dockable d, String region) {
 		Float size = d == null ? null : d.getDockingProperties()
-				.getSiblingSize(region);
+				.getSiblingSize(Region.valueOf(region));
 		return getDockingInset(size, DockingManager.getDefaultSiblingSize(),
 				MAX_SIBILNG_SIZE, MIN_SIBILNG_SIZE);
 	}

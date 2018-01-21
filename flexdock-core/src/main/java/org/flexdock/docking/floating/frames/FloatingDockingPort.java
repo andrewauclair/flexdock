@@ -20,6 +20,7 @@
 package org.flexdock.docking.floating.frames;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.event.DockingEvent;
@@ -50,7 +51,7 @@ public class FloatingDockingPort extends DefaultDockingPort {
 	}
 
 	@Override
-	public boolean dock(Dockable dockable, String region) {
+	public boolean dock(Dockable dockable, DockingConstants.Region region) {
 		boolean ret = super.dock(dockable, region);
 		
 		if (ret) {

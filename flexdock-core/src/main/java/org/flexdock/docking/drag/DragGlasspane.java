@@ -32,8 +32,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
-import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
-
 @SuppressWarnings(value = {"serial"})
 public class DragGlasspane extends JComponent {
 	
@@ -78,8 +76,8 @@ public class DragGlasspane extends JComponent {
 		if (currentDropTargets == null && dropTargets == null) {
 			return;
 		}
-		
-		String region;
+
+		DockingConstants.Region region;
 		
 		// now, assign the currentCover to the new one and repaint
 		currentDropTargets = dropTargets;
@@ -101,10 +99,10 @@ public class DragGlasspane extends JComponent {
 		// repaint
 		repaint();
 	}
-	
-	private String findRegion(DockingPort hoverPort, Dockable hoverDockable, Point mousePoint) {
+
+	private DockingConstants.Region findRegion(DockingPort hoverPort, Dockable hoverDockable, Point mousePoint) {
 		if (hoverPort == null) {
-			return UNKNOWN_REGION;
+			return null;
 		}
 		
 		if (hoverDockable != null) {
@@ -121,7 +119,7 @@ public class DragGlasspane extends JComponent {
 		}
 		
 		// the port contains a non-dockable component.  we can't dock
-		return UNKNOWN_REGION;
+		return null;
 	}
 	
 	private Dockable getHoverDockable(NestedComponents nest) {
@@ -131,15 +129,15 @@ public class DragGlasspane extends JComponent {
 		}
 		return DockingManager.getDockable(c);
 	}
-	
-	private void createPreviewPolygon(DragOperation token, DockingPort port, Dockable hover, String region) {
+
+	private void createPreviewPolygon(DragOperation token, DockingPort port, Dockable hover, DockingConstants.Region region) {
 		DragPreview preview = getPreviewDelegate();
 		if (preview == null) {
 			previewPoly = null;
 		}
 		else {
 			Map dragContext = getDragContext(token);
-			previewPoly = preview.createPreviewPolygon(token.getDockable(), port, hover, DockingConstants.Region.valueOf(region), this, dragContext);
+			previewPoly = preview.createPreviewPolygon(token.getDockable(), port, hover, region, this, dragContext);
 		}
 	}
 	

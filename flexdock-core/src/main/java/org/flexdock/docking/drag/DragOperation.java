@@ -20,6 +20,7 @@
 package org.flexdock.docking.drag;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.state.FloatingGroup;
@@ -31,8 +32,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.EventListener;
 
-import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
-
 public class DragOperation {
 	public static final String DRAG_IMAGE = "DragOperation.DRAG_IMAGE";
 
@@ -43,7 +42,7 @@ public class DragOperation {
 	private EventListener[] cachedListeners;
 	private DragManager dragListener;
 	private DockingPort targetPort;
-	private String targetRegion;
+	private DockingConstants.Region targetRegion;
 	private boolean overWindow;
 	private boolean pseudoDrag;
 	private long started;
@@ -163,16 +162,16 @@ public class DragOperation {
 		return dragSource;
 	}
 
-	public void setTarget(DockingPort port, String region) {
+	public void setTarget(DockingPort port, DockingConstants.Region region) {
 		targetPort = port;
-		targetRegion = region == null ? UNKNOWN_REGION : region;
+		targetRegion = region == null ? null : region;
 	}
 
 	public DockingPort getTargetPort() {
 		return targetPort;
 	}
 
-	public String getTargetRegion() {
+	public DockingConstants.Region getTargetRegion() {
 		return targetRegion;
 	}
 

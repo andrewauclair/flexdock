@@ -19,6 +19,8 @@
  */
 package org.flexdock.docking.props;
 
+import org.flexdock.docking.DockingConstants;
+
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
 
@@ -62,14 +64,11 @@ public interface DockablePropertySet {
 
 	Boolean isMouseMotionListenersBlockedWhileDragging();
 
-	// TODO Replace String with Region
-	Float getRegionInset(String region);
+	Float getRegionInset(DockingConstants.Region region);
 
-	// TODO Replace String with Region
-	Float getSiblingSize(String region);
+	Float getSiblingSize(DockingConstants.Region region);
 
-	// TODO Replace String with Region
-	Boolean isTerritoryBlocked(String region);
+	Boolean isTerritoryBlocked(DockingConstants.Region region);
 
 	Float getDragThreshold();
 
@@ -90,11 +89,11 @@ public interface DockablePropertySet {
 
 	void setMouseMotionListenersBlockedWhileDragging(boolean blocked);
 
-	void setRegionInset(String region, float inset);
+	void setRegionInset(DockingConstants.Region region, float inset);
 
-	void setSiblingSize(String region, float size);
+	void setSiblingSize(DockingConstants.Region region, float size);
 
-	void setTerritoryBlocked(String region, boolean blocked);
+	void setTerritoryBlocked(DockingConstants.Region region, boolean blocked);
 
 	void setDragTheshold(float threshold);
 

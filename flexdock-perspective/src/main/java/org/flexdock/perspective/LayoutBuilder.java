@@ -63,7 +63,7 @@ public class LayoutBuilder {
 	}
 
 	private LayoutNode createLayout(JSplitPane split) {
-		String region = (String) SwingUtility.getClientProperty(split, DockingConstants.REGION);
+		DockingConstants.Region region = (DockingConstants.Region) SwingUtility.getClientProperty(split, DockingConstants.REGION);
 		Component left = split.getLeftComponent();
 		Component right = split.getRightComponent();
 
@@ -76,7 +76,7 @@ public class LayoutBuilder {
 		}
 
 		SplitNode node = new SplitNode(split.getOrientation(), 0, percent, null);
-		node.setDockingRegion(region);
+		node.setDockingRegion(region.toString());
 
 		link(node, left);
 		link(node, right);

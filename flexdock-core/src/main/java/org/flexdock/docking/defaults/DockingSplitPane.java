@@ -19,6 +19,7 @@
  */
 package org.flexdock.docking.defaults;
 
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.util.DockingUtility;
@@ -73,7 +74,7 @@ public class DockingSplitPane extends JSplitPane {
 		if (port == null) {
 			throw new IllegalArgumentException("'port' cannot be null.");
 		}
-		if (!DockingManager.isValidDockingRegion(region)) {
+		if (!DockingManager.isValidDockingRegion(DockingConstants.Region.valueOf(region))) {
 			throw new IllegalArgumentException("'" + region + "' is not a valid region.");
 		}
 

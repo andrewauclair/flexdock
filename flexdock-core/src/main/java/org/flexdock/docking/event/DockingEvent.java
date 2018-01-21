@@ -20,14 +20,13 @@
 package org.flexdock.docking.event;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.event.Event;
 
 import java.awt.*;
 import java.util.Map;
-
-import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * @author Kevin Duffey
@@ -46,7 +45,7 @@ public class DockingEvent extends Event {
 	private DockingPort newPort;
 	private boolean consumed;
 	private AWTEvent trigger;
-	private String region;
+	private DockingConstants.Region region;
 	private boolean overWindow;
 	private Map dragContext;
 
@@ -69,9 +68,9 @@ public class DockingEvent extends Event {
 		this.oldPort = oldPort;
 		this.newPort = newPort;
 		this.trigger = trigger;
-		this.region = UNKNOWN_REGION;
+		this.region = null;
 		dragContext = context;
-		setOverWindow(true);
+		this.overWindow = true;
 	}
 
 	/**
@@ -114,13 +113,13 @@ public class DockingEvent extends Event {
 		return trigger == null ? null : trigger.getSource();
 	}
 
-	public String getRegion() {
+	public DockingConstants.Region getRegion() {
 		return region;
 	}
 
-	public void setRegion(String region) {
+	public void setRegion(DockingConstants.Region region) {
 		if (!DockingManager.isValidDockingRegion(region)) {
-			this.region = UNKNOWN_REGION;
+			this.region = null;
 		}
 		else {
 			this.region = region;

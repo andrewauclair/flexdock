@@ -45,7 +45,7 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 * specified region. Used by {@code DockingManager} during drag operations.
 	 */
 	// TODO Replace String with Region
-	boolean isDockingAllowed(Component comp, String region);
+	boolean isDockingAllowed(Component comp, DockingConstants.Region region);
 
 	/**
 	 * Removes all docked components from the {@code DockingPort}.
@@ -58,14 +58,13 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 * component.
 	 */
 	// TODO Replace String with Region
-	boolean dock(Dockable dockable, String region);
+	boolean dock(Dockable dockable, DockingConstants.Region region);
 
 	/**
 	 * Docks the specified Component in the specified region. Returns
 	 * {@code true} for success and {@code false} for failure.
 	 */
-	// TODO Replace String with Region
-	<T extends Component & DockingStub> boolean dock(T comp, String region);
+	<T extends Component & DockingStub> boolean dock(T comp, DockingConstants.Region region);
 
 	/**
 	 * Returns a reference to the currently docked component.
@@ -78,8 +77,7 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 * present, this method will return the Dockable in the currently selected
 	 * tab.
 	 */
-	// TODO Replace String with Region
-	Dockable getDockable(String region);
+	Dockable getDockable(DockingConstants.Region region);
 
 	/**
 	 * Returns a reference to Component currently docked in the target region.
@@ -87,8 +85,7 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 * present, this method will return the Component in the currently selected
 	 * tab.
 	 */
-	// TODO Replace String with Region
-	Component getComponent(String region);
+	Component getComponent(DockingConstants.Region region);
 
 	/**
 	 * Returns a {@code String} identifier that is unique within a JVM instance,
@@ -133,7 +130,7 @@ public interface DockingPort extends DockingListener, DockingMonitor {
 	 *
 	 * @return the region containing the specified {@code Point}.
 	 */
-	String getRegion(Point location);
+	DockingConstants.Region getRegion(Point location);
 
 	/**
 	 * Returns the value of the property with the specified key. Only properties

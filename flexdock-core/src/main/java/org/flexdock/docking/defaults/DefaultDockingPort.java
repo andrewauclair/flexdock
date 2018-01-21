@@ -48,7 +48,6 @@ import java.io.Serializable;
 import java.util.*;
 
 import static org.flexdock.docking.DockingConstants.Region;
-import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * This is a {@code Container} that implements the {@code DockingPort}
@@ -396,7 +395,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
 	private void dockCmp(DockingPort port, Dockable c) {
-		port.dock(c, Region.CENTER.toString());
+		port.dock(c, Region.CENTER);
 	}
 
 	/**
@@ -439,7 +438,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 * @see #isParentDockingPort(Component)
 	 */
 	@Override
-	public boolean isDockingAllowed(Component comp, String region) {
+	public boolean isDockingAllowed(Component comp, Region region) {
 		if (comp == null || !isValidDockingRegion(region)) {
 			return false;
 		}
@@ -540,9 +539,9 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 * @see RegionChecker#getRegion(Component, Point)
 	 */
 	@Override
-	public String getRegion(Point location) {
+	public Region getRegion(Point location) {
 		if (location == null) {
-			return UNKNOWN_REGION;
+			return null;
 		}
 
 		RegionChecker regionChecker = getRegionChecker();
@@ -659,7 +658,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 * @see #getDockedComponent()
 	 */
 	@Override
-	public Component getComponent(String region) {
+	public Component getComponent(Region region) {
 		Component docked = getDockedComponent();
 		if (docked == null) {
 			return null;
@@ -668,7 +667,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		if (docked instanceof JTabbedPane) {
 			// they can only get tabbed dockables if they were checking the
 			// CENTER region.
-			if (!Region.CENTER.toString().equals(region)) {
+			if (region != Region.CENTER) {
 				return null;
 			}
 
@@ -679,7 +678,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		if (docked instanceof JSplitPane) {
 			// they can only get split dockables if they were checking an outer
 			// region.
-			if (Region.CENTER.toString().equals(region)) {
+			if (region == Region.CENTER) {
 				return null;
 			}
 
@@ -689,18 +688,18 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			// splitpane orientation
 			boolean horizontal = split.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
 			if (horizontal) {
-				if (Region.NORTH.toString().equals(region) || Region.SOUTH.toString().equals(region)) {
+				if (region == Region.NORTH || region == Region.SOUTH) {
 					return null;
 				}
 			}
 			else {
-				if (Region.EAST.toString().equals(region) || Region.WEST.toString().equals(region)) {
+				if (region == Region.EAST || region == Region.WEST) {
 					return null;
 				}
 			}
 
-			boolean left = Region.NORTH.toString().equals(region)
-					|| Region.WEST.toString().equals(region);
+			boolean left = region == Region.NORTH
+					|| region == Region.WEST;
 			Component c = left ? split.getLeftComponent() : split
 					.getRightComponent();
 			// split panes only contain sub-dockingports. if 'c' is not a
@@ -718,7 +717,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		// left is the direct-child component itself. this will only ever
 		// exist in the CENTER, so return it if they requested the CENTER
 		// region.
-		return Region.CENTER.toString().equals(region) ? docked : null;
+		return region == Region.CENTER ? docked : null;
 	}
 
 	/**
@@ -744,7 +743,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 * @see DockingManager#isValidDockingRegion(String)
 	 */
 	@Override
-	public Dockable getDockable(String region) {
+	public Dockable getDockable(Region region) {
 		Component c = getComponent(region);
 		return DockingManager.getDockable(c);
 	}
@@ -864,7 +863,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 * @see DockingManager#registerDockable(Component)
 	 */
 	@Override
-	public <T extends Component & DockingStub> boolean dock(T comp, String region) {
+	public <T extends Component & DockingStub> boolean dock(T comp, Region region) {
 		if (comp == null || region == null) {
 			return false;
 		}
@@ -946,8 +945,8 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 * @see DockingStrategy#getDividerProportion(DockingPort, JSplitPane)
 	 */
 	@Override
-	public boolean dock(Dockable dockable, String inputRegion) {
-		String region = inputRegion;
+	public boolean dock(Dockable dockable, Region inputRegion) {
+		Region region = inputRegion;
 		if (dockable == null) {
 			return false;
 		}
@@ -968,7 +967,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		// if there is nothing currently in the docking port, then we can only
 		// dock into the CENTER region.
 		if (docked == null) {
-			region = Region.CENTER.toString();
+			region = Region.CENTER;
 		}
 
 		String tabTitle = DockingUtility.getTabText(dockable);
@@ -980,7 +979,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			return true;
 		}
 
-		boolean success = Region.CENTER.toString().equals(region) ? dockInCenterRegion(comp)
+		boolean success = region == Region.CENTER ? dockInCenterRegion(comp)
 				: dockInOuterRegion(dockable, region);
 
 		if (success) {
@@ -990,7 +989,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			// evaluateDockingBorderStatus(), so we'll know any border
 			// modification that took place has already happened, and we can be
 			// relatively safe about assumptions regarding our current insets.
-			if (!Region.CENTER.toString().equals(region)) {
+			if (region != Region.CENTER) {
 				resetSplitDividerLocation();
 			}
 		}
@@ -1082,7 +1081,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		tabs.setIconAt(indx, icon);
 	}
 
-	private boolean dockInOuterRegion(Dockable comp, String region) {
+	private boolean dockInOuterRegion(Dockable comp, Region region) {
 		// cache the current size and cut it in half for later in the method.
 		Dimension halfSize = getSize();
 		halfSize.width /= 2;
@@ -1104,7 +1103,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
 		// put the ports in the correct order and add them to a new wrapper
 		// panel
-		DockingPort[] ports = putPortsInOrder(oldContent, newContent, region);
+		DockingPort[] ports = putPortsInOrder(oldContent, newContent, region.toString());
 
 		if (ports[0] instanceof JComponent) {
 			((Component) ports[0]).setMinimumSize(new Dimension(0, 0));
@@ -1371,7 +1370,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		return parent == getDockedComponent();
 	}
 
-	protected boolean isValidDockingRegion(String region) {
+	protected boolean isValidDockingRegion(Region region) {
 		return DockingManager.isValidDockingRegion(region);
 	}
 
@@ -2074,7 +2073,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			LayoutNode child = (LayoutNode) en.nextElement();
 			if (child instanceof DockableNode) {
 				Dockable dockable = ((DockableNode) child).getDockable();
-				port.dock(dockable, Region.CENTER.toString());
+				port.dock(dockable, Region.CENTER);
 			}
 		}
 	}

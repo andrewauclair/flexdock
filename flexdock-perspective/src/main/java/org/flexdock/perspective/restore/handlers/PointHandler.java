@@ -64,7 +64,7 @@ public class PointHandler implements RestorationHandler {
 
         DockingPort port = dropTargets==null? null: (DockingPort)dropTargets.parent;
         Point mousePoint = port==null? null: SwingUtilities.convertPoint(contentPane, dropPoint, (Component)port);
-        String region = port==null? UNKNOWN_REGION: port.getRegion(mousePoint);
+		String region = port == null ? UNKNOWN_REGION : port.getRegion(mousePoint).toString();
 
         return DockingManager.dock(dockable, port, region);
     }

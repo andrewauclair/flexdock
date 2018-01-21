@@ -19,10 +19,7 @@
  */
 package org.flexdock.docking.drag;
 
-import org.flexdock.docking.Dockable;
-import org.flexdock.docking.DockingManager;
-import org.flexdock.docking.DockingPort;
-import org.flexdock.docking.DockingStrategy;
+import org.flexdock.docking.*;
 import org.flexdock.docking.drag.effects.EffectsManager;
 import org.flexdock.docking.event.DockingEvent;
 import org.flexdock.docking.floating.policy.FloatPolicyManager;
@@ -193,7 +190,7 @@ public class DragManager extends MouseAdapter implements MouseMotionListener {
         DockingStrategy docker = DockingManager.getDockingStrategy(dockable);
         DockingPort currentPort = DockingUtility.getParentDockingPort(dockable);
         DockingPort targetPort = token.getTargetPort();
-        String region = token.getTargetRegion();
+		DockingConstants.Region region = token.getTargetRegion();
 
         // remove the listeners from the drag-source and all the old ones back in
         restoreCachedListeners(token);

@@ -55,7 +55,7 @@ public class Viewport extends DefaultDockingPort {
 	}
 
 	public void setRegionBlocked(String region, boolean isBlocked) {
-		if (isValidDockingRegion(region)) {
+		if (isValidDockingRegion(DockingConstants.Region.valueOf(region))) {
 			if (isBlocked) {
 				blockedRegions.add(region);
 			}
@@ -66,7 +66,7 @@ public class Viewport extends DefaultDockingPort {
 	}
 
 	@Override
-	public boolean isDockingAllowed(Component comp, String region) {
+	public boolean isDockingAllowed(Component comp, DockingConstants.Region region) {
 		// if we're already blocked, then no need to interrogate
 		// the components in this dockingport
 		boolean blocked = !super.isDockingAllowed(comp, region);
@@ -80,7 +80,7 @@ public class Viewport extends DefaultDockingPort {
 		}
 
 		// by default, allow docking in non-CENTER regions
-		if (!DockingConstants.Region.CENTER.toString().equals(region)) {
+		if (region != DockingConstants.Region.CENTER) {
 			return true;
 		}
 
@@ -97,7 +97,7 @@ public class Viewport extends DefaultDockingPort {
 	}
 
 	public boolean dock(Dockable dockable) {
-		return dock(dockable, DockingConstants.Region.CENTER.toString());
+		return dock(dockable, DockingConstants.Region.CENTER);
 	}
 
 	@Override

@@ -120,7 +120,7 @@ public class DockingStateListener extends DockingListener.Stub {
 
         // if we couldn't determine the splitPane ratio using the DockingPath above, then
         // try the regionInsets
-        Float ratioObject = dockable.getDockingProperties().getRegionInset(region);
+		Float ratioObject = dockable.getDockingProperties().getRegionInset(DockingConstants.Region.valueOf(region));
         if (ratioObject != null) {
             return ratioObject;
         }
@@ -199,7 +199,7 @@ public class DockingStateListener extends DockingListener.Stub {
         // make the sibling aware of us
         info = getDockingState(sibling);
         info.setRelativeParent(dockable);
-		info.setRegion(DockingUtility.flipRegion(region.toString()));
+		info.setRegion(DockingUtility.flipRegion(region).toString());
         info.setSplitRatio(ratio);
     }
 

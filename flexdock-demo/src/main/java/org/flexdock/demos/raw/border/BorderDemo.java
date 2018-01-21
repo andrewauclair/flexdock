@@ -54,7 +54,7 @@ public class BorderDemo extends JFrame {
         DockablePanel panel = new DockablePanel(desc);
 
         // dock the panel and return the DockingPort
-		port.dock(panel.getDockable(), DockingConstants.Region.CENTER.toString());
+		port.dock(panel.getDockable(), DockingConstants.Region.CENTER);
         return port;
     }
 

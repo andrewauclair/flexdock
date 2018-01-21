@@ -212,7 +212,7 @@ public class SiblingTest extends JFrame {
 			String region = (String) getRegionList().getSelectedItem();
 			
 			Dockable dockable = DockingManager.getDockable(viewId);
-			Dockable sibling = DefaultDockingStrategy.getSibling(dockable, region);
+			Dockable sibling = DefaultDockingStrategy.getSibling(dockable, Region.valueOf(region));
 			getSiblingLabel().setText(sibling == null ? "null" : sibling.toString());
 		}
 	}
