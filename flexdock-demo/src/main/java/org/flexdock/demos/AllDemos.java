@@ -49,8 +49,8 @@ public class AllDemos extends JFrame {
 			"org.flexdock.demos.raw.TabbedPaneDemo",
 			"org.flexdock.demos.view.ViewDemo",
 	};
-	
-	private AllDemos() {
+
+	public AllDemos() {
 		super("FlexDock Demos");
 		
 		TreeMap<String, String> sortedClassNames = new TreeMap<>();
@@ -59,8 +59,11 @@ public class AllDemos extends JFrame {
 					.lastIndexOf('.') + 1);
 			sortedClassNames.put(justClassName, fullClassName);
 		}
-		
-		getContentPane().setLayout(new GridLayout(0, 1, 3, 3));
+
+//		getContentPane().setLayout(new GridLayout(0, 1, 3, 3));
+		setLayout(new GridLayout(0, 1, 3, 3));
+//		setLayout(new FlowLayout());
+
 		for (Object o : sortedClassNames.entrySet()) {
 			Map.Entry entry = (Map.Entry) o;
 			
@@ -68,9 +71,10 @@ public class AllDemos extends JFrame {
 			final String justClassName = (String) entry.getKey();
 			
 			JButton button = new JButton(justClassName);
+			button.setName(justClassName);
 			button.setToolTipText("Runs " + fullClassName);
-			
-			getContentPane().add(button);
+
+			add(button);
 			
 			button.addActionListener(event -> launchClass(fullClassName));
 		}
