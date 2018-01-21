@@ -267,7 +267,7 @@ public class DockingManager {
 	 * @see #dock(Component, DockingPort, String)
 	 */
 	public static <T extends Component & DockingStub> boolean dock(T dockable, DockingPort port) {
-		return dock(dockable, port, CENTER_REGION);
+		return dock(dockable, port, Region.CENTER.toString());
 	}
 
 	/**
@@ -386,7 +386,7 @@ public class DockingManager {
 	 * @see #dock(Dockable, Dockable, String)
 	 */
 	public static boolean dock(Dockable dockable, Dockable parent) {
-		return dock(dockable, parent, CENTER_REGION);
+		return dock(dockable, parent, Region.CENTER.toString());
 	}
 
 	/**
@@ -604,7 +604,7 @@ public class DockingManager {
 	 * {@code false} otherwise.
 	 */
 	public static boolean isValidDockingRegion(String region) {
-		return CENTER_REGION.equals(region) || NORTH_REGION.equals(region)
+		return Region.CENTER.toString().equals(region) || NORTH_REGION.equals(region)
 				|| SOUTH_REGION.equals(region) || EAST_REGION.equals(region)
 				|| WEST_REGION.equals(region);
 	}

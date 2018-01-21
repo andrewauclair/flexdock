@@ -84,7 +84,7 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
         if (WEST_REGION.equals(region)) {
             return TERRITORY_BLOCKED_WEST;
         }
-        if (CENTER_REGION.equals(region)) {
+		if (Region.CENTER.toString().equals(region)) {
             return TERRITORY_BLOCKED_CENTER;
         }
         return null;

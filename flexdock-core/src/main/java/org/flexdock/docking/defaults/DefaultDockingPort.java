@@ -395,7 +395,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
 	private void dockCmp(DockingPort port, Dockable c) {
-		port.dock(c, CENTER_REGION);
+		port.dock(c, Region.CENTER.toString());
 	}
 
 	/**
@@ -667,7 +667,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		if (docked instanceof JTabbedPane) {
 			// they can only get tabbed dockables if they were checking the
 			// CENTER region.
-			if (!CENTER_REGION.equals(region)) {
+			if (!Region.CENTER.toString().equals(region)) {
 				return null;
 			}
 
@@ -678,7 +678,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		if (docked instanceof JSplitPane) {
 			// they can only get split dockables if they were checking an outer
 			// region.
-			if (CENTER_REGION.equals(region)) {
+			if (Region.CENTER.toString().equals(region)) {
 				return null;
 			}
 
@@ -717,7 +717,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		// left is the direct-child component itself. this will only ever
 		// exist in the CENTER, so return it if they requested the CENTER
 		// region.
-		return CENTER_REGION.equals(region) ? docked : null;
+		return Region.CENTER.toString().equals(region) ? docked : null;
 	}
 
 	/**
@@ -967,7 +967,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		// if there is nothing currently in the docking port, then we can only
 		// dock into the CENTER region.
 		if (docked == null) {
-			region = CENTER_REGION;
+			region = Region.CENTER.toString();
 		}
 
 		String tabTitle = DockingUtility.getTabText(dockable);
@@ -979,7 +979,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			return true;
 		}
 
-		boolean success = CENTER_REGION.equals(region) ? dockInCenterRegion(comp)
+		boolean success = Region.CENTER.toString().equals(region) ? dockInCenterRegion(comp)
 				: dockInOuterRegion(dockable, region);
 
 		if (success) {
@@ -989,7 +989,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			// evaluateDockingBorderStatus(), so we'll know any border
 			// modification that took place has already happened, and we can be
 			// relatively safe about assumptions regarding our current insets.
-			if (!CENTER_REGION.equals(region)) {
+			if (!Region.CENTER.toString().equals(region)) {
 				resetSplitDividerLocation();
 			}
 		}
@@ -2073,7 +2073,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			LayoutNode child = (LayoutNode) en.nextElement();
 			if (child instanceof DockableNode) {
 				Dockable dockable = ((DockableNode) child).getDockable();
-				port.dock(dockable, CENTER_REGION);
+				port.dock(dockable, Region.CENTER.toString());
 			}
 		}
 	}
