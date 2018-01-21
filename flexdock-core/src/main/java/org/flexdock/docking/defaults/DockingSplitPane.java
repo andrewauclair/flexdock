@@ -38,8 +38,8 @@ import java.awt.event.MouseEvent;
 @SuppressWarnings(value = {"serial"})
 public class DockingSplitPane extends JSplitPane {
 	protected DockingPort dockingPort;
-	
-	protected String region;
+
+	protected DockingConstants.Region region;
 	
 	private boolean dividerLocDetermined;
 	
@@ -70,11 +70,11 @@ public class DockingSplitPane extends JSplitPane {
 	 *                {@code null} or invalid.
 	 * @see DockingManager#isValidDockingRegion(String)
 	 */
-	DockingSplitPane(DockingPort port, String region) {
+	DockingSplitPane(DockingPort port, DockingConstants.Region region) {
 		if (port == null) {
 			throw new IllegalArgumentException("'port' cannot be null.");
 		}
-		if (!DockingManager.isValidDockingRegion(DockingConstants.Region.valueOf(region))) {
+		if (!DockingManager.isValidDockingRegion(region)) {
 			throw new IllegalArgumentException("'" + region + "' is not a valid region.");
 		}
 
@@ -239,7 +239,7 @@ public class DockingSplitPane extends JSplitPane {
 	 * created.
 	 * @see #DockingSplitPane(DockingPort, String)
 	 */
-	public String getRegion() {
+	public DockingConstants.Region getRegion() {
 		return region;
 	}
 	

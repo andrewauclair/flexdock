@@ -193,20 +193,20 @@ public class DockingStateListener extends DockingListener.Stub {
 
         // set the relative docking info
         info.setRelativeParent(sibling);
-		info.setRegion(region.toString());
+		info.setRegion(region);
         info.setSplitRatio(ratio);
 
         // make the sibling aware of us
         info = getDockingState(sibling);
         info.setRelativeParent(dockable);
-		info.setRegion(DockingUtility.flipRegion(region).toString());
+		info.setRegion(DockingUtility.flipRegion(region));
         info.setSplitRatio(ratio);
     }
 
     private void setNullRelative(DockingState info) {
         info.setRelativeParentId(null);
         info.setSplitRatio(DockingConstants.UNINITIALIZED);
-		info.setRegion(DockingConstants.Region.CENTER.toString());
+		info.setRegion(DockingConstants.Region.CENTER);
     }
 
     private DockingState getDockingState(Dockable dockable) {

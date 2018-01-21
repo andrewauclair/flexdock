@@ -53,7 +53,7 @@ public class DockingStateSerializer implements ISerializer {
         if (dockingState.getRelativeParentId() != null && dockingState.getRelativeParentId().length() != 0) {
             dockingStateElement.setAttribute(PersistenceConstants.DOCKING_STATE_ATTRIBUTE_RELATIVE_PARENT_ID, dockingState.getRelativeParentId());
         }
-        dockingStateElement.setAttribute(PersistenceConstants.DOCKING_STATE_ATTRIBUTE_REGION, dockingState.getRegion().toLowerCase());
+		dockingStateElement.setAttribute(PersistenceConstants.DOCKING_STATE_ATTRIBUTE_REGION, dockingState.getRegion().toString().toLowerCase());
 
         if (dockingState.getSplitRatio() != DockingConstants.UNINITIALIZED_RATIO) {
             dockingStateElement.setAttribute(PersistenceConstants.DOCKING_STATE_ATTRIBUTE_SPLIT_RATIO, String.valueOf(dockingState.getSplitRatio()));
@@ -141,7 +141,7 @@ public class DockingStateSerializer implements ISerializer {
             dockingState.setRelativeParentId(relativeParentId);
         }
 
-        dockingState.setRegion(region.toUpperCase());
+		dockingState.setRegion(DockingConstants.Region.valueOf(region));
 
         String splitRatioString = element.getAttribute(PersistenceConstants.DOCKING_STATE_ATTRIBUTE_SPLIT_RATIO);
         if (splitRatioString != null && splitRatioString.length() != 0) {

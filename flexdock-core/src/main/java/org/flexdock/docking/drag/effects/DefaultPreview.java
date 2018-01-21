@@ -30,7 +30,6 @@ import java.awt.*;
 import java.util.Map;
 
 import static org.flexdock.docking.DockingConstants.Region;
-import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * TODO I want to merge this with the AlphaPreview because that is going to be the one and only preview.
@@ -46,8 +45,7 @@ public abstract class DefaultPreview implements DragPreview {
 			return null;
 		}
 
-		// TODO What are we doing about unknown regions now?
-		if (UNKNOWN_REGION.equals(targetRegion) || !port.isDockingAllowed(dockable, targetRegion)) {
+		if (!port.isDockingAllowed(dockable, targetRegion)) {
 			return null;
 		}
 

@@ -267,7 +267,7 @@ public class DockingManager {
 	 * @see #dock(Component, DockingPort, String)
 	 */
 	public static <T extends Component & DockingStub> boolean dock(T dockable, DockingPort port) {
-		return dock(dockable, port, Region.CENTER.toString());
+		return dock(dockable, port, Region.CENTER);
 	}
 
 	/**
@@ -290,7 +290,7 @@ public class DockingManager {
 	 * {@code false} if the docking operation cannot be completed.
 	 * @see #dock(Dockable, DockingPort, String)
 	 */
-	public static <T extends Component & DockingStub> boolean dock(T dockable, DockingPort port, String region) {
+	public static <T extends Component & DockingStub> boolean dock(T dockable, DockingPort port, Region region) {
 		return dock(resolveDockable(dockable), port, region);
 	}
 
@@ -326,13 +326,13 @@ public class DockingManager {
 	 * @see #setDockingStrategy(Class, DockingStrategy)
 	 */
 	public static boolean dock(Dockable dockable, DockingPort port,
-							   String region) {
+							   Region region) {
 		if (dockable == null) {
 			return false;
 		}
 
 		DockingStrategy strategy = getDockingStrategy(port);
-		return strategy != null && strategy.dock(dockable, port, Region.valueOf(region));
+		return strategy != null && strategy.dock(dockable, port, region);
 	}
 
 	private static <T extends Component & DockingStub> Dockable resolveDockable(T comp) {
@@ -386,7 +386,7 @@ public class DockingManager {
 	 * @see #dock(Dockable, Dockable, String)
 	 */
 	public static boolean dock(Dockable dockable, Dockable parent) {
-		return dock(dockable, parent, Region.CENTER.toString());
+		return dock(dockable, parent, Region.CENTER);
 	}
 
 	/**
@@ -439,7 +439,7 @@ public class DockingManager {
 	 * {@code false} otherwise.
 	 * @see #dock(Dockable, Dockable, String, float)
 	 */
-	public static boolean dock(Dockable dockable, Dockable parent, String region) {
+	public static boolean dock(Dockable dockable, Dockable parent, Region region) {
 		return dock(dockable, parent, region, 0.5f);
 	}
 
@@ -470,7 +470,7 @@ public class DockingManager {
 	 * {@code false} otherwise.
 	 */
 	public static <T extends Component & DockingStub> boolean dock(T dockable, T parent, String region, float proportion) {
-		return dock(resolveDockable(dockable), resolveDockable(parent), region, proportion);
+		return dock(resolveDockable(dockable), resolveDockable(parent), Region.valueOf(region), proportion);
 	}
 	
 	/**
@@ -494,7 +494,7 @@ public class DockingManager {
 	 * {@code false} otherwise.
 	 */
 	public static boolean dock(Dockable dockable, Dockable parent,
-							   String region, float proportion) {
+							   Region region, float proportion) {
 		return DockingUtility.dockRelative(dockable, parent, region, proportion);
 	}
 

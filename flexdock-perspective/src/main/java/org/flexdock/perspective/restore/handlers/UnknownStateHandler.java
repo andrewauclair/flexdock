@@ -77,9 +77,9 @@ public class UnknownStateHandler implements RestorationHandler {
         boolean ret;
         for (String REGION1 : REGIONS) {
             if (parent == null) {
-                ret = DockingManager.dock(dockable, port, REGION1);
+				ret = DockingManager.dock(dockable, port, Region.valueOf(REGION1));
             } else {
-                ret = DockingManager.dock(dockable, parent, REGION1);
+				ret = DockingManager.dock(dockable, parent, Region.valueOf(REGION1));
             }
             if (ret) {
                 return true;

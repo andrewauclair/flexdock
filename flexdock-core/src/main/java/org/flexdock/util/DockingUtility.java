@@ -31,7 +31,8 @@ import org.flexdock.docking.state.MinimizationManager;
 import javax.swing.*;
 import java.awt.*;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
+import static org.flexdock.docking.DockingConstants.UNSPECIFIED_SIBLING_PREF;
 
 /**
  * @author Christopher Butler
@@ -307,20 +308,20 @@ public class DockingUtility {
 			return true;
 		}
 
-		if (Region.CENTER.toString().equals(region)) {
+		if (region == Region.CENTER) {
 			return false;
 		}
 
-		if (Region.NORTH.toString().equals(region)) {
-			return Region.WEST.toString().equals(otherRegion);
+		if (region == Region.NORTH) {
+			return otherRegion == Region.WEST;
 		}
-		if (Region.SOUTH.toString().equals(region)) {
-			return Region.EAST.toString().equals(otherRegion);
+		if (region == Region.SOUTH) {
+			return otherRegion == Region.EAST;
 		}
-		if (Region.EAST.toString().equals(region)) {
-			return Region.SOUTH.toString().equals(otherRegion);
+		if (region == Region.EAST) {
+			return otherRegion == Region.SOUTH;
 		}
-		return Region.WEST.toString().equals(region) && Region.NORTH.toString().equals(otherRegion);
+		return region == Region.WEST && otherRegion == Region.NORTH;
 
 	}
 
@@ -336,8 +337,8 @@ public class DockingUtility {
 	 * @see DockingConstants#NORTH_REGION
 	 * @see DockingConstants#WEST_REGION
 	 */
-	public static boolean isRegionTopLeft(String region) {
-		return Region.NORTH.toString().equals(region) || Region.WEST.toString().equals(region);
+	public static boolean isRegionTopLeft(Region region) {
+		return region == Region.NORTH || region == Region.WEST;
 	}
 
 	/**
@@ -361,20 +362,20 @@ public class DockingUtility {
 	 * @see DockingConstants#CENTER_REGION
 	 * @see DockingConstants#UNKNOWN_REGION
 	 */
-	public static String getRegion(int regionType) {
+	public static Region getRegion(int regionType) {
 		switch (regionType) {
 		case SwingConstants.LEFT:
-			return Region.WEST.toString();
+			return Region.WEST;
 		case SwingConstants.RIGHT:
-			return Region.EAST.toString();
+			return Region.EAST;
 		case SwingConstants.TOP:
-			return Region.NORTH.toString();
+			return Region.NORTH;
 		case SwingConstants.BOTTOM:
-			return Region.SOUTH.toString();
+			return Region.SOUTH;
 		case SwingConstants.CENTER:
-			return Region.CENTER.toString();
+			return Region.CENTER;
 		default:
-			return UNKNOWN_REGION;
+			return null;
 		}
 	}
 
@@ -465,14 +466,14 @@ public class DockingUtility {
 	 * @see DockingManager#dock(Dockable, DockingPort, String)
 	 */
 	public static boolean dockRelative(Dockable dockable, Dockable parent,
-									   String relativeRegion, float ratio) {
+									   Region relativeRegion, float ratio) {
 		if (parent == null || dockable == null
-				|| !DockingManager.isValidDockingRegion(Region.valueOf(relativeRegion))) {
+				|| !DockingManager.isValidDockingRegion(relativeRegion)) {
 			return false;
 		}
 
 		// set the sibling preference
-		setSiblingPreference(parent, relativeRegion, ratio);
+		setSiblingPreference(parent, relativeRegion.toString(), ratio);
 
 		DockingPort port = parent.getDockingPort();
 		return port != null && DockingManager.dock(dockable, port, relativeRegion);

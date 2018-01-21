@@ -27,7 +27,6 @@ import java.awt.*;
 import java.io.Serializable;
 
 import static org.flexdock.docking.DockingConstants.UNINITIALIZED_RATIO;
-import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * @author Mateusz Szczap
@@ -39,7 +38,7 @@ public class DockingState implements Cloneable, Serializable {
 
 	private String relativeParentId;
 
-	private String region = UNKNOWN_REGION;
+	private DockingConstants.Region region = null;
 
 	private float splitRatio = UNINITIALIZED_RATIO;
 
@@ -74,11 +73,11 @@ public class DockingState implements Cloneable, Serializable {
 		this.splitRatio = ratio;
 	}
 
-	public String getRegion() {
+	public DockingConstants.Region getRegion() {
 		return this.region;
 	}
 
-	public void setRegion(String region) {
+	public void setRegion(DockingConstants.Region region) {
 		this.region = region;
 	}
 

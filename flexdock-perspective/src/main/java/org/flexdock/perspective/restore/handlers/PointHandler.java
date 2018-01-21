@@ -19,6 +19,7 @@
 package org.flexdock.perspective.restore.handlers;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.state.DockingState;
@@ -66,7 +67,7 @@ public class PointHandler implements RestorationHandler {
         Point mousePoint = port==null? null: SwingUtilities.convertPoint(contentPane, dropPoint, (Component)port);
 		String region = port == null ? UNKNOWN_REGION : port.getRegion(mousePoint).toString();
 
-        return DockingManager.dock(dockable, port, region);
+		return DockingManager.dock(dockable, port, DockingConstants.Region.valueOf(region));
     }
 
     private Point getDropPoint(Dockable dockable, Container contentPane, DockingState dockingState) {

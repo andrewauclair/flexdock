@@ -65,23 +65,23 @@ public class MaximizationDemo {
 
         Dockable topComp = createFramePanel("Top");
         DockingManager.registerDockable(topComp);
-		DockingManager.dock(topComp, dockingPort, DockingConstants.Region.CENTER.toString());
+		DockingManager.dock(topComp, dockingPort, DockingConstants.Region.CENTER);
 
         Dockable south = createFramePanel("South");
         DockingManager.registerDockable(south);
-		DockingManager.dock(south, topComp, DockingConstants.Region.SOUTH.toString(), 0.3f);
+		DockingManager.dock(south, topComp, DockingConstants.Region.SOUTH, 0.3f);
 
         Dockable west = createFramePanel("West");
         DockingManager.registerDockable(west);
-		DockingManager.dock(west, topComp, DockingConstants.Region.WEST.toString(), 0.5f);
+		DockingManager.dock(west, topComp, DockingConstants.Region.WEST, 0.5f);
 
         Dockable l2South = createFramePanel("South of West");
         DockingManager.registerDockable(l2South);
-		DockingManager.dock(l2South, west, DockingConstants.Region.SOUTH.toString(), 0.33f);
+		DockingManager.dock(l2South, west, DockingConstants.Region.SOUTH, 0.33f);
 
         Dockable east = createFramePanel("East");
         DockingManager.registerDockable(east);
-		DockingManager.dock(east, topComp, DockingConstants.Region.EAST.toString(), 0.2f);
+		DockingManager.dock(east, topComp, DockingConstants.Region.EAST, 0.2f);
 
         return dockingPort;
     }

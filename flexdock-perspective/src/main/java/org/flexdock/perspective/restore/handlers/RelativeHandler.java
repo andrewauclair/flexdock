@@ -18,13 +18,14 @@
  */
 package org.flexdock.perspective.restore.handlers;
 
-import java.util.Map;
-
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.state.DockingState;
 import org.flexdock.perspective.PerspectiveManager;
 import org.flexdock.util.DockingUtility;
+
+import java.util.Map;
 
 /**
  * Created on 2005-05-12
@@ -53,7 +54,7 @@ public class RelativeHandler implements RestorationHandler {
         }
 
         final float splitRatio = dockingState.getSplitRatio();
-        final String dockingRegion = dockingState.getRegion();
+		final DockingConstants.Region dockingRegion = dockingState.getRegion();
         boolean dockingOperationResult = DockingUtility.dockRelative(dockable, parent, dockingRegion, splitRatio);
         if(dockingOperationResult) {
             DockingUtility.setSplitProportion(dockable, splitRatio);

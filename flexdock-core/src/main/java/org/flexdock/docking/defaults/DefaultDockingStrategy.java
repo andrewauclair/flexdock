@@ -40,7 +40,6 @@ import java.awt.event.MouseEvent;
 import java.util.Map;
 
 import static org.flexdock.docking.DockingConstants.Region;
-import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * @author Christopher Butler
@@ -474,7 +473,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 
 		DockingResults results = new DockingResults(target, false);
 
-		if (UNKNOWN_REGION.equals(region) || target == null) {
+		if (region == null || target == null) {
 			return results;
 		}
 
@@ -711,7 +710,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 	 */
 	@Override
 	public JSplitPane createSplitPane(DockingPort base, Region region, float percent) {
-		JSplitPane split = createSplitPaneImpl(base, region.toString());
+		JSplitPane split = createSplitPaneImpl(base, region);
 		split.setVisible(false);
 		// mark the creation region on the split pane
 		SwingUtility.putClientProperty(split, DockingConstants.REGION, region);
@@ -722,7 +721,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 			// region.
 			// so if the creation region is NOT in the top left, then the elder
 			// region is.
-			boolean elderInTopLeft = !DockingUtility.isRegionTopLeft(region.toString());
+			boolean elderInTopLeft = !DockingUtility.isRegionTopLeft(region);
 			resizeWeight = elderInTopLeft ? 1 : 0;
 		}
 		else {
@@ -736,7 +735,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 
 		// determine the orientation
 		int orientation = JSplitPane.HORIZONTAL_SPLIT;
-		if (Region.NORTH.toString().equals(region) || Region.SOUTH.toString().equals(region)) {
+		if (region == Region.NORTH || region == Region.SOUTH) {
 			orientation = JSplitPane.VERTICAL_SPLIT;
 		}
 		split.setOrientation(orientation);
@@ -827,7 +826,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		return createSplitPane(base, region, -1.0f);
 	}
 
-	private JSplitPane createSplitPaneImpl(DockingPort base, String region) {
+	private JSplitPane createSplitPaneImpl(DockingPort base, Region region) {
 		return new DockingSplitPane(base, region);
 	}
 
@@ -966,11 +965,11 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		return DockingManager.getDefaultSiblingSize();
 	}
 
-	private String getCreationRegion(JSplitPane splitPane) {
+	private Region getCreationRegion(JSplitPane splitPane) {
 		if (splitPane instanceof DockingSplitPane) {
 			return ((DockingSplitPane) splitPane).getRegion();
 		}
-		return (String) SwingUtility.getClientProperty(splitPane,
+		return (Region) SwingUtility.getClientProperty(splitPane,
 				DockingConstants.REGION);
 	}
 
@@ -978,7 +977,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		if (splitPane instanceof DockingSplitPane) {
 			return ((DockingSplitPane) splitPane).isElderTopLeft();
 		}
-		String region = getCreationRegion(splitPane);
+		Region region = getCreationRegion(splitPane);
 		// creation region represents the "new" region, not the "elder" region.
 		// so if the "new" region is NOT the topLeft, then the "elder" is.
 		return !DockingUtility.isRegionTopLeft(region);

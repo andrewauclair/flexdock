@@ -64,7 +64,7 @@ public class ViewTest {
         View view2 = buildView("plafchooser.view", "Plaf Chooser", buidViewContentPane());
 
         viewport.dock(view2);
-		view2.dock(view1, DockingConstants.Region.EAST.toString(), 0.2f);
+		view2.dock(view1, DockingConstants.Region.EAST, 0.2f);
 
         return content;
     }

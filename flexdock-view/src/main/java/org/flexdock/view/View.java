@@ -509,11 +509,11 @@ public class View extends JComponent implements Dockable {
 
 	@Override
 	public boolean dock(Dockable dockable, String relativeRegion) {
-		return DockingManager.dock(dockable, this, relativeRegion);
+		return DockingManager.dock(dockable, this, DockingConstants.Region.valueOf(relativeRegion));
 	}
 
 	@Override
-	public boolean dock(Dockable dockable, String relativeRegion, float ratio) {
+	public boolean dock(Dockable dockable, DockingConstants.Region relativeRegion, float ratio) {
 		return DockingManager.dock(dockable, this, relativeRegion, ratio);
 	}
 

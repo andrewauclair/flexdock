@@ -222,5 +222,5 @@ public interface RegionChecker {
 	 * sibling {@code Components} that are to be docked into the
 	 * specified region.
 	 */
-	float getSiblingSize(Component component, String region);
+	float getSiblingSize(Component component, DockingConstants.Region region);
 }

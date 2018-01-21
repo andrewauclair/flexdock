@@ -172,8 +172,8 @@ public class XMLPerspectivesDemo extends JFrame {
 			LayoutSequence sequence = perspective.getInitialSequence(true);
 
 			sequence.add("main.view");
-			sequence.add(BIRD_VIEW, "main.view", Region.EAST.toString(), 0.3f);
-			sequence.add(MESSAGE_VIEW, "main.view", Region.WEST.toString(), 0.3f);
+			sequence.add(BIRD_VIEW, "main.view", Region.EAST, 0.3f);
+			sequence.add(MESSAGE_VIEW, "main.view", Region.WEST, 0.3f);
 			sequence.add(PROBLEM_VIEW, MESSAGE_VIEW);
 			sequence.add(CONSOLE_VIEW, MESSAGE_VIEW);
 

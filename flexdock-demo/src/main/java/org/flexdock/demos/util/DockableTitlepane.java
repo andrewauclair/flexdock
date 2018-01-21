@@ -20,6 +20,7 @@
 package org.flexdock.demos.util;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.event.DockingEvent;
@@ -77,13 +78,13 @@ public class DockableTitlepane extends Titlepane implements Dockable {
     // Begin framework-provided methods
 
     @Override
-    public boolean dock(Dockable dockable, String relativeRegion, float ratio) {
+	public boolean dock(Dockable dockable, DockingConstants.Region relativeRegion, float ratio) {
         return DockingManager.dock(dockable, this, relativeRegion, ratio);
     }
 
     @Override
     public boolean dock(Dockable dockable, String relativeRegion) {
-        return DockingManager.dock(dockable, this, relativeRegion);
+		return DockingManager.dock(dockable, this, DockingConstants.Region.valueOf(relativeRegion));
     }
 
     @Override

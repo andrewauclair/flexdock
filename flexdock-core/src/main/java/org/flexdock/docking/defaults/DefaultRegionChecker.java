@@ -297,7 +297,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	@Override
 	public Rectangle getSiblingBounds(Component component, Region region) {
 		if (component != null && region != null) {
-			float size = getSiblingSize(component, region.toString());
+			float size = getSiblingSize(component, region);
 			return calculateRegionalBounds(component, region, size);
 		}
 		return null;
@@ -384,7 +384,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * @see Dockable#getDockingProperties()
 	 */
 	@Override
-	public float getSiblingSize(Component component, String region) {
+	public float getSiblingSize(Component component, Region region) {
 		Dockable d = DockingManager.getDockable(component);
 		return getSiblingPreference(d, region);
 	}
@@ -479,7 +479,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * Otherwise, the retrieved region preference is passed through
 	 * {@code validateSiblingSize(float size)} and returned.
 	 *
-	 * @param d      the {@code Dockable} whose sibling size is to be checked
+	 * @param dockable      the {@code Dockable} whose sibling size is to be checked
 	 * @param region the region of the specified {@code Dockable} to be checked
 	 * @return a percentage (0.0F through 1.0F) representing the amount of space
 	 * allotted for sibling {@code Components} docked to the specified
@@ -488,9 +488,9 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * @see RegionChecker#DEFAULT_SIBLING_SIZE
 	 * @see #validateSiblingSize(float)
 	 */
-	private static float getSiblingPreference(Dockable d, String region) {
-		Float size = d == null ? null : d.getDockingProperties()
-				.getSiblingSize(Region.valueOf(region));
+	private static float getSiblingPreference(Dockable dockable, Region region) {
+		Float size = dockable == null ? null : dockable.getDockingProperties()
+				.getSiblingSize(region);
 		return getDockingInset(size, DockingManager.getDefaultSiblingSize(),
 				MAX_SIBILNG_SIZE, MIN_SIBILNG_SIZE);
 	}

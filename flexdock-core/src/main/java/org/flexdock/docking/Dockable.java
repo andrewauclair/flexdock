@@ -223,7 +223,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
 	 * {@code false} otherwise.
 	 * @see DockingManager#dock(Dockable, Dockable, String, float)
 	 */
-	boolean dock(Dockable dockable, String relativeRegion, float ratio);
+	boolean dock(Dockable dockable, DockingConstants.Region relativeRegion, float ratio);
 
 	/**
 	 * Adds a PropertyChangeListener to the listener list. The listener is

@@ -54,20 +54,20 @@ public class LayoutSequence implements Cloneable, Serializable {
     }
 
     public void add(Dockable dockable, Dockable relativeParent) {
-		add(dockable, relativeParent, DockingConstants.Region.CENTER.toString(), -1.0f);
+		add(dockable, relativeParent, DockingConstants.Region.CENTER, -1.0f);
     }
 
     public void add(String dockable, String relativeParent) {
-		add(dockable, relativeParent, DockingConstants.Region.CENTER.toString(), -1.0f);
+		add(dockable, relativeParent, DockingConstants.Region.CENTER, -1.0f);
     }
 
-    public void add(Dockable dockable, Dockable relativeParent, String region, float ratio) {
+	public void add(Dockable dockable, Dockable relativeParent, DockingConstants.Region region, float ratio) {
         String dockableId = dockable == null ? null : dockable.getPersistentId();
         String parentId = relativeParent == null ? null : relativeParent.getPersistentId();
         add(dockableId, parentId, region, ratio);
     }
 
-    public void add(String dockableId, String relativeParentId, String region, float ratio) {
+	public void add(String dockableId, String relativeParentId, DockingConstants.Region region, float ratio) {
         if (dockableId == null) {
             return;
         }
@@ -106,7 +106,7 @@ public class LayoutSequence implements Cloneable, Serializable {
             DockingState info = sequence.get(i);
             Dockable dockable = info.getDockable();
             dockables[i] = dockable;
-            String region = info.getRegion();
+			DockingConstants.Region region = info.getRegion();
             if (i == 0) {
                 DockingManager.dock(info.getDockable(), port, info.getRegion());
                 continue;

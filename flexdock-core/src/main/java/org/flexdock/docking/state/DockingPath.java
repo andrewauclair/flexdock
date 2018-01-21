@@ -263,7 +263,7 @@ public class DockingPath implements Cloneable, Serializable {
 		}
 		
 		DockingPort rootPort = getRootDockingPort();
-		String region = DockingConstants.Region.CENTER.toString();
+		DockingConstants.Region region = DockingConstants.Region.CENTER;
 		if (nodes.isEmpty()) {
 			return dockFullPath(dockable, rootPort, region);
 		}
@@ -290,21 +290,21 @@ public class DockingPath implements Cloneable, Serializable {
 		
 		return dockFullPath(dockable, port, region);
 	}
-	
-	
-	private boolean dockBrokenPath(Dockable dockable, DockingPort port, String region, SplitNode ctrlNode) {
+
+
+	private boolean dockBrokenPath(Dockable dockable, DockingPort port, DockingConstants.Region region, SplitNode ctrlNode) {
 		Component current = port.getDockedComponent();
 		if (current instanceof JSplitPane) {
 			return dockExtendedPath(dockable, port, region, ctrlNode);
 		}
 		
 		if (current instanceof JTabbedPane) {
-			return dock(dockable, port, DockingConstants.Region.CENTER.toString(), null);
+			return dock(dockable, port, DockingConstants.Region.CENTER, null);
 		}
 		
 		Dockable embedded = findDockable(current);
 		if (embedded == null || tabbed) {
-			return dock(dockable, port, DockingConstants.Region.CENTER.toString(), null);
+			return dock(dockable, port, DockingConstants.Region.CENTER, null);
 		}
 		
 		String embedId = embedded.getPersistentId();
@@ -317,8 +317,8 @@ public class DockingPath implements Cloneable, Serializable {
 			return dock(dockable, port, region, ctrlNode);
 		}
 	}
-	
-	private boolean dockFullPath(Dockable dockable, DockingPort port, String region) {
+
+	private boolean dockFullPath(Dockable dockable, DockingPort port, DockingConstants.Region region) {
 		// the docking layout was altered since the last time our dockable we embedded within
 		// it, and we were able to fill out the full docking path.  this means there is already
 		// something within the target dockingPort where we expect to dock our dockable.
@@ -326,7 +326,7 @@ public class DockingPath implements Cloneable, Serializable {
 		// first, check to see if we need to use a tabbed layout
 		Component current = port.getDockedComponent();
 		if (current instanceof JTabbedPane) {
-			return dock(dockable, port, DockingConstants.Region.CENTER.toString(), null);
+			return dock(dockable, port, DockingConstants.Region.CENTER, null);
 		}
 		
 		// check to see if we dock outside the current port or outside of it
@@ -334,7 +334,7 @@ public class DockingPath implements Cloneable, Serializable {
 		if (docked != null) {
 			Component comp = dockable.getComponent();
 			if (port.isDockingAllowed(comp, DockingConstants.Region.CENTER)) {
-				return dock(dockable, port, DockingConstants.Region.CENTER.toString(), null);
+				return dock(dockable, port, DockingConstants.Region.CENTER, null);
 			}
 			DockingPort superPort = (DockingPort) SwingUtilities.getAncestorOfClass(DockingPort.class, (Component) port);
 			if (superPort != null) {
@@ -348,8 +348,8 @@ public class DockingPath implements Cloneable, Serializable {
 		// an extended path and dock into it
 		return dockExtendedPath(dockable, port, region, getLastNode());
 	}
-	
-	private boolean dockExtendedPath(Dockable dockable, DockingPort port, String region, SplitNode ctrlNode) {
+
+	private boolean dockExtendedPath(Dockable dockable, DockingPort port, DockingConstants.Region region, SplitNode ctrlNode) {
 		Component docked = port.getDockedComponent();
 		
 		//I don't think this code will matter any more, given the null check, but leaving for now.
@@ -373,7 +373,7 @@ public class DockingPath implements Cloneable, Serializable {
 			Dockable d = (Dockable) it.next();
 			if (d.getPersistentId().equals(lastSibling)) {
 				DockingPort embedPort = d.getDockingPort();
-				String embedRegion = getRegion(lastNode, d.getComponent());
+				DockingConstants.Region embedRegion = getRegion(lastNode, d.getComponent());
 				return dock(dockable, embedPort, embedRegion, ctrlNode);
 			}
 		}
@@ -381,10 +381,10 @@ public class DockingPath implements Cloneable, Serializable {
 		
 		return dock(dockable, port, region, ctrlNode);
 	}
-	
-	private String getRegion(SplitNode node, Component dockedComponent) {
+
+	private DockingConstants.Region getRegion(SplitNode node, Component dockedComponent) {
 		if (dockedComponent == null) {
-			return DockingConstants.Region.CENTER.toString();
+			return DockingConstants.Region.CENTER;
 		}
 		return DockingUtility.getRegion(node.getRegion());
 	}
@@ -392,8 +392,8 @@ public class DockingPath implements Cloneable, Serializable {
 	private SplitNode getLastNode() {
 		return nodes.isEmpty() ? null : nodes.get(nodes.size() - 1);
 	}
-	
-	private boolean dock(Dockable dockable, DockingPort port, String region, SplitNode ctrlNode) {
+
+	private boolean dock(Dockable dockable, DockingPort port, DockingConstants.Region region, SplitNode ctrlNode) {
 		boolean ret = DockingManager.dock(dockable, port, region);
 		if (tabbed || ctrlNode == null) {
 			return ret;

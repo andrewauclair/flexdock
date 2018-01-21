@@ -251,8 +251,8 @@ public class FocusTest extends JFrame {
 			LayoutSequence sequence = perspective.getInitialSequence(true);
 
 			sequence.add(MAIN_VIEW);
-			sequence.add(BIRD_VIEW, MAIN_VIEW, Region.EAST.toString(), 0.3f);
-			sequence.add(MESSAGE_VIEW, MAIN_VIEW, Region.WEST.toString(), 0.3f);
+			sequence.add(BIRD_VIEW, MAIN_VIEW, Region.EAST, 0.3f);
+			sequence.add(MESSAGE_VIEW, MAIN_VIEW, Region.WEST, 0.3f);
 			sequence.add(PROBLEM_VIEW, MESSAGE_VIEW);
 			sequence.add(CONSOLE_VIEW, MESSAGE_VIEW);
 
@@ -264,10 +264,10 @@ public class FocusTest extends JFrame {
 			LayoutSequence sequence = perspective.getInitialSequence(true);
 
 			sequence.add(MAIN_VIEW);
-			sequence.add(BIRD_VIEW, MAIN_VIEW, Region.WEST.toString(), 0.3f);
-			sequence.add(MESSAGE_VIEW, BIRD_VIEW, Region.SOUTH.toString(), 0.5f);
+			sequence.add(BIRD_VIEW, MAIN_VIEW, Region.WEST, 0.3f);
+			sequence.add(MESSAGE_VIEW, BIRD_VIEW, Region.SOUTH, 0.5f);
 			sequence.add(PROBLEM_VIEW, MESSAGE_VIEW);
-			sequence.add(CONSOLE_VIEW, MESSAGE_VIEW, Region.EAST.toString(), 0.5f);
+			sequence.add(CONSOLE_VIEW, MESSAGE_VIEW, Region.EAST, 0.5f);
 
 			return perspective;
 		}
