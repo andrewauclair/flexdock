@@ -41,12 +41,12 @@ public abstract class DefaultPreview implements DragPreview {
 	private static final int DEFAULT_TAB_HEIGHT = 20;
 
 	@Override
-	public Polygon createPreviewPolygon(Component dockable, DockingPort port, Dockable hover, String targetRegion, Component paintingTarget, Map dragInfo) {
+	public Polygon createPreviewPolygon(Component dockable, DockingPort port, Dockable hover, Region targetRegion, Component paintingTarget, Map dragInfo) {
 		if (dockable == null || port == null || targetRegion == null || paintingTarget == null) {
 			return null;
 		}
 
-		if (UNKNOWN_REGION.equals(targetRegion) || !port.isDockingAllowed(dockable, targetRegion)) {
+		if (UNKNOWN_REGION.equals(targetRegion) || !port.isDockingAllowed(dockable, targetRegion.toString())) {
 			return null;
 		}
 
@@ -71,13 +71,13 @@ public abstract class DefaultPreview implements DragPreview {
 		return p;
 	}
 
-	private Polygon createPolyRect(DockingPort port, Component dockable, String region) {
+	private Polygon createPolyRect(DockingPort port, Component dockable, Region region) {
 		RegionChecker regionChecker = port.getDockingProperties().getRegionChecker();
 		if (regionChecker == null) {
 			regionChecker = new DefaultRegionChecker();
 		}
 
-		Rectangle r = regionChecker.getSiblingBounds(dockable, region);
+		Rectangle r = regionChecker.getSiblingBounds(dockable, region.toString());
 		return createPolyRect(r);
 	}
 
@@ -201,9 +201,8 @@ public abstract class DefaultPreview implements DragPreview {
 		return p;
 	}
 
-	private boolean isOuterRegion(String region) {
-		return Region.NORTH.toString().equals(region) || Region.SOUTH.toString().equals(region) ||
-				Region.EAST.toString().equals(region) || Region.WEST.toString().equals(region);
+	private boolean isOuterRegion(Region region) {
+		return region != Region.CENTER;
 	}
 
 	@Override

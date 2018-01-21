@@ -20,6 +20,7 @@
 package org.flexdock.docking.drag;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.drag.effects.DragPreview;
@@ -138,7 +139,7 @@ public class DragGlasspane extends JComponent {
 		}
 		else {
 			Map dragContext = getDragContext(token);
-			previewPoly = preview.createPreviewPolygon(token.getDockable(), port, hover, region, this, dragContext);
+			previewPoly = preview.createPreviewPolygon(token.getDockable(), port, hover, DockingConstants.Region.valueOf(region), this, dragContext);
 		}
 	}
 	
