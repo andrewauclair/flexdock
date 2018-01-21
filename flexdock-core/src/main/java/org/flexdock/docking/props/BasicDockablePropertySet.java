@@ -29,7 +29,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import static java.lang.Boolean.getBoolean;
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
 
 /**
  * @author Christopher Butler
@@ -40,53 +40,50 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
     private PropertyChangeSupport changeSupport;
 
     static String getRegionInsetKey(String region) {
-        if (NORTH_REGION.equals(region)) {
+		if (Region.NORTH.toString().equals(region)) {
             return REGION_SIZE_NORTH;
         }
-        if (SOUTH_REGION.equals(region)) {
+		if (Region.SOUTH.toString().equals(region)) {
             return REGION_SIZE_SOUTH;
         }
-        if (EAST_REGION.equals(region)) {
+		if (Region.EAST.toString().equals(region)) {
             return REGION_SIZE_EAST;
         }
-        if (WEST_REGION.equals(region)) {
+		if (Region.WEST.toString().equals(region)) {
             return REGION_SIZE_WEST;
         }
         return null;
     }
 
     static String getSiblingSizeKey(String region) {
-        if (NORTH_REGION.equals(region)) {
+		if (Region.NORTH.toString().equals(region)) {
             return SIBLING_SIZE_NORTH;
         }
-        if (SOUTH_REGION.equals(region)) {
+		if (Region.SOUTH.toString().equals(region)) {
             return SIBLING_SIZE_SOUTH;
         }
-        if (EAST_REGION.equals(region)) {
+		if (Region.EAST.toString().equals(region)) {
             return SIBLING_SIZE_EAST;
         }
-        if (WEST_REGION.equals(region)) {
+		if (Region.WEST.toString().equals(region)) {
             return SIBLING_SIZE_WEST;
         }
         return null;
     }
 
-    static String getTerritoryBlockedKey(String region) {
-        if (NORTH_REGION.equals(region)) {
-            return TERRITORY_BLOCKED_NORTH;
-        }
-        if (SOUTH_REGION.equals(region)) {
-            return TERRITORY_BLOCKED_SOUTH;
-        }
-        if (EAST_REGION.equals(region)) {
-            return TERRITORY_BLOCKED_EAST;
-        }
-        if (WEST_REGION.equals(region)) {
-            return TERRITORY_BLOCKED_WEST;
-        }
-		if (Region.CENTER.toString().equals(region)) {
-            return TERRITORY_BLOCKED_CENTER;
-        }
+	static String getTerritoryBlockedKey(Region region) {
+		switch (region) {
+			case NORTH:
+				return TERRITORY_BLOCKED_NORTH;
+			case SOUTH:
+				return TERRITORY_BLOCKED_SOUTH;
+			case EAST:
+				return TERRITORY_BLOCKED_EAST;
+			case WEST:
+				return TERRITORY_BLOCKED_WEST;
+			case CENTER:
+				return TERRITORY_BLOCKED_CENTER;
+		}
         return null;
     }
 
@@ -162,7 +159,7 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
 
     @Override
     public Boolean isTerritoryBlocked(String region) {
-        String key = getTerritoryBlockedKey(region);
+		String key = getTerritoryBlockedKey(Region.valueOf(region));
         return key == null ? null : (Boolean) get(key);
     }
 
@@ -239,7 +236,7 @@ public class BasicDockablePropertySet extends Hashtable<Object, Object> implemen
 
     @Override
     public void setTerritoryBlocked(String region, boolean blocked) {
-        String key = getTerritoryBlockedKey(region);
+		String key = getTerritoryBlockedKey(Region.valueOf(region));
         if (key != null) {
 			put(key, blocked ? Boolean.TRUE : Boolean.FALSE);
         }

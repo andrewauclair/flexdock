@@ -1,6 +1,7 @@
 package org.flexdock.demos;
 
 import org.flexdock.demos.util.DemoUtility;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingStub;
 import org.flexdock.docking.defaults.DefaultDockingPort;
@@ -11,7 +12,6 @@ import org.flexdock.util.SwingUtility;
 import javax.swing.*;
 import java.awt.*;
 
-import static org.flexdock.docking.DockingConstants.NORTH_REGION;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
@@ -108,7 +108,7 @@ public class CoreDemo extends JFrame {
 		DockingPanel panel2 = new DockingPanel("Test2");
 		
 		DockingManager.dock(panel, port);
-        DockingManager.dock(panel2, panel, NORTH_REGION);
+		DockingManager.dock(panel2, panel, DockingConstants.Region.NORTH.toString());
 		
 		setContentPane(fullPanel);
 	}

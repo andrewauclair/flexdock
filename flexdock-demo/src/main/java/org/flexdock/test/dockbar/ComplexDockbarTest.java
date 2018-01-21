@@ -29,7 +29,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
@@ -68,10 +68,10 @@ public class ComplexDockbarTest extends JFrame {
         View view4 = createView("message.log", "Message Log");
 
         viewport.dock(startPage);
-        startPage.dock(view1, WEST_REGION, 0.3f);
-        startPage.dock(view2, SOUTH_REGION, 0.3f);
-        startPage.dock(view4, EAST_REGION, 0.3f);
-        view1.dock(view3, SOUTH_REGION, 0.3f);
+		startPage.dock(view1, Region.WEST.toString(), 0.3f);
+		startPage.dock(view2, Region.SOUTH.toString(), 0.3f);
+		startPage.dock(view4, Region.EAST.toString(), 0.3f);
+		view1.dock(view3, Region.SOUTH.toString(), 0.3f);
 
         return p;
     }

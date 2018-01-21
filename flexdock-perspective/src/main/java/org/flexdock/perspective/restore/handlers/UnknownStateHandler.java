@@ -28,7 +28,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
 
 /**
  * Created on 2005-06-03
@@ -40,10 +40,10 @@ public class UnknownStateHandler implements RestorationHandler {
 
     private static final String[] REGIONS = {
 			Region.CENTER.toString(),
-            WEST_REGION,
-            EAST_REGION,
-            SOUTH_REGION,
-            NORTH_REGION
+			Region.WEST.toString(),
+			Region.EAST.toString(),
+			Region.SOUTH.toString(),
+			Region.NORTH.toString()
     };
 
     @Override

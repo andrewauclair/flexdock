@@ -47,7 +47,8 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.*;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
+import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * This is a {@code Container} that implements the {@code DockingPort}
@@ -688,18 +689,18 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			// splitpane orientation
 			boolean horizontal = split.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
 			if (horizontal) {
-				if (NORTH_REGION.equals(region) || SOUTH_REGION.equals(region)) {
+				if (Region.NORTH.toString().equals(region) || Region.SOUTH.toString().equals(region)) {
 					return null;
 				}
 			}
 			else {
-				if (EAST_REGION.equals(region) || WEST_REGION.equals(region)) {
+				if (Region.EAST.toString().equals(region) || Region.WEST.toString().equals(region)) {
 					return null;
 				}
 			}
 
-			boolean left = NORTH_REGION.equals(region)
-					|| WEST_REGION.equals(region);
+			boolean left = Region.NORTH.toString().equals(region)
+					|| Region.WEST.toString().equals(region);
 			Component c = left ? split.getLeftComponent() : split
 					.getRightComponent();
 			// split panes only contain sub-dockingports. if 'c' is not a
@@ -1421,7 +1422,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
 	private DockingPort[] putPortsInOrder(DockingPort oldPort,
 										  DockingPort newPort, String region) {
-		if (NORTH_REGION.equals(region) || WEST_REGION.equals(region)) {
+		if (Region.NORTH.toString().equals(region) || Region.WEST.toString().equals(region)) {
 			return new DockingPort[]{newPort, oldPort};
 		}
 		return new DockingPort[]{oldPort, newPort};

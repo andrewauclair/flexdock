@@ -29,7 +29,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
+import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * TODO I want to merge this with the AlphaPreview because that is going to be the one and only preview.
@@ -201,8 +202,8 @@ public abstract class DefaultPreview implements DragPreview {
 	}
 
 	private boolean isOuterRegion(String region) {
-		return NORTH_REGION.equals(region) || SOUTH_REGION.equals(region) ||
-				EAST_REGION.equals(region) || WEST_REGION.equals(region);
+		return Region.NORTH.toString().equals(region) || Region.SOUTH.toString().equals(region) ||
+				Region.EAST.toString().equals(region) || Region.WEST.toString().equals(region);
 	}
 
 	@Override

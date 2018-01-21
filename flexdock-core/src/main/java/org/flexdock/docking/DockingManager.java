@@ -44,7 +44,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.*;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
 
 /**
  * This class is used as a public facade into the framework docking system. It
@@ -604,9 +604,9 @@ public class DockingManager {
 	 * {@code false} otherwise.
 	 */
 	public static boolean isValidDockingRegion(String region) {
-		return Region.CENTER.toString().equals(region) || NORTH_REGION.equals(region)
-				|| SOUTH_REGION.equals(region) || EAST_REGION.equals(region)
-				|| WEST_REGION.equals(region);
+		return Region.CENTER.toString().equals(region) || Region.NORTH.toString().equals(region)
+				|| Region.SOUTH.toString().equals(region) || Region.EAST.toString().equals(region)
+				|| Region.WEST.toString().equals(region);
 	}
 
 	private static void updateDragListeners(Component dragSrc,

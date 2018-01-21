@@ -35,7 +35,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
@@ -76,10 +76,10 @@ public class SiblingTest extends JFrame {
 		View view4 = createView("message.log", "Message Log");
 		
 		viewport.dock(startPage);
-		startPage.dock(view1, WEST_REGION, 0.3f);
-		startPage.dock(view2, SOUTH_REGION, 0.3f);
-		startPage.dock(view4, EAST_REGION, 0.3f);
-		view1.dock(view3, SOUTH_REGION, 0.3f);
+		startPage.dock(view1, Region.WEST.toString(), 0.3f);
+		startPage.dock(view2, Region.SOUTH.toString(), 0.3f);
+		startPage.dock(view4, Region.EAST.toString(), 0.3f);
+		view1.dock(view3, Region.SOUTH.toString(), 0.3f);
 		
 		return p;
 	}
@@ -163,8 +163,8 @@ public class SiblingTest extends JFrame {
 			if (regionList != null) {
 				return regionList;
 			}
-			
-			String[] regions = {NORTH_REGION, SOUTH_REGION, EAST_REGION, WEST_REGION};
+
+			String[] regions = {Region.NORTH.toString(), Region.SOUTH.toString(), Region.EAST.toString(), Region.WEST.toString()};
 			regionList = new JComboBox<>(regions);
 			return regionList;
 		}

@@ -62,10 +62,13 @@ public interface DockablePropertySet {
 
 	Boolean isMouseMotionListenersBlockedWhileDragging();
 
+	// TODO Replace String with Region
 	Float getRegionInset(String region);
 
+	// TODO Replace String with Region
 	Float getSiblingSize(String region);
 
+	// TODO Replace String with Region
 	Boolean isTerritoryBlocked(String region);
 
 	Float getDragThreshold();

@@ -3,6 +3,7 @@
  */
 package org.flexdock.test.view;
 
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.plaf.Configurator;
 import org.flexdock.plaf.PlafManager;
 import org.flexdock.plaf.XMLConstants;
@@ -22,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 import java.util.List;
 
-import static org.flexdock.docking.DockingConstants.EAST_REGION;
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
@@ -64,7 +64,7 @@ public class ViewTest {
         View view2 = buildView("plafchooser.view", "Plaf Chooser", buidViewContentPane());
 
         viewport.dock(view2);
-        view2.dock(view1, EAST_REGION, 0.2f);
+		view2.dock(view1, DockingConstants.Region.EAST.toString(), 0.2f);
 
         return content;
     }

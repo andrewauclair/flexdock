@@ -26,7 +26,8 @@ import org.flexdock.docking.RegionChecker;
 
 import java.awt.*;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
+import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * @author Christopher Butler
@@ -111,7 +112,7 @@ public class DefaultRegionChecker implements RegionChecker {
 				westPoly.addPoint(0, 0);
 				westPoly.addPoint(0, north.height);
 				westPoly.addPoint(west.width, north.height);
-				return westPoly.contains(point) ? WEST_REGION : NORTH_REGION;
+				return westPoly.contains(point) ? Region.WEST.toString() : Region.NORTH.toString();
 			}
 			// check NORTH_EAST
 			Rectangle east = getEastRegion(comp);
@@ -120,9 +121,9 @@ public class DefaultRegionChecker implements RegionChecker {
 				eastPoly.addPoint(rightX, 0);
 				eastPoly.addPoint(rightX, north.height);
 				eastPoly.addPoint(east.x, north.height);
-				return eastPoly.contains(point) ? EAST_REGION : NORTH_REGION;
+				return eastPoly.contains(point) ? Region.EAST.toString() : Region.NORTH.toString();
 			}
-			return NORTH_REGION;
+			return Region.NORTH.toString();
 		}
 
 		// check with the south region
@@ -136,7 +137,7 @@ public class DefaultRegionChecker implements RegionChecker {
 				westPoly.addPoint(0, south.y);
 				westPoly.addPoint(west.width, south.y);
 				westPoly.addPoint(0, bottomY);
-				return westPoly.contains(point) ? WEST_REGION : SOUTH_REGION;
+				return westPoly.contains(point) ? Region.WEST.toString() : Region.SOUTH.toString();
 			}
 			// check SOUTH_EAST
 			Rectangle east = getEastRegion(comp);
@@ -145,9 +146,9 @@ public class DefaultRegionChecker implements RegionChecker {
 				eastPoly.addPoint(east.x, south.y);
 				eastPoly.addPoint(rightX, south.y);
 				eastPoly.addPoint(rightX, bottomY);
-				return eastPoly.contains(point) ? EAST_REGION : SOUTH_REGION;
+				return eastPoly.contains(point) ? Region.EAST.toString() : Region.SOUTH.toString();
 			}
-			return SOUTH_REGION;
+			return Region.SOUTH.toString();
 		}
 
 		// Now check EAST and WEST. We've already checked NORTH and SOUTH, so we
@@ -155,11 +156,11 @@ public class DefaultRegionChecker implements RegionChecker {
 		// check for NE, SE, NW, and SW anymore.
 		Rectangle east = getEastRegion(comp);
 		if (east.contains(point)) {
-			return EAST_REGION;
+			return Region.EAST.toString();
 		}
 		Rectangle west = getWestRegion(comp);
 		if (west.contains(point)) {
-			return WEST_REGION;
+			return Region.WEST.toString();
 		}
 
 		// not in any of the outer regions, so return CENTER.
@@ -182,7 +183,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 */
 	@Override
 	public Rectangle getNorthRegion(Component c) {
-		return getRegionBounds(c, NORTH_REGION);
+		return getRegionBounds(c, Region.NORTH.toString());
 	}
 
 	/**
@@ -201,7 +202,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 */
 	@Override
 	public Rectangle getSouthRegion(Component c) {
-		return getRegionBounds(c, SOUTH_REGION);
+		return getRegionBounds(c, Region.SOUTH.toString());
 	}
 
 	/**
@@ -220,7 +221,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 */
 	@Override
 	public Rectangle getEastRegion(Component c) {
-		return getRegionBounds(c, EAST_REGION);
+		return getRegionBounds(c, Region.EAST.toString());
 	}
 
 	/**
@@ -239,7 +240,7 @@ public class DefaultRegionChecker implements RegionChecker {
 	 */
 	@Override
 	public Rectangle getWestRegion(Component c) {
-		return getRegionBounds(c, WEST_REGION);
+		return getRegionBounds(c, Region.WEST.toString());
 	}
 
 	/**
@@ -312,15 +313,15 @@ public class DefaultRegionChecker implements RegionChecker {
 
 		Rectangle bounds = c.getBounds();
 
-		if (NORTH_REGION.equals(region) || SOUTH_REGION.equals(region)) {
+		if (Region.NORTH.toString().equals(region) || Region.SOUTH.toString().equals(region)) {
 			int h = (int) (bounds.height * size);
-			int y = NORTH_REGION.equals(region) ? 0 : bounds.height - h;
+			int y = Region.NORTH.toString().equals(region) ? 0 : bounds.height - h;
 			return new Rectangle(0, y, bounds.width, h);
 		}
 
-		if (WEST_REGION.equals(region) || EAST_REGION.equals(region)) {
+		if (Region.WEST.toString().equals(region) || Region.EAST.toString().equals(region)) {
 			int w = (int) (bounds.width * size);
-			int x = WEST_REGION.equals(region) ? 0 : bounds.width - w;
+			int x = Region.WEST.toString().equals(region) ? 0 : bounds.width - w;
 			return new Rectangle(x, 0, w, bounds.height);
 		}
 		return null;

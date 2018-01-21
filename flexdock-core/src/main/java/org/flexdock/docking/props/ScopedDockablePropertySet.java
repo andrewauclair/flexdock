@@ -20,6 +20,7 @@
 package org.flexdock.docking.props;
 
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +112,7 @@ public class ScopedDockablePropertySet extends BasicDockablePropertySet implemen
 
 	@Override
 	public Boolean isTerritoryBlocked(String region) {
-		String key = getTerritoryBlockedKey(region);
+		String key = getTerritoryBlockedKey(DockingConstants.Region.valueOf(region));
 		return key == null ? null : (Boolean) PropertyManager.getProperty(key, this);
 	}
 

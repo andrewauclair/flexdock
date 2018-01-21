@@ -24,7 +24,7 @@ import org.flexdock.docking.RegionChecker;
 import java.util.Hashtable;
 import java.util.Map;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
 
 /**
  * @author Christopher Butler
@@ -33,16 +33,16 @@ import static org.flexdock.docking.DockingConstants.*;
 public class BasicDockingPortPropertySet extends Hashtable<Object, Object> implements DockingPortPropertySet {
 
     static String getRegionInsetKey(String region) {
-        if (NORTH_REGION.equals(region)) {
+		if (Region.NORTH.toString().equals(region)) {
             return REGION_SIZE_NORTH;
         }
-        if (SOUTH_REGION.equals(region)) {
+		if (Region.SOUTH.toString().equals(region)) {
             return REGION_SIZE_SOUTH;
         }
-        if (EAST_REGION.equals(region)) {
+		if (Region.EAST.toString().equals(region)) {
             return REGION_SIZE_EAST;
         }
-        if (WEST_REGION.equals(region)) {
+		if (Region.WEST.toString().equals(region)) {
             return REGION_SIZE_WEST;
         }
         return null;

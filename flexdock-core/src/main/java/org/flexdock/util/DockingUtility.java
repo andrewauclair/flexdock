@@ -212,19 +212,19 @@ public class DockingUtility {
 
 		boolean horizontal = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
 		if (horizontal) {
-			if (NORTH_REGION.equals(region)) {
-				region = WEST_REGION;
+			if (Region.NORTH.toString().equals(region)) {
+				region = Region.WEST.toString();
 			}
-			else if (SOUTH_REGION.equals(region)) {
-				region = EAST_REGION;
+			else if (Region.SOUTH.toString().equals(region)) {
+				region = Region.EAST.toString();
 			}
 		}
 		else {
-			if (WEST_REGION.equals(region)) {
-				region = NORTH_REGION;
+			if (Region.WEST.toString().equals(region)) {
+				region = Region.NORTH.toString();
 			}
-			else if (EAST_REGION.equals(region)) {
-				region = SOUTH_REGION;
+			else if (Region.EAST.toString().equals(region)) {
+				region = Region.SOUTH.toString();
 			}
 		}
 		return region;
@@ -250,19 +250,19 @@ public class DockingUtility {
 			return Region.CENTER.toString();
 		}
 
-		if (NORTH_REGION.equals(region)) {
-			return SOUTH_REGION;
+		if (Region.NORTH.toString().equals(region)) {
+			return Region.SOUTH.toString();
 		}
 
-		if (SOUTH_REGION.equals(region)) {
-			return NORTH_REGION;
+		if (Region.SOUTH.toString().equals(region)) {
+			return Region.NORTH.toString();
 		}
 
-		if (EAST_REGION.equals(region)) {
-			return WEST_REGION;
+		if (Region.EAST.toString().equals(region)) {
+			return Region.WEST.toString();
 		}
 
-		return EAST_REGION;
+		return Region.EAST.toString();
 	}
 
 	/**
@@ -311,16 +311,16 @@ public class DockingUtility {
 			return false;
 		}
 
-		if (NORTH_REGION.equals(region)) {
-			return WEST_REGION.equals(otherRegion);
+		if (Region.NORTH.toString().equals(region)) {
+			return Region.WEST.toString().equals(otherRegion);
 		}
-		if (SOUTH_REGION.equals(region)) {
-			return EAST_REGION.equals(otherRegion);
+		if (Region.SOUTH.toString().equals(region)) {
+			return Region.EAST.toString().equals(otherRegion);
 		}
-		if (EAST_REGION.equals(region)) {
-			return SOUTH_REGION.equals(otherRegion);
+		if (Region.EAST.toString().equals(region)) {
+			return Region.SOUTH.toString().equals(otherRegion);
 		}
-		return WEST_REGION.equals(region) && NORTH_REGION.equals(otherRegion);
+		return Region.WEST.toString().equals(region) && Region.NORTH.toString().equals(otherRegion);
 
 	}
 
@@ -337,7 +337,7 @@ public class DockingUtility {
 	 * @see DockingConstants#WEST_REGION
 	 */
 	public static boolean isRegionTopLeft(String region) {
-		return NORTH_REGION.equals(region) || WEST_REGION.equals(region);
+		return Region.NORTH.toString().equals(region) || Region.WEST.toString().equals(region);
 	}
 
 	/**
@@ -364,13 +364,13 @@ public class DockingUtility {
 	public static String getRegion(int regionType) {
 		switch (regionType) {
 		case SwingConstants.LEFT:
-			return WEST_REGION;
+			return Region.WEST.toString();
 		case SwingConstants.RIGHT:
-			return EAST_REGION;
+			return Region.EAST.toString();
 		case SwingConstants.TOP:
-			return NORTH_REGION;
+			return Region.NORTH.toString();
 		case SwingConstants.BOTTOM:
-			return SOUTH_REGION;
+			return Region.SOUTH.toString();
 		case SwingConstants.CENTER:
 			return Region.CENTER.toString();
 		default:

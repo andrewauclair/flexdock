@@ -39,7 +39,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 
-import static org.flexdock.docking.DockingConstants.*;
+import static org.flexdock.docking.DockingConstants.Region;
+import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
 
 /**
  * @author Christopher Butler
@@ -244,9 +245,9 @@ public class DefaultDockingStrategy implements DockingStrategy {
 		boolean horiz = split.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
 		Component left = split.getLeftComponent();
 		if (left == port) {
-			return horiz ? WEST_REGION : NORTH_REGION;
+			return horiz ? Region.WEST.toString() : Region.NORTH.toString();
 		}
-		return horiz ? EAST_REGION : SOUTH_REGION;
+		return horiz ? Region.EAST.toString() : Region.SOUTH.toString();
 
 	}
 
@@ -736,7 +737,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 
 		// determine the orientation
 		int orientation = JSplitPane.HORIZONTAL_SPLIT;
-		if (NORTH_REGION.equals(region) || SOUTH_REGION.equals(region)) {
+		if (Region.NORTH.toString().equals(region) || Region.SOUTH.toString().equals(region)) {
 			orientation = JSplitPane.VERTICAL_SPLIT;
 		}
 		split.setOrientation(orientation);
