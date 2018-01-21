@@ -463,12 +463,12 @@ public class View extends JComponent implements Dockable {
 		return persistentId;
 	}
 
-	public boolean isTerritoryBlocked(Dockable dockable, String region) {
-		return getDockingProperties().isTerritoryBlocked(DockingConstants.Region.valueOf(region));
+	public boolean isTerritoryBlocked(Dockable dockable, DockingConstants.Region region) {
+		return getDockingProperties().isTerritoryBlocked(region);
 	}
 
-	public void setTerritoryBlocked(String region, boolean blocked) {
-		getDockingProperties().setTerritoryBlocked(DockingConstants.Region.valueOf(region), blocked);
+	public void setTerritoryBlocked(DockingConstants.Region region, boolean blocked) {
+		getDockingProperties().setTerritoryBlocked(region, blocked);
 	}
 
 	public String getTabText() {
@@ -490,7 +490,7 @@ public class View extends JComponent implements Dockable {
 
 	@Override
 	public boolean dock(Dockable dockable) {
-		return dock(dockable, DockingConstants.Region.CENTER.toString());
+		return dock(dockable, DockingConstants.Region.CENTER);
 	}
 
 	@Override
@@ -498,8 +498,8 @@ public class View extends JComponent implements Dockable {
 		return DockingManager.getDockingPort((Dockable) this);
 	}
 
-	public Dockable getSibling(String region) {
-		return DefaultDockingStrategy.getSibling(this, DockingConstants.Region.valueOf(region));
+	public Dockable getSibling(DockingConstants.Region region) {
+		return DefaultDockingStrategy.getSibling(this, region);
 	}
 
 	public Viewport getViewport() {
@@ -508,8 +508,8 @@ public class View extends JComponent implements Dockable {
 	}
 
 	@Override
-	public boolean dock(Dockable dockable, String relativeRegion) {
-		return DockingManager.dock(dockable, this, DockingConstants.Region.valueOf(relativeRegion));
+	public boolean dock(Dockable dockable, DockingConstants.Region relativeRegion) {
+		return DockingManager.dock(dockable, this, relativeRegion);
 	}
 
 	@Override

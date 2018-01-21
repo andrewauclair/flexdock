@@ -110,7 +110,7 @@ public class DockingStateListener extends DockingListener.Stub {
         updateState(evt.getDockable());
     }
 
-    private float getSplitPaneRatio(Dockable dockable, String region) {
+	private float getSplitPaneRatio(Dockable dockable, DockingConstants.Region region) {
         // check to see if the dockable was in a split layout.  if so, get the deepest split
         // node we can find so we can grab the split proportion percentage.
         SplitNode lastSplitNode = DockingPath.createNode(dockable);
@@ -120,7 +120,7 @@ public class DockingStateListener extends DockingListener.Stub {
 
         // if we couldn't determine the splitPane ratio using the DockingPath above, then
         // try the regionInsets
-		Float ratioObject = dockable.getDockingProperties().getRegionInset(DockingConstants.Region.valueOf(region));
+		Float ratioObject = dockable.getDockingProperties().getRegionInset(region);
         if (ratioObject != null) {
             return ratioObject;
         }

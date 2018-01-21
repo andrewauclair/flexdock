@@ -31,8 +31,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
-import static org.flexdock.docking.DockingConstants.UNKNOWN_REGION;
-
 /**
  * Created on 2005-05-26
  *
@@ -65,9 +63,9 @@ public class PointHandler implements RestorationHandler {
 
         DockingPort port = dropTargets==null? null: (DockingPort)dropTargets.parent;
         Point mousePoint = port==null? null: SwingUtilities.convertPoint(contentPane, dropPoint, (Component)port);
-		String region = port == null ? UNKNOWN_REGION : port.getRegion(mousePoint).toString();
+		DockingConstants.Region region = port == null ? null : port.getRegion(mousePoint);
 
-		return DockingManager.dock(dockable, port, DockingConstants.Region.valueOf(region));
+		return DockingManager.dock(dockable, port, region);
     }
 
     private Point getDropPoint(Dockable dockable, Container contentPane, DockingState dockingState) {

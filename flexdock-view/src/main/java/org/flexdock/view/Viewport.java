@@ -54,10 +54,10 @@ public class Viewport extends DefaultDockingPort {
 		setBorderManager(new StandardBorderManager());
 	}
 
-	public void setRegionBlocked(String region, boolean isBlocked) {
-		if (isValidDockingRegion(DockingConstants.Region.valueOf(region))) {
+	public void setRegionBlocked(DockingConstants.Region region, boolean isBlocked) {
+		if (isValidDockingRegion(region)) {
 			if (isBlocked) {
-				blockedRegions.add(region);
+				blockedRegions.add(region.toString());
 			}
 			else {
 				blockedRegions.remove(region);

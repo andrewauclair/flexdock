@@ -48,7 +48,7 @@ public class SplitNodeSerializer extends AbstractLayoutNodeSerializer implements
 		splitNodeElement.setAttribute(PersistenceConstants.SPLIT_NODE_ATTRIBUTE_PERCENTAGE, String.valueOf(splitNode.getPercentage()));
 		
 		if (splitNode.getDockingRegion() != null) {
-			splitNodeElement.setAttribute(PersistenceConstants.SPLIT_NODE_ATTRIBUTE_DOCKING_REGION, splitNode.getDockingRegion().toLowerCase());
+			splitNodeElement.setAttribute(PersistenceConstants.SPLIT_NODE_ATTRIBUTE_DOCKING_REGION, splitNode.getDockingRegion().toString().toLowerCase());
 		}
 		
 		return splitNodeElement;
@@ -101,7 +101,7 @@ public class SplitNodeSerializer extends AbstractLayoutNodeSerializer implements
 			splitNode.setSiblingId(siblingId);
 		}
 		if (dockingRegion != null && dockingRegion.length() != 0) {
-			splitNode.setDockingRegion(dockingRegion.toUpperCase());
+			splitNode.setDockingRegion(DockingConstants.Region.valueOf(dockingRegion));
 		}
 		
 		return splitNode;

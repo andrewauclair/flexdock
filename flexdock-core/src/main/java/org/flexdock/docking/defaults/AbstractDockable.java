@@ -409,8 +409,8 @@ public abstract class AbstractDockable implements Dockable {
 	 * @see DockingManager#dock(Dockable, Dockable, String)
 	 */
 	@Override
-	public boolean dock(Dockable dockable, String relativeRegion) {
-		return DockingManager.dock(dockable, this, DockingConstants.Region.valueOf(relativeRegion));
+	public boolean dock(Dockable dockable, DockingConstants.Region relativeRegion) {
+		return DockingManager.dock(dockable, this, relativeRegion);
 	}
 	
 	/**

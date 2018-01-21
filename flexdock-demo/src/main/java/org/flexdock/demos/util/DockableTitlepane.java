@@ -83,8 +83,8 @@ public class DockableTitlepane extends Titlepane implements Dockable {
     }
 
     @Override
-    public boolean dock(Dockable dockable, String relativeRegion) {
-		return DockingManager.dock(dockable, this, DockingConstants.Region.valueOf(relativeRegion));
+	public boolean dock(Dockable dockable, DockingConstants.Region relativeRegion) {
+		return DockingManager.dock(dockable, this, relativeRegion);
     }
 
     @Override

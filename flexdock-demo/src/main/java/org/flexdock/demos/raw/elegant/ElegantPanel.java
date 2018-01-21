@@ -19,13 +19,14 @@
  */
 package org.flexdock.demos.raw.elegant;
 
-import javax.swing.JComponent;
-
 import org.flexdock.demos.util.DockingStubTitlepane;
 import org.flexdock.demos.util.GradientTitlebar;
 import org.flexdock.demos.util.Titlebar;
 import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
 import org.flexdock.docking.DockingManager;
+
+import javax.swing.*;
 
 
 public class ElegantPanel extends DockingStubTitlepane {
@@ -40,11 +41,11 @@ public class ElegantPanel extends DockingStubTitlepane {
         DockingManager.dock(otherPanel, this);
     }
 
-    public void dock(ElegantPanel otherPanel, String region) {
+	public void dock(ElegantPanel otherPanel, DockingConstants.Region region) {
         DockingManager.dock(otherPanel, this, region);
     }
 
-    public void dock(ElegantPanel otherPanel, String region, float ratio) {
+	public void dock(ElegantPanel otherPanel, DockingConstants.Region region, float ratio) {
         DockingManager.dock(otherPanel, this, region, ratio);
     }
 

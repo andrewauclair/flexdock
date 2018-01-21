@@ -414,7 +414,7 @@ public class DockingManager {
 	 * {@code false} otherwise.
 	 * @see #dock(Component, Component, String, float)
 	 */
-	public static <T extends Component & DockingStub> boolean dock(T dockable, T parent, String region) {
+	public static <T extends Component & DockingStub> boolean dock(T dockable, T parent, Region region) {
 		return dock(dockable, parent, region, 0.5f);
 	}
 	
@@ -469,8 +469,8 @@ public class DockingManager {
 	 * @return {@code true} if the docking operation was successful;
 	 * {@code false} otherwise.
 	 */
-	public static <T extends Component & DockingStub> boolean dock(T dockable, T parent, String region, float proportion) {
-		return dock(resolveDockable(dockable), resolveDockable(parent), Region.valueOf(region), proportion);
+	public static <T extends Component & DockingStub> boolean dock(T dockable, T parent, Region region, float proportion) {
+		return dock(resolveDockable(dockable), resolveDockable(parent), region, proportion);
 	}
 	
 	/**

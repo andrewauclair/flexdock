@@ -194,7 +194,7 @@ public interface Dockable extends DockingListener, DockingMonitor {
 	 * @see #dock(Dockable, String, float)
 	 * @see DockingManager#dock(Dockable, Dockable, String)
 	 */
-	boolean dock(Dockable dockable, String relativeRegion);
+	boolean dock(Dockable dockable, DockingConstants.Region relativeRegion);
 
 	/**
 	 * Implements the semantics for docking an external {@code Dockable} to the

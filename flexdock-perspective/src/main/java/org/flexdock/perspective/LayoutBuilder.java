@@ -76,7 +76,7 @@ public class LayoutBuilder {
 		}
 
 		SplitNode node = new SplitNode(split.getOrientation(), 0, percent, null);
-		node.setDockingRegion(region.toString());
+		node.setDockingRegion(region);
 
 		link(node, left);
 		link(node, right);

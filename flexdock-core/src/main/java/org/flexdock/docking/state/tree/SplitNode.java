@@ -37,7 +37,7 @@ public class SplitNode extends DockingNode {
 	private int region;
 	private float percentage;
 	private String siblingId;
-	private String dockingRegion;
+	private DockingConstants.Region dockingRegion;
 
 	public SplitNode(int orientation, int region, float percentage, String siblingId) {
 		this.orientation = orientation;
@@ -110,11 +110,11 @@ public class SplitNode extends DockingNode {
 		return new SplitNode(orientation, region, percentage, siblingId);
 	}
 
-	public String getDockingRegion() {
+	public DockingConstants.Region getDockingRegion() {
 		return dockingRegion;
 	}
 
-	public void setDockingRegion(String dockingRegion) {
+	public void setDockingRegion(DockingConstants.Region dockingRegion) {
 		this.dockingRegion = dockingRegion;
 	}
 
@@ -136,7 +136,7 @@ public class SplitNode extends DockingNode {
 
 		DockingPort superPort = (DockingPort) userObj;
 		DockingStrategy strategy = superPort.getDockingStrategy();
-		return strategy.createSplitPane(superPort, DockingConstants.Region.valueOf(dockingRegion), percentage);
+		return strategy.createSplitPane(superPort, dockingRegion, percentage);
 	}
 
 	public JSplitPane getSplitPane() {

@@ -95,7 +95,7 @@ public class ComplexDockbarTest extends JFrame {
 
         VSNetStartPage page = new VSNetStartPage();
 		View view = new View(id, "");
-		view.setTerritoryBlocked(Region.CENTER.toString(), true);
+		view.setTerritoryBlocked(Region.CENTER, true);
         view.setContentPane(page);
 
         return view;

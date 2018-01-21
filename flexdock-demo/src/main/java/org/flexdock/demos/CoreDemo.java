@@ -108,7 +108,7 @@ public class CoreDemo extends JFrame {
 		DockingPanel panel2 = new DockingPanel("Test2");
 		
 		DockingManager.dock(panel, port);
-		DockingManager.dock(panel2, panel, DockingConstants.Region.NORTH.toString());
+		DockingManager.dock(panel2, panel, DockingConstants.Region.NORTH);
 		
 		setContentPane(fullPanel);
 	}

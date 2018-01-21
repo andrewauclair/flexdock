@@ -100,7 +100,7 @@ public class ViewDemo extends JFrame {
     private View createStartPage() {
         String id = "startPage";
 		View view = new View(id, "");
-		view.setTerritoryBlocked(Region.CENTER.toString(), true);
+		view.setTerritoryBlocked(Region.CENTER, true);
         view.setContentPane(new VSNetStartPage());
         return view;
     }

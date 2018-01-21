@@ -247,7 +247,7 @@ public class XMLPerspectivesDemo extends JFrame {
 			View mainView = new View(MAIN_VIEW, "");
 
 			//blokujemy mozliwosc dokowania do tego view w regionie CENTER
-			mainView.setTerritoryBlocked(Region.CENTER.toString(), true);
+			mainView.setTerritoryBlocked(Region.CENTER, true);
 			//ustawiamy komponent GUI, ktory chcemy aby byl wyswietalny w tym view
 			mainView.setContentPane(new JScrollPane(tabbedPane));
 

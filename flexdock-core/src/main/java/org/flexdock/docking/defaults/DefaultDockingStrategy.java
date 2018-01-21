@@ -186,7 +186,7 @@ public class DefaultDockingStrategy implements DockingStrategy {
 
 	private static Region findSubRegion(JSplitPane split, Component other,
 										Region targetRegion, Region baseRegion) {
-		Region region = DockingUtility.translateRegionAxis(split, targetRegion.toString());
+		Region region = DockingUtility.translateRegionAxis(split, targetRegion);
 		if (!(other instanceof JSplitPane)) {
 			return region;
 		}

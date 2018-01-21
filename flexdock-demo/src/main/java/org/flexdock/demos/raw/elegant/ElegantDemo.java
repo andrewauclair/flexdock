@@ -107,11 +107,11 @@ public class ElegantDemo extends JFrame {
         // dock the editor into the root dockingport
         DockingManager.dock(editorView, getRootDockingPort());
         // dock the hierarchy-view to the west of the editor
-		editorView.dock(j2eeHierarchyView, DockingConstants.Region.WEST.toString(), 0.3f);
+		editorView.dock(j2eeHierarchyView, DockingConstants.Region.WEST, 0.3f);
         // dock the outline to the south of the hierarchy
-		j2eeHierarchyView.dock(outlineView, DockingConstants.Region.SOUTH.toString(), 0.3f);
+		j2eeHierarchyView.dock(outlineView, DockingConstants.Region.SOUTH, 0.3f);
         // dock the task-view to the south of the editor
-		editorView.dock(tasksView, DockingConstants.Region.SOUTH.toString(), 0.3f);
+		editorView.dock(tasksView, DockingConstants.Region.SOUTH, 0.3f);
 
         // tab the nav-view onto the hierarchy view
         j2eeHierarchyView.dock(j2eeNavView);

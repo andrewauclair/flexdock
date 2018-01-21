@@ -204,31 +204,31 @@ public class DockingUtility {
 	 * @see JSplitPane#getOrientation()
 	 * @see #isAxisEquivalent(String, String)
 	 */
-	public static Region translateRegionAxis(JSplitPane splitPane, String originalRegion) {
-		String region = originalRegion;
+	public static Region translateRegionAxis(JSplitPane splitPane, Region originalRegion) {
+		Region region = originalRegion;
 
-		if (splitPane == null || !DockingManager.isValidDockingRegion(Region.valueOf(region))) {
+		if (splitPane == null || !DockingManager.isValidDockingRegion(region)) {
 			return null;
 		}
 
 		boolean horizontal = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
 		if (horizontal) {
-			if (Region.NORTH.toString().equals(region)) {
-				region = Region.WEST.toString();
+			if (region == Region.NORTH) {
+				region = Region.WEST;
 			}
-			else if (Region.SOUTH.toString().equals(region)) {
-				region = Region.EAST.toString();
+			else if (region == Region.SOUTH) {
+				region = Region.EAST;
 			}
 		}
 		else {
-			if (Region.WEST.toString().equals(region)) {
-				region = Region.NORTH.toString();
+			if (region == Region.WEST) {
+				region = Region.NORTH;
 			}
-			else if (Region.EAST.toString().equals(region)) {
-				region = Region.SOUTH.toString();
+			else if (region == Region.EAST) {
+				region = Region.SOUTH;
 			}
 		}
-		return Region.valueOf(region);
+		return region;
 	}
 
 	/**
@@ -473,21 +473,21 @@ public class DockingUtility {
 		}
 
 		// set the sibling preference
-		setSiblingPreference(parent, relativeRegion.toString(), ratio);
+		setSiblingPreference(parent, relativeRegion, ratio);
 
 		DockingPort port = parent.getDockingPort();
 		return port != null && DockingManager.dock(dockable, port, relativeRegion);
 
 	}
 
-	private static void setSiblingPreference(Dockable src, String region,
+	private static void setSiblingPreference(Dockable src, Region region,
 											 float size) {
-		if (size == UNSPECIFIED_SIBLING_PREF || Region.CENTER.toString().equals(region)
-				|| !DockingManager.isValidDockingRegion(Region.valueOf(region))) {
+		if (size == UNSPECIFIED_SIBLING_PREF || region == Region.CENTER
+				|| !DockingManager.isValidDockingRegion(region)) {
 			return;
 		}
 
-		src.getDockingProperties().setSiblingSize(Region.valueOf(region), DefaultRegionChecker.validateSiblingSize(size));
+		src.getDockingProperties().setSiblingSize(region, DefaultRegionChecker.validateSiblingSize(size));
 	}
 
 	/**
