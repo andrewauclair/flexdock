@@ -19,11 +19,8 @@
  */
 package org.flexdock.plaf.resources.paint;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
-import javax.swing.JComponent;
-import javax.swing.UIManager;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Claudio Romano

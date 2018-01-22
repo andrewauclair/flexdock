@@ -19,10 +19,10 @@
  */
 package org.flexdock.plaf.mappings;
 
-import javax.swing.UIManager;
-
 import com.l2fprod.gui.plaf.skin.Skin;
 import com.l2fprod.gui.plaf.skin.SkinLookAndFeel;
+
+import javax.swing.*;
 
 /**
  * @author Christopher Butler

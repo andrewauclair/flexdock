@@ -19,14 +19,10 @@
  */
 package org.flexdock.plaf.resources.paint;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import javax.swing.JComponent;
-
 import org.flexdock.util.SwingUtility;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Cyril Gambis

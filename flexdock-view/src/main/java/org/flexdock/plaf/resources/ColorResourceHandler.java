@@ -19,11 +19,9 @@
  */
 package org.flexdock.plaf.resources;
 
-import javax.swing.plaf.ColorUIResource;
-
-
-
 import org.flexdock.plaf.Configurator;
+
+import javax.swing.plaf.ColorUIResource;
 
 /**
  * @author Christopher Butler

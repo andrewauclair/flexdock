@@ -20,17 +20,13 @@
 package org.flexdock.plaf;
 
 import org.flexdock.plaf.mappings.PlafMappingFactory;
-import org.flexdock.plaf.theme.Theme;
-import org.flexdock.plaf.theme.UIFactory;
 import org.flexdock.util.RootWindow;
-import org.flexdock.view.View;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Hashtable;
-import java.util.Properties;
 
 /**
  * @author Christopher Butler
@@ -81,10 +77,7 @@ public class PlafManager {
     }
 
 	private static void installPreferredTheme(boolean update) {
-        Theme theme = getPreferredTheme();
-
         UI_DEFAULTS.clear();
-        setProperty(View.class, theme.getViewUI());
 
         if (update) {
             RootWindow[] windows = RootWindow.getVisibleWindows();
@@ -96,45 +89,6 @@ public class PlafManager {
 
 	static void installPreferredTheme() {
         installPreferredTheme(true);
-    }
-
-    private static Theme getPreferredTheme() {
-        Theme theme = null;
-        String themeName = (String) UI_DEFAULTS.get(PREFERRED_THEME_KEY);
-        if (themeName != null) {
-            theme = (Theme) CUSTOM_THEMES.get(themeName);
-            if (theme == null) {
-                theme = UIFactory.getTheme(themeName);
-            }
-        }
-        if (theme == null) {
-            theme = UIFactory.getTheme(getSystemThemeName());
-        }
-        if (theme == null) {
-            theme = UIFactory.getTheme(UIFactory.DEFAULT);
-        }
-        return theme;
-    }
-
-	public static Theme setCustomTheme(String themeName, Properties p) {
-        return loadCustomTheme(themeName, p, true);
-    }
-
-	private static Theme loadCustomTheme(String themeName, Properties p,
-										 boolean exclusive) {
-        if (Configurator.isNull(themeName) || p == null) {
-            return null;
-        }
-
-        Theme theme = UIFactory.createTheme(p);
-        if (theme != null) {
-            theme.setName(themeName);
-            if (exclusive) {
-                CUSTOM_THEMES.clear();
-            }
-            CUSTOM_THEMES.put(themeName, theme);
-        }
-        return theme;
     }
 
 	private static void setProperty(Object key, Object value) {

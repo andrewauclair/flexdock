@@ -19,11 +19,10 @@
  */
 package org.flexdock.plaf.resources;
 
-import java.awt.Font;
-import java.util.StringTokenizer;
-
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import java.awt.*;
+import java.util.StringTokenizer;
 
 /**
  * @author Christopher Butler

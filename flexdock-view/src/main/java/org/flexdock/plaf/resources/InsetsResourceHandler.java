@@ -19,7 +19,7 @@
  */
 package org.flexdock.plaf.resources;
 
-import java.awt.Insets;
+import java.awt.*;
 
 /**
  * @author Claudio Romano

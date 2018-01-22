@@ -19,9 +19,8 @@
  */
 package org.flexdock.plaf.resources.action;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
 
 /**
  * @author Christopher Butler

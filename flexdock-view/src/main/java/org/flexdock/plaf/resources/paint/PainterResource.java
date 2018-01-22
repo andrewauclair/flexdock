@@ -19,9 +19,9 @@
  */
 package org.flexdock.plaf.resources.paint;
 
-import java.awt.Color;
-
 import org.flexdock.plaf.PropertySet;
+
+import java.awt.*;
 
 /**
  * @author Claudio Romano

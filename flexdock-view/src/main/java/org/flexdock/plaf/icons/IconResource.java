@@ -19,8 +19,7 @@
  */
 package org.flexdock.plaf.icons;
 
-import javax.swing.Action;
-import javax.swing.Icon;
+import javax.swing.*;
 import javax.swing.plaf.UIResource;
 
 /**

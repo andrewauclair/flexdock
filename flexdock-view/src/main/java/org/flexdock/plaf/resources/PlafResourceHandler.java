@@ -19,7 +19,7 @@
  */
 package org.flexdock.plaf.resources;
 
-import javax.swing.UIManager;
+import javax.swing.*;
 
 /**
  * @author Christopher Butler

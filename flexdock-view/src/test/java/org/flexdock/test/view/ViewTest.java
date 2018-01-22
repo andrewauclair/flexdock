@@ -7,8 +7,6 @@ import org.flexdock.docking.DockingConstants;
 import org.flexdock.plaf.Configurator;
 import org.flexdock.plaf.PlafManager;
 import org.flexdock.plaf.XMLConstants;
-import org.flexdock.plaf.theme.Theme;
-import org.flexdock.plaf.theme.UIFactory;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
@@ -20,8 +18,10 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
@@ -171,20 +171,7 @@ public class ViewTest {
 
         @Override
 		public void actionPerformed(ActionEvent e) {
-            Properties p = new Properties();
-			if (test.viewUIList.getSelectedValue() != null) {
-				p.setProperty(UIFactory.VIEW_KEY, test.viewUIList.getSelectedValue().toString());
-            }
-			if (test.titlebarUIList.getSelectedValue() != null) {
-				p.setProperty(UIFactory.TITLEBAR_KEY, test.titlebarUIList.getSelectedValue().toString());
-            }
-			if (test.buttonUIList.getSelectedValue() != null) {
-				p.setProperty(UIFactory.BUTTON_KEY, test.buttonUIList.getSelectedValue().toString());
-            }
 
-            Theme theme = PlafManager.setCustomTheme("custom.theme", p);
-            PlafManager.setPreferredTheme("custom.theme", true);
-			test.themeInfo.update(theme);
         }
 
     }
@@ -257,10 +244,6 @@ public class ViewTest {
             panel.add(vButton);
 
             return panel;
-        }
-
-        public void update(Theme theme) {
-            vView.setText(theme.getViewUI().getCreationParameters().getName());
         }
     }
 

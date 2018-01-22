@@ -19,18 +19,12 @@
  */
 package org.flexdock.plaf.resources.border;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Insets;
+import org.flexdock.plaf.resources.ColorResourceHandler;
+import org.flexdock.plaf.resources.ResourceHandler;
 
 import javax.swing.border.Border;
 import javax.swing.plaf.ColorUIResource;
-
-
-
-import org.flexdock.plaf.resources.ColorResourceHandler;
-import org.flexdock.plaf.resources.ResourceHandler;
+import java.awt.*;
 
 /**
  * @author Christopher Butler

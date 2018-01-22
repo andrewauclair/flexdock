@@ -19,10 +19,10 @@
  */
 package org.flexdock.plaf.resources;
 
-import javax.swing.Action;
-
 import org.flexdock.plaf.resources.action.DefaultAction;
 import org.flexdock.util.Utilities;
+
+import javax.swing.*;
 
 /**
  * @author Christopher Butler
