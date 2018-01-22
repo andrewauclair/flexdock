@@ -27,15 +27,6 @@ public class Theme {
     private String description;
 
     private ViewUI viewUI;
-    private ButtonUI buttonUI;
-
-    public ButtonUI getButtonUI() {
-        return buttonUI;
-    }
-
-    public void setButtonUI(ButtonUI buttonUI) {
-        this.buttonUI = buttonUI;
-    }
 
     public ViewUI getViewUI() {
         return viewUI;

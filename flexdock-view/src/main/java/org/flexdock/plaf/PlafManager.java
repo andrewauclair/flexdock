@@ -23,7 +23,6 @@ import org.flexdock.plaf.mappings.PlafMappingFactory;
 import org.flexdock.plaf.theme.Theme;
 import org.flexdock.plaf.theme.UIFactory;
 import org.flexdock.util.RootWindow;
-import org.flexdock.view.Button;
 import org.flexdock.view.View;
 
 import javax.swing.*;
@@ -86,7 +85,6 @@ public class PlafManager {
 
         UI_DEFAULTS.clear();
         setProperty(View.class, theme.getViewUI());
-        setProperty(Button.class, theme.getButtonUI());
 
         if (update) {
             RootWindow[] windows = RootWindow.getVisibleWindows();

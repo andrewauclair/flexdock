@@ -65,8 +65,8 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * allows for proper determination between "northeast", "northwest",
 	 * "southeast", and "southwest" cases.
 	 *
-	 * @param component  the {@code Component} whose region is to be examined.
-	 * @param point the coordinates whose region is to be determined.
+	 * @param component the {@code Component} whose region is to be examined.
+	 * @param point     the coordinates whose region is to be determined.
 	 * @return the docking region containing the specified {@code Point}.
 	 * @see RegionChecker#getRegion(Component, Point)
 	 * @see #getNorthRegion(Component)
@@ -102,7 +102,9 @@ public class DefaultRegionChecker implements RegionChecker {
 
 		// start with the north region
 		Rectangle north = getNorthRegion(component);
+
 		int rightX = north.x + north.width;
+
 		if (north.contains(point)) {
 			// check NORTH_WEST
 			Rectangle west = getWestRegion(component);
@@ -127,7 +129,9 @@ public class DefaultRegionChecker implements RegionChecker {
 
 		// check with the south region
 		Rectangle south = getSouthRegion(component);
+
 		int bottomY = south.y + south.height;
+
 		if (south.contains(point)) {
 			// check SOUTH_WEST
 			Rectangle west = getWestRegion(component);
@@ -157,6 +161,7 @@ public class DefaultRegionChecker implements RegionChecker {
 		if (east.contains(point)) {
 			return Region.EAST;
 		}
+
 		Rectangle west = getWestRegion(component);
 		if (west.contains(point)) {
 			return Region.WEST;
@@ -256,8 +261,8 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * the resulting dimension, spanning the {@code Component} edge for the
 	 * specified region.
 	 *
-	 * @param component      the {@code Component} whose region bounds are to be returned.
-	 * @param region the specified region that is to be examined.
+	 * @param component the {@code Component} whose region bounds are to be returned.
+	 * @param region    the specified region that is to be examined.
 	 * @return the bounds containing the supplied region of the specified
 	 * {@code Component}.
 	 * @see RegionChecker#getRegionBounds(Component, Region)
@@ -269,7 +274,7 @@ public class DefaultRegionChecker implements RegionChecker {
 			float size = getRegionSize(component, region);
 			return calculateRegionalBounds(component, region, size);
 		}
-		return null;
+		return new Rectangle(0, 0, 0, 0);
 	}
 
 	/**
@@ -288,11 +293,11 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * the resulting dimension, spanning the {@code Component} edge for the
 	 * specified region.
 	 *
-	 * @param component      the {@code Component} whose sibling bounds are to be returned.
-	 * @param region the specified region that is to be examined.
+	 * @param component the {@code Component} whose sibling bounds are to be returned.
+	 * @param region    the specified region that is to be examined.
 	 * @return the bounds representing the allotted sibling area for the
 	 * supplied region of the specified {@code Component}.
-	 * @see #getSiblingSize(Component, String)
+	 * @see #getSiblingSize(Component, Region)
 	 */
 	@Override
 	public Rectangle getSiblingBounds(Component component, Region region) {
@@ -300,13 +305,12 @@ public class DefaultRegionChecker implements RegionChecker {
 			float size = getSiblingSize(component, region);
 			return calculateRegionalBounds(component, region, size);
 		}
-		return null;
+		return new Rectangle(0, 0, 0, 0);
 	}
 
-	private Rectangle calculateRegionalBounds(Component component, Region region,
-											  float size) {
+	private Rectangle calculateRegionalBounds(Component component, Region region, float size) {
 		if (component == null || region == null) {
-			return null;
+			return new Rectangle(0, 0, 0, 0);
 		}
 
 		Rectangle bounds = component.getBounds();
@@ -322,7 +326,7 @@ public class DefaultRegionChecker implements RegionChecker {
 			int x = region == Region.WEST ? 0 : bounds.width - w;
 			return new Rectangle(x, 0, w, bounds.height);
 		}
-		return null;
+		return new Rectangle(0, 0, 0, 0);
 	}
 
 	/**
@@ -342,8 +346,8 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * associated {@code DockingProps} instance, then the default value of
 	 * {@code RegionChecker.DEFAULT_REGION_SIZE} is returned.
 	 *
-	 * @param component      the {@code Component} whose region is to be examined.
-	 * @param region the specified region that is to be examined.
+	 * @param component the {@code Component} whose region is to be examined.
+	 * @param region    the specified region that is to be examined.
 	 * @return the percentage of the specified {@code Component} allotted for
 	 * the specified region.
 	 * @see RegionChecker#getRegionSize(Component, Region)
@@ -375,27 +379,22 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * associated {@code DockingProps} instance, then the default value of
 	 * {@code RegionChecker.DEFAULT_SIBLING_SIZE} is returned.
 	 *
-	 * @param component      the {@code Component} whose sibling size is to be examined.
-	 * @param region the specified region that is to be examined.
+	 * @param component the {@code Component} whose sibling size is to be examined.
+	 * @param region    the specified region that is to be examined.
 	 * @return the percentage of the specified {@code Component} allotted for
 	 * the siblings within the specified region.
 	 * @see DockingManager#getDockable(Component)
-	 * @see #getSiblingPreference(Dockable, String)
+	 * @see #getSiblingPreference(Dockable, Region)
 	 * @see Dockable#getDockingProperties()
 	 */
 	@Override
 	public float getSiblingSize(Component component, Region region) {
-		Dockable d = DockingManager.getDockable(component);
-		return getSiblingPreference(d, region);
+		Dockable dockable = DockingManager.getDockable(component);
+		return getSiblingPreference(dockable, region);
 	}
 
-	private static float getDockingInset(Float value, float defaultVal,
-										 float max, float min) {
-		float f = value == null ? -1 : value;
-		if (f == -1) {
-			f = defaultVal;
-		}
-		return checkBounds(f, max, min);
+	private static float getDockingInset(float value, float max, float min) {
+		return checkBounds(value, max, min);
 	}
 
 	private static float checkBounds(float val, float max, float min) {
@@ -449,8 +448,8 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * retrieved region preference is passed through
 	 * {@code validateRegionSize(float size)} and returned.
 	 *
-	 * @param dockable      the {@code Dockable} whose region is to be checked
-	 * @param region the region of the specified {@code Dockable} to be checked
+	 * @param dockable the {@code Dockable} whose region is to be checked
+	 * @param region   the region of the specified {@code Dockable} to be checked
 	 * @return a percentage (0.0F through 1.0F) representing the amount of space
 	 * allotted for the specified region within the specified
 	 * {@code Dockable}.
@@ -459,10 +458,8 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * @see #validateRegionSize(float)
 	 */
 	private static float getRegionPreference(Dockable dockable, Region region) {
-		Float inset = dockable == null ? null : dockable.getDockingProperties()
-				.getRegionInset(region);
-		return getDockingInset(inset, DEFAULT_REGION_SIZE, MAX_REGION_SIZE,
-				MIN_REGION_SIZE);
+		float inset = dockable == null ? DEFAULT_REGION_SIZE : dockable.getDockingProperties().getRegionInset(region);
+		return getDockingInset(inset, MAX_REGION_SIZE, MIN_REGION_SIZE);
 	}
 
 	/**
@@ -479,8 +476,8 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * Otherwise, the retrieved region preference is passed through
 	 * {@code validateSiblingSize(float size)} and returned.
 	 *
-	 * @param dockable      the {@code Dockable} whose sibling size is to be checked
-	 * @param region the region of the specified {@code Dockable} to be checked
+	 * @param dockable the {@code Dockable} whose sibling size is to be checked
+	 * @param region   the region of the specified {@code Dockable} to be checked
 	 * @return a percentage (0.0F through 1.0F) representing the amount of space
 	 * allotted for sibling {@code Components} docked to the specified
 	 * region within the specified {@code Dockable}.
@@ -489,9 +486,8 @@ public class DefaultRegionChecker implements RegionChecker {
 	 * @see #validateSiblingSize(float)
 	 */
 	private static float getSiblingPreference(Dockable dockable, Region region) {
-		Float size = dockable == null ? null : dockable.getDockingProperties()
+		float size = dockable == null ? DockingManager.getDefaultSiblingSize() : dockable.getDockingProperties()
 				.getSiblingSize(region);
-		return getDockingInset(size, DockingManager.getDefaultSiblingSize(),
-				MAX_SIBILNG_SIZE, MIN_SIBILNG_SIZE);
+		return getDockingInset(size, MAX_SIBILNG_SIZE, MIN_SIBILNG_SIZE);
 	}
 }

@@ -261,7 +261,6 @@ public class ViewTest {
 
         public void update(Theme theme) {
             vView.setText(theme.getViewUI().getCreationParameters().getName());
-            vButton.setText(theme.getButtonUI().getCreationParameters().getName());
         }
     }
 

@@ -106,9 +106,9 @@ public class DockingPath implements Cloneable, Serializable {
 	private static SplitNode createNode(DockingPort port, JSplitPane split) {
 		int orientation = split.getOrientation();
 		boolean topLeft = split.getLeftComponent() == port;
-		
-		int region = 0;
-		String siblingId = null;
+
+		int region;
+		String siblingId;
 		if (topLeft) {
 			region = orientation == JSplitPane.VERTICAL_SPLIT ? SwingConstants.TOP : SwingConstants.LEFT;
 			siblingId = getSiblingId(split.getRightComponent());
@@ -120,15 +120,7 @@ public class DockingPath implements Cloneable, Serializable {
 		
 		int size = orientation == JSplitPane.VERTICAL_SPLIT ? split.getHeight() : split.getWidth();
 		int divLoc = split.getDividerLocation();
-		
-		int testSize = 0;
-		if (orientation == JSplitPane.VERTICAL_SPLIT) {
-			testSize += split.getTopComponent().getHeight() + split.getBottomComponent().getHeight() + split.getDividerSize();
-		}
-		else {
-			testSize += split.getLeftComponent().getWidth() + split.getRightComponent().getWidth() + split.getDividerSize();
-		}
-		
+
 		float percentage;
 		if (split instanceof DockingSplitPane && ((DockingSplitPane) split).getPercent() != -1) {
 			percentage = (float) ((DockingSplitPane) split).getPercent();

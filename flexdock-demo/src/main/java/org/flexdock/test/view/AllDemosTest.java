@@ -48,8 +48,8 @@ class AllDemosTest {
 
 	@Test
 	void BorderDemoButton() throws InterruptedException {
-		JButtonFixture borderDemo = window.button("AdapterDemo");
-		borderDemo.requireText("AdapterDemo");
+		JButtonFixture borderDemo = window.button("ViewDemo");
+		borderDemo.requireText("ViewDemo");
 		borderDemo.requireEnabled();
 		borderDemo.click();
 		Thread.sleep(50000);

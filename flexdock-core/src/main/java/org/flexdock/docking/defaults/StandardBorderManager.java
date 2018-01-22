@@ -75,7 +75,7 @@ public class StandardBorderManager implements BorderManager {
 	 * @param border the currently assigned border.
 	 */
 	public StandardBorderManager(Border border) {
-		setBorder(border);
+		assignedBorder = border;
 	}
 	
 	/**
@@ -153,8 +153,8 @@ public class StandardBorderManager implements BorderManager {
 		setSubComponentBorder(split.getLeftComponent(), assignedBorder);
 		setSubComponentBorder(split.getRightComponent(), assignedBorder);
 	}
-	
-	private void setSubComponentBorder(Component comp, Border border) {
+
+	private static void setSubComponentBorder(Component comp, Border border) {
 		if (comp instanceof DefaultDockingPort) {
 			((DefaultDockingPort) comp).evaluateDockingBorderStatus();
 		}
@@ -196,14 +196,14 @@ public class StandardBorderManager implements BorderManager {
 			}
 		}
 	}
-	
-	private void setBorder(Component cmp, Border border) {
+
+	private static void setBorder(Component cmp, Border border) {
 		if (cmp instanceof JComponent) {
 			((JComponent) cmp).setBorder(border);
 		}
 	}
-	
-	private void setBorder(DockingPort port, Border border) {
+
+	private static void setBorder(DockingPort port, Border border) {
 		if (port instanceof JComponent) {
 			((JComponent) port).setBorder(border);
 		}

@@ -83,31 +83,6 @@ public class SwingUtility {
 		return new DockingPort[]{left, right};
 		
 	}
-	
-	public static Point[] getPoints(Rectangle rect) {
-		return getPoints(rect, null);
-	}
-
-	private static Point[] getPoints(Rectangle rect, Component convertFromScreen) {
-		if (rect == null) {
-			return null;
-		}
-		
-		Rectangle r = (Rectangle) rect.clone();
-		Point p = r.getLocation();
-		if (convertFromScreen != null) {
-			SwingUtilities.convertPointFromScreen(p, convertFromScreen);
-		}
-		
-		r.setLocation(p);
-		
-		return new Point[]{
-				p,
-				new Point(p.x + r.width, p.y),
-				new Point(p.x + r.width, p.y + r.height),
-				new Point(p.x, p.y + r.height)
-		};
-	}
 
 	public static void centerOnScreen(Window window) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
