@@ -368,7 +368,7 @@ public class DockingManager {
 	public static <T extends Component & DockingStub> boolean dock(T dockable, T parent) {
 		return dock(resolveDockable(dockable), resolveDockable(parent));
 	}
-	
+
 	/**
 	 * Docks the specified {@code Dockable} relative to another already-docked
 	 * {@code Dockable} in the CENTER region. The "parent" {@code Dockable} must
@@ -417,7 +417,7 @@ public class DockingManager {
 	public static <T extends Component & DockingStub> boolean dock(T dockable, T parent, Region region) {
 		return dock(dockable, parent, region, 0.5f);
 	}
-	
+
 	/**
 	 * Docks the specified {@code Dockable} relative to another already-docked
 	 * {@code Dockable} in the specified region. The "parent" {@code Dockable}
@@ -472,7 +472,7 @@ public class DockingManager {
 	public static <T extends Component & DockingStub> boolean dock(T dockable, T parent, Region region, float proportion) {
 		return dock(resolveDockable(dockable), resolveDockable(parent), region, proportion);
 	}
-	
+
 	/**
 	 * Docks the specified {@code Dockable} relative to another already-docked
 	 * {@code Dockable} in the specified region with the specified split
@@ -643,7 +643,7 @@ public class DockingManager {
 			dragSrc.addMouseListener(listener);
 		}
 	}
-	
+
 	/**
 	 * Creates a {@code Dockable} for the specified {@code Component} and
 	 * dispatches to {@code registerDockable(Dockable init)}. If {@code comp}
@@ -770,9 +770,9 @@ public class DockingManager {
 		if (comp == null) {
 			return;
 		}
-		
+
 		System.out.println("Remove drag listeners");
-		
+
 		MouseMotionListener motionListener = null;
 		EventListener[] listeners = comp.getMouseMotionListeners();
 		for (EventListener listener1 : listeners) {
@@ -859,22 +859,16 @@ public class DockingManager {
 	}
 
 	private static String generatePersistentId(Object obj, String desiredId) {
-		if (obj == null) {
-			return null;
+		String pId = desiredId == null ? Objects.requireNonNull(obj).getClass().getName()
+				: desiredId;
+		StringBuilder baseId = new StringBuilder(pId);
+		int i = 1;
+		while (hasRegisteredDockableId(pId)) {
+			baseId.append('_').append(i);
+			pId = baseId.toString();
+			i++;
 		}
-
-		synchronized (persistentIdLock) {
-			String pId = desiredId == null ? obj.getClass().getName()
-					: desiredId;
-			StringBuilder baseId = new StringBuilder(pId);
-			int i = 1;
-			while (hasRegisteredDockableId(pId)) {
-				baseId.append('_').append(i);
-				pId = baseId.toString();
-				i++;
-			}
-			return pId;
-		}
+		return pId;
 	}
 
 	private static boolean hasRegisteredDockableId(String id) {
@@ -910,8 +904,7 @@ public class DockingManager {
 	 * @see ClassMapping#getClassInstance(Class)
 	 */
 	public static DockingStrategy getDockingStrategy(Object obj) {
-		Class key = obj == null ? null : obj.getClass();
-		return getDockingStrategy(key);
+		return getDockingStrategy(Objects.requireNonNull(obj).getClass());
 	}
 
 	/**
@@ -940,9 +933,7 @@ public class DockingManager {
 	 * @see ClassMapping#getClassInstance(Class)
 	 */
 	private static DockingStrategy getDockingStrategy(Class classKey) {
-		DockingStrategy strategy = (DockingStrategy) DOCKING_STRATEGIES
-				.getClassInstance(classKey);
-		return strategy;
+		return (DockingStrategy) DOCKING_STRATEGIES.getClassInstance(classKey);
 	}
 
 	/**
@@ -962,7 +953,7 @@ public class DockingManager {
 	 */
 	public static RootWindow[] getDockingWindows() {
 		Set windowSet = DockingPortTracker.getDockingWindows();
-		return (RootWindow[]) windowSet.toArray(new RootWindow[0]);
+		return (RootWindow[]) windowSet.toArray(new RootWindow[windowSet.size()]);
 	}
 
 	/**
@@ -1402,7 +1393,7 @@ public class DockingManager {
 	 * @see Dockable#getComponent()
 	 */
 	public static Dockable getDockable(Component comp) {
-		return comp == null ? null : DOCKABLES_BY_COMPONENT.get(comp);
+		return DOCKABLES_BY_COMPONENT.get(Objects.requireNonNull(comp));
 	}
 
 	/**
@@ -2540,6 +2531,7 @@ public class DockingManager {
 		DockingPort originalPort = dockable.getDockingPort();
 		MaximizedState state = new MaximizedState(dockable, originalPort);
 
+		// TODO originalPort seems to be null here when the dockable is in a Dockbar
 		originalPort.releaseForMaximization(dockable);
 		rootPort.installMaximizedDockable(dockable);
 

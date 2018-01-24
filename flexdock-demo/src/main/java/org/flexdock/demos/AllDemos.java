@@ -28,6 +28,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
+
 /**
  * Generic launcher for all demos.
  * It allows us to deliver a single entry point demo via a runnable jar or JNLP launched
@@ -52,7 +54,9 @@ public class AllDemos extends JFrame {
 
 	public AllDemos() {
 		super("FlexDock Demos");
-		
+
+		setSystemLookAndFeel();
+
 		TreeMap<String, String> sortedClassNames = new TreeMap<>();
 		for (String fullClassName : DEMO_CLASS_NAMES) {
 			String justClassName = fullClassName.substring(fullClassName
@@ -78,7 +82,9 @@ public class AllDemos extends JFrame {
 			
 			button.addActionListener(event -> launchClass(fullClassName));
 		}
-		
+
+		SwingUtility.centerOnScreen(this);
+
 		pack();
 	}
 	
@@ -99,7 +105,7 @@ public class AllDemos extends JFrame {
 			final AllDemos a = new AllDemos();
 			a.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 			DemoUtility.setDemoDisableExitOnClose();
-			SwingUtility.centerOnScreen(a);
+//			SwingUtility.centerOnScreen(a);
 			a.setVisible(true);
 			
 			for (final String fullClassName : args) {

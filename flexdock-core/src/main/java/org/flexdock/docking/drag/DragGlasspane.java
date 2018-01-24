@@ -127,6 +127,9 @@ public class DragGlasspane extends JComponent {
 		if (c instanceof Dockable) {
 			return (Dockable) c;
 		}
+		if (c == null) {
+			return null;
+		}
 		return DockingManager.getDockable(c);
 	}
 

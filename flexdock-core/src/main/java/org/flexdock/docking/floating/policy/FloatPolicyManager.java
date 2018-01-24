@@ -61,6 +61,8 @@ public class FloatPolicyManager extends DockingListener.Stub {
 	 * Key constant used within the drag context {@code Map} to indicate whether
 	 * floating is allowed for a given drag operation.
 	 *
+	 * @deprecated Floating should always be enabled
+	 *
 	 * @see DragManager#getDragContext(Dockable)
 	 */
 	private static final String FLOATING_ALLOWED = "FloatPolicyManager.FLOATING_ALLOWED";
@@ -68,6 +70,8 @@ public class FloatPolicyManager extends DockingListener.Stub {
 	/**
 	 * System property key used during framework initialization to determine the
 	 * default setting for global floating support.
+	 *
+	 * @deprecated Floating should always be enabled
 	 */
 	private static final String GLOBAL_FLOATING_ENABLED = "global.floating.enabled";
 
