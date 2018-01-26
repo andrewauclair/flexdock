@@ -141,7 +141,7 @@ public class DockingStateSerializer implements ISerializer {
             dockingState.setRelativeParentId(relativeParentId);
         }
 
-		dockingState.setRegion(DockingConstants.Region.valueOf(region));
+		dockingState.setRegion(DockingConstants.Region.valueOf(region.toUpperCase()));
 
         String splitRatioString = element.getAttribute(PersistenceConstants.DOCKING_STATE_ATTRIBUTE_SPLIT_RATIO);
         if (splitRatioString != null && splitRatioString.length() != 0) {

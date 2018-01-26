@@ -39,8 +39,8 @@ public class SplitNodeSerializer extends AbstractLayoutNodeSerializer implements
 		SplitNode splitNode = (SplitNode) object;
 		
 		Element splitNodeElement = super.serialize(document, object);
-		
-		if (splitNode.getSiblingId() != null && !"".equals(splitNode.getSiblingId())) {
+
+		if (splitNode.getSiblingId() != null && !splitNode.getSiblingId().isEmpty()) {
 			splitNodeElement.setAttribute(PersistenceConstants.SPLIT_NODE_ATTRIBUTE_SIBLING_ID, splitNode.getSiblingId());
 		}
 		splitNodeElement.setAttribute(PersistenceConstants.SPLIT_NODE_ATTRIBUTE_ORIENTATION, splitNode.getOrientationDesc());
@@ -97,11 +97,11 @@ public class SplitNodeSerializer extends AbstractLayoutNodeSerializer implements
 		splitNode.setOrientation(orientation);
 		splitNode.setRegion(region);
 		splitNode.setPercentage(Float.parseFloat(percentage));
-		if (siblingId != null && !"".equals(siblingId)) {
+		if (siblingId != null && !siblingId.isEmpty()) {
 			splitNode.setSiblingId(siblingId);
 		}
 		if (dockingRegion != null && dockingRegion.length() != 0) {
-			splitNode.setDockingRegion(DockingConstants.Region.valueOf(dockingRegion));
+			splitNode.setDockingRegion(DockingConstants.Region.valueOf(dockingRegion.toUpperCase()));
 		}
 		
 		return splitNode;

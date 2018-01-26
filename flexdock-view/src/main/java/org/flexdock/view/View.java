@@ -32,7 +32,6 @@ import org.flexdock.util.SwingUtility;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -61,145 +60,6 @@ import java.util.Set;
  * @see javax.swing.JRootPane
  */
 public class View extends JComponent implements Dockable {
-	protected static class ViewLayout implements LayoutManager2, Serializable {
-		private final View view;
-
-		ViewLayout(View view) {
-			this.view = view;
-		}
-
-		/**
-		 * Returns the amount of space the layout would like to have.
-		 *
-		 * @param parent the Container for which this layout manager is being used
-		 * @return a Dimension object containing the layout's preferred size
-		 */
-		@Override
-		public Dimension preferredLayoutSize(Container parent) {
-			Dimension rd, tpd;
-			Insets i = view.getInsets();
-
-			if (view.contentPane != null) {
-				rd = view.contentPane.getPreferredSize();
-			}
-			else {
-				rd = parent.getSize();
-			}
-			if (view.titlepane != null && view.titlepane.isVisible()) {
-				tpd = view.titlepane.getPreferredSize();
-			}
-			else {
-				tpd = new Dimension(0, 0);
-			}
-			return new Dimension(Math.max(rd.width, tpd.width) + i.left
-					+ i.right, rd.height + tpd.height + i.top + i.bottom);
-		}
-
-		/**
-		 * Returns the minimum amount of space the layout needs.
-		 *
-		 * @param parent the Container for which this layout manager is being used
-		 * @return a Dimension object containing the layout's minimum size
-		 */
-		@Override
-		public Dimension minimumLayoutSize(Container parent) {
-			Dimension rd, tpd;
-			Insets i = view.getInsets();
-			if (view.contentPane != null) {
-				rd = view.contentPane.getMinimumSize();
-			}
-			else {
-				rd = parent.getSize();
-			}
-			if (view.titlepane != null && view.titlepane.isVisible()) {
-				tpd = view.titlepane.getMinimumSize();
-			}
-			else {
-				tpd = new Dimension(0, 0);
-			}
-			return new Dimension(Math.max(rd.width, tpd.width) + i.left
-					+ i.right, rd.height + tpd.height + i.top + i.bottom);
-		}
-
-		/**
-		 * Returns the maximum amount of space the layout can use.
-		 *
-		 * @param target the Container for which this layout manager is being used
-		 * @return a Dimension object containing the layout's maximum size
-		 */
-		@Override
-		public Dimension maximumLayoutSize(Container target) {
-			Dimension rd, tpd;
-			Insets i = view.getInsets();
-			if (view.titlepane != null && view.titlepane.isVisible()) {
-				tpd = view.titlepane.getMaximumSize();
-			}
-			else {
-				tpd = new Dimension(0, 0);
-			}
-			if (view.contentPane != null) {
-				rd = view.contentPane.getMaximumSize();
-			}
-			else {
-				// This is silly, but should stop an overflow error
-				rd = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE - i.top
-						- i.bottom - tpd.height - 1);
-			}
-			return new Dimension(Math.min(rd.width, tpd.width) + i.left
-					+ i.right, rd.height + tpd.height + i.top + i.bottom);
-		}
-
-		/**
-		 * Instructs the layout manager to perform the layout for the specified
-		 * container.
-		 *
-		 * @param parent the Container for which this layout manager is being used
-		 */
-		@Override
-		public void layoutContainer(Container parent) {
-			Rectangle b = parent.getBounds();
-			Insets i = view.getInsets();
-			int contentY = 0;
-			int w = b.width - i.right - i.left;
-			int h = b.height - i.top - i.bottom;
-
-			if (view.titlepane != null && view.titlepane.isVisible()) {
-				Dimension mbd = view.titlepane.getPreferredSize();
-				view.titlepane.setBounds(0, 0, w, mbd.height);
-				contentY += mbd.height;
-			}
-			if (view.contentPane != null) {
-				view.contentPane.setBounds(0, contentY, w, h - contentY);
-			}
-		}
-
-		@Override
-		public void addLayoutComponent(String name, Component comp) {
-		}
-
-		@Override
-		public void removeLayoutComponent(Component comp) {
-		}
-
-		@Override
-		public void addLayoutComponent(Component comp, Object constraints) {
-		}
-
-		@Override
-		public float getLayoutAlignmentX(Container target) {
-			return 0.0f;
-		}
-
-		@Override
-		public float getLayoutAlignmentY(Container target) {
-			return 0.0f;
-		}
-
-		@Override
-		public void invalidateLayout(Container target) {
-		}
-	}
-
 	private static final String UI_CLASS_ID = "Flexdock.view";
 
 	private static final String ACTION_TOGGLE_NEXT = "toggleNextView";
@@ -253,7 +113,7 @@ public class View extends JComponent implements Dockable {
 			setTitlebar(new Titlebar(this, title));
 		}
 		setLayout(createLayout());
-		setContentPaneCheckingEnabled(true);
+		this.contentPaneCheckingEnabled = true;
 
 		if (tabText == null) {
 			tabText = title;
@@ -363,16 +223,16 @@ public class View extends JComponent implements Dockable {
 			add(contentPane, gbc);
 		}
 		finally {
-			setContentPaneCheckingEnabled(checkingEnabled);
+			this.contentPaneCheckingEnabled = checkingEnabled;
 		}
 	}
 
 	private void setTitlebar(Titlebar titlebar) {
 		titlepane = titlebar;
 
-		boolean checkingEnabled = isContentPaneCheckingEnabled();
+		boolean checkingEnabled = contentPaneCheckingEnabled;
 		try {
-			setContentPaneCheckingEnabled(false);
+			this.contentPaneCheckingEnabled = false;
 
 			GridBagConstraints gbc = new GridBagConstraints();
 
@@ -395,7 +255,7 @@ public class View extends JComponent implements Dockable {
 			add(contentPane, gbc);
 		}
 		finally {
-			setContentPaneCheckingEnabled(checkingEnabled);
+			this.contentPaneCheckingEnabled = checkingEnabled;
 		}
 
 		dragSources.add(titlepane);
@@ -425,8 +285,8 @@ public class View extends JComponent implements Dockable {
 	 */
 	@Override
 	protected void addImpl(Component comp, Object constraints, int index) {
-		if (isContentPaneCheckingEnabled()) {
-			getContentPane().add(comp, constraints, index);
+		if (contentPaneCheckingEnabled) {
+			contentPane.add(comp, constraints, index);
 		}
 		else {
 			super.addImpl(comp, constraints, index);
@@ -439,7 +299,7 @@ public class View extends JComponent implements Dockable {
 			super.remove(comp);
 		}
 		else {
-			getContentPane().remove(comp);
+			contentPane.remove(comp);
 		}
 	}
 
@@ -548,8 +408,7 @@ public class View extends JComponent implements Dockable {
 
 	@Override
 	public DockingListener[] getDockingListeners() {
-		return dockingListeners
-				.toArray(new DockingListener[0]);
+		return dockingListeners.toArray(new DockingListener[dockingListeners.size()]);
 	}
 
 	@Override
@@ -618,22 +477,7 @@ public class View extends JComponent implements Dockable {
 
 	@Override
 	protected String paramString() {
-		return "id=" + getPersistentId() + "," + super.paramString();
-	}
-
-	/**
-	 * @return the contentPaneCheckingEnabled
-	 */
-	private boolean isContentPaneCheckingEnabled() {
-		return contentPaneCheckingEnabled;
-	}
-
-	/**
-	 * @param contentPaneCheckingEnabled the contentPaneCheckingEnabled to set
-	 */
-	private void setContentPaneCheckingEnabled(
-			boolean contentPaneCheckingEnabled) {
-		this.contentPaneCheckingEnabled = contentPaneCheckingEnabled;
+		return "id=" + persistentId + "," + super.paramString();
 	}
 
 	/**
@@ -641,12 +485,11 @@ public class View extends JComponent implements Dockable {
 	 * forward the call to the <code>contentPane</code>.
 	 *
 	 * @param manager the <code>LayoutManager</code>
-	 * @see #setContentPaneCheckingEnabled
 	 */
 	@Override
 	public void setLayout(LayoutManager manager) {
-		if (isContentPaneCheckingEnabled()) {
-			getContentPane().setLayout(manager);
+		if (contentPaneCheckingEnabled) {
+			contentPane.setLayout(manager);
 		}
 		else {
 			super.setLayout(manager);

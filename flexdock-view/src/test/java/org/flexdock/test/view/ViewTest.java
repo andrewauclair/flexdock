@@ -193,17 +193,7 @@ public class ViewTest {
 
     }
 
-    private static class EmptyAction extends AbstractAction {
-        private EmptyAction(String name) {
-            putValue(Action.NAME, name);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-        }
-    }
-
-    public static class ThemeInfo {
+	public static class ThemeInfo {
         private final JLabel view = new JLabel("View:");
         private final JLabel titlebar = new JLabel("Titlebar:");
         private final JLabel button = new JLabel("Button:");

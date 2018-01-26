@@ -27,74 +27,57 @@ import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.defaults.StandardBorderManager;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.HashSet;
 
 /**
  * @author Christopher Butler
  */
 public class Viewport extends DefaultDockingPort {
 
-	// TODO I would like to build region blocking into the DefaultDockingPort
-	private final HashSet<String> blockedRegions;
-
 	static {
+		// TODO This kind of stuff makes it really hard to write tests
 		DockingManager.setDockingStrategy(Viewport.class, View.VIEW_DOCKING_STRATEGY);
 	}
 
 	public Viewport() {
 		super();
-		blockedRegions = new HashSet<>(5);
 		setBorderManager(new StandardBorderManager());
 	}
 
 	public Viewport(String portId) {
 		super(portId);
-		blockedRegions = new HashSet<>(5);
 		setBorderManager(new StandardBorderManager());
 	}
 
-	public void setRegionBlocked(DockingConstants.Region region, boolean isBlocked) {
-		if (isValidDockingRegion(region)) {
-			if (isBlocked) {
-				blockedRegions.add(region.toString());
-			}
-			else {
-				blockedRegions.remove(region);
-			}
-		}
-	}
-
-	@Override
-	public boolean isDockingAllowed(Component comp, DockingConstants.Region region) {
-		// if we're already blocked, then no need to interrogate
-		// the components in this dockingport
-		boolean blocked = !super.isDockingAllowed(comp, region);
-		if (blocked) {
-			return false;
-		}
-
-		// check to see if the region itself has been blocked for some reason
-		if (blockedRegions.contains(region)) {
-			return false;
-		}
-
-		// by default, allow docking in non-CENTER regions
-		if (region != DockingConstants.Region.CENTER) {
-			return true;
-		}
-
-		// allow docking in the CENTER if there's nothing already there,
-		// or if there's no Dockable associated with the component there
-		Dockable dockable = getCenterDockable();
-		if (dockable == null) {
-			return true;
-		}
-
-		// otherwise, only allow docking in the CENTER if the dockable
-		// doesn't mind
-		return !dockable.getDockingProperties().isTerritoryBlocked(region);
-	}
+//	@Override
+//	public boolean isDockingAllowed(Component comp, DockingConstants.Region region) {
+//		// if we're already blocked, then no need to interrogate
+//		// the components in this dockingport
+//		boolean blocked = !super.isDockingAllowed(comp, region);
+//		if (blocked) {
+//			return false;
+//		}
+//
+//		// check to see if the region itself has been blocked for some reason
+//		if (blockedRegions.contains(region)) {
+//			return false;
+//		}
+//
+//		// by default, allow docking in non-CENTER regions
+//		if (region != DockingConstants.Region.CENTER) {
+//			return true;
+//		}
+//
+//		// allow docking in the CENTER if there's nothing already there,
+//		// or if there's no Dockable associated with the component there
+//		Dockable dockable = getCenterDockable();
+//		if (dockable == null) {
+//			return true;
+//		}
+//
+//		// otherwise, only allow docking in the CENTER if the dockable
+//		// doesn't mind
+//		return !dockable.getDockingProperties().isTerritoryBlocked(region);
+//	}
 
 	public boolean dock(Dockable dockable) {
 		return dock(dockable, DockingConstants.Region.CENTER);

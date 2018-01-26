@@ -121,6 +121,9 @@ import static org.flexdock.docking.DockingConstants.Region;
  * @author Christopher Butler
  */
 public class DefaultDockingPort extends JPanel implements DockingPort {
+	// TODO I would like to build region blocking into the DefaultDockingPort
+	protected final Set<Region> blockedRegions;
+
 	protected static class PortLayout implements LayoutManager2, Serializable {
 		private final DefaultDockingPort port;
 
@@ -292,7 +295,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 */
 	public DefaultDockingPort(String id) {
 		setPersistentId(id);
-		dockingListeners = new ArrayList(2);
+		dockingListeners = new ArrayList<>(2);
 		addDockingListener(this);
 
 		DockingPortPropertySet props = getDockingProperties();
@@ -308,7 +311,8 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		setLayout(createLayout());
 
 		//configure the default border manager
-		setBorderManager(createBorderManager());
+		borderManager = createBorderManager();
+		blockedRegions = Collections.synchronizedSet(EnumSet.noneOf(Region.class));
 	}
 
 	private LayoutManager createLayout() {
@@ -322,7 +326,7 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	 *
 	 * @return the border manager for this docking port.
 	 */
-	private BorderManager createBorderManager() {
+	private static BorderManager createBorderManager() {
 		return new StandardBorderManager(new EmptyBorder(0, 0, 0, 0));
 	}
 
@@ -388,14 +392,25 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		return setComponent(comp);
 	}
 
-	private void addCmp(DockingPort port, Component c) {
+	private static void addCmp(DockingPort port, Component c) {
 		if (port instanceof Container) {
 			((Container) port).add(c);
 		}
 	}
 
-	private void dockCmp(DockingPort port, Dockable c) {
+	private static void dockCmp(DockingPort port, Dockable c) {
 		port.dock(c, Region.CENTER);
+	}
+
+	public void setRegionBlocked(Region region, boolean isBlocked) {
+		if (isValidDockingRegion(region)) {
+			if (isBlocked) {
+				blockedRegions.add(region);
+			}
+			else {
+				blockedRegions.remove(region);
+			}
+		}
 	}
 
 	/**
@@ -443,6 +458,10 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			return false;
 		}
 
+		if (blockedRegions.contains(region)) {
+			return false;
+		}
+
 		// allow any valid region if we're not already the parent
 		// of the component we're checking
 		if (!isParentDockingPort(comp)) {
@@ -482,17 +501,16 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 			return;
 		}
 
-		Component docked = getDockedComponent();
 		// check for the null-case
-		if (docked == null) {
+		if (dockedComponent == null) {
 			borderManager.managePortNullChild(this);
 			// check for a split layout
 		}
-		else if (docked instanceof JSplitPane) {
+		else if (dockedComponent instanceof JSplitPane) {
 			borderManager.managePortSplitChild(this);
 			// check for a tabbed layout
 		}
-		else if (docked instanceof JTabbedPane) {
+		else if (dockedComponent instanceof JTabbedPane) {
 			borderManager.managePortTabbedChild(this);
 			// otherwise, we have a simple case of a regular component docked within
 			// us

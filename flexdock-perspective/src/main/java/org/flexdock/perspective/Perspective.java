@@ -19,7 +19,6 @@
  */
 package org.flexdock.perspective;
 
-import com.sun.istack.internal.NotNull;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
@@ -30,6 +29,7 @@ import org.flexdock.perspective.event.LayoutListener;
 import org.flexdock.perspective.event.PerspectiveEvent;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author Mateusz Szczap
@@ -46,15 +46,9 @@ public class Perspective implements Cloneable, Serializable {
 	 * @throws IllegalArgumentException if {@code persistentId} or {@code perspectiveName} is
 	 *                                  {@code null}.
 	 */
-	public Perspective(@NotNull String persistentId, @NotNull String perspectiveName) {
-		if (persistentId == null) {
-			throw new IllegalArgumentException("persistentId cannot be null");
-		}
-		if (perspectiveName == null) {
-			throw new IllegalArgumentException("perspectiveName cannot be null");
-		}
-		this.persistentId = persistentId;
-		this.perspectiveName = perspectiveName;
+	public Perspective(String persistentId, String perspectiveName) {
+		this.persistentId = Objects.requireNonNull(persistentId);
+		this.perspectiveName = Objects.requireNonNull(perspectiveName);
 		this.layout = new Layout();
 	}
 	
@@ -67,43 +61,43 @@ public class Perspective implements Cloneable, Serializable {
 	}
 	
 	public void addDockable(String dockableId) {
-		getLayout().add(dockableId);
+		this.layout.add(dockableId);
 	}
 	
 	public boolean removeDockable(String dockableId) {
-		return (getLayout().remove(dockableId) != null);
+		return (this.layout.remove(dockableId) != null);
 	}
 	
 	public Dockable getDockable(String dockableId) {
-		return getLayout().getDockable(dockableId);
+		return this.layout.getDockable(dockableId);
 	}
 	
 	public void addLayoutListener(LayoutListener listener) {
-		getLayout().addListener(listener);
+		this.layout.addListener(listener);
 	}
 	
 	public void removeLayoutListener(LayoutListener listener) {
-		getLayout().removeListener(listener);
+		this.layout.removeListener(listener);
 	}
 	
 	public Dockable[] getDockables() {
-		return getLayout().getDockables();
+		return this.layout.getDockables();
 	}
 	
 	public DockingState getDockingState(String dockable) {
-		return getLayout().getDockingState(dockable, false);
+		return this.layout.getDockingState(dockable, false);
 	}
 	
 	public DockingState getDockingState(Dockable dockable) {
-		return getLayout().getDockingState(dockable, false);
+		return this.layout.getDockingState(dockable, false);
 	}
 	
 	public DockingState getDockingState(String dockable, boolean load) {
-		return getLayout().getDockingState(dockable, load);
+		return this.layout.getDockingState(dockable, load);
 	}
 	
 	public DockingState getDockingState(Dockable dockable, boolean load) {
-		return getLayout().getDockingState(dockable, load);
+		return this.layout.getDockingState(dockable, load);
 	}
 	
 	public LayoutSequence getInitialSequence() {
@@ -132,8 +126,8 @@ public class Perspective implements Cloneable, Serializable {
 	public void reset(DockingPort port) {
 		if (this.initalSequence != null) {
 			this.initalSequence.apply(port);
-			
-			Layout layout = getLayout();
+
+			Layout layout = this.layout;
 			if (layout != null) {
 				layout.update(this.initalSequence);
 				EventManager.getInstance().dispatchEvent(new PerspectiveEvent(this, null, PerspectiveEvent.RESET));
@@ -142,7 +136,7 @@ public class Perspective implements Cloneable, Serializable {
 	}
 	
 	public void load(DockingPort port) {
-		Layout layout = getLayout();
+		Layout layout = this.layout;
 		if (layout.isInitialized()) {
 			layout.apply(port);
 			EventManager.getInstance().dispatchEvent(new PerspectiveEvent(this, null, PerspectiveEvent.RESET));
@@ -153,7 +147,7 @@ public class Perspective implements Cloneable, Serializable {
 	}
 	
 	public void unload() {
-		Dockable[] dockables = getLayout().getDockables();
+		Dockable[] dockables = this.layout.getDockables();
 		for (Dockable dockable : dockables) {
 			DockingManager.close(dockable);
 		}
@@ -161,7 +155,7 @@ public class Perspective implements Cloneable, Serializable {
 	
 	public void cacheLayoutState(DockingPort port) {
 		if (port != null) {
-			Layout layout = getLayout();
+			Layout layout = this.layout;
 			LayoutNode node = port.exportLayout();
 			layout.setRestorationLayout(node);
 		}

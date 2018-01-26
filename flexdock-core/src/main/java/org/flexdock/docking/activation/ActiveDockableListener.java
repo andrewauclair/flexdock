@@ -80,19 +80,19 @@ public class ActiveDockableListener implements PropertyChangeListener, ChangeLis
 		MouseEvent evt = (MouseEvent) event;
 
 		if (evt.getSource() instanceof Component) {
-			Component c = (Component) evt.getSource();
+			Component component = (Component) evt.getSource();
 
 			// check to see if the event was targeted at the deepest component at the current
-			// mouse loaction
-			Container container = c instanceof Container ? (Container) c : null;
+			// mouse location
+			Container container = component instanceof Container ? (Container) component : null;
 			if (container != null && container.getComponentCount() > 1) {
 				// if not, find the deepest component
 				Point p = evt.getPoint();
-				c = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
+				component = SwingUtilities.getDeepestComponentAt(component, p.x, p.y);
 			}
 
 			// request activation of the dockable that encloses this component
-			ActiveDockableTracker.requestDockableActivation(c);
+			ActiveDockableTracker.requestDockableActivation(component);
 		}
 	}
 
