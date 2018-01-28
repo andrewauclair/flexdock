@@ -44,11 +44,7 @@ public class Titlepane extends JPanel implements DockingStub {
         return titlebar.getText();
     }
 
-    public void setTitle(String title) {
-        titlebar.setTitle(title);
-    }
-
-    public JLabel getTitlebar() {
+	public JLabel getTitlebar() {
         return titlebar;
     }
 

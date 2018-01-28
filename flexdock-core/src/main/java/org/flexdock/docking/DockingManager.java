@@ -510,23 +510,6 @@ public class DockingManager {
 	}
 
 	/**
-	 * Indicates whether the specified {@code Component} is currently docked.
-	 * This method looks up a parent {@code DockingPort} for the specified
-	 * {@code Component} via a call to
-	 * {@code getDockingPort(Component dockable)}. This method returns
-	 * {@code true} if a parent {@code DockingPort} is found and {@code false}
-	 * if no parent {@code DockingPort} is present. This method returns
-	 * {@code false} if the {@code Component} parameter is {@code null}.
-	 *
-	 * @param component the {@code Component} whose docking status is to be examined
-	 * @return {@code true} if the {@code Component} is currently docked;
-	 * otherwise {@code false}.
-	 */
-	public static boolean isDocked(Component component) {
-		return getDockingPort(component) != null;
-	}
-
-	/**
 	 * Indicates whether the specified {@code Dockable} is currently docked.
 	 * This method looks up a parent {@code DockingPort} for the specified
 	 * {@code Dockable} via a call to {@code getDockingPort(Dockable dockable)}.
@@ -541,34 +524,6 @@ public class DockingManager {
 	 */
 	public static boolean isDocked(Dockable dockable) {
 		return getDockingPort(dockable) != null;
-	}
-
-	/**
-	 * Checks whether a supplied {@code Dockable} is docked within a supplied
-	 * {@code DockingPort} instance. Returns {@code true} if the
-	 * {@code DockingPort} contains the specified {@code Dockable};
-	 * {@code false} otherwise. This method returns {@code false} if either of
-	 * the input parameters are {@code null}.
-	 *
-	 * @param dockingPort the {@code DockingPort} to be tested
-	 * @param dockable    the {@code Dockable} instance to be examined
-	 * @return {@code true} if the supplied {@code DockingPort} contains the
-	 * specified {@code Dockable}; {@code false} otherwise.
-	 */
-	public static boolean isDocked(DockingPort dockingPort, Dockable dockable) {
-		return dockingPort != null && dockable != null && dockingPort.isParentDockingPort(dockable.getComponent());
-	}
-
-	/**
-	 * Indicates whether global floating support is currently enabled. Defers
-	 * processing to {@code FloatPolicyManager.isGlobalFloatingEnabled()}.
-	 *
-	 * @return {@code true} if global floating support is enabled, {@code false}
-	 * otherwise.
-	 * @see FloatPolicyManager#isGlobalFloatingEnabled()
-	 */
-	public static boolean isFloatingEnabled() {
-		return FloatPolicyManager.isGlobalFloatingEnabled();
 	}
 
 	/**

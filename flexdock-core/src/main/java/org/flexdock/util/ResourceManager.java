@@ -27,7 +27,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.Socket;
 import java.net.URL;
 import java.util.Properties;
 
@@ -105,26 +104,6 @@ public class ResourceManager {
 	}
 
 	/**
-	 * Returns an {@code Image} object based on the specified resource URL. Does
-	 * not perform any caching on the {@code Image} object, so a new object will
-	 * be created with each call to this method.
-	 *
-	 * @param imageLocation the {@code URL} indicating where the image resource may be
-	 *                      found.
-	 * @return an {@code Image} created from the specified resource URL
-	 * @throws NullPointerException if specified resource cannot be found.
-	 */
-	private static Image createImage(URL imageLocation) {
-		try {
-			return Toolkit.getDefaultToolkit().createImage(imageLocation);
-		}
-		catch (NullPointerException e) {
-			throw new NullPointerException("Unable to locate image: "
-					+ imageLocation);
-		}
-	}
-
-	/**
 	 * Returns an {@code ImageIcon} object based on the specified resource URL.
 	 * Uses the {@code ImageIcon} constructor internally instead of dispatching
 	 * to {@code createImage(String url)}, so {@code Image} objects are cached
@@ -142,53 +121,6 @@ public class ResourceManager {
 		catch (NullPointerException e) {
 			throw new NullPointerException("Unable to locate image: " + url);
 		}
-	}
-
-	/**
-	 * Returns a {@code Cursor} object based on the specified resource URL.
-	 * Throws a {@code NullPointerException} if specified resource cannot be
-	 * found. Dispatches to {@code createImage(URL imageLocation)}, so
-	 * {@code Image} objects are <b>not</b> cached via the{@code MediaTracker}.
-	 *
-	 * @param imageURL the {@code URL} indicating where the image resource may be
-	 *                 found.
-	 * @param hotPoint the X and Y of the large cursor's hot spot. The hotSpot values
-	 *                 must be less than the Dimension returned by
-	 *                 getBestCursorSize().
-	 * @param name     a localized description of the cursor, for Java Accessibility
-	 *                 use.
-	 * @return a {@code Cursor} created from the specified resource URL
-	 * @throws NullPointerException      if specified resource cannot be found.
-	 * @throws IndexOutOfBoundsException if the hotSpot values are outside
-	 */
-	public static Cursor createCursor(URL imageURL, Point hotPoint, String name) {
-		Image image = createImage(imageURL);
-		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(image,
-				hotPoint, name);
-		return cursor;
-	}
-
-	/**
-	 * Returns a {@code Cursor} object based on the specified resource URL.
-	 * Throws a {@code NullPointerException} if specified resource cannot be
-	 * found. Dispatches to {@code createImage(String url)}, so {@code Image}
-	 * objects are <b>not</b> cached via the{@code MediaTracker}.
-	 *
-	 * @param url      the {@code String} describing the resource to be looked up
-	 * @param hotPoint the X and Y of the large cursor's hot spot. The hotSpot values
-	 *                 must be less than the Dimension returned by
-	 *                 getBestCursorSize().
-	 * @param name     a localized description of the cursor, for Java Accessibility
-	 *                 use.
-	 * @return a {@code Cursor} created from the specified resource URL
-	 * @throws NullPointerException      if specified resource cannot be found.
-	 * @throws IndexOutOfBoundsException if the hotSpot values are outside
-	 */
-	public static Cursor createCursor(String url, Point hotPoint, String name) {
-		Image image = createImage(url);
-		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(image,
-				hotPoint, name);
-		return cursor;
 	}
 
 	/**
@@ -269,24 +201,6 @@ public class ResourceManager {
 
 	/**
 	 * Returns a {@code Properties} object based on the specified resource
-	 * {@code URL}. This method dispatches to
-	 * {@code getProperties(URL url, boolean failSilent)}, with an argument of
-	 * {@code false} for {@code failSilent}. If the specified {@code uri} is
-	 * {@code null}, this method will print the ensuing
-	 * {@code NullPointerException} stack tracke to the {@code System.err} and
-	 * return {@code null}.
-	 *
-	 * @param url the {@code URL} describing the resource to be looked up
-	 * @return a {@code Properties} object based on the specified resource
-	 * {@code url}.
-	 * @see #getProperties(URL, boolean)
-	 */
-	public static Properties getProperties(URL url) {
-		return getProperties(url, false);
-	}
-
-	/**
-	 * Returns a {@code Properties} object based on the specified resource
 	 * {@code url}. If the specified {@code uri} is {@code null}, this method
 	 * will return {@code null}. If any errors are encountered during the
 	 * properties-load process, this method will return {@code null}. If
@@ -335,26 +249,6 @@ public class ResourceManager {
 		try {
 			if (in != null) {
 				in.close();
-			}
-		}
-		catch (Exception e) {
-			System.err.println("Exception: " + e.getMessage());
-		}
-	}
-
-	/**
-	 * Calls {@code close()} on the specified {@code Socket}. Any
-	 * {@code Exceptions} encountered will be printed to the {@code System.err}.
-	 * If {@code socket} is {@code null}, then no {@code Exception} is thrown
-	 * and no action is taken.
-	 *
-	 * @param socket the {@code Socket} to close
-	 * @see Socket#close()
-	 */
-	public static void close(Socket socket) {
-		try {
-			if (socket != null) {
-				socket.close();
 			}
 		}
 		catch (Exception e) {

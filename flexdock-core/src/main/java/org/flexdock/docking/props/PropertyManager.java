@@ -47,10 +47,6 @@ public final class PropertyManager {
 		return ScopedDockingPortPropertySet.ROOT_PROPS;
 	}
 
-	public static DockablePropertySet getDockableRoot() {
-		return ScopedDockablePropertySet.ROOT_PROPS;
-	}
-
 	public static void setDockablePropertyType(Class dockable, Class propType) {
 		if (dockable == null || propType == null) {
 			return;

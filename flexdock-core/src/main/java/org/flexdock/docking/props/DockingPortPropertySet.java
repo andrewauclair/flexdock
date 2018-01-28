@@ -40,14 +40,9 @@ public interface DockingPortPropertySet {
 
 	Integer getTabPlacement();
 
-	Float getRegionInset(String region);
-
 	void setRegionChecker(RegionChecker checker);
 
 	void setSingleTabsAllowed(boolean allowed);
 
 	void setTabPlacement(int placement);
-
-	void setRegionInset(String region, float inset);
-
 }

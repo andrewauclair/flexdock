@@ -164,7 +164,4 @@ public class VSNetStartPage extends JPanel {
     public JButton getNewProjButton() {
         return newProjButton;
     }
-    public JButton getOpenProjButton() {
-        return openProjButton;
-    }
 }

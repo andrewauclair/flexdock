@@ -86,12 +86,6 @@ public class ScopedDockingPortPropertySet extends BasicDockingPortPropertySet im
 	}
 
 	@Override
-	public Float getRegionInset(String region) {
-		String key = getRegionInsetKey(region);
-		return key == null ? null : (Float) PropertyManager.getProperty(key, this);
-	}
-
-	@Override
 	public Integer getTabPlacement() {
 		return (Integer) PropertyManager.getProperty(TAB_PLACEMENT, this);
 	}

@@ -19,10 +19,9 @@
  */
 package org.flexdock.demos.maximizing;
 
-import java.awt.Component;
-
-import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.defaults.AbstractDockable;
+
+import java.awt.*;
 
 public class DockableSimpleInternalFrame extends AbstractDockable {
     private Component component;
@@ -44,8 +43,4 @@ public class DockableSimpleInternalFrame extends AbstractDockable {
         return component;
     }
 
-    public void dispose() {
-        DockingManager.unregisterDockable(this);
-        component = null;
-    }
 }

@@ -35,11 +35,11 @@ public class RootDockablePropertySet extends BasicDockablePropertySet {
 	private static final Float DEFAULT_DRAG_THRESHOLD = 4.0f;
 	private static final Float DEFAULT_PREVIEW_SIZE = 0.3f;
 
-	private HashSet constraints;
+	private HashSet<Object> constraints;
 
 	RootDockablePropertySet(Dockable dockable) {
 		super(5, dockable);
-		constraints = new HashSet(5);
+		constraints = new HashSet<>(5);
 
 		constrain(DESCRIPTION, "null");
 		constrain(DOCKING_ENABLED, Boolean.TRUE);

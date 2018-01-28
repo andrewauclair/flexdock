@@ -81,12 +81,6 @@ public class BasicDockingPortPropertySet extends Hashtable<Object, Object> imple
     }
 
     @Override
-    public Float getRegionInset(String region) {
-        String key = getRegionInsetKey(region);
-        return key == null ? null : (Float) get(key);
-    }
-
-    @Override
     public void setRegionChecker(RegionChecker checker) {
         put(REGION_CHECKER, checker);
     }
@@ -99,13 +93,5 @@ public class BasicDockingPortPropertySet extends Hashtable<Object, Object> imple
     @Override
     public void setTabPlacement(int placement) {
         put(TAB_PLACEMENT, placement);
-    }
-
-    @Override
-    public void setRegionInset(String region, float inset) {
-        String key = getRegionInsetKey(region);
-        if (key != null) {
-            put(key, inset);
-        }
     }
 }
