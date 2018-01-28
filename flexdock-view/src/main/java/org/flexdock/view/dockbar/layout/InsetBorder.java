@@ -19,7 +19,7 @@
  */
 package org.flexdock.view.dockbar.layout;
 
-import org.flexdock.plaf.common.border.CompoundEmptyBorder;
+import org.flexdock.view.border.CompoundEmptyBorder;
 
 import javax.swing.*;
 import javax.swing.border.Border;

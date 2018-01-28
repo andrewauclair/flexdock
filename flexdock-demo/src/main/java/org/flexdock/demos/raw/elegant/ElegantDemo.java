@@ -25,7 +25,7 @@ import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.defaults.StandardBorderManager;
-import org.flexdock.plaf.common.border.ShadowBorder;
+import org.flexdock.view.border.ShadowBorder;
 
 import javax.swing.*;
 import java.awt.*;

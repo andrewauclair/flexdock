@@ -19,15 +19,15 @@
  */
 package org.flexdock.demos.maximizing;
 
-import javax.swing.JTabbedPane;
-import javax.swing.border.Border;
-
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 import org.flexdock.docking.defaults.DefaultDockingPort;
 import org.flexdock.docking.defaults.DefaultDockingStrategy;
 import org.flexdock.docking.defaults.StandardBorderManager;
-import org.flexdock.plaf.common.border.ShadowBorder;
+import org.flexdock.view.border.ShadowBorder;
+
+import javax.swing.*;
+import javax.swing.border.Border;
 
 public class MyDockingPort extends DefaultDockingPort {
 

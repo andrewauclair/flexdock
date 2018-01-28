@@ -20,7 +20,7 @@
 package org.flexdock.view.dockbar;
 
 import org.flexdock.docking.Dockable;
-import org.flexdock.plaf.common.border.SlideoutBorder;
+import org.flexdock.view.border.SlideoutBorder;
 import org.flexdock.view.dockbar.event.ResizeListener;
 
 import javax.swing.*;

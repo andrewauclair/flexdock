@@ -33,11 +33,11 @@ import org.flexdock.perspective.PerspectiveManager;
 import org.flexdock.perspective.actions.OpenPerspectiveAction;
 import org.flexdock.perspective.persist.FilePersistenceHandler;
 import org.flexdock.perspective.persist.PersistenceHandler;
-import org.flexdock.plaf.common.border.ShadowBorder;
 import org.flexdock.util.ResourceManager;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
 import org.flexdock.view.Viewport;
+import org.flexdock.view.border.ShadowBorder;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

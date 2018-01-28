@@ -21,7 +21,7 @@ package org.flexdock.view.dockbar;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.props.DockablePropertySet;
-import org.flexdock.plaf.common.border.RoundedLineBorder;
+import org.flexdock.view.border.RoundedLineBorder;
 import org.flexdock.view.dockbar.util.TextIcon;
 import org.jdesktop.swingx.JXLabel;
 
