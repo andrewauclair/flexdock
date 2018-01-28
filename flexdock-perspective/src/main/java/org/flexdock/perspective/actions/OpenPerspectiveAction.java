@@ -25,6 +25,7 @@ import org.flexdock.perspective.PerspectiveManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 /**
  * @author Christopher Butler
@@ -33,9 +34,7 @@ public class OpenPerspectiveAction extends AbstractAction {
 	private String perspective;
 
 	public OpenPerspectiveAction(@NotNull String perspectiveId) {
-		if (perspectiveId == null) {
-			throw new IllegalArgumentException("perspectiveId cannot be null");
-		}
+		Objects.requireNonNull(perspectiveId);
 		this.perspective = perspectiveId;
 
 		Perspective perspective = getPerspective();

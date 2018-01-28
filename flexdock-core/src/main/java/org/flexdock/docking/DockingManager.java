@@ -1393,7 +1393,9 @@ public class DockingManager {
 	 * @see Dockable#getComponent()
 	 */
 	public static Dockable getDockable(Component comp) {
-		return DOCKABLES_BY_COMPONENT.get(Objects.requireNonNull(comp));
+//		return DOCKABLES_BY_COMPONENT.get(Objects.requireNonNull(comp));
+		// TODO Had to take out the requireNonNull because the PerspectivesDemo did it
+		return DOCKABLES_BY_COMPONENT.get(comp);
 	}
 
 	/**

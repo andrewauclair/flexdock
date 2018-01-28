@@ -106,6 +106,6 @@ public abstract class EventHandler {
 	}
 
 	public EventListener[] getListeners(Object eventTarget) {
-		return null;
+		return new EventListener[0];
 	}
 }

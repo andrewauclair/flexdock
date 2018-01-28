@@ -19,57 +19,60 @@
  */
 package org.flexdock.perspective.event;
 
-import java.util.EventListener;
-
 import org.flexdock.docking.Dockable;
 import org.flexdock.event.Event;
 import org.flexdock.event.EventHandler;
 import org.flexdock.event.RegistrationEvent;
 import org.flexdock.perspective.Perspective;
 
+import java.util.EventListener;
+
 /**
  * @author Christopher Butler
  */
 public class RegistrationHandler extends EventHandler {
 
-    @Override
-    public boolean acceptsEvent(Event evt) {
-        return evt instanceof RegistrationEvent;
-    }
+	@Override
+	public boolean acceptsEvent(Event evt) {
+		return evt instanceof RegistrationEvent;
+	}
 
-    @Override
-    public boolean acceptsListener(EventListener listener) {
-        return listener instanceof RegistrationListener;
-    }
-    @Override
-    public void handleEvent(Event evt, EventListener listener, int eventType) {
+	@Override
+	public boolean acceptsListener(EventListener listener) {
+		return listener instanceof RegistrationListener;
+	}
 
-        RegistrationEvent event = (RegistrationEvent)evt;
-        RegistrationListener consumer = (RegistrationListener)listener;
+	@Override
+	public void handleEvent(Event evt, EventListener listener, int eventType) {
 
-        switch(eventType) {
-            case RegistrationEvent.REGISTERED:
-                register(event, consumer);
-                break;
-            case RegistrationEvent.UNREGISTERED:
-                unregister(event, consumer);
-                break;
-        }
-    }
+		RegistrationEvent event = (RegistrationEvent) evt;
+		RegistrationListener consumer = (RegistrationListener) listener;
 
-    private void register(RegistrationEvent evt, RegistrationListener listener) {
-        if(evt.getSource() instanceof Perspective) {
-            listener.perspectiveAdded(evt);
-        } else if(evt.getSource() instanceof Dockable) {
-            listener.dockableAdded(evt);
-        }
-    }
+		switch (eventType) {
+			case RegistrationEvent.REGISTERED:
+				register(event, consumer);
+				break;
+			case RegistrationEvent.UNREGISTERED:
+				unregister(event, consumer);
+				break;
+		}
+	}
 
-    private void unregister(RegistrationEvent evt, RegistrationListener listener) {
-        if(evt.getSource() instanceof Perspective) {
-            listener.perspectiveRemoved(evt);
-        } else if(evt.getSource() instanceof Dockable) {
-            listener.dockableRemoved(evt);
-        }
-    }
+	private static void register(RegistrationEvent evt, RegistrationListener listener) {
+		if (evt.getSource() instanceof Perspective) {
+			listener.perspectiveAdded(evt);
+		}
+		else if (evt.getSource() instanceof Dockable) {
+			listener.dockableAdded(evt);
+		}
+	}
+
+	private static void unregister(RegistrationEvent evt, RegistrationListener listener) {
+		if (evt.getSource() instanceof Perspective) {
+			listener.perspectiveRemoved(evt);
+		}
+		else if (evt.getSource() instanceof Dockable) {
+			listener.dockableRemoved(evt);
+		}
+	}
 }

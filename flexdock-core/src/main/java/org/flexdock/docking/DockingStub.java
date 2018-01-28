@@ -25,6 +25,7 @@ import java.awt.*;
 /**
  * @author Christopher Butler
  */
+// TODO When we move to Java 9 this should be in another package which is exported, I want to hide a lot of stuff internally
 public interface DockingStub {
 	
 	/**

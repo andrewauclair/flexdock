@@ -292,7 +292,7 @@ public class DragPipeline {
 		if (newGlassPane == null && targetWindow != null) {
 			Component gp = targetWindow.getGlassPane();
 			if (gp instanceof DragGlasspane) {
-				setCurrentGlassPane((DragGlasspane) gp);
+				newGlassPane = (DragGlasspane) gp;
 			}
 		}
 	}

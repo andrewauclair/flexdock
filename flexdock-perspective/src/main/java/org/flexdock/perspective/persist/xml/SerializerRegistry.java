@@ -19,6 +19,7 @@
 package org.flexdock.perspective.persist.xml;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Created on 2005-06-03
@@ -27,26 +28,16 @@ import java.util.HashMap;
  * @version $Id: SerializerRegistry.java,v 1.5 2005-07-05 14:53:29 marius Exp $
  */
 public class SerializerRegistry {
-
 	private static HashMap<Class<?>, ISerializer> serializers = new HashMap<>();
 
 	public static void registerSerializer(Class<?> clazz, ISerializer serializer) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz cannot be null");
-        }
-        if (serializer == null) {
-            throw new IllegalArgumentException("serializer cannot be null");
-        }
-
+		Objects.requireNonNull(clazz);
+		Objects.requireNonNull(serializer);
         serializers.put(clazz, serializer);
     }
 
 	public static ISerializer getSerializer(Class<?> clazz) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz cannot be null");
-        }
-
+		Objects.requireNonNull(clazz);
 		return serializers.get(clazz);
     }
-
 }

@@ -19,50 +19,51 @@
  */
 package org.flexdock.perspective.event;
 
-import java.util.EventListener;
-
 import org.flexdock.event.Event;
 import org.flexdock.event.EventHandler;
 import org.flexdock.perspective.Layout;
+
+import java.util.EventListener;
 
 /**
  * @author Christopher Butler
  */
 public class LayoutEventHandler extends EventHandler {
 
-    @Override
-    public boolean acceptsEvent(Event evt) {
-        return evt instanceof LayoutEvent;
-    }
-    @Override
-    public boolean acceptsListener(EventListener listener) {
-        return listener instanceof LayoutListener;
-    }
+	@Override
+	public boolean acceptsEvent(Event evt) {
+		return evt instanceof LayoutEvent;
+	}
 
-    @Override
-    public void handleEvent(Event evt, EventListener listener, int eventType) {
-        LayoutEvent event = (LayoutEvent)evt;
-        LayoutListener consumer = (LayoutListener)listener;
+	@Override
+	public boolean acceptsListener(EventListener listener) {
+		return listener instanceof LayoutListener;
+	}
 
-        switch(eventType) {
-            case LayoutEvent.DOCKABLE_HIDDEN:
-                consumer.dockableHidden(event);
-                break;
-            case LayoutEvent.DOCKABLE_RESTORED:
-                consumer.dockableDisplayed(event);
-                break;
-            case LayoutEvent.LAYOUT_APPLIED:
-                consumer.layoutApplied(event);
-                break;
-            case LayoutEvent.LAYOUT_EMPTIED:
-                consumer.layoutEmptied(event);
-                break;
-        }
-    }
+	@Override
+	public void handleEvent(Event evt, EventListener listener, int eventType) {
+		LayoutEvent event = (LayoutEvent) evt;
+		LayoutListener consumer = (LayoutListener) listener;
 
-    @Override
-    public EventListener[] getListeners(Object eventTarget) {
-        return eventTarget instanceof Layout?
-               ((Layout)eventTarget).getListeners(): null;
-    }
+		switch (eventType) {
+			case LayoutEvent.DOCKABLE_HIDDEN:
+				consumer.dockableHidden(event);
+				break;
+			case LayoutEvent.DOCKABLE_RESTORED:
+				consumer.dockableDisplayed(event);
+				break;
+			case LayoutEvent.LAYOUT_APPLIED:
+				consumer.layoutApplied(event);
+				break;
+			case LayoutEvent.LAYOUT_EMPTIED:
+				consumer.layoutEmptied(event);
+				break;
+		}
+	}
+
+	@Override
+	public EventListener[] getListeners(Object eventTarget) {
+		return eventTarget instanceof Layout ?
+				((Layout) eventTarget).getListeners() : super.getListeners(eventTarget);
+	}
 }

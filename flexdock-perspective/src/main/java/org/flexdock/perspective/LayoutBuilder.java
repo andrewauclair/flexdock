@@ -32,6 +32,7 @@ import org.flexdock.util.SwingUtility;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * @author Christopher Butler
@@ -48,9 +49,7 @@ public class LayoutBuilder {
 	}
 
 	public LayoutNode createLayout(DockingPort port) {
-		if (port == null) {
-			return null;
-		}
+		Objects.requireNonNull(port);
 		return createLayoutImpl(port);
 	}
 
@@ -68,7 +67,7 @@ public class LayoutBuilder {
 		Component right = split.getRightComponent();
 
 		float percent;
-		if (split instanceof DockingSplitPane && ((DockingSplitPane) split).getPercent() != -1) {
+		if (split instanceof DockingSplitPane && ((DockingSplitPane) split).getPercent() != -1.0) {
 			percent = (float) ((DockingSplitPane) split).getPercent();
 		}
 		else {

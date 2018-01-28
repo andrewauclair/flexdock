@@ -42,11 +42,7 @@ public class LayoutEvent extends Event {
         dockable = DockingManager.getDockable(dockableId);
     }
 
-    public Layout getOldLayout() {
-        return oldLayout;
-    }
-
-    public Dockable getDockable() {
+	public Dockable getDockable() {
         return dockable;
     }
 }

@@ -34,7 +34,7 @@ public class DockingEventHandler extends EventHandler {
 
 	public static DockingListener[] getDockingListeners(Dockable dockable) {
 		Vector<DockingListener> list = getDockingListenersList(dockable);
-		return list == null ? null : list.toArray(new DockingListener[0]);
+		return list == null ? null : list.toArray(new DockingListener[list.size()]);
 	}
 
 	public static void addDockingListener(Dockable dockable, DockingListener listener) {
@@ -79,30 +79,30 @@ public class DockingEventHandler extends EventHandler {
 		DockingListener consumer = (DockingListener) listener;
 
 		switch (event.getEventType()) {
-		case DockingEvent.DRAG_STARTED:
-			consumer.dragStarted(event);
-			break;
-		case DockingEvent.DROP_STARTED:
-			consumer.dropStarted(event);
-			break;
-		case DockingEvent.DOCKING_COMPLETE:
-			consumer.dockingComplete(event);
-			break;
-		case DockingEvent.DOCKING_CANCELED:
-			consumer.dockingCanceled(event);
-			break;
-		case DockingEvent.UNDOCKING_COMPLETE:
-			consumer.undockingComplete(event);
-			break;
-		case DockingEvent.UNDOCKING_STARTED:
-			consumer.undockingStarted(event);
-			break;
+			case DockingEvent.DRAG_STARTED:
+				consumer.dragStarted(event);
+				break;
+			case DockingEvent.DROP_STARTED:
+				consumer.dropStarted(event);
+				break;
+			case DockingEvent.DOCKING_COMPLETE:
+				consumer.dockingComplete(event);
+				break;
+			case DockingEvent.DOCKING_CANCELED:
+				consumer.dockingCanceled(event);
+				break;
+			case DockingEvent.UNDOCKING_COMPLETE:
+				consumer.undockingComplete(event);
+				break;
+			case DockingEvent.UNDOCKING_STARTED:
+				consumer.undockingStarted(event);
+				break;
 		}
 	}
 
 	@Override
 	public EventListener[] getListeners(Object eventTarget) {
 		return eventTarget instanceof DockingMonitor ?
-				((DockingMonitor) eventTarget).getDockingListeners() : null;
+				((DockingMonitor) eventTarget).getDockingListeners() : super.getListeners(eventTarget);
 	}
 }

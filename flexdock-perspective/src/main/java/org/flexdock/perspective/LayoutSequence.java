@@ -29,6 +29,7 @@ import org.flexdock.util.DockingUtility;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Christopher Butler
@@ -68,9 +69,7 @@ public class LayoutSequence implements Cloneable, Serializable {
     }
 
 	public void add(String dockableId, String relativeParentId, DockingConstants.Region region, float ratio) {
-        if (dockableId == null) {
-            return;
-        }
+		Objects.requireNonNull(dockableId);
 
         if (relativeParentId == null && sequence.size() > 0) {
             throw new IllegalStateException("All calls to add() after the first dockable has been added MUST specify a relative dockable parent.");
@@ -85,9 +84,7 @@ public class LayoutSequence implements Cloneable, Serializable {
 
     //Claudio Romano request
     public void add(DockingState dockingState) {
-        if (dockingState == null) {
-            return;
-        }
+		Objects.requireNonNull(dockingState);
         sequence.add(dockingState);
     }
 
