@@ -50,7 +50,8 @@ public class Titlebar extends JPanel {
 		add(titleLabel, gbc);
 
 		gbc.anchor = GridBagConstraints.EAST;
-		JPanel actionPanel = new JPanel(new FlowLayout());
+		JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 2, 0));
+		actionPanel.setBorder(null);
 		add(actionPanel, gbc);
 
 		// TODO Maximize seems to be broken. When undoing it the mainframe doesn't repaint
@@ -64,8 +65,8 @@ public class Titlebar extends JPanel {
 		});
 
 		Color bgColor = new Color(183, 201, 217);
-		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
+		setBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, Color.GRAY));
 		actionPanel.setBackground(bgColor);
 		setBackground(bgColor);
 
@@ -86,11 +87,49 @@ public class Titlebar extends JPanel {
 
 		closeButton.addActionListener(e -> DockingManager.close(view));
 		closeButton.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/close_default.png")));
-		pinButton.addActionListener(e -> DockingManager.setMinimized(view, !view.isMinimized()));
+		pinButton.addActionListener(e -> {
+			if (view.isMinimized()) {
+				pinButton.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/pin_default.png")));
+			}
+			else {
+				pinButton.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/pin_default_selected.png")));
+			}
+			DockingManager.setMinimized(view, !view.isMinimized());
+		});
 		pinButton.setIcon(new ImageIcon(getClass().getResource("/org/flexdock/plaf/titlebar/win32/pin_default.png")));
 
-		actionPanel.add(pinButton, gbc);
-		actionPanel.add(closeButton, gbc);
+//		closeButton.setBorder(null);
+//		pinButton.setBorder(null);
+
+		pinButton.setBackground(bgColor);
+		pinButton.setContentAreaFilled(false);
+		closeButton.setContentAreaFilled(false);
+
+		pinButton.getModel().addChangeListener(e -> {
+			ButtonModel model = (ButtonModel) e.getSource();
+			if (model.isRollover()) {
+				pinButton.setContentAreaFilled(true);
+			}
+			else {
+				pinButton.setContentAreaFilled(false);
+			}
+		});
+
+		closeButton.getModel().addChangeListener(e -> {
+			ButtonModel model = (ButtonModel) e.getSource();
+			if (model.isRollover()) {
+				closeButton.setContentAreaFilled(true);
+			}
+			else {
+				closeButton.setContentAreaFilled(false);
+			}
+		});
+
+		pinButton.setPreferredSize(new Dimension(20, 20));
+		closeButton.setPreferredSize(new Dimension(20, 20));
+
+		actionPanel.add(pinButton);
+		actionPanel.add(closeButton);
 	}
 
 	// title border 0, 4, 0, 0

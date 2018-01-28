@@ -49,6 +49,7 @@ import static org.flexdock.docking.DockingConstants.Region;
  * @version $Id: PerspectivesDemo.java,v 1.17 2005-10-09 21:09:39 eeaston Exp $
  */
 public class PerspectivesDemo extends JFrame {
+	private static final long serialVersionUID = 1L;
 
 	private static final String PERSPECTIVE_FILE = "PerspectiveDemo.data";
 	private static final String MAIN_VIEW = "main.view";
