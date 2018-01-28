@@ -4,8 +4,6 @@
 package org.flexdock.test.view;
 
 import org.flexdock.docking.DockingConstants;
-import org.flexdock.plaf.Configurator;
-import org.flexdock.plaf.PlafManager;
 import org.flexdock.plaf.XMLConstants;
 import org.flexdock.util.SwingUtility;
 import org.flexdock.view.View;
@@ -152,7 +150,7 @@ public class ViewTest {
 
     private Object[] getUIList(String tagName) {
         List<String> tagNames = new ArrayList<>();
-        HashMap elements = Configurator.getNamedElementsByTagName(tagName);
+		HashMap elements = null;//Configurator.getNamedElementsByTagName(tagName);
         for (Object o : Objects.requireNonNull(elements).keySet()) {
             Element elem = (Element) elements.get(o);
 			tagNames.add(elem.getAttribute(XMLConstants.NAME_KEY));
@@ -188,7 +186,7 @@ public class ViewTest {
         @Override
         public void actionPerformed(ActionEvent event) {
             SwingUtility.setPlaf(lfInfo.getClassName());
-            PlafManager.setPreferredTheme("custom.theme", true);
+			//PlafManager.setPreferredTheme("custom.theme", true);
         }
 
     }

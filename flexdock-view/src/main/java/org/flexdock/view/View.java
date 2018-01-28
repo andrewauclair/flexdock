@@ -25,7 +25,6 @@ import org.flexdock.docking.event.DockingEvent;
 import org.flexdock.docking.event.DockingListener;
 import org.flexdock.docking.props.DockablePropertySet;
 import org.flexdock.docking.props.PropertyManager;
-import org.flexdock.plaf.PlafManager;
 import org.flexdock.util.DockingUtility;
 import org.flexdock.util.SwingUtility;
 
@@ -268,11 +267,6 @@ public class View extends JComponent implements Dockable {
 			return titlepane.getText();
 		}
 		return "";
-	}
-
-	@Override
-	public void updateUI() {
-		setUI(PlafManager.getUI(this));
 	}
 
 	@Override
