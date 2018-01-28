@@ -1015,9 +1015,8 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
 	private void resetSplitDividerLocation() {
-		Component c = getDockedComponent();
-		if (c instanceof JSplitPane) {
-			deferSplitDividerReset((JSplitPane) c);
+		if (dockedComponent instanceof JSplitPane) {
+			deferSplitDividerReset((JSplitPane) dockedComponent);
 		}
 	}
 
@@ -1051,8 +1050,8 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 	}
 
 	private boolean dockInCenterRegion(Component comp) {
-		Component docked = getDockedComponent();
-		JTabbedPane tabs = null;
+		Component docked = dockedComponent;
+		JTabbedPane tabs;
 
 		if (docked instanceof JTabbedPane) {
 			tabs = (JTabbedPane) docked;
@@ -1107,14 +1106,13 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 
 		// remove the old docked content. we'll be adding it to another
 		// dockingPort.
-		Component docked = getDockedComponent();
-		remove(docked);
+		remove(dockedComponent);
 
 		// add the components to their new parents.
 		DockingStrategy strategy = getDockingStrategy();
 		DockingPort oldContent = strategy.createDockingPort(this);
 		DockingPort newContent = strategy.createDockingPort(this);
-		addCmp(oldContent, docked);
+		addCmp(oldContent, dockedComponent);
 		dockCmp(newContent, comp);
 
 		JSplitPane newDockedContent = strategy.createSplitPane(this, region);
@@ -1140,9 +1138,9 @@ public class DefaultDockingPort extends JPanel implements DockingPort {
 		// set the split in the middle
 		double ratio = 0.5;
 
-		if (docked instanceof Dockable
+		if (dockedComponent instanceof Dockable
 				&& newDockedContent instanceof DockingSplitPane) {
-			Float siblingRatio = ((Dockable) docked).getDockingProperties()
+			Float siblingRatio = ((Dockable) dockedComponent).getDockingProperties()
 					.getSiblingSize(region);
 			if (siblingRatio != null) {
 				ratio = siblingRatio.doubleValue();

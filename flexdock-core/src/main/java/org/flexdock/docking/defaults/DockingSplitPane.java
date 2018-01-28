@@ -31,6 +31,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 /**
  * @author Christopher Butler
@@ -71,9 +72,8 @@ public class DockingSplitPane extends JSplitPane {
 	 * @see DockingManager#isValidDockingRegion(String)
 	 */
 	DockingSplitPane(DockingPort port, DockingConstants.Region region) {
-		if (port == null) {
-			throw new IllegalArgumentException("'port' cannot be null.");
-		}
+		Objects.requireNonNull(port);
+		// TODO Do we need this check now that Region is an enum?
 		if (!DockingManager.isValidDockingRegion(region)) {
 			throw new IllegalArgumentException("'" + region + "' is not a valid region.");
 		}

@@ -184,7 +184,7 @@ public class ViewTest {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			SwingUtility.setPlaf(lfInfo.getClassName());
+//			SwingUtility.setPlaf(lfInfo.getClassName());
 			//PlafManager.setPreferredTheme("custom.theme", true);
 		}
 

@@ -41,6 +41,7 @@ import java.awt.*;
 import java.io.IOException;
 
 import static org.flexdock.docking.DockingConstants.Region;
+import static org.flexdock.util.SwingUtility.setSystemLookAndFeel;
 
 /**
  * Created on 2005-04-17
@@ -63,7 +64,7 @@ public class PerspectivesDemo extends JFrame {
 	private static final String P3 = "p3";
 
 	public static void main(String[] args) {
-		SwingUtility.setPlaf(UIManager.getSystemLookAndFeelClassName());
+		setSystemLookAndFeel();
 
 		// setup the flexdock configuration
 		configureDocking();
